@@ -2,4 +2,15 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import Extension from "./Extension"
 
-ReactDOM.render(<Extension />, document.getElementById("app-container"))
+document.head.innerHTML += `
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+  </style>
+`
+
+window.addEventListener("DOMContentLoaded", event => {
+  ReactDOM.render(<Extension />, document.getElementById("app-container"))
+})

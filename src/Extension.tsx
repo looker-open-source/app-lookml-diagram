@@ -1,10 +1,9 @@
 import * as React from "react"
-
-let lang: string = "TypeScript"
+import { ThemeProvider, theme } from "looker-lens"
+import { DataDictionary } from "./DataDictionary"
 
 export default () => (
-  <>
-    <h1>Sample Extension</h1>
-    <p>This is a sample extension written in {lang}.</p>
-  </>
+  <ThemeProvider theme={theme}>
+    <DataDictionary></DataDictionary>
+  </ThemeProvider>
 )
