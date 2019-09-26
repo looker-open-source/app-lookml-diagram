@@ -16,7 +16,10 @@ const PageContainer = styled(Flex)`
   overflow: hidden;
 `
 
-const PageSidebar = styled(FlexItem)``
+const PageSidebar = styled(FlexItem)`
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+`
 
 const PageMainPane = styled(FlexItem)`
   overflow: auto;
