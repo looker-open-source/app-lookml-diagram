@@ -1,14 +1,11 @@
 import * as React from "react"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { dark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { prism } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 export const SQLSnippet = ({ src }: { src: string }) => {
   return (
-    <code>
+    <SyntaxHighlighter language="sql" style={prism}>
       {src}
-      {/* <SyntaxHighlighter language="sql" style={dark}>
-        {src}
-      </SyntaxHighlighter> */}
-    </code>
+    </SyntaxHighlighter>
   )
 }

@@ -1,4 +1,5 @@
-import { LookerBrowserSDK, DefaultSettings } from "@looker/sdk"
+import { LookerBrowserSDK } from "@looker/sdk/dist/rtl/browserSdk"
+import { DefaultSettings } from "@looker/sdk/dist/rtl/apiSettings"
 
 export const csrfToken = () => {
   const doc: HTMLMetaElement | null = document.head.querySelector(
