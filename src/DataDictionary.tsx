@@ -4,6 +4,24 @@ import PlainPageLoading from "./PlainPageLoading"
 import { sdk } from "./sdk"
 import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
 import { ExploreDictionary } from "./ExploreDictionary"
+import { Flex, FlexItem } from "looker-lens"
+import styled from "styled-components"
+
+const PageContainer = styled(Flex)`
+  top: 0;
+  left: 0;
+  height: 100vh;
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+`
+
+const PageSidebar = styled(FlexItem)``
+
+const PageMainPane = styled(FlexItem)`
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+`
 
 interface DataDictionaryState {
   loading: boolean
@@ -34,19 +52,23 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
       return <PlainPageLoading />
     } else {
       return (
-        <>
-          <ExploreList
-            models={this.state.models}
-            onExploreSelected={(model, explore) =>
-              this.setState({ currentExplore: { explore, model } })
-            }
-          />
-          {this.state.currentExplore ? (
-            <ExploreDictionary {...this.state.currentExplore} />
-          ) : (
-            <h3>Nothing Selected</h3>
-          )}
-        </>
+        <PageContainer justifyContent="stretch">
+          <PageSidebar flex="0 0 250px">
+            <ExploreList
+              models={this.state.models}
+              onExploreSelected={(model, explore) =>
+                this.setState({ currentExplore: { explore, model } })
+              }
+            />
+          </PageSidebar>
+          <PageMainPane p="large" flex="1 1 auto">
+            {this.state.currentExplore ? (
+              <ExploreDictionary {...this.state.currentExplore} />
+            ) : (
+              <h3>Nothing Selected</h3>
+            )}
+          </PageMainPane>
+        </PageContainer>
       )
     }
   }
