@@ -18,6 +18,18 @@ interface ExploreDictionaryProps {
   explore: ILookmlModelNavExplore
 }
 
+const exploreCache = {}
+const loadCachedExplore = async (modelName: string, exploreName: string) => {
+  const key = `${modelName}|${exploreName}`
+  if (exploreCache[key]) {
+    return exploreCache[key]
+  } else {
+    const val = await sdk.ok(sdk.lookml_model_explore(modelName, exploreName))
+    exploreCache[key] = val
+    return val
+  }
+}
+
 export class ExploreDictionary extends React.Component<
   ExploreDictionaryProps,
   ExploreDictionaryState
@@ -29,9 +41,11 @@ export class ExploreDictionary extends React.Component<
   }
 
   async loadExplore() {
+    this.setState({ loading: true })
     this.setState({
-      explore: await sdk.ok(
-        sdk.lookml_model_explore(this.props.model.name, this.props.explore.name)
+      explore: await loadCachedExplore(
+        this.props.model.name,
+        this.props.explore.name
       ),
       loading: false
     })
@@ -39,6 +53,15 @@ export class ExploreDictionary extends React.Component<
 
   componentDidMount() {
     this.loadExplore()
+  }
+
+  componentDidUpdate(prevProps: ExploreDictionaryProps) {
+    if (
+      this.props.model.name !== prevProps.model.name ||
+      this.props.explore.name !== prevProps.explore.name
+    ) {
+      this.loadExplore()
+    }
   }
 
   render() {
