@@ -5,7 +5,11 @@ import Extension from "./Extension"
 document.head.innerHTML += `
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <style>
-    body {
+    body,
+    button,
+    input,
+    textarea,
+    select {
       font-family: 'Open Sans', sans-serif;
     }
   </style>

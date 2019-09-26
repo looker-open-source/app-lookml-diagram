@@ -9,6 +9,7 @@ import {
   TableBody,
   TableDataCell
 } from "looker-lens"
+import { SQLSnippet } from "./SQLSnippet"
 
 interface ExploreDictionaryViewState {}
 
@@ -42,7 +43,9 @@ const GroupTable = ({
                 <TableDataCell>{field.label_short}</TableDataCell>
                 <TableDataCell>{field.type}</TableDataCell>
                 <TableDataCell>{field.description}</TableDataCell>
-                <TableDataCell>{field.sql}</TableDataCell>
+                <TableDataCell>
+                  <SQLSnippet src={field.sql} />
+                </TableDataCell>
               </TableRow>
             )
           })}
