@@ -4,7 +4,7 @@ import PlainPageLoading from "./PlainPageLoading"
 import { sdk } from "./sdk"
 import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
 import { ExploreDictionary } from "./ExploreDictionary"
-import { Flex, FlexItem } from "looker-lens"
+import { Flex, FlexItem, Icon, Heading } from "looker-lens"
 import styled from "styled-components"
 
 const PageContainer = styled(Flex)`
@@ -19,6 +19,8 @@ const PageContainer = styled(Flex)`
 const PageSidebar = styled(FlexItem)`
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+  border: 10px solid #f2f2f9;
 `
 
 const PageMainPane = styled(FlexItem)`
@@ -26,10 +28,32 @@ const PageMainPane = styled(FlexItem)`
   -webkit-overflow-scrolling: touch;
 `
 
+export type CurrentExplore = {
+  explore: ILookmlModelNavExplore
+  model: ILookmlModel
+}
+
 interface DataDictionaryState {
   loading: boolean
   models: ILookmlModel[]
-  currentExplore?: { explore: ILookmlModelNavExplore; model: ILookmlModel }
+  currentExplore?: CurrentExplore
+}
+
+const BigEmptyState = () => {
+  return (
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      mb="medium"
+      flexDirection="column"
+      height="100vh"
+    >
+      <Icon name="CircleExplore" size={128} color="palette.charcoal300" />
+      <Heading fontSize="xxlarge" color="palette.charcoal300">
+        Pick an explore to see what data is available.
+      </Heading>
+    </Flex>
+  )
 }
 
 export class DataDictionary extends React.Component<{}, DataDictionaryState> {
@@ -59,8 +83,9 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
           <PageSidebar flex="0 0 250px">
             <ExploreList
               models={this.state.models}
-              onExploreSelected={(model, explore) =>
-                this.setState({ currentExplore: { explore, model } })
+              currentExplore={this.state.currentExplore}
+              onExploreSelected={currentExplore =>
+                this.setState({ currentExplore })
               }
             />
           </PageSidebar>
@@ -68,7 +93,7 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
             {this.state.currentExplore ? (
               <ExploreDictionary {...this.state.currentExplore} />
             ) : (
-              <h3>Nothing Selected</h3>
+              <BigEmptyState />
             )}
           </PageMainPane>
         </PageContainer>
