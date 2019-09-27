@@ -5,7 +5,7 @@ import {
   setColumnHidden,
   Settings,
   areSettingsDefault,
-  resetSettingsToDEfault as resetSettingsToDefault
+  resetSettingsToDefault
 } from "./Settings"
 import {
   ToggleSwitch,

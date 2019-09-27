@@ -6,7 +6,7 @@ export interface Settings {
   setHiddenColumns: (hiddenColumns: string[]) => void
 }
 
-const DEFAULT_HIDDEN_COLUMNS = ["name", "tags"]
+const DEFAULT_HIDDEN_COLUMNS = ["name", "sql", "tags"]
 
 const SettingsContext = React.createContext<Settings>({
   hiddenColumns: DEFAULT_HIDDEN_COLUMNS,
@@ -33,14 +33,18 @@ export function isColumnHidden(col: string, settings: Settings) {
   return settings.hiddenColumns.indexOf(col) !== -1
 }
 
-export function areSettingsDefault(settings: Settings) {
+function areHiddenColumnsDefault(hiddenColumns: string[]) {
   return isEqual(
-    uniq(settings.hiddenColumns).sort(),
+    uniq(hiddenColumns).sort(),
     uniq(DEFAULT_HIDDEN_COLUMNS).sort()
   )
 }
 
-export function resetSettingsToDEfault(settings: Settings) {
+export function areSettingsDefault(settings: Settings) {
+  return areHiddenColumnsDefault(settings.hiddenColumns)
+}
+
+export function resetSettingsToDefault(settings: Settings) {
   return settings.setHiddenColumns(DEFAULT_HIDDEN_COLUMNS)
 }
 
@@ -59,7 +63,11 @@ export function setColumnHidden(
 export const SettingsContextProvider = (props: { children: JSX.Element }) => {
   const setHiddenColumns = (hiddenColumns: string[]) => {
     hiddenColumns = uniq(hiddenColumns)
-    localStorage.setItem(HIDDEN_COLUMNS, JSON.stringify(hiddenColumns))
+    if (areHiddenColumnsDefault(hiddenColumns)) {
+      localStorage.removeItem(HIDDEN_COLUMNS)
+    } else {
+      localStorage.setItem(HIDDEN_COLUMNS, JSON.stringify(hiddenColumns))
+    }
     setState({ ...state, hiddenColumns })
   }
 
