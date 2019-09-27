@@ -23,6 +23,18 @@ const GroupTableCell = styled(TableDataCell)`
   padding-right: 1rem;
 `
 
+const Enumerations = ({ field }: { field: ILookmlModelExploreField }) => {
+  return (
+    <ul>
+      {field.enumerations.map(e => (
+        <li title={e.value} key={e.value}>
+          {e.label}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 const GroupTable = ({
   group,
   fields,
@@ -50,7 +62,14 @@ const GroupTable = ({
         return (
           <TableRow key={field.name}>
             <GroupTableCell>{field.label_short}</GroupTableCell>
-            <GroupTableCell>{field.description}</GroupTableCell>
+            <GroupTableCell>
+              {field.description}
+              {field.enumerations && (
+                <p>
+                  <Enumerations field={field} />
+                </p>
+              )}
+            </GroupTableCell>
             <GroupTableCell>{humanize(field.type)}</GroupTableCell>
             {showDetails && (
               <GroupTableCell>
