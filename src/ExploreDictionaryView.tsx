@@ -3,7 +3,6 @@ import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
 import { groupBy, values, flatten, toPairs } from "lodash"
 import {
   Table,
-  TableHead,
   TableRow,
   TableHeaderCell,
   TableBody,
