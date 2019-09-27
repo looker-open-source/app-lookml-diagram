@@ -11,6 +11,7 @@ import {
   PageHeaderTitle,
   PageHeaderControls
 } from "./Page"
+import { DetailToggleSwitch } from "./DetailToggleSwitch"
 
 interface ExploreDictionaryViewState {}
 
@@ -34,6 +35,7 @@ export default class ExploreDictionaryView extends React.Component<
         <PageHeader>
           <PageHeaderTitle> {this.props.explore.label}</PageHeaderTitle>
           <PageHeaderControls>
+            <DetailToggleSwitch />
             <Link href={exploreURL(this.props.explore)} target="_blank">
               <Button
                 iconBefore="Explore"

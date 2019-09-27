@@ -20,6 +20,7 @@ export const PageHeaderTitle = styled(Heading)`
 `
 export const PageHeaderControls = styled.div`
   flex: 0 0 auto;
+  display: flex;
 `
 
 export const PageMain = styled(FlexItem)`

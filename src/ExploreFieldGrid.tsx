@@ -11,6 +11,7 @@ import {
 import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
 import humanize from "humanize-string"
+import { SettingsContextConsumer } from "./Settings"
 
 interface ExploreFieldGridState {}
 
@@ -24,10 +25,12 @@ const GroupTableCell = styled(TableDataCell)`
 
 const GroupTable = ({
   group,
-  fields
+  fields,
+  showDetails
 }: {
   group: string
   fields: ILookmlModelExploreField[]
+  showDetails: boolean
 }) => {
   return (
     <>
@@ -41,7 +44,7 @@ const GroupTable = ({
         <TableHeaderCell>Field</TableHeaderCell>
         <TableHeaderCell>Description</TableHeaderCell>
         <TableHeaderCell>Type</TableHeaderCell>
-        <TableHeaderCell>Implementation</TableHeaderCell>
+        {showDetails && <TableHeaderCell>Implementation</TableHeaderCell>}
       </TableRow>
       {fields.map(field => {
         return (
@@ -49,9 +52,11 @@ const GroupTable = ({
             <GroupTableCell>{field.label_short}</GroupTableCell>
             <GroupTableCell>{field.description}</GroupTableCell>
             <GroupTableCell>{humanize(field.type)}</GroupTableCell>
-            <GroupTableCell>
-              <SQLSnippet src={field.sql} />
-            </GroupTableCell>
+            {showDetails && (
+              <GroupTableCell>
+                <SQLSnippet src={field.sql} />
+              </GroupTableCell>
+            )}
           </TableRow>
         )
       })}
@@ -76,15 +81,20 @@ export default class ExploreFieldGrid extends React.Component<
     return (
       <Table>
         <TableBody>
-          {groups.map(([group, fields]) => {
-            return (
-              <GroupTable
-                fields={orderBy(fields, f => f.label_short)}
-                group={group}
-                key={group}
-              />
-            )
-          })}
+          <SettingsContextConsumer>
+            {settings =>
+              groups.map(([group, fields]) => {
+                return (
+                  <GroupTable
+                    fields={orderBy(fields, f => f.label_short)}
+                    group={group}
+                    showDetails={settings.showDetails}
+                    key={group}
+                  />
+                )
+              })
+            }
+          </SettingsContextConsumer>
         </TableBody>
       </Table>
     )
