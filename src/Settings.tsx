@@ -10,15 +10,18 @@ const SettingsContext = React.createContext<Settings>({
   setShowDetails: () => {}
 })
 
+const SHOW_DETAILS = "dataDictionary::showDetails"
+
 export const SettingsContextConsumer = SettingsContext.Consumer
 
 export const SettingsContextProvider = (props: { children: JSX.Element }) => {
   const setShowDetails = (showDetails: boolean) => {
+    localStorage.setItem(SHOW_DETAILS, JSON.stringify(showDetails))
     setState({ ...state, showDetails })
   }
 
   const initState = {
-    showDetails: false,
+    showDetails: localStorage.getItem(SHOW_DETAILS) == "true",
     setShowDetails
   }
 
