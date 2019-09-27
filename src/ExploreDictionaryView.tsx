@@ -47,10 +47,8 @@ export default class ExploreDictionaryView extends React.Component<
           </PageHeaderControls>
         </PageHeader>
         <PageMain>
-          {"loerm eawimfo jefiaewmfiewjf iwmiow jifcmwo aicmiw nio" && (
-            <Text variant="subdued">
-              {"loerm eawimfo jefiaewmfiewjf iwmiow jifcmwo aicmiw nio"}
-            </Text>
+          {this.props.explore.description && (
+            <Text variant="subdued">{this.props.explore.description}</Text>
           )}
           <ExploreFieldGrid {...this.props} />
         </PageMain>
