@@ -1,11 +1,39 @@
 import React, { useState } from "react"
-import { Menu, MenuItem, MenuGroup, Text, MenuSearch } from "looker-lens"
+import {
+  Menu,
+  MenuItem,
+  MenuGroup,
+  Text,
+  MenuSearch,
+  InputSearch,
+  palette,
+  Box
+} from "looker-lens"
 import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
 import { CurrentExplore } from "./DataDictionary"
 
 const notHidden = explore => !explore.hidden
 const matchesSearch = search => explore =>
   explore.label.toLowerCase().indexOf(search.toLowerCase()) !== -1
+
+const menuCustomizations = {
+  bg: "transparent",
+  color: palette.charcoal500,
+  iconColor: palette.purple300,
+  iconSize: 40,
+  marker: {
+    color: palette.purple300,
+    size: 10
+  },
+  hover: {
+    bg: palette.charcoal100,
+    color: palette.charcoal700
+  },
+  current: {
+    bg: palette.charcoal200,
+    color: palette.charcoal700
+  }
+}
 
 export default ({
   models,
@@ -19,14 +47,20 @@ export default ({
   const [search, setSearch] = useState("")
 
   return (
-    <Menu>
-      <MenuSearch
-        placeholder="Search Explores..."
-        value={search}
-        // onClear={() => setSearch("")}
-        onChange={e => setSearch(e.currentTarget.value)}
-      />
-
+    <Menu customizationProps={menuCustomizations}>
+      <Box m="medium" mb="none">
+        <Text fontWeight="light" fontSize="large">
+          Data Dictionary
+        </Text>
+      </Box>
+      <Box m="medium" mb="none">
+        <InputSearch
+          placeholder="Search Explores..."
+          value={search}
+          // onClear={() => setSearch("")}
+          onChange={e => setSearch(e.currentTarget.value)}
+        />
+      </Box>
       {models
         .filter(
           model =>

@@ -1,60 +1,21 @@
 import * as React from "react"
-import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
+import { ILookmlModelExplore } from "@looker/sdk"
 import { groupBy, values, flatten, toPairs } from "lodash"
+import { Link, Text, Button } from "looker-lens"
+import { exploreURL } from "./urls"
+import ExploreFieldGrid from "./ExploreFieldGrid"
 import {
-  Table,
-  TableRow,
-  TableHeaderCell,
-  TableBody,
-  TableDataCell
-} from "looker-lens"
-import { SQLSnippet } from "./SQLSnippet"
-import styled from "styled-components"
+  Page,
+  PageHeader,
+  PageMain,
+  PageHeaderTitle,
+  PageHeaderControls
+} from "./Page"
 
 interface ExploreDictionaryViewState {}
 
 interface ExploreDictionaryViewProps {
   explore: ILookmlModelExplore
-}
-
-const GroupTableCell = styled(TableDataCell)`
-  padding-right: 1rem;
-`
-
-const GroupTable = ({
-  group,
-  fields
-}: {
-  group: string
-  fields: ILookmlModelExploreField[]
-}) => {
-  return (
-    <>
-      <TableRow>
-        <TableDataCell colSpan={4}>
-          <h3>{group}</h3>
-        </TableDataCell>
-      </TableRow>
-      <TableRow>
-        <TableHeaderCell>Field</TableHeaderCell>
-        <TableHeaderCell>Description</TableHeaderCell>
-        <TableHeaderCell>Type</TableHeaderCell>
-        <TableHeaderCell>Implementation</TableHeaderCell>
-      </TableRow>
-      {fields.map(field => {
-        return (
-          <TableRow key={field.name}>
-            <GroupTableCell>{field.label_short}</GroupTableCell>
-            <GroupTableCell>{field.description}</GroupTableCell>
-            <GroupTableCell>{field.type}</GroupTableCell>
-            <GroupTableCell>
-              <SQLSnippet src={field.sql} />
-            </GroupTableCell>
-          </TableRow>
-        )
-      })}
-    </>
-  )
 }
 
 export default class ExploreDictionaryView extends React.Component<
@@ -69,16 +30,31 @@ export default class ExploreDictionaryView extends React.Component<
       )
     )
     return (
-      <>
-        <h2>{this.props.explore.label}</h2>
-        <Table>
-          <TableBody>
-            {groups.map(([group, fields]) => {
-              return <GroupTable fields={fields} group={group} key={group} />
-            })}
-          </TableBody>
-        </Table>
-      </>
+      <Page>
+        <PageHeader>
+          <PageHeaderTitle> {this.props.explore.label}</PageHeaderTitle>
+          <PageHeaderControls>
+            <Link href={exploreURL(this.props.explore)} target="_blank">
+              <Button
+                iconBefore="Explore"
+                ml="large"
+                variant="outline"
+                size="small"
+              >
+                Explore
+              </Button>
+            </Link>
+          </PageHeaderControls>
+        </PageHeader>
+        <PageMain>
+          {"loerm eawimfo jefiaewmfiewjf iwmiow jifcmwo aicmiw nio" && (
+            <Text variant="subdued">
+              {"loerm eawimfo jefiaewmfiewjf iwmiow jifcmwo aicmiw nio"}
+            </Text>
+          )}
+          <ExploreFieldGrid {...this.props} />
+        </PageMain>
+      </Page>
     )
   }
 }

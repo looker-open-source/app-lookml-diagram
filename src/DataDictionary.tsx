@@ -7,7 +7,7 @@ import { ExploreDictionary } from "./ExploreDictionary"
 import { Flex, FlexItem, Icon, Heading } from "looker-lens"
 import styled from "styled-components"
 
-const PageContainer = styled(Flex)`
+const NavContainer = styled(Flex)`
   top: 0;
   left: 0;
   height: 100vh;
@@ -16,14 +16,15 @@ const PageContainer = styled(Flex)`
   overflow: hidden;
 `
 
-const PageSidebar = styled(FlexItem)`
+const NavSidebar = styled(FlexItem)`
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: 6px;
-  border: 10px solid #f2f2f9;
+  background-color: #f5f5f5;
+  border: #e8e8e8 solid;
+  border-width: 0 1px 0 0;
 `
 
-const PageMainPane = styled(FlexItem)`
+const NavMainPage = styled(FlexItem)`
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 `
@@ -79,8 +80,8 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
       return <PlainPageLoading />
     } else {
       return (
-        <PageContainer justifyContent="stretch">
-          <PageSidebar flex="0 0 250px">
+        <NavContainer justifyContent="stretch">
+          <NavSidebar flex="0 0 300px">
             <ExploreList
               models={this.state.models}
               currentExplore={this.state.currentExplore}
@@ -88,15 +89,15 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
                 this.setState({ currentExplore })
               }
             />
-          </PageSidebar>
-          <PageMainPane p="large" flex="1 1 auto">
+          </NavSidebar>
+          <NavMainPage flex="1 1 auto">
             {this.state.currentExplore ? (
               <ExploreDictionary {...this.state.currentExplore} />
             ) : (
               <BigEmptyState />
             )}
-          </PageMainPane>
-        </PageContainer>
+          </NavMainPage>
+        </NavContainer>
       )
     }
   }
