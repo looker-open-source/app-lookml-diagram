@@ -38,16 +38,16 @@ const GroupTable = ({
       </TableRow>
       <TableRow>
         <TableHeaderCell>Field</TableHeaderCell>
-        <TableHeaderCell>Type</TableHeaderCell>
         <TableHeaderCell>Description</TableHeaderCell>
+        <TableHeaderCell>Type</TableHeaderCell>
         <TableHeaderCell>Implementation</TableHeaderCell>
       </TableRow>
       {fields.map(field => {
         return (
           <TableRow key={field.name}>
             <GroupTableCell>{field.label_short}</GroupTableCell>
-            <GroupTableCell>{field.type}</GroupTableCell>
             <GroupTableCell>{field.description}</GroupTableCell>
+            <GroupTableCell>{field.type}</GroupTableCell>
             <GroupTableCell>
               <SQLSnippet src={field.sql} />
             </GroupTableCell>
