@@ -6,7 +6,8 @@ import {
   TableRow,
   TableHeaderCell,
   TableBody,
-  TableDataCell
+  TableDataCell,
+  Box
 } from "looker-lens"
 import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
@@ -35,15 +36,24 @@ const Enumerations = ({ field }: { field: ILookmlModelExploreField }) => {
   )
 }
 
+const FieldName = styled.code`
+  word-break: break-word;
+`
+
 const GroupTable = ({
   group,
   fields,
-  showDetails
+  hiddenColumns
 }: {
   group: string
   fields: ILookmlModelExploreField[]
-  showDetails: boolean
+  hiddenColumns: string[]
 }) => {
+  const labelHidden = hiddenColumns.indexOf("label") !== -1
+  const nameHidden = hiddenColumns.indexOf("name") !== -1
+  const descriptionHidden = hiddenColumns.indexOf("description") !== -1
+  const sqlHidden = hiddenColumns.indexOf("sql") !== -1
+  const typeHidden = hiddenColumns.indexOf("type") !== -1
   return (
     <>
       {/* Don't want styles on this. */}
@@ -53,25 +63,37 @@ const GroupTable = ({
         </td>
       </tr>
       <TableRow>
-        <TableHeaderCell>Field</TableHeaderCell>
-        <TableHeaderCell>Description</TableHeaderCell>
-        <TableHeaderCell>Type</TableHeaderCell>
-        {showDetails && <TableHeaderCell>Implementation</TableHeaderCell>}
+        {!nameHidden && <TableHeaderCell>LookML Name</TableHeaderCell>}
+        {!labelHidden && <TableHeaderCell>Field Label</TableHeaderCell>}
+        {!descriptionHidden && <TableHeaderCell>Description</TableHeaderCell>}
+        {!typeHidden && <TableHeaderCell>Type</TableHeaderCell>}
+        {!sqlHidden && <TableHeaderCell>SQL</TableHeaderCell>}
       </TableRow>
       {fields.map(field => {
         return (
           <TableRow key={field.name}>
-            <GroupTableCell>{field.label_short}</GroupTableCell>
-            <GroupTableCell>
-              {field.description}
-              {field.enumerations && (
-                <p>
-                  <Enumerations field={field} />
-                </p>
-              )}
-            </GroupTableCell>
-            <GroupTableCell>{humanize(field.type)}</GroupTableCell>
-            {showDetails && (
+            {!nameHidden && (
+              <GroupTableCell>
+                <FieldName>{field.name}</FieldName>
+              </GroupTableCell>
+            )}
+            {!labelHidden && (
+              <GroupTableCell>{field.label_short}</GroupTableCell>
+            )}
+            {!descriptionHidden && (
+              <GroupTableCell>
+                {field.description}
+                {field.enumerations && (
+                  <Box>
+                    <Enumerations field={field} />
+                  </Box>
+                )}
+              </GroupTableCell>
+            )}
+            {!typeHidden && (
+              <GroupTableCell>{humanize(field.type)}</GroupTableCell>
+            )}
+            {!sqlHidden && (
               <GroupTableCell>
                 <SQLSnippet src={field.sql} />
               </GroupTableCell>
@@ -107,7 +129,7 @@ export default class ExploreFieldGrid extends React.Component<
                   <GroupTable
                     fields={orderBy(fields, f => f.label_short)}
                     group={group}
-                    showDetails={settings.showDetails}
+                    hiddenColumns={settings.hiddenColumns}
                     key={group}
                   />
                 )
