@@ -9,6 +9,7 @@ SyntaxHighlighter.registerLanguage("sql", sql)
 
 const CodeTag = styled.code`
   white-space: pre-wrap !important;
+  word-break: break-word !important;
 `
 
 export const SQLSnippet = ({ src }: { src: string }) => {
