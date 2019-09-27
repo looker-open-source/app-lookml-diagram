@@ -11,7 +11,7 @@ export const Page = styled(Flex)`
 export const PageHeader = styled(FlexItem)`
   background: white;
   border-bottom: 1px solid #e8e8e8;
-  padding: 20px;
+  padding: 16px;
   display: flex;
 `
 
@@ -23,7 +23,22 @@ export const PageHeaderControls = styled.div`
   display: flex;
 `
 
-export const PageMain = styled(FlexItem)`
+export const PageMasterDetail = styled(Flex)`
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 100vh;
+`
+
+export const PageMaster = styled(FlexItem)`
+  flex: 1 1 auto;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px;
+`
+
+export const PageDetail = styled(FlexItem)`
+  flex: 0 0 300px;
+  border-left: 1px solid #e8e8e8;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   padding: 20px;

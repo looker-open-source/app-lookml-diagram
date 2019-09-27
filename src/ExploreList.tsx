@@ -49,7 +49,7 @@ export default ({
   return (
     <Menu customizationProps={menuCustomizations}>
       <Box m="medium" mb="none">
-        <Text fontWeight="light" fontSize="large">
+        <Text fontWeight="extraBold" fontSize="large">
           Data Dictionary
         </Text>
       </Box>
@@ -85,9 +85,6 @@ export default ({
                       onClick={() => onExploreSelected({ model, explore })}
                     >
                       {explore.label}
-                      <Text fontSize="xxsmall" color="muted">
-                        {explore.description}
-                      </Text>
                     </MenuItem>
                   )
                 })}

@@ -18,6 +18,7 @@ interface ExploreFieldGridState {}
 
 interface ExploreFieldGridProps {
   explore: ILookmlModelExplore
+  setDetailField: (field: ILookmlModelExploreField) => void
 }
 
 const GroupTableCell = styled(TableDataCell)`
@@ -36,18 +37,20 @@ const Enumerations = ({ field }: { field: ILookmlModelExploreField }) => {
   )
 }
 
-const FieldName = styled.code`
+export const FieldName = styled.code`
   word-break: break-word;
 `
 
 const GroupTable = ({
   group,
   fields,
-  hiddenColumns
+  hiddenColumns,
+  setDetailField
 }: {
   group: string
   fields: ILookmlModelExploreField[]
   hiddenColumns: string[]
+  setDetailField: (field: ILookmlModelExploreField) => void
 }) => {
   const labelHidden = hiddenColumns.indexOf("label") !== -1
   const nameHidden = hiddenColumns.indexOf("name") !== -1
@@ -71,7 +74,7 @@ const GroupTable = ({
       </TableRow>
       {fields.map(field => {
         return (
-          <TableRow key={field.name}>
+          <TableRow key={field.name} onClick={() => setDetailField(field)}>
             {!nameHidden && (
               <GroupTableCell>
                 <FieldName>{field.name}</FieldName>
@@ -129,6 +132,7 @@ export default class ExploreFieldGrid extends React.Component<
                   <GroupTable
                     fields={orderBy(fields, f => f.label_short)}
                     group={group}
+                    setDetailField={this.props.setDetailField}
                     hiddenColumns={settings.hiddenColumns}
                     key={group}
                   />
