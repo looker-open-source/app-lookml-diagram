@@ -69,6 +69,7 @@ export const ViewCustomizer = () => {
               />
               <ColumnHideToggle label="Type" id="type" settings={settings} />
               <ColumnHideToggle label="SQL" id="sql" settings={settings} />
+              <ColumnHideToggle label="Tags" id="tags" settings={settings} />
               {!areSettingsDefault(settings) && (
                 <Button
                   iconBefore="Refresh"

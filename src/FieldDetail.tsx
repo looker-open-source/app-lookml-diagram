@@ -9,10 +9,20 @@ const DetailPane = styled.div``
 const MetadataList = styled.div``
 const Tag = styled.span`
   background: #dee1e5;
-  padding: 0 4px;
-  border-radius: 4px;
-  margin-right: 8px;
+  padding: 0 0.75em;
+  border-radius: 100px;
+  margin-right: 0.5em;
 `
+
+export const Tags = ({ tags }: { tags: string[] }) => {
+  return (
+    <>
+      {tags.map(t => (
+        <Tag key={t}>{t}</Tag>
+      ))}
+    </>
+  )
+}
 
 const MetadataItem = ({
   label,
@@ -50,9 +60,7 @@ export const FieldDetail = ({ field }: { field: ILookmlModelExploreField }) => {
         )}
         {field.tags && field.tags.length > 0 ? (
           <MetadataItem label="Tags">
-            {field.tags.map(t => (
-              <Tag key={t}>{t}</Tag>
-            ))}
+            <Tags tags={field.tags} />
           </MetadataItem>
         ) : (
           undefined

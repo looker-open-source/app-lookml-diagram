@@ -1,6 +1,15 @@
 import * as React from "react"
 import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
-import { Link, Text, Button, Heading, Icon, Flex, FlexItem } from "looker-lens"
+import {
+  Link,
+  Text,
+  Button,
+  Heading,
+  Icon,
+  Flex,
+  FlexItem,
+  Box
+} from "looker-lens"
 import { exploreURL } from "./urls"
 import ExploreFieldGrid from "./ExploreFieldGrid"
 import {
@@ -13,7 +22,7 @@ import {
   PageDetail
 } from "./Page"
 import { ViewCustomizer } from "./ViewCustomizer"
-import { FieldDetail } from "./FieldDetail"
+import { FieldDetail, Tags } from "./FieldDetail"
 
 interface ExploreDictionaryViewState {
   detailField?: ILookmlModelExploreField
@@ -60,6 +69,11 @@ export default class ExploreDictionaryView extends React.Component<
           <PageMaster>
             {this.props.explore.description && (
               <Text variant="subdued">{this.props.explore.description}</Text>
+            )}
+            {this.props.explore.tags && (
+              <Box mt="medium">
+                <Tags tags={this.props.explore.tags} />
+              </Box>
             )}
             <ExploreFieldGrid
               {...this.props}

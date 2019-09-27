@@ -13,6 +13,7 @@ import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
 import humanize from "humanize-string"
 import { SettingsContextConsumer } from "./Settings"
+import { Tags } from "./FieldDetail"
 
 interface ExploreFieldGridState {}
 
@@ -41,6 +42,12 @@ export const FieldName = styled.code`
   word-break: break-word;
 `
 
+const HoverableTableRow = styled(TableRow)`
+  &:hover {
+    background: #f5f5f5;
+  }
+`
+
 const GroupTable = ({
   group,
   fields,
@@ -57,6 +64,7 @@ const GroupTable = ({
   const descriptionHidden = hiddenColumns.indexOf("description") !== -1
   const sqlHidden = hiddenColumns.indexOf("sql") !== -1
   const typeHidden = hiddenColumns.indexOf("type") !== -1
+  const tagsHidden = hiddenColumns.indexOf("tags") !== -1
   return (
     <>
       {/* Don't want styles on this. */}
@@ -71,10 +79,14 @@ const GroupTable = ({
         {!descriptionHidden && <TableHeaderCell>Description</TableHeaderCell>}
         {!typeHidden && <TableHeaderCell>Type</TableHeaderCell>}
         {!sqlHidden && <TableHeaderCell>SQL</TableHeaderCell>}
+        {!tagsHidden && <TableHeaderCell>Tags</TableHeaderCell>}
       </TableRow>
       {fields.map(field => {
         return (
-          <TableRow key={field.name} onClick={() => setDetailField(field)}>
+          <HoverableTableRow
+            key={field.name}
+            onClick={() => setDetailField(field)}
+          >
             {!nameHidden && (
               <GroupTableCell>
                 <FieldName>{field.name}</FieldName>
@@ -101,7 +113,12 @@ const GroupTable = ({
                 <SQLSnippet src={field.sql} />
               </GroupTableCell>
             )}
-          </TableRow>
+            {!tagsHidden && (
+              <GroupTableCell>
+                {field.tags && <Tags tags={field.tags} />}
+              </GroupTableCell>
+            )}
+          </HoverableTableRow>
         )
       })}
     </>

@@ -6,7 +6,7 @@ export interface Settings {
   setHiddenColumns: (hiddenColumns: string[]) => void
 }
 
-const DEFAULT_HIDDEN_COLUMNS = ["name"]
+const DEFAULT_HIDDEN_COLUMNS = ["name", "tags"]
 
 const SettingsContext = React.createContext<Settings>({
   hiddenColumns: DEFAULT_HIDDEN_COLUMNS,
