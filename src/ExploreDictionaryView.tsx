@@ -10,12 +10,17 @@ import {
   TableDataCell
 } from "looker-lens"
 import { SQLSnippet } from "./SQLSnippet"
+import styled from "styled-components"
 
 interface ExploreDictionaryViewState {}
 
 interface ExploreDictionaryViewProps {
   explore: ILookmlModelExplore
 }
+
+const GroupTableCell = styled(TableDataCell)`
+  padding-right: 1rem;
+`
 
 const GroupTable = ({
   group,
@@ -26,31 +31,29 @@ const GroupTable = ({
 }) => {
   return (
     <>
-      <h2>{group}</h2>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell>Field</TableHeaderCell>
-            <TableHeaderCell>Type</TableHeaderCell>
-            <TableHeaderCell>Description</TableHeaderCell>
-            <TableHeaderCell>Implementation</TableHeaderCell>
+      <TableRow>
+        <TableDataCell colSpan={4}>
+          <h3>{group}</h3>
+        </TableDataCell>
+      </TableRow>
+      <TableRow>
+        <TableHeaderCell>Field</TableHeaderCell>
+        <TableHeaderCell>Type</TableHeaderCell>
+        <TableHeaderCell>Description</TableHeaderCell>
+        <TableHeaderCell>Implementation</TableHeaderCell>
+      </TableRow>
+      {fields.map(field => {
+        return (
+          <TableRow key={field.name}>
+            <GroupTableCell>{field.label_short}</GroupTableCell>
+            <GroupTableCell>{field.type}</GroupTableCell>
+            <GroupTableCell>{field.description}</GroupTableCell>
+            <GroupTableCell>
+              <SQLSnippet src={field.sql} />
+            </GroupTableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {fields.map(field => {
-            return (
-              <TableRow key={field.name}>
-                <TableDataCell>{field.label_short}</TableDataCell>
-                <TableDataCell>{field.type}</TableDataCell>
-                <TableDataCell>{field.description}</TableDataCell>
-                <TableDataCell>
-                  <SQLSnippet src={field.sql} />
-                </TableDataCell>
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
+        )
+      })}
     </>
   )
 }
@@ -61,14 +64,21 @@ export default class ExploreDictionaryView extends React.Component<
 > {
   render() {
     const groups = toPairs(
-      groupBy(flatten(values(this.props.explore.fields)), f => f.view_label)
+      groupBy(
+        flatten(values(this.props.explore.fields)).filter(f => !f.hidden),
+        f => f.view_label
+      )
     )
     return (
       <>
-        <h1>{this.props.explore.label}</h1>
-        {groups.map(([group, fields]) => {
-          return <GroupTable fields={fields} group={group} />
-        })}
+        <h2>{this.props.explore.label}</h2>
+        <Table>
+          <TableBody>
+            {groups.map(([group, fields]) => {
+              return <GroupTable fields={fields} group={group} key={group} />
+            })}
+          </TableBody>
+        </Table>
       </>
     )
   }
