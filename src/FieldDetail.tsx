@@ -54,9 +54,7 @@ export const FieldDetail = ({ field }: { field: ILookmlModelExploreField }) => {
         </MetadataItem>
         <MetadataItem label="Category">{humanize(field.category)}</MetadataItem>
         {field.description && (
-          <MetadataItem label="Description">
-            {humanize(field.description)}
-          </MetadataItem>
+          <MetadataItem label="Description">{field.description}</MetadataItem>
         )}
         {field.tags && field.tags.length > 0 ? (
           <MetadataItem label="Tags">
