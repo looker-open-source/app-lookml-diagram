@@ -18,7 +18,7 @@ const matchesSearch = search => explore =>
   explore.label.toLowerCase().indexOf(search.toLowerCase()) !== -1
 
 const menuCustomizations = {
-  bg: "transparent",
+  bg: "#f5f5f5",
   color: palette.charcoal500,
   iconColor: palette.purple300,
   iconSize: 40,
