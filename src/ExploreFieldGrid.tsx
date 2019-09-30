@@ -7,7 +7,9 @@ import {
   TableHeaderCell,
   TableBody,
   TableDataCell,
-  Box
+  Box,
+  ListItem,
+  List
 } from "looker-lens"
 import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
@@ -28,13 +30,13 @@ const GroupTableCell = styled(TableDataCell)`
 
 const Enumerations = ({ field }: { field: ILookmlModelExploreField }) => {
   return (
-    <ul>
+    <List type="bullet">
       {field.enumerations.map(e => (
-        <li title={e.value} key={e.value}>
+        <ListItem title={e.value} key={e.value}>
           {e.label}
-        </li>
+        </ListItem>
       ))}
-    </ul>
+    </List>
   )
 }
 
