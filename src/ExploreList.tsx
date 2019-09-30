@@ -5,12 +5,13 @@ import {
   MenuGroup,
   Text,
   MenuSearch,
-  InputSearch,
+  InputText,
   palette,
   Box
 } from "looker-lens"
 import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
 import { CurrentExplore } from "./DataDictionary"
+import styled from "styled-components"
 
 const notHidden = explore => !explore.hidden
 const matchesSearch = search => explore =>
@@ -35,6 +36,10 @@ const menuCustomizations = {
   }
 }
 
+const GlobalSearch = styled(InputText)`
+  width: 100%;
+`
+
 export default ({
   models,
   currentExplore,
@@ -54,8 +59,9 @@ export default ({
         </Text>
       </Box>
       <Box m="medium" mb="none">
-        <InputSearch
+        <GlobalSearch
           placeholder="Search Explores..."
+          display="block"
           value={search}
           // onClear={() => setSearch("")}
           onChange={e => setSearch(e.currentTarget.value)}
