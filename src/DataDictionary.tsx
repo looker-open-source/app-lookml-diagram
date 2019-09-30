@@ -27,6 +27,7 @@ const NavSidebar = styled(FlexItem)`
 const NavMainPage = styled(FlexItem)`
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  position: relative;
 `
 
 export type CurrentExplore = {

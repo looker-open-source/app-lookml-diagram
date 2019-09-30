@@ -9,7 +9,8 @@ import {
   TableDataCell,
   Box,
   ListItem,
-  List
+  List,
+  Heading
 } from "looker-lens"
 import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
@@ -54,12 +55,14 @@ const GroupTable = ({
   group,
   fields,
   hiddenColumns,
-  setDetailField
+  setDetailField,
+  index
 }: {
   group: string
   fields: ILookmlModelExploreField[]
   hiddenColumns: string[]
   setDetailField: (field: ILookmlModelExploreField) => void
+  index: number
 }) => {
   const labelHidden = hiddenColumns.indexOf("label") !== -1
   const nameHidden = hiddenColumns.indexOf("name") !== -1
@@ -72,7 +75,9 @@ const GroupTable = ({
       {/* Don't want styles on this. */}
       <tr>
         <td colSpan={4}>
-          <h3>{group}</h3>
+          <Heading mb="small" mt={index == 0 ? "none" : "small"}>
+            {group}
+          </Heading>
         </td>
       </tr>
       <TableRow>
@@ -146,9 +151,10 @@ export default class ExploreFieldGrid extends React.Component<
         <TableBody>
           <SettingsContextConsumer>
             {settings =>
-              groups.map(([group, fields]) => {
+              groups.map(([group, fields], index) => {
                 return (
                   <GroupTable
+                    index={index}
                     fields={orderBy(fields, f => f.label_short)}
                     group={group}
                     setDetailField={this.props.setDetailField}

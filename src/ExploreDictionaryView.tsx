@@ -8,7 +8,8 @@ import {
   Icon,
   Flex,
   FlexItem,
-  Box
+  Box,
+  Divider
 } from "looker-lens"
 import { exploreURL } from "./urls"
 import ExploreFieldGrid from "./ExploreFieldGrid"
@@ -67,14 +68,7 @@ export default class ExploreDictionaryView extends React.Component<
         </PageHeader>
         <PageMasterDetail>
           <PageMaster>
-            {this.props.explore.description && (
-              <Text variant="subdued">{this.props.explore.description}</Text>
-            )}
-            {this.props.explore.tags && (
-              <Box mt="medium">
-                <Tags tags={this.props.explore.tags} />
-              </Box>
-            )}
+            <ExploreHeader explore={this.props.explore} />
             <ExploreFieldGrid
               {...this.props}
               setDetailField={this.setDetailField}
@@ -104,4 +98,23 @@ export default class ExploreDictionaryView extends React.Component<
       </Page>
     )
   }
+}
+
+const ExploreHeader = ({ explore }: { explore: ILookmlModelExplore }) => {
+  const hasDescription = !!explore.description
+  const hasTags = !!(explore.tags && explore.tags.length > 0)
+  if (!hasDescription && !hasTags) {
+    return <></>
+  }
+  return (
+    <>
+      {hasDescription && <Text variant="subdued">{explore.description}</Text>}
+      {hasTags && (
+        <Box mt="medium">
+          <Tags tags={explore.tags} />
+        </Box>
+      )}
+      <Divider my="medium" appearance="light" />
+    </>
+  )
 }
