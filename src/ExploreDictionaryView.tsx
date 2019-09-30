@@ -108,9 +108,13 @@ const ExploreHeader = ({ explore }: { explore: ILookmlModelExplore }) => {
   }
   return (
     <>
-      {hasDescription && <Text variant="subdued">{explore.description}</Text>}
+      {hasDescription && (
+        <Text mb="medium" variant="subdued">
+          {explore.description}
+        </Text>
+      )}
       {hasTags && (
-        <Box mt="medium">
+        <Box mb="medium">
           <Tags tags={explore.tags} />
         </Box>
       )}
