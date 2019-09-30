@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ILookmlModelExploreField } from "@looker/sdk"
-import { Button, Link, Box, Text, styled } from "looker-lens"
-import { FieldName } from "./ExploreFieldGrid"
+import { Button, Link, Box, Text, styled, Flex, FlexItem } from "looker-lens"
+import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
 
@@ -26,35 +26,62 @@ export const Tags = ({ tags }: { tags: string[] }) => {
 
 const MetadataItem = ({
   label,
-  children
+  children,
+  compact
 }: {
   label: string
   children: React.ReactNode
+  compact?: boolean
 }) => {
-  return (
-    <Box my="large">
-      <Box>
-        <Text fontSize="small" fontWeight="bold">
-          {label}
-        </Text>
+  if (compact) {
+    return (
+      <Flex my="large">
+        <FlexItem>
+          <Text fontSize="small" fontWeight="bold" flex="0 0 auto">
+            {label}
+          </Text>
+        </FlexItem>
+        <FlexItem textAlign="right" flex="1 1 auto">
+          <Text fontSize="small">{children}</Text>
+        </FlexItem>
+      </Flex>
+    )
+  } else {
+    return (
+      <Box my="large">
+        <Box>
+          <Text fontSize="small" fontWeight="bold">
+            {label}
+          </Text>
+        </Box>
+        <Box>
+          <Text fontSize="small">{children}</Text>
+        </Box>
       </Box>
-      <Box>
-        <Text fontSize="small">{children}</Text>
-      </Box>
-    </Box>
-  )
+    )
+  }
 }
 
 export const FieldDetail = ({ field }: { field: ILookmlModelExploreField }) => {
   return (
     <DetailPane>
       <MetadataList>
+        <MetadataItem label="Category" compact>
+          {humanize(field.category)}
+        </MetadataItem>
+        <MetadataItem label="Type" compact>
+          {humanize(field.type)}
+        </MetadataItem>
         <MetadataItem label="LookML Name">
           <FieldName>{field.name}</FieldName>
         </MetadataItem>
-        <MetadataItem label="Category">{humanize(field.category)}</MetadataItem>
         {field.description && (
           <MetadataItem label="Description">{field.description}</MetadataItem>
+        )}
+        {field.enumerations && (
+          <MetadataItem label="Possible Values">
+            <Enumerations field={field} />
+          </MetadataItem>
         )}
         {field.tags && field.tags.length > 0 ? (
           <MetadataItem label="Tags">

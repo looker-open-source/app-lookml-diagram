@@ -29,7 +29,11 @@ const GroupTableCell = styled(TableDataCell)`
   padding-right: 1rem;
 `
 
-const Enumerations = ({ field }: { field: ILookmlModelExploreField }) => {
+export const Enumerations = ({
+  field
+}: {
+  field: ILookmlModelExploreField
+}) => {
   return (
     <List type="bullet">
       {field.enumerations.map(e => (
