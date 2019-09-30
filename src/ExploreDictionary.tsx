@@ -68,7 +68,12 @@ export class ExploreDictionary extends React.Component<
     if (this.state.loading) {
       return <PlainPageLoading />
     } else {
-      return <ExploreDictionaryView explore={this.state.explore} />
+      return (
+        <ExploreDictionaryView
+          explore={this.state.explore}
+          model={this.props.model}
+        />
+      )
     }
   }
 }

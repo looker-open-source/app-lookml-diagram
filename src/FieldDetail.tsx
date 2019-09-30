@@ -1,9 +1,11 @@
 import * as React from "react"
-import { ILookmlModelExploreField } from "@looker/sdk"
+import { ILookmlModelExploreField, ILookmlModel } from "@looker/sdk"
 import { Button, Link, Box, Text, styled, Flex, FlexItem } from "looker-lens"
 import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
+import { QueryChart } from "./QueryChart"
+import { canGetTopValues } from "./queries"
 
 const DetailPane = styled.div``
 const MetadataList = styled.div``
@@ -24,7 +26,7 @@ export const Tags = ({ tags }: { tags: string[] }) => {
   )
 }
 
-const MetadataItem = ({
+export const MetadataItem = ({
   label,
   children,
   compact
@@ -62,7 +64,15 @@ const MetadataItem = ({
   }
 }
 
-export const FieldDetail = ({ field }: { field: ILookmlModelExploreField }) => {
+export const FieldDetail = ({
+  field,
+  explore,
+  model
+}: {
+  field: ILookmlModelExploreField
+  explore: ILookmlModelExploreField
+  model: ILookmlModel
+}) => {
   return (
     <DetailPane>
       <MetadataList>
@@ -93,6 +103,20 @@ export const FieldDetail = ({ field }: { field: ILookmlModelExploreField }) => {
         <MetadataItem label="SQL">
           <SQLSnippet src={field.sql} />
         </MetadataItem>
+        {canGetTopValues({
+          model,
+          explore,
+          field
+        }) && (
+          <QueryChart
+            type={{
+              type: "Values",
+              model,
+              explore,
+              field
+            }}
+          />
+        )}
       </MetadataList>
       <Box>
         {field.lookml_link && (

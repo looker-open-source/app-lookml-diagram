@@ -1,5 +1,9 @@
 import * as React from "react"
-import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
+import {
+  ILookmlModelExplore,
+  ILookmlModelExploreField,
+  ILookmlModel
+} from "@looker/sdk"
 import {
   Link,
   Text,
@@ -30,6 +34,7 @@ interface ExploreDictionaryViewState {
 }
 
 interface ExploreDictionaryViewProps {
+  model: ILookmlModel
   explore: ILookmlModelExplore
 }
 
@@ -91,7 +96,11 @@ export default class ExploreDictionaryView extends React.Component<
                   </Button>
                 </FlexItem>
               </Flex>
-              <FieldDetail field={this.state.detailField} />
+              <FieldDetail
+                field={this.state.detailField}
+                model={this.props.model}
+                explore={this.props.explore}
+              />
             </PageDetail>
           )}
         </PageMasterDetail>
