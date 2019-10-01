@@ -10,5 +10,5 @@ export function exploreFieldURL(
   explore: ILookmlModelExplore,
   field: ILookmlModelExploreField
 ) {
-  ;`${exploreURL(explore)}?fields=${encodeURIComponent(field.name)}`
+  return `${exploreURL(explore)}?fields=${encodeURIComponent(field.name)}`
 }

@@ -1,11 +1,25 @@
 import * as React from "react"
-import { ILookmlModelExploreField, ILookmlModel } from "@looker/sdk"
-import { Button, Link, Box, Text, styled, Flex, FlexItem } from "looker-lens"
+import {
+  ILookmlModelExploreField,
+  ILookmlModel,
+  ILookmlModelExplore
+} from "@looker/sdk"
+import {
+  Button,
+  Link,
+  Box,
+  Text,
+  styled,
+  Flex,
+  FlexItem,
+  Divider
+} from "looker-lens"
 import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
 import { QueryChart } from "./QueryChart"
 import { canGetTopValues } from "./queries"
+import { exploreFieldURL } from "./urls"
 
 const DetailPane = styled.div``
 const MetadataList = styled.div``
@@ -70,7 +84,7 @@ export const FieldDetail = ({
   model
 }: {
   field: ILookmlModelExploreField
-  explore: ILookmlModelExploreField
+  explore: ILookmlModelExplore
   model: ILookmlModel
 }) => {
   return (
@@ -118,15 +132,29 @@ export const FieldDetail = ({
           />
         )}
       </MetadataList>
-      <Box>
-        {field.lookml_link && (
-          <Link href={field.lookml_link} target="_blank">
-            <Button iconBefore="LogoRings" variant="outline" size="xsmall">
-              Go to LookML
+      <Divider my="medium" appearance="light" />
+      <Flex>
+        <FlexItem flex="0 0 auto">
+          {field.lookml_link && (
+            <Link href={field.lookml_link} target="_blank">
+              <Button
+                iconBefore="LogoRings"
+                variant="transparent"
+                size="xsmall"
+              >
+                Go to LookML
+              </Button>
+            </Link>
+          )}
+        </FlexItem>
+        <FlexItem flex="1 1 auto" textAlign="right">
+          <Link href={exploreFieldURL(explore, field)} target="_blank">
+            <Button iconBefore="Explore" variant="transparent" size="xsmall">
+              Explore with Field
             </Button>
           </Link>
-        )}
-      </Box>
+        </FlexItem>
+      </Flex>
     </DetailPane>
   )
 }
