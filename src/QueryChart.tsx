@@ -107,6 +107,7 @@ export class QueryChart extends React.Component<
                   width={259}
                   height={40}
                   data={this.state.response.histogram.data}
+                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
                 >
                   <Bar dataKey="value" fill="#0087e1" />
                 </BarChart>

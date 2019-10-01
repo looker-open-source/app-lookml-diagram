@@ -130,20 +130,6 @@ export const FieldDetail = ({
         <MetadataItem label="SQL">
           <SQLSnippet src={field.sql} />
         </MetadataItem>
-        {canGetTopValues({
-          model,
-          explore,
-          field
-        }) && (
-          <QueryChart
-            type={{
-              type: "Values",
-              model,
-              explore,
-              field
-            }}
-          />
-        )}
         {canGetDistribution({
           model,
           explore,
@@ -152,6 +138,20 @@ export const FieldDetail = ({
           <QueryChart
             type={{
               type: "Distribution",
+              model,
+              explore,
+              field
+            }}
+          />
+        )}
+        {canGetTopValues({
+          model,
+          explore,
+          field
+        }) && (
+          <QueryChart
+            type={{
+              type: "Values",
               model,
               explore,
               field
