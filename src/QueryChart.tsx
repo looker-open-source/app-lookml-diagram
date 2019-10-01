@@ -1,5 +1,4 @@
 import * as React from "react"
-import PlainPageLoading from "./PlainPageLoading"
 import {
   Button,
   Spinner,
@@ -11,17 +10,17 @@ import {
   Link
 } from "looker-lens/dist"
 import {
-  getTopValues,
   QueryChartType,
   runChartQuery,
-  ChartQueryResult
+  getCached,
+  SimpleResult
 } from "./queries"
 import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
 
 interface QueryChartState {
   loading: boolean
-  response?: ChartQueryResult
+  response?: SimpleResult
 }
 
 interface QueryChartProps {
@@ -38,7 +37,10 @@ export class QueryChart extends React.Component<
 > {
   constructor(props: QueryChartProps) {
     super(props)
-    this.state = { loading: false }
+    this.state = {
+      loading: false,
+      response: getCached(JSON.stringify(props.type))
+    }
     this.runQuery = this.runQuery.bind(this)
   }
 
@@ -49,7 +51,12 @@ export class QueryChart extends React.Component<
       loading: false,
       response
     })
-    console.log(response)
+  }
+
+  componentDidUpdate(prevProps: QueryChartProps) {
+    if (JSON.stringify(this.props.type) !== JSON.stringify(prevProps.type)) {
+      this.setState({ response: getCached(JSON.stringify(this.props.type)) })
+    }
   }
 
   render() {
@@ -65,12 +72,12 @@ export class QueryChart extends React.Component<
           <Box my="medium">
             <Table>
               <TableBody>
-                {this.state.response.queryResponse.data.map((row, i) => (
+                {this.state.response.data.map((row, i) => (
                   <TableRow key={i}>
                     {row.map((cell, j) => (
                       <TableDataCell
                         key={j}
-                        textAlign={this.state.response.queryResponse.align[j]}
+                        textAlign={this.state.response.align[j]}
                       >
                         {cell.l ? (
                           <Link href={cell.l} target="_blank">

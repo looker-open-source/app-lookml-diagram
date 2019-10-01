@@ -27,11 +27,6 @@ export interface SimpleResult {
   data: SimpleDatum[][]
 }
 
-export interface ChartQueryResult {
-  queryResponse: SimpleResult
-  moreLink?: string
-}
-
 const cache = {}
 async function localCache<T>(key: string, getter: () => Promise<T>) {
   if (!cache[key]) {
@@ -39,17 +34,18 @@ async function localCache<T>(key: string, getter: () => Promise<T>) {
   }
   return cache[key]
 }
+export function getCached(key: string) {
+  return cache[key]
+}
 
 export async function runChartQuery(
   type: QueryChartType
-): Promise<ChartQueryResult> {
+): Promise<SimpleResult> {
   if (type.type == "Values") {
-    const result = await localCache(JSON.stringify(type.type), () =>
+    const result = await localCache(JSON.stringify(type), () =>
       getTopValues(type)
     )
-    return {
-      queryResponse: result
-    }
+    return result
   }
 }
 
