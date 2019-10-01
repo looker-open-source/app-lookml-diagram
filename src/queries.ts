@@ -27,6 +27,7 @@ export interface SimpleResult {
   align: ("left" | "right")[]
   data: SimpleDatum[][]
   max: (number | undefined)[]
+  aux?: string
 }
 
 const cache = {}
@@ -99,6 +100,7 @@ export async function getTopValues({
       result_format: "json_detail",
       limit: 10,
       body: {
+        total: true,
         model: model.name,
         view: explore.name,
         fields: [field.name, countField.name],
@@ -113,7 +115,8 @@ export async function getTopValues({
   return {
     align: ["left", "right"],
     data,
-    max: [undefined, +data[0][1].n]
+    max: [undefined, +data[0][1].n],
+    aux: `${qr.totals_data[countField.name].value.toLocaleString()} rows`
   }
 }
 

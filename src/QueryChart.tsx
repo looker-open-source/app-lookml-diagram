@@ -97,7 +97,10 @@ export class QueryChart extends React.Component<
       } else {
         console.log(this.state.response)
         return (
-          <MetadataItem label={this.props.type.type}>
+          <MetadataItem
+            label={this.props.type.type}
+            aux={this.state.response.aux}
+          >
             <Box my="medium">
               <Table>
                 <TableBody>
