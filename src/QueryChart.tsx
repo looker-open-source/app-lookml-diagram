@@ -7,7 +7,8 @@ import {
   TableRow,
   TableDataCell,
   Box,
-  Link
+  Link,
+  Text
 } from "looker-lens/dist"
 import {
   QueryChartType,
@@ -63,38 +64,48 @@ export class QueryChart extends React.Component<
     if (this.state.loading) {
       return (
         <MetadataItem label={this.props.type.type} compact>
-          <SpinnerBlock size={22} />
+          <SpinnerBlock size={20} />
         </MetadataItem>
       )
     } else if (this.state.response) {
-      return (
-        <MetadataItem label={this.props.type.type}>
-          <Box my="medium">
-            <Table>
-              <TableBody>
-                {this.state.response.data.map((row, i) => (
-                  <TableRow key={i}>
-                    {row.map((cell, j) => (
-                      <TableDataCell
-                        key={j}
-                        textAlign={this.state.response.align[j]}
-                      >
-                        {cell.l ? (
-                          <Link href={cell.l} target="_blank">
-                            {cell.v}
-                          </Link>
-                        ) : (
-                          cell.v
-                        )}
-                      </TableDataCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        </MetadataItem>
-      )
+      if (this.state.response.data.length === 0) {
+        return (
+          <MetadataItem label={this.props.type.type} compact>
+            <Text fontSize="small" variant="subdued">
+              No Data
+            </Text>
+          </MetadataItem>
+        )
+      } else {
+        return (
+          <MetadataItem label={this.props.type.type}>
+            <Box my="medium">
+              <Table>
+                <TableBody>
+                  {this.state.response.data.map((row, i) => (
+                    <TableRow key={i}>
+                      {row.map((cell, j) => (
+                        <TableDataCell
+                          key={j}
+                          textAlign={this.state.response.align[j]}
+                        >
+                          {cell.l ? (
+                            <Link href={cell.l} target="_blank">
+                              {cell.v}
+                            </Link>
+                          ) : (
+                            cell.v
+                          )}
+                        </TableDataCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </MetadataItem>
+        )
+      }
     } else {
       return (
         <MetadataItem label={this.props.type.type} compact>
