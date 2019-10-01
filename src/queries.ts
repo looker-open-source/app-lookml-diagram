@@ -28,6 +28,11 @@ export interface SimpleResult {
   data: SimpleDatum[][]
   max: (number | undefined)[]
   aux?: string
+  histogram?: Histogram
+}
+
+export interface Histogram {
+  data: { value: number; min: number; max: number }[]
 }
 
 const cache = {}
@@ -179,12 +184,56 @@ export async function getDistribution({
   const max = qr.data[0].max
   const average = qr.data[0].average
 
+  const binCount = 20
+  const range = Math.abs(max.value - min.value)
+  const binSize = range / binCount
+  const bins: [number, number][] = []
+  for (let i = 0; i < binCount; i++) {
+    bins.push([min.value + binSize * i, min.value + binSize * (i + 1)])
+  }
+
+  let histogram
+  if (min.value) {
+    const ref = "${" + field.name + "}"
+    const binClauses = bins
+      .map(([min, max], i) => `if(${ref} <= ${max}, ${i}, null)`)
+      .join(",\n")
+    const binExpression = `coalesce(${binClauses})`
+
+    const histogramQR: any = await sdk.ok(
+      sdk.run_inline_query({
+        result_format: "json_detail",
+        limit: 10,
+        body: {
+          model: model.name,
+          view: explore.name,
+          fields: ["bin", countField.name],
+          dynamic_fields: JSON.stringify([
+            { dimension: "bin", expression: binExpression }
+          ])
+        }
+      })
+    )
+
+    histogram = {
+      data: bins.map(([min, max], i) => {
+        const row = histogramQR.data.filter(d => d.bin.value == i)[0]
+        return {
+          value: row ? row[countField.name].value : 0,
+          min,
+          max
+        }
+      })
+    }
+  }
+
   return {
     align: ["left", "right"],
+    histogram,
     data: [
-      [{ v: "Min" }, { v: min.value.toLocaleString() }],
-      [{ v: "Max" }, { v: max.value.toLocaleString() }],
-      [{ v: "Average" }, { v: average.value.toLocaleString() }]
+      [{ v: "Min" }, { v: min.value && min.value.toLocaleString() }],
+      [{ v: "Max" }, { v: max.value && max.value.toLocaleString() }],
+      [{ v: "Average" }, { v: average.value && average.value.toLocaleString() }]
     ],
     max: [undefined, undefined]
   }

@@ -8,8 +8,7 @@ import {
   TableDataCell,
   Box,
   Link,
-  Text,
-  TableRowProps
+  Text
 } from "looker-lens/dist"
 import {
   QueryChartType,
@@ -19,6 +18,7 @@ import {
 } from "./queries"
 import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
+import { BarChart, Bar, Cell } from "recharts"
 
 interface QueryChartState {
   loading: boolean
@@ -101,6 +101,17 @@ export class QueryChart extends React.Component<
             label={this.props.type.type}
             aux={this.state.response.aux}
           >
+            {this.state.response.histogram && (
+              <Box my="medium">
+                <BarChart
+                  width={259}
+                  height={40}
+                  data={this.state.response.histogram.data}
+                >
+                  <Bar dataKey="value" fill="#0087e1" />
+                </BarChart>
+              </Box>
+            )}
             <Box my="medium">
               <Table>
                 <TableBody>
