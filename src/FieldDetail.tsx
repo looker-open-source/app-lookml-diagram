@@ -18,7 +18,7 @@ import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
 import { QueryChart } from "./QueryChart"
-import { canGetTopValues } from "./queries"
+import { canGetTopValues, canGetDistribution } from "./queries"
 import { exploreFieldURL } from "./urls"
 
 const DetailPane = styled.div``
@@ -138,6 +138,20 @@ export const FieldDetail = ({
           <QueryChart
             type={{
               type: "Values",
+              model,
+              explore,
+              field
+            }}
+          />
+        )}
+        {canGetDistribution({
+          model,
+          explore,
+          field
+        }) && (
+          <QueryChart
+            type={{
+              type: "Distribution",
               model,
               explore,
               field

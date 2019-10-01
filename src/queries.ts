@@ -12,7 +12,7 @@ interface FieldInfo {
 }
 
 export interface QueryChartTypeTopValues extends FieldInfo {
-  type: "Values"
+  type: "Values" | "Distribution"
 }
 
 export type QueryChartType = QueryChartTypeTopValues
@@ -47,6 +47,11 @@ export async function runChartQuery(
   if (type.type == "Values") {
     const result = await localCache(JSON.stringify(type), () =>
       getTopValues(type)
+    )
+    return result
+  } else if (type.type == "Distribution") {
+    const result = await localCache(JSON.stringify(type), () =>
+      getDistribution(type)
     )
     return result
   }
@@ -85,6 +90,18 @@ export function canGetTopValues({
   )
 }
 
+export function canGetDistribution({
+  model,
+  explore,
+  field
+}: {
+  model: ILookmlModel
+  explore: ILookmlModelExplore
+  field: ILookmlModelExploreField
+}) {
+  return field.type == "number" && field.category === "dimension"
+}
+
 export async function getTopValues({
   model,
   explore,
@@ -117,6 +134,59 @@ export async function getTopValues({
     data,
     max: [undefined, +data[0][1].n],
     aux: `${qr.totals_data[countField.name].value.toLocaleString()} rows`
+  }
+}
+
+export async function getDistribution({
+  model,
+  explore,
+  field
+}: {
+  model: ILookmlModel
+  explore: ILookmlModelExplore
+  field: ILookmlModelExploreField
+}): Promise<SimpleResult> {
+  const countField = countFieldForField({ explore, field })!
+  const qr: any = await sdk.ok(
+    sdk.run_inline_query({
+      result_format: "json_detail",
+      limit: 10,
+      body: {
+        model: model.name,
+        view: explore.name,
+        fields: ["min", "max", "average"],
+        dynamic_fields: JSON.stringify([
+          {
+            measure: "min",
+            type: "min",
+            based_on: field.name
+          },
+          {
+            measure: "max",
+            type: "max",
+            based_on: field.name
+          },
+          {
+            measure: "average",
+            type: "average",
+            based_on: field.name
+          }
+        ])
+      }
+    })
+  )
+  const min = qr.data[0].min
+  const max = qr.data[0].max
+  const average = qr.data[0].average
+
+  return {
+    align: ["left", "right"],
+    data: [
+      [{ v: "Min" }, { v: min.value.toLocaleString() }],
+      [{ v: "Max" }, { v: max.value.toLocaleString() }],
+      [{ v: "Average" }, { v: average.value.toLocaleString() }]
+    ],
+    max: [undefined, undefined]
   }
 }
 
