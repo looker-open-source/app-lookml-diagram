@@ -8,7 +8,8 @@ import {
   TableDataCell,
   Box,
   Link,
-  Text
+  Text,
+  TableRowProps
 } from "looker-lens/dist"
 import {
   QueryChartType,
@@ -30,6 +31,23 @@ interface QueryChartProps {
 
 const SpinnerBlock = styled(Spinner)`
   display: inline-block;
+`
+
+interface ProgressTableRowProps {
+  progress: number
+}
+
+const ProgressTableRow = styled(TableRow)`
+  background-image: linear-gradient(
+    to right,
+    #f5f6f7 0%,
+    #f5f6f7 ${(props: ProgressTableRowProps) => props.progress * 100 - 0.001}%,
+    transparent ${(props: ProgressTableRowProps) => props.progress * 100}%
+  );
+`
+
+const PaddedCell = styled(TableDataCell)`
+  padding: 4px;
 `
 
 export class QueryChart extends React.Component<
@@ -77,15 +95,21 @@ export class QueryChart extends React.Component<
           </MetadataItem>
         )
       } else {
+        console.log(this.state.response)
         return (
           <MetadataItem label={this.props.type.type}>
             <Box my="medium">
               <Table>
                 <TableBody>
                   {this.state.response.data.map((row, i) => (
-                    <TableRow key={i}>
+                    <ProgressTableRow
+                      key={i}
+                      progress={
+                        row[1].n ? row[1].n / this.state.response.max[1] : 0
+                      }
+                    >
                       {row.map((cell, j) => (
-                        <TableDataCell
+                        <PaddedCell
                           key={j}
                           textAlign={this.state.response.align[j]}
                         >
@@ -96,9 +120,9 @@ export class QueryChart extends React.Component<
                           ) : (
                             cell.v
                           )}
-                        </TableDataCell>
+                        </PaddedCell>
                       ))}
-                    </TableRow>
+                    </ProgressTableRow>
                   ))}
                 </TableBody>
               </Table>

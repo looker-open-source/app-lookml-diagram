@@ -20,11 +20,13 @@ export type QueryChartType = QueryChartTypeTopValues
 export interface SimpleDatum {
   v: string
   l?: string
+  n?: number
 }
 
 export interface SimpleResult {
   align: ("left" | "right")[]
   data: SimpleDatum[][]
+  max: (number | undefined)[]
 }
 
 const cache = {}
@@ -51,13 +53,9 @@ export async function runChartQuery(
 
 function formatData(d: any): SimpleDatum {
   const link = d.links && d.links[0] && d.links[0].url
-  if (d.rendered) {
-    return { v: d.rendered, l: link }
-  } else if (typeof d.value === "string") {
-    return { v: d.value }
-  } else {
-    return { v: `${d.value}`, l: link }
-  }
+  const string = d.rendered || `${d.value}`
+  const number = typeof d.value === "number" ? d.value : undefined
+  return { v: string, l: link, n: number }
 }
 
 export function countFieldForField({
@@ -108,12 +106,14 @@ export async function getTopValues({
       }
     })
   )
+  const data = qr.data.map(row => [
+    formatData(row[field.name]),
+    formatData(row[countField.name])
+  ])
   return {
     align: ["left", "right"],
-    data: qr.data.map(row => [
-      formatData(row[field.name]),
-      formatData(row[countField.name])
-    ])
+    data,
+    max: [undefined, +data[0][1].n]
   }
 }
 
