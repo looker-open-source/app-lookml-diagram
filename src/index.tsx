@@ -22,5 +22,7 @@ injectGlobal`
 `
 
 window.addEventListener("DOMContentLoaded", event => {
-  ReactDOM.render(<Extension />, document.getElementById("app-container"))
+  var root = document.createElement("div")
+  document.body.appendChild(root)
+  ReactDOM.render(<Extension />, root)
 })
