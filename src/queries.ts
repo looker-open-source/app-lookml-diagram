@@ -137,8 +137,7 @@ export async function getTopValues({
   return {
     align: ["left", "right"],
     data,
-    max: [undefined, +data[0][1].n],
-    aux: `${qr.totals_data[countField.name].value.toLocaleString()} rows`
+    max: [undefined, data.length ? +data[0][1].n : undefined]
   }
 }
 
@@ -231,9 +230,12 @@ export async function getDistribution({
     align: ["left", "right"],
     histogram,
     data: [
-      [{ v: "Min" }, { v: min.value && min.value.toLocaleString() }],
-      [{ v: "Max" }, { v: max.value && max.value.toLocaleString() }],
-      [{ v: "Average" }, { v: average.value && average.value.toLocaleString() }]
+      [{ v: "Min" }, { v: (min.value && min.value.toLocaleString()) || "–" }],
+      [{ v: "Max" }, { v: (max.value && max.value.toLocaleString()) || "–" }],
+      [
+        { v: "Average" },
+        { v: (average.value && average.value.toLocaleString()) || "–" }
+      ]
     ],
     max: [undefined, undefined]
   }
