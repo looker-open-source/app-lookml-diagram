@@ -4,6 +4,7 @@ import {
   ILookmlModelExplore,
   ILookmlModelExploreField
 } from "@looker/sdk/dist/sdk/models"
+import { exploreURL } from "./urls"
 
 interface FieldInfo {
   model: ILookmlModel
@@ -29,6 +30,7 @@ export interface SimpleResult {
   max: (number | undefined)[]
   aux?: string
   histogram?: Histogram
+  moreLink?: string
 }
 
 export interface Histogram {
@@ -137,7 +139,12 @@ export async function getTopValues({
   return {
     align: ["left", "right"],
     data,
-    max: [undefined, data.length ? +data[0][1].n : undefined]
+    max: [undefined, data.length ? +data[0][1].n : undefined],
+    moreLink: `${exploreURL(explore)}?fields=${encodeURIComponent(
+      field.name
+    )},${encodeURIComponent(countField.name)}&sorts=${encodeURIComponent(
+      `${countField.name} desc`
+    )}`
   }
 }
 

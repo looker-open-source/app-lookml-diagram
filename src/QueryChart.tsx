@@ -142,6 +142,15 @@ export class QueryChart extends React.Component<
                 </TableBody>
               </Table>
             </Box>
+            {this.state.response.moreLink && (
+              <Box m="small" textAlign="center">
+                <Link href={this.state.response.moreLink} target="_blank">
+                  <Button variant="transparent" size="xsmall">
+                    Explore More
+                  </Button>
+                </Link>
+              </Box>
+            )}
           </MetadataItem>
         )
       }
