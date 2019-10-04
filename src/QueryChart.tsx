@@ -65,11 +65,19 @@ export class QueryChart extends React.Component<
 
   async runQuery() {
     this.setState({ loading: true })
-    const response = await runChartQuery(this.props.type)
-    this.setState({
-      loading: false,
-      response
-    })
+    try {
+      const response = await runChartQuery(this.props.type)
+      this.setState({
+        loading: false,
+        response
+      })
+    } catch (e) {
+      console.error(e)
+      this.setState({
+        loading: false,
+        response: undefined
+      })
+    }
   }
 
   componentDidUpdate(prevProps: QueryChartProps) {
