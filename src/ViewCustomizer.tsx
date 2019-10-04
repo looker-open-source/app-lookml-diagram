@@ -7,17 +7,7 @@ import {
   areSettingsDefault,
   resetSettingsToDefault
 } from "./Settings"
-import {
-  ToggleSwitch,
-  styled,
-  FieldToggleSwitch,
-  FieldCheckbox,
-  Popover,
-  Button,
-  Menu,
-  Box,
-  MenuItem
-} from "looker-lens/dist"
+import { styled, FieldCheckbox, Popover, Button, Box } from "looker-lens/dist"
 
 const PopoverBox = styled(Box)`
   // min-width: 150px;

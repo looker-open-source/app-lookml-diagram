@@ -1,6 +1,10 @@
 import * as React from "react"
 import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
-import { groupBy, values, flatten, toPairs, orderBy } from "lodash"
+import groupBy from "lodash/groupBy"
+import values from "lodash/values"
+import flatten from "lodash/flatten"
+import toPairs from "lodash/toPairs"
+import orderBy from "lodash/orderBy"
 import {
   Table,
   TableRow,

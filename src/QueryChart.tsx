@@ -18,7 +18,7 @@ import {
 } from "./queries"
 import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
-import { BarChart, Bar, Cell } from "recharts"
+import { BarChart, Bar } from "recharts/lib/cartesian/Bar"
 
 interface QueryChartState {
   loading: boolean

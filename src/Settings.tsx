@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { uniq, isEqual } from "lodash"
+import uniq from "lodash/uniq"
+import isEqual from "lodash/isEqual"
 
 export interface Settings {
   hiddenColumns: string[]

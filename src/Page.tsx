@@ -1,4 +1,3 @@
-import * as React from "react"
 import { FlexItem, Flex, Heading } from "looker-lens"
 import styled from "styled-components"
 

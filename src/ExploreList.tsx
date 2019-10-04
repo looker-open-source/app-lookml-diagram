@@ -4,12 +4,11 @@ import {
   MenuItem,
   MenuGroup,
   Text,
-  MenuSearch,
   InputText,
   palette,
   Box
 } from "looker-lens"
-import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
+import { ILookmlModel } from "@looker/sdk"
 import { CurrentExplore } from "./DataDictionary"
 import styled from "styled-components"
 
