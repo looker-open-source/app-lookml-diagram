@@ -18,7 +18,7 @@ import {
 } from "./queries"
 import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
-import { BarChart, Bar } from "recharts/lib/cartesian/Bar"
+import { BarChart, Bar } from "recharts"
 
 interface QueryChartState {
   loading: boolean
@@ -103,7 +103,6 @@ export class QueryChart extends React.Component<
           </MetadataItem>
         )
       } else {
-        console.log(this.state.response)
         return (
           <MetadataItem
             label={this.props.type.type}

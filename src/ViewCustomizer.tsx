@@ -77,7 +77,7 @@ export const ViewCustomizer = () => {
             <Button
               aria-haspopup="true"
               variant="outline"
-              iconAfter="ViewFile"
+              iconBefore="ViewFile"
               onClick={onClick}
               innerRef={ref}
               size="small"
