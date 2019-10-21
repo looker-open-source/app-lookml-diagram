@@ -24,7 +24,9 @@ const loadCachedExplore = async (modelName: string, exploreName: string) => {
   if (exploreCache[key]) {
     return exploreCache[key]
   } else {
-    const val = await sdk.ok(sdk.lookml_model_explore(modelName, exploreName))
+    const val = await sdk().ok(
+      sdk().lookml_model_explore(modelName, exploreName)
+    )
     exploreCache[key] = val
     return val
   }

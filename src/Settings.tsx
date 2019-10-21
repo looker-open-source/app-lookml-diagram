@@ -64,19 +64,16 @@ export function setColumnHidden(
 export const SettingsContextProvider = (props: { children: JSX.Element }) => {
   const setHiddenColumns = (hiddenColumns: string[]) => {
     hiddenColumns = uniq(hiddenColumns)
-    if (areHiddenColumnsDefault(hiddenColumns)) {
-      localStorage.removeItem(HIDDEN_COLUMNS)
-    } else {
-      localStorage.setItem(HIDDEN_COLUMNS, JSON.stringify(hiddenColumns))
-    }
+    // if (areHiddenColumnsDefault(hiddenColumns)) {
+    //   localStorage.removeItem(HIDDEN_COLUMNS)
+    // } else {
+    //   localStorage.setItem(HIDDEN_COLUMNS, JSON.stringify(hiddenColumns))
+    // }
     setState({ ...state, hiddenColumns })
   }
 
   const initState = {
-    hiddenColumns: parseJSONStringArray(
-      localStorage.getItem(HIDDEN_COLUMNS),
-      DEFAULT_HIDDEN_COLUMNS
-    ),
+    hiddenColumns: parseJSONStringArray("", DEFAULT_HIDDEN_COLUMNS),
     setHiddenColumns
   }
 

@@ -119,8 +119,8 @@ export async function getTopValues({
   field: ILookmlModelExploreField
 }): Promise<SimpleResult> {
   const countField = countFieldForField({ explore, field })!
-  const qr: any = await sdk.ok(
-    sdk.run_inline_query({
+  const qr: any = await sdk().ok(
+    sdk().run_inline_query({
       result_format: "json_detail",
       limit: 10,
       body: {
@@ -158,9 +158,10 @@ export async function getDistribution({
   field: ILookmlModelExploreField
 }): Promise<SimpleResult> {
   const countField = countFieldForField({ explore, field })!
-  const qr: any = await sdk.ok(
-    sdk.run_inline_query({
+  const qr: any = await sdk().ok(
+    sdk().run_inline_query({
       result_format: "json_detail",
+      apply_formatting: true,
       limit: 10,
       body: {
         model: model.name,
@@ -206,9 +207,10 @@ export async function getDistribution({
       .join(",\n")
     const binExpression = `coalesce(${binClauses})`
 
-    const histogramQR: any = await sdk.ok(
-      sdk.run_inline_query({
+    const histogramQR: any = await sdk().ok(
+      sdk().run_inline_query({
         result_format: "json_detail",
+        apply_formatting: true,
         limit: 10,
         body: {
           model: model.name,

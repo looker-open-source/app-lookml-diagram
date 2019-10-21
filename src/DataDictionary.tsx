@@ -67,7 +67,7 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
 
   async loadModels() {
     this.setState({
-      models: await sdk.ok(sdk.all_lookml_models()),
+      models: await sdk().ok(sdk().all_lookml_models()),
       loading: false
     })
   }
