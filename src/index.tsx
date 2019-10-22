@@ -7,7 +7,7 @@ import {
   connectExtensionHost,
   ExtensionHostApi
 } from "bryns-extension-api"
-import { APIMethods as LookerSDK } from "@looker/sdk/dist/rtl/apiMethods"
+import { LookerSDK } from "@looker/sdk/dist/sdk/methods"
 
 var link = document.createElement("link")
 link.href = "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
