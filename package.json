@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@looker/sdk": "^0.1.3-beta.10",
+    "@looker/sdk": "^0.1.3-beta.11",
     "@types/humanize-string": "^2.0.2",
     "@types/lodash": "^4.14.139",
     "@types/node": "^12.7.5",

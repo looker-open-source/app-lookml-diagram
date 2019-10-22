@@ -225,7 +225,23 @@
     debug "^2.2.0"
     es6-promise "^4.2.5"
 
-"@looker/sdk@^0.1.3-beta.10", "@looker/sdk@^0.1.3-beta.8":
+"@looker/sdk@^0.1.3-beta.11":
+  version "0.1.3-beta.11"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@looker/sdk/-/sdk-0.1.3-beta.11.tgz#debea41c44b14aede10ee5079e5db4ec4f183ab2"
+  integrity sha512-fJCZQlwpR1glJM6C9nVZw/Nq1N74+fIWW2utYi83bymgWIvon5VSXokREbarzfBV/zEvDr+ZFWIhUBMmGFm2sw==
+  dependencies:
+    "@types/ini" "^1.3.30"
+    "@types/node" "^11.13.7"
+    "@types/request" "^2.48.2"
+    "@types/request-promise-native" "^1.0.16"
+    ini "^1.3.5"
+    readable-stream "^3.4.0"
+    request "^2.88.0"
+    request-promise-native "^1.0.7"
+    ts-node "^8.1.0"
+    typescript "^3.4.5"
+
+"@looker/sdk@^0.1.3-beta.8":
   version "0.1.3-beta.10"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@looker/sdk/-/sdk-0.1.3-beta.10.tgz#18137667685d2a72404e8ade9eeb688886e4fba5"
   integrity sha512-e4dpC/EDx4iNOfOojAxOeO+dpew4J6HnTUVfi002+cfusF+NsaluY04IHrZcIouu4Y7KJeHzjFqyUa8c0QkRNw==
