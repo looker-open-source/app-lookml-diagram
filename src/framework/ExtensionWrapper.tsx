@@ -41,6 +41,8 @@ export const ExtensionWrapper: React.FC<ExtensionContextProps> = props => {
           coreSDK: LookerExtensionSDK.createClient(extensionHost)
         }
         setExtensionData(ctx)
+
+        // TODO: Kill this!
         ;(window as any).extensionContext = ctx
       })
       .catch(console.error)
