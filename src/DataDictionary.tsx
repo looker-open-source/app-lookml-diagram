@@ -1,11 +1,11 @@
 import * as React from "react"
 import ExploreList from "./ExploreList"
 import PlainPageLoading from "./PlainPageLoading"
-import { sdk } from "./sdk"
 import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
 import { ExploreDictionary } from "./ExploreDictionary"
 import { Flex, FlexItem, Icon, Heading } from "looker-lens"
 import styled from "styled-components"
+import { ExtensionContext } from "./framework/ExtensionWrapper"
 
 const NavContainer = styled(Flex)`
   top: 0;
@@ -59,6 +59,8 @@ const BigEmptyState = () => {
 }
 
 export class DataDictionary extends React.Component<{}, DataDictionaryState> {
+  static contextType = ExtensionContext
+
   constructor(props: {}) {
     super(props)
 
@@ -67,7 +69,9 @@ export class DataDictionary extends React.Component<{}, DataDictionaryState> {
 
   async loadModels() {
     this.setState({
-      models: await sdk().ok(sdk().all_lookml_models()),
+      models: await this.context.coreSDK.ok(
+        this.context.coreSDK.all_lookml_models()
+      ),
       loading: false
     })
   }

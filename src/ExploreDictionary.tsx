@@ -1,12 +1,13 @@
 import * as React from "react"
 import ExploreDictionaryView from "./ExploreDictionaryView"
 import PlainPageLoading from "./PlainPageLoading"
-import { sdk } from "./sdk"
+import { ExtensionContext } from "./framework/ExtensionWrapper"
 import {
   ILookmlModel,
   ILookmlModelNavExplore,
   ILookmlModelExplore
 } from "@looker/sdk"
+import { LookerSDK } from "./framework/ExtensionWrapper"
 
 interface ExploreDictionaryState {
   loading: boolean
@@ -19,14 +20,16 @@ interface ExploreDictionaryProps {
 }
 
 const exploreCache = {}
-const loadCachedExplore = async (modelName: string, exploreName: string) => {
+const loadCachedExplore = async (
+  sdk: LookerSDK,
+  modelName: string,
+  exploreName: string
+) => {
   const key = `${modelName}|${exploreName}`
   if (exploreCache[key]) {
     return exploreCache[key]
   } else {
-    const val = await sdk().ok(
-      sdk().lookml_model_explore(modelName, exploreName)
-    )
+    const val = await sdk.ok(sdk.lookml_model_explore(modelName, exploreName))
     exploreCache[key] = val
     return val
   }
@@ -36,6 +39,8 @@ export class ExploreDictionary extends React.Component<
   ExploreDictionaryProps,
   ExploreDictionaryState
 > {
+  static contextType = ExtensionContext
+
   constructor(props: ExploreDictionaryProps) {
     super(props)
 
@@ -46,6 +51,7 @@ export class ExploreDictionary extends React.Component<
     this.setState({ loading: true })
     this.setState({
       explore: await loadCachedExplore(
+        this.context.coreSDK,
         this.props.model.name,
         this.props.explore.name
       ),

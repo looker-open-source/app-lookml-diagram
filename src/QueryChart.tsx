@@ -19,6 +19,7 @@ import {
 import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
+import { ExtensionContext } from "./framework/ExtensionWrapper"
 
 interface QueryChartState {
   loading: boolean
@@ -54,6 +55,8 @@ export class QueryChart extends React.Component<
   QueryChartProps,
   QueryChartState
 > {
+  static contextType = ExtensionContext
+
   constructor(props: QueryChartProps) {
     super(props)
     this.state = {
@@ -66,7 +69,10 @@ export class QueryChart extends React.Component<
   async runQuery() {
     this.setState({ loading: true })
     try {
-      const response = await runChartQuery(this.props.type)
+      const response = await runChartQuery(
+        this.context.coreSDK,
+        this.props.type
+      )
       this.setState({
         loading: false,
         response
@@ -82,7 +88,9 @@ export class QueryChart extends React.Component<
 
   componentDidUpdate(prevProps: QueryChartProps) {
     if (JSON.stringify(this.props.type) !== JSON.stringify(prevProps.type)) {
-      this.setState({ response: getCached(JSON.stringify(this.props.type)) })
+      this.setState({
+        response: getCached(JSON.stringify(this.props.type))
+      })
     }
   }
 

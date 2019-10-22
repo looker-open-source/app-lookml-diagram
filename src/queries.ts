@@ -1,10 +1,10 @@
-import { sdk } from "./sdk"
 import {
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField
 } from "@looker/sdk/dist/sdk/models"
 import { exploreURL } from "./urls"
+import { LookerSDK } from "./framework/ExtensionWrapper"
 
 interface FieldInfo {
   model: ILookmlModel
@@ -49,16 +49,17 @@ export function getCached(key: string) {
 }
 
 export async function runChartQuery(
+  sdk: LookerSDK,
   type: QueryChartType
 ): Promise<SimpleResult> {
   if (type.type == "Values") {
     const result = await localCache(JSON.stringify(type), () =>
-      getTopValues(type)
+      getTopValues({ sdk, ...type })
     )
     return result
   } else if (type.type == "Distribution") {
     const result = await localCache(JSON.stringify(type), () =>
-      getDistribution(type)
+      getDistribution({ sdk, ...type })
     )
     return result
   }
@@ -110,17 +111,19 @@ export function canGetDistribution({
 }
 
 export async function getTopValues({
+  sdk,
   model,
   explore,
   field
 }: {
+  sdk: LookerSDK
   model: ILookmlModel
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }): Promise<SimpleResult> {
   const countField = countFieldForField({ explore, field })!
-  const qr: any = await sdk().ok(
-    sdk().run_inline_query({
+  const qr: any = await sdk.ok(
+    sdk.run_inline_query({
       result_format: "json_detail",
       limit: 10,
       body: {
@@ -149,17 +152,19 @@ export async function getTopValues({
 }
 
 export async function getDistribution({
+  sdk,
   model,
   explore,
   field
 }: {
+  sdk: LookerSDK
   model: ILookmlModel
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }): Promise<SimpleResult> {
   const countField = countFieldForField({ explore, field })!
-  const qr: any = await sdk().ok(
-    sdk().run_inline_query({
+  const qr: any = await sdk.ok(
+    sdk.run_inline_query({
       result_format: "json_detail",
       apply_formatting: true,
       limit: 10,
@@ -207,8 +212,8 @@ export async function getDistribution({
       .join(",\n")
     const binExpression = `coalesce(${binClauses})`
 
-    const histogramQR: any = await sdk().ok(
-      sdk().run_inline_query({
+    const histogramQR: any = await sdk.ok(
+      sdk.run_inline_query({
         result_format: "json_detail",
         apply_formatting: true,
         limit: 10,
