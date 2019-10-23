@@ -23,6 +23,7 @@
     "looker-lens": "^0.0.1-beta.25",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-force-graph": "^1.27.1",
     "react-router-dom": "^5.1.2",
     "react-syntax-highlighter": "^11.0.2",
     "recharts": "^1.7.1",
