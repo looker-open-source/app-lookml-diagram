@@ -28,6 +28,7 @@ import {
 } from "./Page"
 import { ViewCustomizer } from "./ViewCustomizer"
 import { FieldDetail, Tags } from "./FieldDetail"
+import { ExtensionLink } from "./framework/ExtensionLink"
 
 interface ExploreDictionaryViewState {
   detailField?: ILookmlModelExploreField
@@ -59,7 +60,7 @@ export default class ExploreDictionaryView extends React.Component<
           <PageHeaderTitle> {this.props.explore.label}</PageHeaderTitle>
           <PageHeaderControls>
             <ViewCustomizer />
-            <Link href={exploreURL(this.props.explore)} target="_blank">
+            <ExtensionLink href={exploreURL(this.props.explore)}>
               <Button
                 iconBefore="Explore"
                 ml="large"
@@ -68,7 +69,7 @@ export default class ExploreDictionaryView extends React.Component<
               >
                 Explore
               </Button>
-            </Link>
+            </ExtensionLink>
           </PageHeaderControls>
         </PageHeader>
         <PageMasterDetail>

@@ -20,6 +20,7 @@ import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
 import { ExtensionContext } from "./framework/ExtensionWrapper"
+import { ExtensionLink } from "./framework/ExtensionLink"
 
 interface QueryChartState {
   loading: boolean
@@ -144,9 +145,9 @@ export class QueryChart extends React.Component<
                           textAlign={this.state.response.align[j]}
                         >
                           {cell.l ? (
-                            <Link href={cell.l} target="_blank">
+                            <ExtensionLink href={cell.l}>
                               {cell.v}
-                            </Link>
+                            </ExtensionLink>
                           ) : (
                             cell.v
                           )}
@@ -159,11 +160,11 @@ export class QueryChart extends React.Component<
             </Box>
             {this.state.response.moreLink && (
               <Box m="small" textAlign="center">
-                <Link href={this.state.response.moreLink} target="_blank">
+                <ExtensionLink href={this.state.response.moreLink}>
                   <Button variant="transparent" size="xsmall">
                     Explore More
                   </Button>
-                </Link>
+                </ExtensionLink>
               </Box>
             )}
           </MetadataItem>
