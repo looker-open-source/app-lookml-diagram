@@ -18,6 +18,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.0",
     "@types/react-syntax-highlighter": "^11.0.0",
+    "@types/readable-stream": "^2.3.5",
     "@types/recharts": "^1.1.21",
     "@types/styled-system": "^3.0.9",
     "bryns-extension-api": "^0.1.4",

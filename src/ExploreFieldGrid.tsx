@@ -1,5 +1,8 @@
 import * as React from "react"
-import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
+import {
+  ILookmlModelExplore,
+  ILookmlModelExploreField
+} from "@looker/sdk/dist/sdk/models"
 import groupBy from "lodash/groupBy"
 import values from "lodash/values"
 import flatten from "lodash/flatten"

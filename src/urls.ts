@@ -1,4 +1,7 @@
-import { ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk"
+import {
+  ILookmlModelExplore,
+  ILookmlModelExploreField
+} from "@looker/sdk/dist/sdk/models"
 
 export function exploreURL(explore: ILookmlModelExplore) {
   return `/explore/${encodeURIComponent(

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { LookerSDK, ExtensionContext } from "./framework/ExtensionWrapper"
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/dist/sdk/models"
 
 const globalCache: any = {}
 // if (!pending[key]) {

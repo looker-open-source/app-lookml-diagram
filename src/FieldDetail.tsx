@@ -3,7 +3,7 @@ import {
   ILookmlModelExploreField,
   ILookmlModel,
   ILookmlModelExplore
-} from "@looker/sdk"
+} from "@looker/sdk/dist/sdk/models"
 import {
   Button,
   Link,

@@ -3,7 +3,7 @@ import {
   ILookmlModelExplore,
   ILookmlModelExploreField,
   ILookmlModel
-} from "@looker/sdk"
+} from "@looker/sdk/dist/sdk/models"
 import {
   Link,
   Text,
