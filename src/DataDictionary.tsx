@@ -7,6 +7,8 @@ import styled from "styled-components"
 import { useAllModels } from "./fetchers"
 import { usePathNames } from "./routes"
 import { ExplorePicker } from "./ModelPicker"
+import { Switch, Route } from "react-router"
+import { ExploreDiagram, ModelRelationships } from "./ModelRelationships"
 
 const NavContainer = styled(Flex)`
   top: 0;
@@ -62,7 +64,14 @@ export const DataDictionary: React.FC<{}> = () => {
         </ExploreList>
       </NavSidebar>
       <NavMainPage flex="1 1 auto">
-        {exploreName ? <ExploreDictionary /> : <DictionaryEmptyState />}
+        <Switch>
+          <Route path="/models/:model/relationships">
+            <ModelRelationships />
+          </Route>
+          <Route path="*">
+            {exploreName ? <ExploreDictionary /> : <DictionaryEmptyState />}
+          </Route>
+        </Switch>
       </NavMainPage>
     </NavContainer>
   )

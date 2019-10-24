@@ -1,6 +1,11 @@
 import React from "react"
 import { Menu, MenuItem, MenuGroup, Text, palette, Box } from "looker-lens"
-import { internalExploreURL, useCurrentModel, usePathNames } from "./routes"
+import {
+  internalExploreURL,
+  useCurrentModel,
+  usePathNames,
+  relationshipsURL
+} from "./routes"
 import { useHistory } from "react-router-dom"
 
 const notHidden = (explore: { hidden?: boolean }) => !explore.hidden
@@ -38,24 +43,39 @@ export const ExploreList: React.FC = props => {
       </Box>
       {props.children}
       {currentModel && (
-        <MenuGroup label="Explores" key="explores">
-          {currentModel.explores!.filter(notHidden).map(explore => (
-            <MenuItem
-              current={exploreName == explore.name}
-              key={explore.name}
-              onClick={() =>
-                history.push(
-                  internalExploreURL({
-                    model: currentModel.name!,
-                    explore: explore.name!
-                  })
-                )
-              }
-            >
-              {explore.label}
-            </MenuItem>
-          ))}
-        </MenuGroup>
+        <>
+          <MenuItem
+            current={false}
+            key="relationships"
+            onClick={() =>
+              history.push(
+                relationshipsURL({
+                  model: currentModel.name!
+                })
+              )
+            }
+          >
+            Relationships
+          </MenuItem>
+          <MenuGroup label="Explores" key="explores">
+            {currentModel.explores!.filter(notHidden).map(explore => (
+              <MenuItem
+                current={exploreName == explore.name}
+                key={explore.name}
+                onClick={() =>
+                  history.push(
+                    internalExploreURL({
+                      model: currentModel.name!,
+                      explore: explore.name!
+                    })
+                  )
+                }
+              >
+                {explore.label}
+              </MenuItem>
+            ))}
+          </MenuGroup>
+        </>
       )}
     </Menu>
   )

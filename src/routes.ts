@@ -13,6 +13,10 @@ export function internalExploreURL({
   )}`
 }
 
+export function relationshipsURL({ model }: { model: string }) {
+  return `/models/${encodeURIComponent(model)}/relationships`
+}
+
 export function internalModelURL({ model }: { model: string }) {
   return `/models/${encodeURIComponent(model)}`
 }

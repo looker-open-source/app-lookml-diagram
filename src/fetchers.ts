@@ -63,12 +63,14 @@ export function useExplore(modelName?: string, exploreName?: string) {
   return value
 }
 
-export function useModelDetail(modelName: string) {
+export function useModelDetail(modelName?: string) {
   const { coreSDK } = useContext(ExtensionContext)
   const [value, setter] = useState<DetailedModel | undefined>(undefined)
   useEffect(() => {
     async function fetcher() {
-      setter(await loadModelDetail(coreSDK, modelName))
+      if (modelName) {
+        setter(await loadModelDetail(coreSDK, modelName))
+      }
     }
     fetcher()
   }, [coreSDK, modelName])
