@@ -1,20 +1,9 @@
-import React, { useState } from "react"
-import {
-  Menu,
-  MenuItem,
-  MenuGroup,
-  Text,
-  InputText,
-  palette,
-  Box
-} from "looker-lens"
-import { ILookmlModel } from "@looker/sdk"
-import { CurrentExplore } from "./DataDictionary"
-import styled from "styled-components"
+import React from "react"
+import { Menu, MenuItem, MenuGroup, Text, palette, Box } from "looker-lens"
+import { internalExploreURL, useCurrentModel, usePathNames } from "./routes"
+import { useHistory } from "react-router-dom"
 
-const notHidden = explore => !explore.hidden
-const matchesSearch = search => explore =>
-  explore.label.toLowerCase().indexOf(search.toLowerCase()) !== -1
+const notHidden = (explore: { hidden?: boolean }) => !explore.hidden
 
 const menuCustomizations = {
   bg: "#f5f5f5",
@@ -35,21 +24,11 @@ const menuCustomizations = {
   }
 }
 
-const GlobalSearch = styled(InputText)`
-  width: 100%;
-`
-
-export default ({
-  models,
-  currentExplore,
-  onExploreSelected
-}: {
-  models: ILookmlModel[]
-  currentExplore?: CurrentExplore
-  onExploreSelected: (explore: CurrentExplore) => void
-}) => {
-  const [search, setSearch] = useState("")
-
+export const ExploreList: React.FC = props => {
+  const history = useHistory()
+  const currentModel = useCurrentModel()
+  console.log("current model", currentModel)
+  const { exploreName } = usePathNames()
   return (
     <Menu customizationProps={menuCustomizations}>
       <Box m="medium" mb="none">
@@ -57,45 +36,27 @@ export default ({
           Data Dictionary
         </Text>
       </Box>
-      <Box m="medium" mb="none">
-        <GlobalSearch
-          placeholder="Search Explores..."
-          display="block"
-          value={search}
-          // onClear={() => setSearch("")}
-          onChange={e => setSearch(e.currentTarget.value)}
-        />
-      </Box>
-      {models
-        .filter(
-          model =>
-            model.explores.filter(notHidden).filter(matchesSearch(search))
-              .length > 0
-        )
-        .map(model => {
-          return (
-            <MenuGroup label={model.label} key={model.name}>
-              {model.explores
-                .filter(notHidden)
-                .filter(matchesSearch(search))
-                .map(explore => {
-                  return (
-                    <MenuItem
-                      current={
-                        currentExplore &&
-                        currentExplore.explore.name == explore.name &&
-                        currentExplore.model.name == model.name
-                      }
-                      key={explore.name}
-                      onClick={() => onExploreSelected({ model, explore })}
-                    >
-                      {explore.label}
-                    </MenuItem>
-                  )
-                })}
-            </MenuGroup>
-          )
-        })}
+      {props.children}
+      {currentModel && (
+        <MenuGroup label="Explores" key="explores">
+          {currentModel.explores!.filter(notHidden).map(explore => (
+            <MenuItem
+              current={exploreName == explore.name}
+              key={explore.name}
+              onClick={() =>
+                history.push(
+                  internalExploreURL({
+                    model: currentModel.name!,
+                    explore: explore.name!
+                  })
+                )
+              }
+            >
+              {explore.label}
+            </MenuItem>
+          ))}
+        </MenuGroup>
+      )}
     </Menu>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { MemoryRouter as Router, useLocation } from "react-router-dom"
+import { MemoryRouter as Router, useLocation, Redirect } from "react-router-dom"
 import {
   LookerExtensionSDK,
   ExtensionHostApi,
@@ -17,7 +17,7 @@ export interface ExtensionContextData {
 }
 
 export const ExtensionContext = React.createContext<ExtensionContextData>(
-  undefined
+  undefined as any // no one will ever see this undefined!
 )
 export const ExtensionWrapper: React.FC<ExtensionContextProps> = props => {
   const [pathname, setPathname] = useState("")
@@ -53,9 +53,9 @@ export const ExtensionWrapper: React.FC<ExtensionContextProps> = props => {
         <Router>
           <RouteChangeListener
             setPathname={setPathname}
-            extensionHost={extensionData.extensionSDK}
+            extensionHost={extensionData!.extensionSDK}
           />
-          <ExtensionContext.Provider value={extensionData}>
+          <ExtensionContext.Provider value={extensionData!}>
             {props.children}
           </ExtensionContext.Provider>
         </Router>

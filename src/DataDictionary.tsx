@@ -1,11 +1,12 @@
-import * as React from "react"
-import ExploreList from "./ExploreList"
+import React from "react"
+import { ExploreList } from "./ExploreList"
 import PlainPageLoading from "./PlainPageLoading"
-import { ILookmlModel, ILookmlModelNavExplore } from "@looker/sdk"
 import { ExploreDictionary } from "./ExploreDictionary"
 import { Flex, FlexItem, Icon, Heading } from "looker-lens"
 import styled from "styled-components"
-import { ExtensionContext } from "./framework/ExtensionWrapper"
+import { useAllModels } from "./fetchers"
+import { usePathNames } from "./routes"
+import { ExplorePicker } from "./ModelPicker"
 
 const NavContainer = styled(Flex)`
   top: 0;
@@ -30,18 +31,7 @@ const NavMainPage = styled(FlexItem)`
   position: relative;
 `
 
-export type CurrentExplore = {
-  explore: ILookmlModelNavExplore
-  model: ILookmlModel
-}
-
-interface DataDictionaryState {
-  loading: boolean
-  models: ILookmlModel[]
-  currentExplore?: CurrentExplore
-}
-
-const BigEmptyState = () => {
+const DictionaryEmptyState: React.FC<{}> = () => {
   return (
     <Flex
       justifyContent="center"
@@ -58,52 +48,22 @@ const BigEmptyState = () => {
   )
 }
 
-export class DataDictionary extends React.Component<{}, DataDictionaryState> {
-  static contextType = ExtensionContext
-
-  constructor(props: {}) {
-    super(props)
-
-    this.state = { loading: true, models: [] }
+export const DataDictionary: React.FC<{}> = () => {
+  const models = useAllModels()
+  const { exploreName } = usePathNames()
+  if (!models) {
+    return <PlainPageLoading />
   }
-
-  async loadModels() {
-    this.setState({
-      models: await this.context.coreSDK.ok(
-        this.context.coreSDK.all_lookml_models()
-      ),
-      loading: false
-    })
-  }
-
-  componentDidMount() {
-    this.loadModels()
-  }
-
-  render() {
-    if (this.state.loading) {
-      return <PlainPageLoading />
-    } else {
-      return (
-        <NavContainer justifyContent="stretch">
-          <NavSidebar flex="0 0 300px">
-            <ExploreList
-              models={this.state.models}
-              currentExplore={this.state.currentExplore}
-              onExploreSelected={currentExplore =>
-                this.setState({ currentExplore })
-              }
-            />
-          </NavSidebar>
-          <NavMainPage flex="1 1 auto">
-            {this.state.currentExplore ? (
-              <ExploreDictionary {...this.state.currentExplore} />
-            ) : (
-              <BigEmptyState />
-            )}
-          </NavMainPage>
-        </NavContainer>
-      )
-    }
-  }
+  return (
+    <NavContainer justifyContent="stretch">
+      <NavSidebar flex="0 0 300px">
+        <ExploreList>
+          <ExplorePicker />
+        </ExploreList>
+      </NavSidebar>
+      <NavMainPage flex="1 1 auto">
+        {exploreName ? <ExploreDictionary /> : <DictionaryEmptyState />}
+      </NavMainPage>
+    </NavContainer>
+  )
 }

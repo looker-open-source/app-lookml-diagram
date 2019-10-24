@@ -20,7 +20,7 @@ import { SQLSnippet } from "./SQLSnippet"
 import { QueryChart } from "./QueryChart"
 import { canGetTopValues, canGetDistribution } from "./queries"
 import { exploreFieldURL } from "./urls"
-import { ExtensionLink } from "./framework/ExtensionLink"
+import { ExternalLink } from "./framework/ExtensionLink"
 
 const DetailPane = styled.div``
 const MetadataList = styled.div``
@@ -164,7 +164,7 @@ export const FieldDetail = ({
       <Flex>
         <FlexItem flex="0 0 auto">
           {field.lookml_link && (
-            <ExtensionLink href={field.lookml_link}>
+            <ExternalLink href={field.lookml_link}>
               <Button
                 iconBefore="LogoRings"
                 variant="transparent"
@@ -172,15 +172,15 @@ export const FieldDetail = ({
               >
                 Go to LookML
               </Button>
-            </ExtensionLink>
+            </ExternalLink>
           )}
         </FlexItem>
         <FlexItem flex="1 1 auto" textAlign="right">
-          <ExtensionLink href={exploreFieldURL(explore, field)}>
+          <ExternalLink href={exploreFieldURL(explore, field)}>
             <Button iconBefore="Explore" variant="transparent" size="xsmall">
               Explore with Field
             </Button>
-          </ExtensionLink>
+          </ExternalLink>
         </FlexItem>
       </Flex>
     </DetailPane>

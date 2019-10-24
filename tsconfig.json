@@ -3,6 +3,7 @@
     "jsx": "react",
     "lib": ["dom", "es2015"],
     "sourceMap": true,
+    "strict": true,
     "esModuleInterop": true
   },
   "exclude": ["node_modules"]
