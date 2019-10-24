@@ -1,5 +1,4 @@
 import React, { useContext, useState, useCallback, useMemo } from "react"
-import { ExtensionContext } from "../extract-to-framework/ExtensionWrapper"
 import { useModelDetail, DetailedModel } from "../utils/fetchers"
 import { usePathNames } from "../utils/routes"
 import PlainPageLoading from "../components-generalized/PlainPageLoading"
@@ -10,8 +9,7 @@ import {
   PageHeaderTitle,
   PageHeaderControls,
   PageMasterDetail,
-  PageMaster,
-  PageDetail
+  PageMaster
 } from "../components-generalized/Page"
 import { ModelRelationshipsCustomizer } from "./ModelRelationshipsCustomizer"
 import { SettingsContext } from "./Settings"
@@ -21,6 +19,8 @@ import _escape from "lodash/escape"
 import { scaleLinear } from "d3-scale"
 import { extent } from "d3-array"
 import { injectGlobal } from "styled-components"
+import { ILookmlModelExplore } from "@looker/sdk/dist/sdk/models"
+import { ExploreDetail } from "./ExploreDetail"
 
 const { ForceGraph2D, ForceGraph3D } = require("react-force-graph")
 
@@ -30,6 +30,7 @@ interface GraphNode {
   val?: number
   fieldCount?: number
   name: string
+  exploreName?: string
 }
 interface GraphLink {
   source: string
@@ -66,6 +67,7 @@ function graphDataForExplore(model: DetailedModel): GraphData {
     if (!nodes.some(n => n.id == explore.name!)) {
       nodes.push({
         id: explore.name!,
+        exploreName: explore.name!,
         color: palette.primary500,
         fieldCount: _flatten(_values(explore.fields)).length,
         name: `
@@ -117,6 +119,9 @@ const UnpaddedMaster = styled(PageMaster)`
 `
 
 export const ModelRelationships: React.FC = props => {
+  const { modelName } = usePathNames()
+  const modelDetail = useModelDetail(modelName)
+  const [selectedExplore, setSelectedExplore] = useState<ILookmlModelExplore>()
   return (
     <Page>
       <PageHeader>
@@ -127,21 +132,49 @@ export const ModelRelationships: React.FC = props => {
       </PageHeader>
       <PageMasterDetail>
         <UnpaddedMaster>
-          <ModelGraph />
+          <ModelGraph
+            model={modelDetail}
+            setSelectedExplore={setSelectedExplore}
+          />
         </UnpaddedMaster>
+        {selectedExplore && (
+          <ExploreDetail
+            explore={selectedExplore}
+            model={modelDetail.model}
+            onClose={() => setSelectedExplore(undefined)}
+          />
+        )}
       </PageMasterDetail>
     </Page>
   )
 }
 
-const ModelGraph: React.FC = props => {
-  const { modelName } = usePathNames()
-  const modelDetail = useModelDetail(modelName)
+interface ModelGraphProps {
+  model?: DetailedModel
+  setSelectedExplore: (value: ILookmlModelExplore) => void
+}
+
+const ModelGraph: React.FC<ModelGraphProps> = ({
+  model,
+  setSelectedExplore
+}) => {
   const settings = useContext(SettingsContext)
 
   const is2D = settings.hiddenColumns.indexOf("relationships-3d") !== -1
   const [highlightNodes, setHighlightNodes] = useState<GraphNode[]>([])
   const [highlightLink, setHighlightLink] = useState<GraphLink | undefined>()
+  const handleNodeClick = useCallback(
+    (node: GraphNode) => {
+      setSelectedExplore(model.explores.find(e => e.name == node.exploreName))
+    },
+    [setSelectedExplore, model]
+  )
+  const handleBackgroundClick = useCallback(
+    node => {
+      setSelectedExplore(undefined)
+    },
+    [setSelectedExplore]
+  )
   const handleNodeHover = useCallback(
     node => {
       setHighlightNodes(node ? [node] : [])
@@ -166,11 +199,11 @@ const ModelGraph: React.FC = props => {
   }, [])
 
   const graphData = useMemo(
-    () => (modelDetail ? graphDataForExplore(modelDetail) : undefined),
-    [modelDetail]
+    () => (model ? graphDataForExplore(model) : undefined),
+    [model]
   )
 
-  if (!modelDetail) {
+  if (!model) {
     return <PlainPageLoading />
   }
 
@@ -179,6 +212,8 @@ const ModelGraph: React.FC = props => {
     nodeRelSize: nodeRelSize,
     onNodeHover: handleNodeHover,
     onLinkHover: handleLinkHover,
+    onNodeClick: handleNodeClick,
+    onBackgroundClick: handleBackgroundClick,
     linkColor: (link: GraphLink) =>
       link === highlightLink ? palette.yellow300 : palette.charcoal300,
     linkDirectionalParticleColor: (link: GraphLink) =>

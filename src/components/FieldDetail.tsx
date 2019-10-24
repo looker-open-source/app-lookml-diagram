@@ -1,19 +1,10 @@
-import * as React from "react"
+import React from "react"
 import {
   ILookmlModelExploreField,
   ILookmlModel,
   ILookmlModelExplore
 } from "@looker/sdk/dist/sdk/models"
-import {
-  Button,
-  Link,
-  Box,
-  Text,
-  styled,
-  Flex,
-  FlexItem,
-  Divider
-} from "looker-lens"
+import { Button, styled, Flex, FlexItem, Divider } from "looker-lens"
 import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
@@ -21,76 +12,13 @@ import { QueryChart } from "./QueryChart"
 import { canGetTopValues, canGetDistribution } from "../utils/queries"
 import { exploreFieldURL } from "../utils/urls"
 import { ExternalLink } from "../extract-to-framework/ExtensionLink"
+import {
+  MetadataItem,
+  MetadataList
+} from "../components-generalized/MetadataList"
+import { Tags } from "../components-generalized/Tags"
 
 const DetailPane = styled.div``
-const MetadataList = styled.div``
-const Tag = styled.span`
-  background: #dee1e5;
-  padding: 0 0.75em;
-  border-radius: 100px;
-  margin-right: 0.5em;
-`
-
-export const Tags = ({ tags }: { tags: string[] }) => {
-  return (
-    <>
-      {tags.map(t => (
-        <Tag key={t}>{t}</Tag>
-      ))}
-    </>
-  )
-}
-
-export const MetadataItem = ({
-  aux,
-  label,
-  children,
-  compact
-}: {
-  label: string
-  aux?: string
-  children: React.ReactNode
-  compact?: boolean
-}) => {
-  if (compact) {
-    return (
-      <Flex my="large">
-        <FlexItem>
-          <Text fontSize="small" fontWeight="bold" flex="0 0 auto">
-            {label}
-          </Text>
-        </FlexItem>
-        <FlexItem textAlign="right" flex="1 1 auto">
-          <Text fontSize="small">{children}</Text>
-        </FlexItem>
-      </Flex>
-    )
-  } else {
-    return (
-      <Box my="large">
-        <Box>
-          <Flex my="large">
-            <FlexItem>
-              <Text fontSize="small" fontWeight="bold" flex="0 0 auto">
-                {label}
-              </Text>
-            </FlexItem>
-            {aux && (
-              <FlexItem textAlign="right" flex="1 1 auto">
-                <Text fontSize="small" variant="subdued">
-                  {aux}
-                </Text>
-              </FlexItem>
-            )}
-          </Flex>
-        </Box>
-        <Box>
-          <Text fontSize="small">{children}</Text>
-        </Box>
-      </Box>
-    )
-  }
-}
 
 export const FieldDetail = ({
   field,
@@ -113,6 +41,7 @@ export const FieldDetail = ({
         <MetadataItem label="LookML Name">
           <FieldName>{field.name}</FieldName>
         </MetadataItem>
+        {explore.hidden && <MetadataItem label="Hidden">Yes</MetadataItem>}
         {field.description && (
           <MetadataItem label="Description">{field.description}</MetadataItem>
         )}

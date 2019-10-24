@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import {
   Button,
   Spinner,
@@ -7,16 +7,15 @@ import {
   TableRow,
   TableDataCell,
   Box,
-  Link,
   Text
 } from "looker-lens/dist"
 import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
-import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
 import { ExtensionContext } from "../extract-to-framework/ExtensionWrapper"
 import { ExternalLink } from "../extract-to-framework/ExtensionLink"
 import { getCached } from "../utils/fetchers"
+import { MetadataItem } from "../components-generalized/MetadataList"
 
 interface QueryChartState {
   loading: boolean

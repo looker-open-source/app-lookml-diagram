@@ -1,20 +1,10 @@
-import * as React from "react"
+import React from "react"
 import {
   ILookmlModelExplore,
   ILookmlModelExploreField,
   ILookmlModel
 } from "@looker/sdk/dist/sdk/models"
-import {
-  Link,
-  Text,
-  Button,
-  Heading,
-  Icon,
-  Flex,
-  FlexItem,
-  Box,
-  Divider
-} from "looker-lens"
+import { Text, Button, Box, Divider } from "looker-lens"
 import { exploreURL } from "../utils/urls"
 import ExploreFieldGrid from "./ExploreFieldGrid"
 import {

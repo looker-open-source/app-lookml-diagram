@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import ExploreDictionaryView from "./ExploreDictionaryView"
 import PlainPageLoading from "../components-generalized/PlainPageLoading"
 import { useCurrentExplore, useCurrentModel } from "../utils/routes"
