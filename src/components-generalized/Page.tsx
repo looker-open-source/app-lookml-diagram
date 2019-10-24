@@ -1,4 +1,5 @@
-import { FlexItem, Flex, Heading } from "looker-lens"
+import React from "react"
+import { FlexItem, Flex, Heading, Button, Icon } from "looker-lens"
 import styled from "styled-components"
 
 export const Page = styled(Flex)`
@@ -35,10 +36,38 @@ export const PageMaster = styled(FlexItem)`
   padding: 20px;
 `
 
-export const PageDetail = styled(FlexItem)`
+const DetailWrapper = styled(FlexItem)`
   flex: 0 0 300px;
   border-left: 1px solid #e8e8e8;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   padding: 20px;
 `
+
+interface PageDetailProps {
+  title: string
+  onClose: () => void
+}
+
+export const PageDetail: React.FC<PageDetailProps> = props => {
+  return (
+    <DetailWrapper>
+      <Flex>
+        <FlexItem flex="1 1 auto">
+          <Heading>{props.title}</Heading>
+        </FlexItem>
+        <FlexItem flex="0 0 auto">
+          <Button
+            p="none"
+            variant="transparent"
+            color="neutral"
+            onClick={props.onClose}
+          >
+            <Icon name="Close" size="1.25rem" />
+          </Button>
+        </FlexItem>
+      </Flex>
+      {props.children}
+    </DetailWrapper>
+  )
+}

@@ -81,22 +81,10 @@ export default class ExploreDictionaryView extends React.Component<
             />
           </PageMaster>
           {this.state.detailField && (
-            <PageDetail>
-              <Flex>
-                <FlexItem flex="1 1 auto">
-                  <Heading>{this.state.detailField.label}</Heading>
-                </FlexItem>
-                <FlexItem flex="0 0 auto">
-                  <Button
-                    p="none"
-                    variant="transparent"
-                    color="neutral"
-                    onClick={() => this.setState({ detailField: undefined })}
-                  >
-                    <Icon name="Close" size="1.25rem" />
-                  </Button>
-                </FlexItem>
-              </Flex>
+            <PageDetail
+              title={this.state.detailField.label}
+              onClose={() => this.setState({ detailField: undefined })}
+            >
               <FieldDetail
                 field={this.state.detailField}
                 model={this.props.model}
