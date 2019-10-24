@@ -1,10 +1,10 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import Extension from "./Extension"
+import Extension from "./components/Extension"
 import { injectGlobal } from "styled-components"
-import { LookerExtensionSDK, connectExtensionHost } from "bryns-extension-api"
-import { ExtensionWrapper } from "./framework/ExtensionWrapper"
+import { ExtensionWrapper } from "./extract-to-framework/ExtensionWrapper"
 
+// Replace this with a Lens bootstrap when that is available
 var link = document.createElement("link")
 link.href = "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
 link.rel = "stylesheet"

@@ -15,7 +15,7 @@ import {
   Box,
   Divider
 } from "looker-lens"
-import { exploreURL } from "./urls"
+import { exploreURL } from "../utils/urls"
 import ExploreFieldGrid from "./ExploreFieldGrid"
 import {
   Page,
@@ -25,10 +25,10 @@ import {
   PageMasterDetail,
   PageMaster,
   PageDetail
-} from "./Page"
+} from "../components-generalized/Page"
 import { ViewCustomizer } from "./ViewCustomizer"
 import { FieldDetail, Tags } from "./FieldDetail"
-import { ExternalLink } from "./framework/ExtensionLink"
+import { ExternalLink } from "../extract-to-framework/ExtensionLink"
 
 interface ExploreDictionaryViewState {
   detailField?: ILookmlModelExploreField

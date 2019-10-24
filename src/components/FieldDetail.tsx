@@ -18,9 +18,9 @@ import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
 import { QueryChart } from "./QueryChart"
-import { canGetTopValues, canGetDistribution } from "./queries"
-import { exploreFieldURL } from "./urls"
-import { ExternalLink } from "./framework/ExtensionLink"
+import { canGetTopValues, canGetDistribution } from "../utils/queries"
+import { exploreFieldURL } from "../utils/urls"
+import { ExternalLink } from "../extract-to-framework/ExtensionLink"
 
 const DetailPane = styled.div``
 const MetadataList = styled.div``

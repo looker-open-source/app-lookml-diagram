@@ -1,8 +1,8 @@
 import React, { useContext, useState, useCallback, useMemo } from "react"
-import { ExtensionContext } from "./framework/ExtensionWrapper"
-import { useModelDetail, DetailedModel } from "./fetchers"
-import { usePathNames } from "./routes"
-import PlainPageLoading from "./PlainPageLoading"
+import { ExtensionContext } from "../extract-to-framework/ExtensionWrapper"
+import { useModelDetail, DetailedModel } from "../utils/fetchers"
+import { usePathNames } from "../utils/routes"
+import PlainPageLoading from "../components-generalized/PlainPageLoading"
 import { palette, Select, styled } from "looker-lens"
 import {
   Page,
@@ -12,7 +12,7 @@ import {
   PageMasterDetail,
   PageMaster,
   PageDetail
-} from "./Page"
+} from "../components-generalized/Page"
 import { ModelRelationshipsCustomizer } from "./ModelRelationshipsCustomizer"
 import { SettingsContext } from "./Settings"
 import _flatten from "lodash/flatten"

@@ -1,7 +1,7 @@
 import React from "react"
 import { Select, Box, styled } from "looker-lens"
-import { internalModelURL, useCurrentModel } from "./routes"
-import { useAllModels } from "./fetchers"
+import { internalModelURL, useCurrentModel } from "../utils/routes"
+import { useAllModels } from "../utils/fetchers"
 import { useHistory } from "react-router"
 
 const WideSelect = styled(Select)`

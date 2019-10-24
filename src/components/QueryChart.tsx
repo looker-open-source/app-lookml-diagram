@@ -10,13 +10,13 @@ import {
   Link,
   Text
 } from "looker-lens/dist"
-import { QueryChartType, runChartQuery, SimpleResult } from "./queries"
+import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
 import { MetadataItem } from "./FieldDetail"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
-import { ExtensionContext } from "./framework/ExtensionWrapper"
-import { ExternalLink } from "./framework/ExtensionLink"
-import { getCached } from "./fetchers"
+import { ExtensionContext } from "../extract-to-framework/ExtensionWrapper"
+import { ExternalLink } from "../extract-to-framework/ExtensionLink"
+import { getCached } from "../utils/fetchers"
 
 interface QueryChartState {
   loading: boolean

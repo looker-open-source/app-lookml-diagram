@@ -5,7 +5,7 @@ import {
   useCurrentModel,
   usePathNames,
   relationshipsURL
-} from "./routes"
+} from "../utils/routes"
 import { useHistory } from "react-router-dom"
 
 const notHidden = (explore: { hidden?: boolean }) => !explore.hidden

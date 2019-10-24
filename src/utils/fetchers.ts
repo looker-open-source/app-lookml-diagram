@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from "react"
-import { LookerSDK, ExtensionContext } from "./framework/ExtensionWrapper"
+import {
+  LookerSDK,
+  ExtensionContext
+} from "../extract-to-framework/ExtensionWrapper"
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/dist/sdk/models"
 
 const globalCache: any = {}
