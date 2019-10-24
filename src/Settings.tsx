@@ -7,9 +7,9 @@ export interface Settings {
   setHiddenColumns: (hiddenColumns: string[]) => void
 }
 
-const DEFAULT_HIDDEN_COLUMNS = ["name", "sql", "tags"]
+const DEFAULT_HIDDEN_COLUMNS = ["name", "sql", "tags", "relationships-3d"]
 
-const SettingsContext = React.createContext<Settings>({
+export const SettingsContext = React.createContext<Settings>({
   hiddenColumns: DEFAULT_HIDDEN_COLUMNS,
   setHiddenColumns: () => {}
 })

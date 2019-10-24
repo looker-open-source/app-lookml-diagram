@@ -40,7 +40,7 @@ export const Enumerations = ({
 }) => {
   return (
     <List type="bullet">
-      {field.enumerations.map(e => (
+      {field.enumerations!.map(e => (
         <ListItem title={e.value} key={e.value}>
           {e.label}
         </ListItem>
@@ -113,7 +113,7 @@ const GroupTable = ({
             {!descriptionHidden && (
               <GroupTableCell>
                 {field.description}
-                {field.enumerations && (
+                {field.enumerations && field.type != "yesno" && (
                   <Box>
                     <Enumerations field={field} />
                   </Box>

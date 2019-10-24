@@ -32,7 +32,6 @@ const menuCustomizations = {
 export const ExploreList: React.FC = props => {
   const history = useHistory()
   const currentModel = useCurrentModel()
-  console.log("current model", currentModel)
   const { exploreName } = usePathNames()
   return (
     <Menu customizationProps={menuCustomizations}>

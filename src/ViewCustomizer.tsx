@@ -13,7 +13,7 @@ const PopoverBox = styled(Box)`
   // min-width: 150px;
 `
 
-const ColumnHideToggle = ({
+export const ColumnHideToggle = ({
   settings,
   label,
   id
