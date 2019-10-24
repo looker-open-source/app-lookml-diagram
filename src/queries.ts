@@ -5,6 +5,7 @@ import {
 } from "@looker/sdk/dist/sdk/models"
 import { exploreURL } from "./urls"
 import { LookerSDK } from "./framework/ExtensionWrapper"
+import { loadCached } from "./fetchers"
 
 interface FieldInfo {
   model: ILookmlModel
@@ -37,28 +38,17 @@ export interface Histogram {
   data: { value: number; min: number; max: number }[]
 }
 
-const cache = {}
-async function localCache<T>(key: string, getter: () => Promise<T>) {
-  if (!cache[key]) {
-    cache[key] = await getter()
-  }
-  return cache[key]
-}
-export function getCached(key: string) {
-  return cache[key]
-}
-
 export async function runChartQuery(
   sdk: LookerSDK,
   type: QueryChartType
 ): Promise<SimpleResult> {
   if (type.type == "Values") {
-    const result = await localCache(JSON.stringify(type), () =>
+    const result = await loadCached(JSON.stringify(type), () =>
       getTopValues({ sdk, ...type })
     )
     return result
   } else if (type.type == "Distribution") {
-    const result = await localCache(JSON.stringify(type), () =>
+    const result = await loadCached(JSON.stringify(type), () =>
       getDistribution({ sdk, ...type })
     )
     return result
@@ -135,7 +125,7 @@ export async function getTopValues({
       }
     })
   )
-  const data = qr.data.map(row => [
+  const data = qr.data.map((row: any) => [
     formatData(row[field.name]),
     formatData(row[countField.name])
   ])
@@ -230,7 +220,7 @@ export async function getDistribution({
 
     histogram = {
       data: bins.map(([min, max], i) => {
-        const row = histogramQR.data.filter(d => d.bin.value == i)[0]
+        const row = histogramQR.data.filter((d: any) => d.bin.value == i)[0]
         return {
           value: row ? row[countField.name].value : 0,
           min,

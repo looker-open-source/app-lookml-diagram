@@ -10,17 +10,21 @@ const globalCache: any = {}
 // globalCache[key] = val
 // delete pending[key]
 
-async function loadCached<T>(
+export async function loadCached<T>(
   key: string,
   callback: () => Promise<T>
 ): Promise<T> {
   if (globalCache[key]) {
-    return globalCache[key]
+    return getCached(key)
   } else {
     const val = await callback()
     globalCache[key] = val
     return val
   }
+}
+
+export function getCached<T>(key: string): T {
+  return globalCache[key]
 }
 
 export const loadCachedExplore = async (

@@ -2,8 +2,9 @@ import * as React from "react"
 import styled from "styled-components"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
-import theme from "react-syntax-highlighter/dist/esm/styles/prism/vs"
-import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql"
+
+const theme = require("react-syntax-highlighter/dist/esm/styles/prism/vs")
+const sql = require("react-syntax-highlighter/dist/esm/languages/prism/sql")
 
 SyntaxHighlighter.registerLanguage("sql", sql)
 

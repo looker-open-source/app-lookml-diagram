@@ -125,7 +125,7 @@ const ExploreHeader = ({ explore }: { explore: ILookmlModelExplore }) => {
       )}
       {hasTags && (
         <Box mb="medium">
-          <Tags tags={explore.tags} />
+          <Tags tags={explore.tags!} />
         </Box>
       )}
       <Divider my="medium" appearance="light" />
