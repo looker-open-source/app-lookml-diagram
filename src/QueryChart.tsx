@@ -141,7 +141,9 @@ export class QueryChart extends React.Component<
                           textAlign={this.state.response.align[j]}
                         >
                           {cell.l ? (
-                            <ExternalLink href={cell.l}>{cell.v}</ExternalLink>
+                            <ExternalLink target="_blank" href={cell.l}>
+                              {cell.v}
+                            </ExternalLink>
                           ) : (
                             cell.v
                           )}
@@ -154,7 +156,10 @@ export class QueryChart extends React.Component<
             </Box>
             {this.state.response.moreLink && (
               <Box m="small" textAlign="center">
-                <ExternalLink href={this.state.response.moreLink}>
+                <ExternalLink
+                  target="_blank"
+                  href={this.state.response.moreLink}
+                >
                   <Button variant="transparent" size="xsmall">
                     Explore More
                   </Button>

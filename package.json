@@ -21,7 +21,7 @@
     "@types/readable-stream": "^2.3.5",
     "@types/recharts": "^1.1.21",
     "@types/styled-system": "^3.0.9",
-    "bryns-extension-api": "^0.1.4",
+    "bryns-extension-api": "^0.1.6",
     "d3-array": "^2.3.3",
     "d3-scale": "^3.1.0",
     "humanize-string": "^2.1.0",

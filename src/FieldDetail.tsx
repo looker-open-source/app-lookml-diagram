@@ -164,7 +164,7 @@ export const FieldDetail = ({
       <Flex>
         <FlexItem flex="0 0 auto">
           {field.lookml_link && (
-            <ExternalLink href={field.lookml_link}>
+            <ExternalLink target="_blank" href={field.lookml_link}>
               <Button
                 iconBefore="LogoRings"
                 variant="transparent"
@@ -176,7 +176,7 @@ export const FieldDetail = ({
           )}
         </FlexItem>
         <FlexItem flex="1 1 auto" textAlign="right">
-          <ExternalLink href={exploreFieldURL(explore, field)}>
+          <ExternalLink target="_blank" href={exploreFieldURL(explore, field)}>
             <Button iconBefore="Explore" variant="transparent" size="xsmall">
               Explore with Field
             </Button>

@@ -13,7 +13,11 @@ export const ExternalLink: React.FC<LinkProps> = props => {
           <Link
             onClick={(...args) => {
               if (props.href) {
-                context.extensionSDK.updateLocation(props.href)
+                context.extensionSDK.updateLocation(
+                  props.href,
+                  undefined,
+                  props.target
+                )
               }
               if (props.onClick) {
                 props.onClick(...args)

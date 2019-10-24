@@ -60,7 +60,7 @@ export default class ExploreDictionaryView extends React.Component<
           <PageHeaderTitle> {this.props.explore.label}</PageHeaderTitle>
           <PageHeaderControls>
             <ViewCustomizer />
-            <ExternalLink href={exploreURL(this.props.explore)}>
+            <ExternalLink target="_blank" href={exploreURL(this.props.explore)}>
               <Button
                 iconBefore="Explore"
                 ml="large"
