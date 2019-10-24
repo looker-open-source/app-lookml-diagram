@@ -8,7 +8,7 @@ import { useAllModels } from "./fetchers"
 import { usePathNames } from "./routes"
 import { ExplorePicker } from "./ModelPicker"
 import { Switch, Route } from "react-router"
-import { ExploreDiagram, ModelRelationships } from "./ModelRelationships"
+import { ModelRelationships } from "./ModelRelationships"
 
 const NavContainer = styled(Flex)`
   top: 0;

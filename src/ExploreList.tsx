@@ -32,7 +32,7 @@ const menuCustomizations = {
 export const ExploreList: React.FC = props => {
   const history = useHistory()
   const currentModel = useCurrentModel()
-  const { exploreName } = usePathNames()
+  const { exploreName, isRelationships } = usePathNames()
   return (
     <Menu customizationProps={menuCustomizations}>
       <Box m="medium" mb="none">
@@ -43,19 +43,21 @@ export const ExploreList: React.FC = props => {
       {props.children}
       {currentModel && (
         <>
-          <MenuItem
-            current={false}
-            key="relationships"
-            onClick={() =>
-              history.push(
-                relationshipsURL({
-                  model: currentModel.name!
-                })
-              )
-            }
-          >
-            Relationships
-          </MenuItem>
+          <MenuGroup label="Information" key="model">
+            <MenuItem
+              current={isRelationships}
+              key="relationships"
+              onClick={() =>
+                history.push(
+                  relationshipsURL({
+                    model: currentModel.name!
+                  })
+                )
+              }
+            >
+              Relationships
+            </MenuItem>
+          </MenuGroup>
           <MenuGroup label="Explores" key="explores">
             {currentModel.explores!.filter(notHidden).map(explore => (
               <MenuItem

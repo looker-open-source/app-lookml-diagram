@@ -33,7 +33,11 @@ export function useCurrentModel() {
   return models && models.find(m => m.name == modelName)
 }
 
-export function usePathNames(): { modelName?: string; exploreName?: string } {
+export function usePathNames(): {
+  modelName?: string
+  exploreName?: string
+  isRelationships: boolean
+} {
   const match =
     useRouteMatch<{ model: string }>({
       path: "/models/:model",
@@ -46,9 +50,15 @@ export function usePathNames(): { modelName?: string; exploreName?: string } {
       sensitive: true
     }) || undefined
 
+  const relMatch = useRouteMatch({
+    path: "/models/:model/relationships",
+    sensitive: true
+  })
+
   return {
     modelName: match && match.params.model,
-    exploreName: match2 && match2.params.explore
+    exploreName: match2 && match2.params.explore,
+    isRelationships: !!relMatch
   }
 }
 
