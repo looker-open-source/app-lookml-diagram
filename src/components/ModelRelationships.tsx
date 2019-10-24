@@ -19,8 +19,12 @@ import _escape from "lodash/escape"
 import { scaleLinear } from "d3-scale"
 import { extent } from "d3-array"
 import { injectGlobal } from "styled-components"
-import { ILookmlModelExplore } from "@looker/sdk/dist/sdk/models"
+import {
+  ILookmlModelExplore,
+  ILookmlModelExploreJoins
+} from "@looker/sdk/dist/sdk/models"
 import { ExploreDetail } from "./ExploreDetail"
+import { JoinDetail } from "./JoinDetail"
 
 const { ForceGraph2D, ForceGraph3D } = require("react-force-graph")
 
@@ -36,6 +40,7 @@ interface GraphLink {
   source: string
   target: string
   name: string
+  join: ILookmlModelExploreJoins
 }
 interface GraphData {
   nodes: GraphNode[]
@@ -91,6 +96,7 @@ function graphDataForExplore(model: DetailedModel): GraphData {
       links.push({
         source: explore.name!,
         target: join.name!,
+        join,
         name: `
         <div class="type">Join</div>
         <div class="label"><code>${_escape(join.sql_on)}</code></div>
@@ -122,6 +128,7 @@ export const ModelRelationships: React.FC = props => {
   const { modelName } = usePathNames()
   const modelDetail = useModelDetail(modelName)
   const [selectedExplore, setSelectedExplore] = useState<ILookmlModelExplore>()
+  const [selectedJoin, setSelectedJoin] = useState<ILookmlModelExploreJoins>()
   return (
     <Page>
       <PageHeader>
@@ -135,6 +142,7 @@ export const ModelRelationships: React.FC = props => {
           <ModelGraph
             model={modelDetail}
             setSelectedExplore={setSelectedExplore}
+            setSelectedJoin={setSelectedJoin}
           />
         </UnpaddedMaster>
         {selectedExplore && (
@@ -142,6 +150,12 @@ export const ModelRelationships: React.FC = props => {
             explore={selectedExplore}
             model={modelDetail.model}
             onClose={() => setSelectedExplore(undefined)}
+          />
+        )}
+        {selectedJoin && (
+          <JoinDetail
+            join={selectedJoin}
+            onClose={() => setSelectedJoin(undefined)}
           />
         )}
       </PageMasterDetail>
@@ -152,11 +166,13 @@ export const ModelRelationships: React.FC = props => {
 interface ModelGraphProps {
   model?: DetailedModel
   setSelectedExplore: (value: ILookmlModelExplore) => void
+  setSelectedJoin: (value: ILookmlModelExploreJoins) => void
 }
 
 const ModelGraph: React.FC<ModelGraphProps> = ({
   model,
-  setSelectedExplore
+  setSelectedExplore,
+  setSelectedJoin
 }) => {
   const settings = useContext(SettingsContext)
 
@@ -165,7 +181,15 @@ const ModelGraph: React.FC<ModelGraphProps> = ({
   const [highlightLink, setHighlightLink] = useState<GraphLink | undefined>()
   const handleNodeClick = useCallback(
     (node: GraphNode) => {
+      setSelectedJoin(undefined)
       setSelectedExplore(model.explores.find(e => e.name == node.exploreName))
+    },
+    [setSelectedExplore, model]
+  )
+  const handleLinkClick = useCallback(
+    (link: GraphLink) => {
+      setSelectedJoin(link.join)
+      setSelectedExplore(undefined)
     },
     [setSelectedExplore, model]
   )
@@ -213,6 +237,7 @@ const ModelGraph: React.FC<ModelGraphProps> = ({
     onNodeHover: handleNodeHover,
     onLinkHover: handleLinkHover,
     onNodeClick: handleNodeClick,
+    onLinkClick: handleLinkClick,
     onBackgroundClick: handleBackgroundClick,
     linkColor: (link: GraphLink) =>
       link === highlightLink ? palette.yellow300 : palette.charcoal300,
