@@ -23,7 +23,7 @@ import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
 import humanize from "humanize-string"
 import { SettingsContextConsumer } from "./Settings"
-import { Tags } from "./FieldDetail"
+import { Tags } from "../components-generalized/Tags"
 
 interface ExploreFieldGridState {}
 

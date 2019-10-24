@@ -17,8 +17,9 @@ import {
   PageDetail
 } from "../components-generalized/Page"
 import { ViewCustomizer } from "./ViewCustomizer"
-import { FieldDetail, Tags } from "./FieldDetail"
+import { FieldDetail } from "./FieldDetail"
 import { ExternalLink } from "../extract-to-framework/ExtensionLink"
+import { Tags } from "../components-generalized/Tags"
 
 interface ExploreDictionaryViewState {
   detailField?: ILookmlModelExploreField
