@@ -3,14 +3,20 @@ import { useAllModels, useExplore } from "./fetchers"
 
 export function internalExploreURL({
   model,
-  explore
+  explore,
+  field
 }: {
   model: string
   explore: string
+  field?: string
 }) {
-  return `/models/${encodeURIComponent(model)}/explores/${encodeURIComponent(
+  let url = `/models/${encodeURIComponent(model)}/explores/${encodeURIComponent(
     explore
   )}`
+  if (field) {
+    url = `${url}?field=${encodeURIComponent(field)}`
+  }
+  return url
 }
 
 export function relationshipsURL({ model }: { model: string }) {

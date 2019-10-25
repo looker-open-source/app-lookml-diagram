@@ -1,20 +1,87 @@
-import React, { useMemo } from "react"
-import { MenuGroup, MenuItem, Box, Text, RampSizes } from "looker-lens/dist"
+import React, { useMemo, useState } from "react"
+import { MenuItem, Box, Text, RampSizes } from "looker-lens/dist"
 import { useCurrentModel, internalExploreURL } from "../utils/routes"
 import Fuse from "fuse.js"
-import { ILookmlModel } from "@looker/sdk/dist/sdk/models"
+import {
+  ILookmlModel,
+  ILookmlModelExploreField,
+  ILookmlModelExploreFieldset
+} from "@looker/sdk/dist/sdk/models"
 import { useHistory } from "react-router"
 import { ResponsiveValue } from "styled-system"
 import styled from "styled-components"
+import { useModelDetail, DetailedModel } from "../utils/fetchers"
 
 const BlockMenuItem = styled(MenuItem)`
   button {
     display: block;
+    padding-top: 3px;
+    padding-bottom: 3px;
   }
 `
 
-function computeFuse(model?: ILookmlModel) {
-  return new Fuse(model ? model.explores : [], {
+const BlockMenuItemChild = styled(BlockMenuItem)`
+  button {
+    padding-left: 30px;
+  }
+`
+
+interface BaseSearchResult {
+  label: string
+  name: string
+  description?: string
+}
+
+interface ExploreSearchResult extends BaseSearchResult {
+  type: "explore"
+}
+
+interface FieldSearchResult extends BaseSearchResult {
+  type: "field"
+  exploreNames: string[]
+}
+
+type SearchResult = FieldSearchResult | ExploreSearchResult
+
+interface Fieldset extends ILookmlModelExploreFieldset {
+  [key: string]: ILookmlModelExploreField[]
+}
+
+function computeFuse(model?: ILookmlModel, modelDetail?: DetailedModel) {
+  const searchResults: SearchResult[] = []
+  if (model) {
+    model.explores.forEach(({ name, label, description }) => {
+      searchResults.push({
+        type: "explore",
+        name,
+        label,
+        description
+      })
+    })
+  }
+  if (modelDetail) {
+    const fieldMap: { [key: string]: FieldSearchResult } = {}
+    modelDetail.explores.forEach(explore => {
+      for (const type in explore.fields) {
+        ;(explore.fields as Fieldset)[type].forEach(field => {
+          if (fieldMap[field.name]) {
+            fieldMap[field.name].exploreNames.push(explore.name)
+          } else {
+            fieldMap[field.name] = {
+              type: "field",
+              name: field.name,
+              label: field.label,
+              description: field.description,
+              exploreNames: [explore.name]
+            }
+            searchResults.push(fieldMap[field.name])
+          }
+        })
+      }
+    })
+  }
+
+  return new Fuse(searchResults, {
     includeScore: true,
     includeMatches: true,
     shouldSort: true,
@@ -32,37 +99,97 @@ interface SearchResultsProps {
 
 export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
   const model = useCurrentModel()
+  const modelDetail = useModelDetail(model && model.name)
   const history = useHistory()
 
-  const fuse = useMemo(() => computeFuse(model), [model])
-  const results = fuse.search(query)
-  console.log(results)
+  const fuse = useMemo(() => computeFuse(model, modelDetail), [
+    model,
+    modelDetail
+  ])
+
+  const results = useMemo(() => fuse.search(query, { limit: 25 }), [
+    query,
+    model,
+    modelDetail
+  ])
+
+  const [selectedResult, setSelectedResult] = useState<
+    FieldSearchResult | undefined
+  >()
+
   return (
     <>
       {results.length > 0 && (
-        <MenuGroup label="Explores" key="explores">
-          {results.map(result => {
+        <Box key="results" my="medium">
+          {results.map((result, index) => {
             return (
-              <BlockMenuItem
-                key={result.item.name}
-                onClick={() =>
-                  history.push(
-                    internalExploreURL({
-                      model: model.name,
-                      explore: result.item.name
-                    })
-                  )
-                }
-              >
-                <MatchPreview matches={result.matches} item={result.item} />
-              </BlockMenuItem>
+              <React.Fragment key={index}>
+                <BlockMenuItem
+                  key="item"
+                  onClick={() => {
+                    const item = result.item
+                    if (item.type == "field") {
+                      if (item.exploreNames.length > 1) {
+                        selectedResult
+                          ? setSelectedResult(undefined)
+                          : setSelectedResult(item)
+                      } else {
+                        history.push(
+                          internalExploreURL({
+                            model: model.name,
+                            explore: item.exploreNames[0],
+                            field: item.name
+                          })
+                        )
+                      }
+                    } else {
+                      history.push(
+                        internalExploreURL({
+                          model: model.name,
+                          explore: item.name
+                        })
+                      )
+                    }
+                  }}
+                >
+                  <MatchPreview matches={result.matches} item={result.item} />
+                </BlockMenuItem>
+                {selectedResult &&
+                  selectedResult == result.item &&
+                  selectedResult.exploreNames.map(explore => {
+                    const exploreData = modelDetail.explores.find(
+                      e => e.name == explore
+                    )
+                    return (
+                      <BlockMenuItemChild
+                        key={explore}
+                        onClick={() => {
+                          history.push(
+                            internalExploreURL({
+                              model: model.name,
+                              explore,
+                              field: selectedResult.name
+                            })
+                          )
+                        }}
+                      >
+                        in explore &ldquo;{exploreData.label}&rdquo;
+                      </BlockMenuItemChild>
+                    )
+                  })}
+              </React.Fragment>
             )
           })}
-        </MenuGroup>
+        </Box>
       )}
-      {results.length == 0 && (
-        <Box m="xxxlarge" textAlign="center">
+      {results.length == 0 && modelDetail && (
+        <Box key="no-results" m="xxxlarge" textAlign="center">
           <Text variant="subdued">No Results</Text>
+        </Box>
+      )}
+      {!modelDetail && (
+        <Box key="loading" m="xxxlarge" textAlign="center">
+          <Text variant="subdued">Loading fields...</Text>
         </Box>
       )}
     </>
@@ -71,7 +198,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
 
 const MatchPreview: React.FC<{
   matches: FuseMatch[]
-  item: { label?: string; description?: string }
+  item: SearchResult
 }> = ({ matches, item }) => {
   const firstMatch = matches[0]
   if (firstMatch && firstMatch.key == "label") {

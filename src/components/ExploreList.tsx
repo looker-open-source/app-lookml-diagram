@@ -17,6 +17,7 @@ import {
 } from "../utils/routes"
 import { useHistory } from "react-router-dom"
 import { SearchResults } from "./SearchResults"
+import { useDebounce } from "use-debounce/lib"
 
 const notHidden = (explore: { hidden?: boolean }) => !explore.hidden
 
@@ -48,6 +49,8 @@ export const ExploreList: React.FC = props => {
   const currentModel = useCurrentModel()
   const { exploreName, isRelationships } = usePathNames()
   const [search, setSearch] = useState("")
+  const [debouncedSearch] = useDebounce(search, 100, { leading: true })
+
   return (
     <Menu customizationProps={menuCustomizations}>
       <Box m="medium" mb="none">
@@ -68,7 +71,7 @@ export const ExploreList: React.FC = props => {
             />
           </Box>
           {search.length ? (
-            <SearchResults query={search} />
+            <SearchResults query={debouncedSearch} />
           ) : (
             <>
               <MenuGroup label="Information" key="model">
