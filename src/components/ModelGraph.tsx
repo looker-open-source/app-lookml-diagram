@@ -57,18 +57,37 @@ function graphDataForExplore(model: DetailedModel): GraphData {
   const links: GraphLink[] = []
 
   model.explores.forEach(explore => {
-    if (!nodes.some(n => n.id == explore.name!)) {
-      nodes.push({
-        id: explore.name!,
-        exploreName: explore.name!,
-        color: palette.primary500,
-        fieldCount: _flatten(_values(explore.fields)).length,
-        name: `
+    nodes.push({
+      id: explore.name!,
+      exploreName: explore.name!,
+      color: palette.primary500,
+      fieldCount: _flatten(_values(explore.fields)).filter(f => !f.hidden)
+        .length,
+      name: `
         <div class="type">Explore</div>
         <div class="label">${_escape(explore.label)}</div>
         `
-      })
-    }
+    })
+  })
+
+  model.explores.forEach(explore => {
+    explore.joins!.forEach(join => {
+      // These nodes represent views that are not explores
+      if (!nodes.some(n => n.id == join.name!)) {
+        const fields = _flatten(_values(explore.fields)).filter(
+          f => !f.hidden && f.scope == join.name!
+        )
+        nodes.push({
+          id: join.name!,
+          color: palette.blue300,
+          fieldCount: fields.length,
+          name: `
+        <div class="type">Joined View</div>
+        <div class="label">${_escape(join.name)}</div>
+        `
+        })
+      }
+    })
   })
 
   const [min, max] = extent(nodes, n => n.fieldCount)
@@ -90,18 +109,6 @@ function graphDataForExplore(model: DetailedModel): GraphData {
         <div class="label"><code>${_escape(join.sql_on)}</code></div>
         `
       })
-
-      // These nodes represent views that are not explores
-      if (!nodes.some(n => n.id == join.name!)) {
-        nodes.push({
-          id: join.name!,
-          color: palette.blue300,
-          name: `
-        <div class="type">Joined View</div>
-        <div class="label">${_escape(join.name)}</div>
-        `
-        })
-      }
     })
   })
 
