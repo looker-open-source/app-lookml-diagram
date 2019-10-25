@@ -14,7 +14,6 @@ interface JoinDetailProps {
 }
 
 export const JoinDetail: React.FC<JoinDetailProps> = ({ join, onClose }) => {
-  console.log(join)
   return (
     <PageDetail title={join.name} onClose={onClose}>
       <MetadataList>

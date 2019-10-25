@@ -21,7 +21,6 @@ export const ExploreDetail: React.FC<ExploreDetailProps> = ({
   explore,
   onClose
 }) => {
-  console.log(explore)
   return (
     <PageDetail title={explore.label} onClose={onClose}>
       <MetadataList>
@@ -59,19 +58,6 @@ export const ExploreDetail: React.FC<ExploreDetailProps> = ({
         </MetadataItem>
       </MetadataList>
       <Flex>
-        {/* <FlexItem flex="0 0 auto">
-          {explore.lookml_link && (
-            <ExternalLink target="_blank" href={field.lookml_link}>
-              <Button
-                iconBefore="LogoRings"
-                variant="transparent"
-                size="xsmall"
-              >
-                Go to LookML
-              </Button>
-            </ExternalLink>
-          )}
-        </FlexItem> */}
         <FlexItem flex="1 1 auto" textAlign="center">
           <ExternalLink target="_blank" href={exploreURL(explore)}>
             <Button iconBefore="Explore" variant="transparent" size="xsmall">

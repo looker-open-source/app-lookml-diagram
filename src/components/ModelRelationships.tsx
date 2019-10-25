@@ -48,7 +48,6 @@ export const ModelRelationships: React.FC = props => {
         <Measure
           bounds
           onResize={contentRect => {
-            console.log("contentRect", contentRect)
             setGraphDimensions(contentRect.bounds)
           }}
         >
