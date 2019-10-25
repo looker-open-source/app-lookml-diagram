@@ -14,7 +14,6 @@ import {
   TableHeaderCell,
   TableBody,
   TableDataCell,
-  Box,
   ListItem,
   List,
   Heading
@@ -114,14 +113,7 @@ const GroupTable = ({
               <GroupTableCell>{field.label_short}</GroupTableCell>
             )}
             {!descriptionHidden && (
-              <GroupTableCell>
-                {field.description}
-                {field.enumerations && field.type != "yesno" && (
-                  <Box>
-                    <Enumerations field={field} />
-                  </Box>
-                )}
-              </GroupTableCell>
+              <GroupTableCell>{field.description}</GroupTableCell>
             )}
             {!typeHidden && (
               <GroupTableCell>{humanize(field.type)}</GroupTableCell>
