@@ -1,9 +1,17 @@
 import React, { useMemo } from "react"
-import { MenuGroup, MenuItem, Box, Text } from "looker-lens/dist"
+import { MenuGroup, MenuItem, Box, Text, RampSizes } from "looker-lens/dist"
 import { useCurrentModel, internalExploreURL } from "../utils/routes"
 import Fuse from "fuse.js"
 import { ILookmlModel } from "@looker/sdk/dist/sdk/models"
 import { useHistory } from "react-router"
+import { ResponsiveValue } from "styled-system"
+import styled from "styled-components"
+
+const BlockMenuItem = styled(MenuItem)`
+  button {
+    display: block;
+  }
+`
 
 function computeFuse(model?: ILookmlModel) {
   return new Fuse(model ? model.explores : [], {
@@ -11,8 +19,8 @@ function computeFuse(model?: ILookmlModel) {
     includeMatches: true,
     shouldSort: true,
     threshold: 0.2,
-    location: 0,
-    maxPatternLength: 32,
+    tokenize: true,
+    maxPatternLength: 128,
     minMatchCharLength: 1,
     keys: ["label", "name", "description"]
   })
@@ -35,7 +43,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
         <MenuGroup label="Explores" key="explores">
           {results.map(result => {
             return (
-              <MenuItem
+              <BlockMenuItem
                 key={result.item.name}
                 onClick={() =>
                   history.push(
@@ -46,25 +54,39 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
                   )
                 }
               >
-                {result.matches[0].key == "label" ? (
-                  <SearchResultString match={result.matches[0]} />
-                ) : (
-                  <>{result.item.label}</>
-                )}
-              </MenuItem>
+                <MatchPreview matches={result.matches} item={result.item} />
+              </BlockMenuItem>
             )
           })}
         </MenuGroup>
       )}
       {results.length == 0 && (
-        <Box m="medium">
-          <Text variant="subdued" textAlign="center">
-            No Results
-          </Text>
+        <Box m="xxxlarge" textAlign="center">
+          <Text variant="subdued">No Results</Text>
         </Box>
       )}
     </>
   )
+}
+
+const MatchPreview: React.FC<{
+  matches: FuseMatch[]
+  item: { label?: string; description?: string }
+}> = ({ matches, item }) => {
+  const firstMatch = matches[0]
+  if (firstMatch && firstMatch.key == "label") {
+    return <SearchResultString match={firstMatch} />
+  } else if (firstMatch && firstMatch.key == "description") {
+    return (
+      <>
+        <Text fontSize="small">{item.label}</Text>
+        <br />
+        <SearchResultString match={firstMatch} fontSize="xsmall" />
+      </>
+    )
+  } else {
+    return <Text fontSize="small">{item.label}</Text>
+  }
 }
 
 interface FuseMatch {
@@ -74,20 +96,24 @@ interface FuseMatch {
   arrayIndex: number
 }
 
-const SearchResultString: React.FC<{ match: FuseMatch }> = ({ match }) => {
+const SearchResultString: React.FC<{
+  match: FuseMatch
+  fontSize?: ResponsiveValue<RampSizes>
+}> = ({ match, fontSize }) => {
+  fontSize = fontSize || "small"
   let cursor = 0
   let parts: JSX.Element[] = []
   const str = match.value
   match.indices.forEach(([start, end], i) => {
     if (cursor < start) {
       parts.push(
-        <Text key={i} fontSize="small">
+        <Text key={i} fontSize={fontSize}>
           {str.slice(cursor, start)}
         </Text>
       )
     }
     parts.push(
-      <Text fontWeight="extraBold" fontSize="small" key={`b-${i}`}>
+      <Text fontWeight="extraBold" fontSize={fontSize} key={`b-${i}`}>
         {str.slice(start, end)}
       </Text>
     )
@@ -95,10 +121,10 @@ const SearchResultString: React.FC<{ match: FuseMatch }> = ({ match }) => {
   })
   if (cursor < str.length) {
     parts.push(
-      <Text key="end" fontSize="small">
+      <Text key="end" fontSize={fontSize}>
         {str.slice(cursor, str.length)}
       </Text>
     )
   }
-  return <Text fontSize="small">{parts}</Text>
+  return <Text fontSize={fontSize}>{parts}</Text>
 }
