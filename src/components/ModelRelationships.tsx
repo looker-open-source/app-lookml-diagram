@@ -2,7 +2,7 @@ import React, { useContext, useState, useCallback, useMemo } from "react"
 import { useModelDetail, DetailedModel } from "../utils/fetchers"
 import { usePathNames } from "../utils/routes"
 import PlainPageLoading from "../components-generalized/PlainPageLoading"
-import { palette, Select, styled } from "looker-lens"
+import { palette, styled } from "looker-lens"
 import {
   Page,
   PageHeader,
@@ -25,6 +25,7 @@ import {
 } from "@looker/sdk/dist/sdk/models"
 import { ExploreDetail } from "./ExploreDetail"
 import { JoinDetail } from "./JoinDetail"
+import Measure from "react-measure"
 
 const { ForceGraph2D, ForceGraph3D } = require("react-force-graph")
 
@@ -129,6 +130,10 @@ export const ModelRelationships: React.FC = props => {
   const modelDetail = useModelDetail(modelName)
   const [selectedExplore, setSelectedExplore] = useState<ILookmlModelExplore>()
   const [selectedJoin, setSelectedJoin] = useState<ILookmlModelExploreJoins>()
+  const [graphDimensions, setGraphDimensions] = useState<{
+    width: number
+    height: number
+  }>({ width: 500, height: 500 })
   return (
     <Page>
       <PageHeader>
@@ -138,13 +143,26 @@ export const ModelRelationships: React.FC = props => {
         </PageHeaderControls>
       </PageHeader>
       <PageMasterDetail>
-        <UnpaddedMaster>
-          <ModelGraph
-            model={modelDetail}
-            setSelectedExplore={setSelectedExplore}
-            setSelectedJoin={setSelectedJoin}
-          />
-        </UnpaddedMaster>
+        <Measure
+          bounds
+          onResize={contentRect => {
+            console.log("contentRect", contentRect)
+            setGraphDimensions(contentRect.bounds)
+          }}
+        >
+          {({ measureRef }) => (
+            <UnpaddedMaster innerRef={measureRef}>
+              <ModelGraph
+                width={graphDimensions.width}
+                height={graphDimensions.height}
+                model={modelDetail}
+                setSelectedExplore={setSelectedExplore}
+                setSelectedJoin={setSelectedJoin}
+              />
+            </UnpaddedMaster>
+          )}
+        </Measure>
+
         {selectedExplore && (
           <ExploreDetail
             explore={selectedExplore}
@@ -164,12 +182,16 @@ export const ModelRelationships: React.FC = props => {
 }
 
 interface ModelGraphProps {
+  width: number
+  height: number
   model?: DetailedModel
   setSelectedExplore: (value: ILookmlModelExplore) => void
   setSelectedJoin: (value: ILookmlModelExploreJoins) => void
 }
 
 const ModelGraph: React.FC<ModelGraphProps> = ({
+  width,
+  height,
   model,
   setSelectedExplore,
   setSelectedJoin
@@ -232,6 +254,8 @@ const ModelGraph: React.FC<ModelGraphProps> = ({
   }
 
   const sharedParams = {
+    width,
+    height,
     graphData: graphData,
     nodeRelSize: nodeRelSize,
     onNodeHover: handleNodeHover,

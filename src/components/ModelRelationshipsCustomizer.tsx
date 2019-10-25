@@ -1,9 +1,5 @@
 import React from "react"
-import {
-  SettingsContextConsumer,
-  areSettingsDefault,
-  resetSettingsToDefault
-} from "./Settings"
+import { SettingsContextConsumer } from "./Settings"
 import { Popover, Button, Box } from "looker-lens/dist"
 import { ColumnHideToggle } from "./ViewCustomizer"
 
