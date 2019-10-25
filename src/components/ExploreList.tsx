@@ -1,5 +1,14 @@
-import React from "react"
-import { Menu, MenuItem, MenuGroup, Text, palette, Box } from "looker-lens"
+import React, { useState } from "react"
+import {
+  Menu,
+  MenuItem,
+  MenuGroup,
+  Text,
+  palette,
+  Box,
+  InputText,
+  styled
+} from "looker-lens"
 import {
   internalExploreURL,
   useCurrentModel,
@@ -7,6 +16,7 @@ import {
   relationshipsURL
 } from "../utils/routes"
 import { useHistory } from "react-router-dom"
+import { SearchResults } from "./SearchResults"
 
 const notHidden = (explore: { hidden?: boolean }) => !explore.hidden
 
@@ -29,10 +39,15 @@ const menuCustomizations = {
   }
 }
 
+const GlobalSearch = styled(InputText)`
+  width: 100%;
+`
+
 export const ExploreList: React.FC = props => {
   const history = useHistory()
   const currentModel = useCurrentModel()
   const { exploreName, isRelationships } = usePathNames()
+  const [search, setSearch] = useState("")
   return (
     <Menu customizationProps={menuCustomizations}>
       <Box m="medium" mb="none">
@@ -43,39 +58,54 @@ export const ExploreList: React.FC = props => {
       {props.children}
       {currentModel && (
         <>
-          <MenuGroup label="Information" key="model">
-            <MenuItem
-              current={isRelationships}
-              key="relationships"
-              onClick={() =>
-                history.push(
-                  relationshipsURL({
-                    model: currentModel.name!
-                  })
-                )
-              }
-            >
-              Relationships
-            </MenuItem>
-          </MenuGroup>
-          <MenuGroup label="Explores" key="explores">
-            {currentModel.explores!.filter(notHidden).map(explore => (
-              <MenuItem
-                current={exploreName == explore.name}
-                key={explore.name}
-                onClick={() =>
-                  history.push(
-                    internalExploreURL({
-                      model: currentModel.name!,
-                      explore: explore.name!
-                    })
-                  )
-                }
-              >
-                {explore.label}
-              </MenuItem>
-            ))}
-          </MenuGroup>
+          <Box m="medium" mb="none">
+            <GlobalSearch
+              placeholder="Search Model..."
+              display="block"
+              value={search}
+              // onClear={() => setSearch("")}
+              onChange={e => setSearch(e.currentTarget.value)}
+            />
+          </Box>
+          {search.length ? (
+            <SearchResults query={search} />
+          ) : (
+            <>
+              <MenuGroup label="Information" key="model">
+                <MenuItem
+                  current={isRelationships}
+                  key="relationships"
+                  onClick={() =>
+                    history.push(
+                      relationshipsURL({
+                        model: currentModel.name!
+                      })
+                    )
+                  }
+                >
+                  Relationships
+                </MenuItem>
+              </MenuGroup>
+              <MenuGroup label="Explores" key="explores">
+                {currentModel.explores!.filter(notHidden).map(explore => (
+                  <MenuItem
+                    current={exploreName == explore.name}
+                    key={explore.name}
+                    onClick={() =>
+                      history.push(
+                        internalExploreURL({
+                          model: currentModel.name!,
+                          explore: explore.name!
+                        })
+                      )
+                    }
+                  >
+                    {explore.label}
+                  </MenuItem>
+                ))}
+              </MenuGroup>
+            </>
+          )}
         </>
       )}
     </Menu>
