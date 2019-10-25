@@ -38,6 +38,7 @@ interface ExploreSearchResult extends BaseSearchResult {
 
 interface FieldSearchResult extends BaseSearchResult {
   type: "field"
+  sql?: string
   exploreNames: string[]
 }
 
@@ -71,6 +72,7 @@ function computeFuse(model?: ILookmlModel, modelDetail?: DetailedModel) {
               type: "field",
               name: field.name,
               label: field.label,
+              sql: field.sql,
               description: field.description,
               exploreNames: [explore.name]
             }
@@ -89,7 +91,7 @@ function computeFuse(model?: ILookmlModel, modelDetail?: DetailedModel) {
     tokenize: true,
     maxPatternLength: 128,
     minMatchCharLength: 1,
-    keys: ["label", "name", "description"]
+    keys: ["label", "name", "description", "sql"]
   })
 }
 
@@ -209,6 +211,19 @@ const MatchPreview: React.FC<{
         <Text fontSize="small">{item.label}</Text>
         <br />
         <SearchResultString match={firstMatch} fontSize="xsmall" />
+      </>
+    )
+  } else if (
+    firstMatch &&
+    (firstMatch.key == "name" || firstMatch.key == "sql")
+  ) {
+    return (
+      <>
+        <Text fontSize="small">{item.label}</Text>
+        <br />
+        <code>
+          <SearchResultString match={firstMatch} fontSize="xsmall" />
+        </code>
       </>
     )
   } else {
