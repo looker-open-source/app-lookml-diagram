@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   ILookmlModelExplore,
   ILookmlModelExploreField,
@@ -21,75 +21,57 @@ import { FieldDetail } from "./FieldDetail"
 import { ExternalLink } from "../extract-to-framework/ExtensionLink"
 import { Tags } from "../components-generalized/Tags"
 
-interface ExploreDictionaryViewState {
-  detailField?: ILookmlModelExploreField
-}
-
 interface ExploreDictionaryViewProps {
   model: ILookmlModel
   explore: ILookmlModelExplore
 }
 
-export default class ExploreDictionaryView extends React.Component<
-  ExploreDictionaryViewProps,
-  ExploreDictionaryViewState
-> {
-  constructor(props: ExploreDictionaryViewProps) {
-    super(props)
-    this.state = {}
-    this.setDetailField = this.setDetailField.bind(this)
-  }
-
-  setDetailField(detailField: ILookmlModelExploreField) {
-    this.setState({ detailField })
-  }
-
-  render() {
-    return (
-      <Page>
-        <PageHeader>
-          <PageHeaderTitle> {this.props.explore.label}</PageHeaderTitle>
-          <PageHeaderControls>
-            <ViewCustomizer />
-            <ExternalLink target="_blank" href={exploreURL(this.props.explore)}>
-              <Button
-                iconBefore="Explore"
-                ml="large"
-                variant="outline"
-                size="small"
-              >
-                Explore
-              </Button>
-            </ExternalLink>
-          </PageHeaderControls>
-        </PageHeader>
-        <PageMasterDetail>
-          <PageMaster>
-            <ExploreHeader explore={this.props.explore} />
-            <ExploreFieldGrid
-              {...this.props}
-              setDetailField={this.setDetailField}
-            />
-          </PageMaster>
-          {this.state.detailField && (
-            <PageDetail
-              title={this.state.detailField.label}
-              onClose={() => this.setState({ detailField: undefined })}
+export const ExploreDictionaryView: React.FC<ExploreDictionaryViewProps> = ({
+  model,
+  explore
+}) => {
+  const [detailField, setDetailField] = useState<
+    ILookmlModelExploreField | undefined
+  >()
+  return (
+    <Page>
+      <PageHeader>
+        <PageHeaderTitle> {explore.label}</PageHeaderTitle>
+        <PageHeaderControls>
+          <ViewCustomizer />
+          <ExternalLink target="_blank" href={exploreURL(explore)}>
+            <Button
+              iconBefore="Explore"
+              ml="large"
+              variant="outline"
+              size="small"
             >
-              <FieldDetail
-                field={this.state.detailField}
-                model={this.props.model}
-                explore={this.props.explore}
-              />
-            </PageDetail>
-          )}
-        </PageMasterDetail>
-      </Page>
-    )
-  }
+              Explore
+            </Button>
+          </ExternalLink>
+        </PageHeaderControls>
+      </PageHeader>
+      <PageMasterDetail>
+        <PageMaster>
+          <ExploreHeader explore={explore} />
+          <ExploreFieldGrid explore={explore} setDetailField={setDetailField} />
+        </PageMaster>
+        {detailField && (
+          <PageDetail
+            title={detailField.label}
+            onClose={() => setDetailField(undefined)}
+          >
+            <FieldDetail field={detailField} model={model} explore={explore} />
+          </PageDetail>
+        )}
+      </PageMasterDetail>
+    </Page>
+  )
 }
 
-const ExploreHeader = ({ explore }: { explore: ILookmlModelExplore }) => {
+const ExploreHeader: React.FC<{ explore: ILookmlModelExplore }> = ({
+  explore
+}) => {
   const hasDescription = !!explore.description
   const hasTags = !!(explore.tags && explore.tags.length > 0)
   if (!hasDescription && !hasTags) {
