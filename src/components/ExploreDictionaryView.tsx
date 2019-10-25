@@ -6,7 +6,7 @@ import {
 } from "@looker/sdk/dist/sdk/models"
 import { Text, Button, Box, Divider } from "looker-lens"
 import { exploreURL } from "../utils/urls"
-import ExploreFieldGrid from "./ExploreFieldGrid"
+import { ExploreFieldGrid } from "./ExploreFieldGrid"
 import {
   Page,
   PageHeader,

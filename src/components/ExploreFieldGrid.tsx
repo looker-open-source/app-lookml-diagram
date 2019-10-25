@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback, useMemo } from "react"
 import {
   ILookmlModelExplore,
   ILookmlModelExploreField
@@ -23,8 +23,6 @@ import styled from "styled-components"
 import humanize from "humanize-string"
 import { SettingsContextConsumer } from "./Settings"
 import { Tags } from "../components-generalized/Tags"
-
-interface ExploreFieldGridState {}
 
 interface ExploreFieldGridProps {
   explore: ILookmlModelExplore
@@ -61,19 +59,14 @@ const HoverableTableRow = styled(TableRow)`
   }
 `
 
-const GroupTable = ({
-  group,
-  fields,
-  hiddenColumns,
-  setDetailField,
-  index
-}: {
+const GroupTable: React.FC<{
   group: string
   fields: ILookmlModelExploreField[]
   hiddenColumns: string[]
   setDetailField: (field: ILookmlModelExploreField) => void
   index: number
-}) => {
+}> = ({ group, fields, hiddenColumns, setDetailField, index }) => {
+  fields = useMemo(() => orderBy(fields, f => f.label_short), [fields])
   const labelHidden = hiddenColumns.indexOf("label") !== -1
   const nameHidden = hiddenColumns.indexOf("name") !== -1
   const descriptionHidden = hiddenColumns.indexOf("description") !== -1
@@ -135,41 +128,41 @@ const GroupTable = ({
   )
 }
 
-export default class ExploreFieldGrid extends React.Component<
-  ExploreFieldGridProps,
-  ExploreFieldGridState
-> {
-  render() {
-    const groups = orderBy(
-      toPairs(
-        groupBy(
-          flatten(values(this.props.explore.fields)).filter(f => !f.hidden),
-          f => f.view_label
-        )
+export const ExploreFieldGrid: React.FC<ExploreFieldGridProps> = props => {
+  const fields = props.explore.fields
+  const groups = useMemo(
+    () =>
+      orderBy(
+        toPairs(
+          groupBy(
+            flatten(values(fields)).filter(f => !f.hidden),
+            f => f.view_label
+          )
+        ),
+        ([group]) => group
       ),
-      ([group]) => group
-    )
-    return (
-      <Table>
-        <TableBody>
-          <SettingsContextConsumer>
-            {settings =>
-              groups.map(([group, fields], index) => {
-                return (
-                  <GroupTable
-                    index={index}
-                    fields={orderBy(fields, f => f.label_short)}
-                    group={group}
-                    setDetailField={this.props.setDetailField}
-                    hiddenColumns={settings.hiddenColumns}
-                    key={group}
-                  />
-                )
-              })
-            }
-          </SettingsContextConsumer>
-        </TableBody>
-      </Table>
-    )
-  }
+    [fields]
+  )
+  return (
+    <Table>
+      <TableBody>
+        <SettingsContextConsumer>
+          {settings =>
+            groups.map(([group, fields], index) => {
+              return (
+                <GroupTable
+                  index={index}
+                  fields={fields}
+                  group={group}
+                  setDetailField={props.setDetailField}
+                  hiddenColumns={settings.hiddenColumns}
+                  key={group}
+                />
+              )
+            })
+          }
+        </SettingsContextConsumer>
+      </TableBody>
+    </Table>
+  )
 }
