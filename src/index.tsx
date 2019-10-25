@@ -6,7 +6,8 @@ import { ExtensionWrapper } from "./extract-to-framework/ExtensionWrapper"
 
 // Replace this with a Lens bootstrap when that is available
 var link = document.createElement("link")
-link.href = "https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+link.href =
+  "https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap"
 link.rel = "stylesheet"
 document.head.appendChild(link)
 injectGlobal`

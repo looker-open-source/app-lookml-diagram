@@ -14,7 +14,7 @@ function computeFuse(model?: ILookmlModel) {
     location: 0,
     maxPatternLength: 32,
     minMatchCharLength: 1,
-    keys: ["label", "name"]
+    keys: ["label", "name", "description"]
   })
 }
 
@@ -46,7 +46,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
                   )
                 }
               >
-                {result.item.label}
+                {result.matches[0].key == "label" ? (
+                  <SearchResultString match={result.matches[0]} />
+                ) : (
+                  <>{result.item.label}</>
+                )}
               </MenuItem>
             )
           })}
@@ -61,4 +65,40 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
       )}
     </>
   )
+}
+
+interface FuseMatch {
+  indices: [number, number][]
+  value: string
+  key: string
+  arrayIndex: number
+}
+
+const SearchResultString: React.FC<{ match: FuseMatch }> = ({ match }) => {
+  let cursor = 0
+  let parts: JSX.Element[] = []
+  const str = match.value
+  match.indices.forEach(([start, end], i) => {
+    if (cursor < start) {
+      parts.push(
+        <Text key={i} fontSize="small">
+          {str.slice(cursor, start)}
+        </Text>
+      )
+    }
+    parts.push(
+      <Text fontWeight="extraBold" fontSize="small" key={`b-${i}`}>
+        {str.slice(start, end)}
+      </Text>
+    )
+    cursor = end
+  })
+  if (cursor < str.length) {
+    parts.push(
+      <Text key="end" fontSize="small">
+        {str.slice(cursor, str.length)}
+      </Text>
+    )
+  }
+  return <Text fontSize="small">{parts}</Text>
 }
