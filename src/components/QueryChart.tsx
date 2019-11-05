@@ -12,7 +12,7 @@ import {
 import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
-import { ExtensionContext } from "../extract-to-framework/ExtensionWrapper"
+import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExternalLink } from "../extract-to-framework/ExtensionLink"
 import { getCached } from "../utils/fetchers"
 import { MetadataItem } from "../components-generalized/MetadataList"

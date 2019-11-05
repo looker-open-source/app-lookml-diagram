@@ -4,7 +4,7 @@ import {
   ILookmlModelExploreField
 } from "@looker/sdk/dist/sdk/models"
 import { exploreURL } from "./urls"
-import { LookerSDK } from "../extract-to-framework/ExtensionWrapper"
+import { LookerSDK } from "@looker/extension-sdk-react"
 import { loadCached } from "./fetchers"
 
 interface FieldInfo {

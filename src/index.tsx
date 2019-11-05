@@ -2,7 +2,7 @@ import React from "react"
 import * as ReactDOM from "react-dom"
 import Extension from "./components/Extension"
 import { injectGlobal } from "styled-components"
-import { ExtensionWrapper } from "./extract-to-framework/ExtensionWrapper"
+import { ExtensionProvider } from "@looker/extension-sdk-react"
 
 // Replace this with a Lens bootstrap when that is available
 var link = document.createElement("link")
@@ -28,9 +28,9 @@ window.addEventListener("DOMContentLoaded", async event => {
   var root = document.createElement("div")
   document.body.appendChild(root)
   ReactDOM.render(
-    <ExtensionWrapper>
+    <ExtensionProvider>
       <Extension />
-    </ExtensionWrapper>,
+    </ExtensionProvider>,
     root
   )
 })
