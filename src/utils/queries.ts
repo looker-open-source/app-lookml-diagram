@@ -97,7 +97,11 @@ export function canGetDistribution({
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }) {
-  return field.is_numeric && field.category === "dimension"
+  return (
+    field.is_numeric &&
+    field.category === "dimension" &&
+    !!countFieldForField({ explore, field })
+  )
 }
 
 export async function getTopValues({
