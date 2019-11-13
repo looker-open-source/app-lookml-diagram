@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "webpack-dev-server --https --no-inline --no-hot",
-    "build": "tsc --noEmit && webpack --mode=production"
+    "test": "tsc --noEmit",
+    "build": "yarn test && webpack --mode=production"
   },
   "license": "MIT",
   "dependencies": {
