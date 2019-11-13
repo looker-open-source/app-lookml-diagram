@@ -2,6 +2,5 @@ node_modules
 dist
 !dist/index.js
 .cache
-.vscode
 .npmrc
 yarn-error.log
