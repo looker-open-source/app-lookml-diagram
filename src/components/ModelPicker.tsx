@@ -20,7 +20,7 @@ export const ExplorePicker: React.FC = () => {
         value={currentModel && currentModel.name}
         options={models
           .filter(m => m.explores && m.explores.some(e => !e.hidden))
-          .map(m => ({ value: m.name!, label: m.label! }))}
+          .map(m => ({ value: m.name, label: m.label }))}
         onChange={event =>
           history.push(internalModelURL({ model: event.currentTarget.value }))
         }

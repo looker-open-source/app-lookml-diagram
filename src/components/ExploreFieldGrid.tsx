@@ -40,7 +40,7 @@ export const Enumerations = ({
 }) => {
   return (
     <List type="bullet">
-      {field.enumerations!.map(e => (
+      {field.enumerations.map(e => (
         <ListItem title={e.value} key={e.value}>
           {e.label}
         </ListItem>
@@ -67,12 +67,12 @@ const GroupTable: React.FC<{
   index: number
 }> = ({ group, fields, hiddenColumns, setDetailField, index }) => {
   fields = useMemo(() => orderBy(fields, f => f.label_short), [fields])
-  const labelHidden = hiddenColumns.indexOf("label") !== -1
-  const nameHidden = hiddenColumns.indexOf("name") !== -1
-  const descriptionHidden = hiddenColumns.indexOf("description") !== -1
-  const sqlHidden = hiddenColumns.indexOf("sql") !== -1
-  const typeHidden = hiddenColumns.indexOf("type") !== -1
-  const tagsHidden = hiddenColumns.indexOf("tags") !== -1
+  const labelHidden = hiddenColumns.includes("label")
+  const nameHidden = hiddenColumns.includes("name")
+  const descriptionHidden = hiddenColumns.includes("description")
+  const sqlHidden = hiddenColumns.includes("sql")
+  const typeHidden = hiddenColumns.includes("type")
+  const tagsHidden = hiddenColumns.includes("tags")
   return (
     <>
       {/* Don't want styles on this. */}

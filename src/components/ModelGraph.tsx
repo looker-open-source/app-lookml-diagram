@@ -59,8 +59,8 @@ function graphDataForExplore(model: DetailedModel): GraphData {
 
   model.explores.forEach(explore => {
     nodes.push({
-      id: explore.name!,
-      exploreName: explore.name!,
+      id: explore.name,
+      exploreName: explore.name,
       color: palette.primary500,
       fieldCount: _flatten(_values(explore.fields)).filter(f => !f.hidden)
         .length,
@@ -72,14 +72,14 @@ function graphDataForExplore(model: DetailedModel): GraphData {
   })
 
   model.explores.forEach(explore => {
-    explore.joins!.forEach(join => {
+    explore.joins.forEach(join => {
       // These nodes represent views that are not explores
-      if (!nodes.some(n => n.id === join.name!)) {
+      if (!nodes.some(n => n.id === join.name)) {
         const fields = _flatten(_values(explore.fields)).filter(
-          f => !f.hidden && f.scope === join.name!
+          f => !f.hidden && f.scope === join.name
         )
         nodes.push({
-          id: join.name!,
+          id: join.name,
           color: palette.blue300,
           fieldCount: fields.length,
           name: `
@@ -100,10 +100,10 @@ function graphDataForExplore(model: DetailedModel): GraphData {
   })
 
   model.explores.forEach(explore => {
-    explore.joins!.forEach(join => {
+    explore.joins.forEach(join => {
       links.push({
-        source: explore.name!,
-        target: join.name!,
+        source: explore.name,
+        target: join.name,
         join,
         name: `
         <div class="type">Join</div>
@@ -133,7 +133,7 @@ export const ModelGraph: React.FC<ModelGraphProps> = ({
 }) => {
   const settings = useContext(SettingsContext)
 
-  const is2D = settings.hiddenColumns.indexOf("relationships-3d") !== -1
+  const is2D = settings.hiddenColumns.includes("relationships-3d")
   const [highlightNodes, setHighlightNodes] = useState<GraphNode[]>([])
   const [highlightLink, setHighlightLink] = useState<GraphLink | undefined>()
   const handleNodeClick = useCallback(
@@ -213,7 +213,7 @@ export const ModelGraph: React.FC<ModelGraphProps> = ({
       {...sharedParams}
       nodeCanvasObject={paintRing}
       nodeCanvasObjectMode={(node: GraphNode) =>
-        highlightNodes.indexOf(node) !== -1 ? "before" : undefined
+        highlightNodes.includes(node) ? "before" : undefined
       }
     />
   ) : (

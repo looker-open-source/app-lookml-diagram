@@ -31,7 +31,7 @@ function parseJSONStringArray(string: string, fallback: string[]) {
 export const SettingsContextConsumer = SettingsContext.Consumer
 
 export function isColumnHidden(col: string, settings: Settings) {
-  return settings.hiddenColumns.indexOf(col) !== -1
+  return settings.hiddenColumns.includes(col)
 }
 
 function areHiddenColumnsDefault(hiddenColumns: string[]) {

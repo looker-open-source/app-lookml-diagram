@@ -81,7 +81,7 @@ export const ExploreList: React.FC = props => {
                   onClick={() =>
                     history.push(
                       relationshipsURL({
-                        model: currentModel.name!
+                        model: currentModel.name
                       })
                     )
                   }
@@ -90,15 +90,15 @@ export const ExploreList: React.FC = props => {
                 </MenuItem>
               </MenuGroup>
               <MenuGroup label="Explores" key="explores">
-                {currentModel.explores!.filter(notHidden).map(explore => (
+                {currentModel.explores.filter(notHidden).map(explore => (
                   <MenuItem
                     current={exploreName === explore.name}
                     key={explore.name}
                     onClick={() =>
                       history.push(
                         internalExploreURL({
-                          model: currentModel.name!,
-                          explore: explore.name!
+                          model: currentModel.name,
+                          explore: explore.name
                         })
                       )
                     }

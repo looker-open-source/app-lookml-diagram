@@ -269,22 +269,6 @@
     "@looker/chatty" "^2.2.0"
     "@looker/sdk" "^0.1.3-beta.8"
 
-"@looker/sdk@^0.1.3-beta.11":
-  version "0.1.3-beta.11"
-  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@looker/sdk/-/sdk-0.1.3-beta.11.tgz#debea41c44b14aede10ee5079e5db4ec4f183ab2"
-  integrity sha512-fJCZQlwpR1glJM6C9nVZw/Nq1N74+fIWW2utYi83bymgWIvon5VSXokREbarzfBV/zEvDr+ZFWIhUBMmGFm2sw==
-  dependencies:
-    "@types/ini" "^1.3.30"
-    "@types/node" "^11.13.7"
-    "@types/request" "^2.48.2"
-    "@types/request-promise-native" "^1.0.16"
-    ini "^1.3.5"
-    readable-stream "^3.4.0"
-    request "^2.88.0"
-    request-promise-native "^1.0.7"
-    ts-node "^8.1.0"
-    typescript "^3.4.5"
-
 "@looker/sdk@^0.1.3-beta.8":
   version "0.1.3-beta.10"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@looker/sdk/-/sdk-0.1.3-beta.10.tgz#18137667685d2a72404e8ade9eeb688886e4fba5"
@@ -300,6 +284,22 @@
     request-promise-native "^1.0.7"
     ts-node "^8.1.0"
     typescript "^3.4.5"
+
+"@looker/sdk@^0.2.0-beta.23":
+  version "0.2.0-beta.23"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@looker/sdk/-/sdk-0.2.0-beta.23.tgz#ba56fc8b20b54bb654b5e1311511fd90a38490c2"
+  integrity sha512-ZAXMGlN2PwoA0x+KASLr0jzMQRkwO6U0VVktt2GYftnMaQEJt2uY/tELpmYNwSJnq6bRQDVksUndH0D4vXRtdQ==
+  dependencies:
+    "@types/ini" "^1.3.30"
+    "@types/node" "^12.12.6"
+    "@types/request" "^2.48.3"
+    "@types/request-promise-native" "^1.0.17"
+    ini "^1.3.5"
+    readable-stream "^3.4.0"
+    request "^2.88.0"
+    request-promise-native "^1.0.8"
+    ts-node "^8.4.1"
+    typescript "^3.6.0"
 
 "@tweenjs/tween.js@^18.3.1":
   version "18.3.1"
@@ -401,6 +401,11 @@
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@types/node/-/node-11.13.22.tgz#91ee88ebfa25072433497f6f3150f84fa8c3a91b"
   integrity sha512-rOsaPRUGTOXbRBOKToy4cgZXY4Y+QSVhxcLwdEveozbk7yuudhWMpxxcaXqYizLMP3VY7OcWCFtx9lGFh5j5kg==
 
+"@types/node@^12.12.6":
+  version "12.12.7"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@types/node/-/node-12.12.7.tgz#01e4ea724d9e3bd50d90c11fd5980ba317d8fa11"
+  integrity sha512-E6Zn0rffhgd130zbCbAr/JdXfXkoOUFAKNs/rF8qnafSJ8KYaA/j3oz7dcwal+lYjLA7xvdd5J4wdYpCTlP8+w==
+
 "@types/node@^12.7.5":
   version "12.7.5"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@types/node/-/node-12.7.5.tgz#e19436e7f8e9b4601005d73673b6dc4784ffcc2f"
@@ -479,14 +484,14 @@
     "@types/react" "*"
     "@types/recharts-scale" "*"
 
-"@types/request-promise-native@^1.0.16":
+"@types/request-promise-native@^1.0.16", "@types/request-promise-native@^1.0.17":
   version "1.0.17"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@types/request-promise-native/-/request-promise-native-1.0.17.tgz#74a2d7269aebf18b9bdf35f01459cf0a7bfc7fab"
   integrity sha512-05/d0WbmuwjtGMYEdHIBZ0tqMJJQ2AD9LG2F6rKNBGX1SSFR27XveajH//2N/XYtual8T9Axwl+4v7oBtPUZqg==
   dependencies:
     "@types/request" "*"
 
-"@types/request@*", "@types/request@^2.48.2":
+"@types/request@*", "@types/request@^2.48.2", "@types/request@^2.48.3":
   version "2.48.3"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/@types/request/-/request-2.48.3.tgz#970b8ed2317568c390361d29c555a95e74bd6135"
   integrity sha512-3Wo2jNYwqgXcIz/rrq18AdOZUQB8cQ34CXZo+LUwPJNpvRAL86+Kc2wwI8mqpz9Cr1V+enIox5v+WZhy/p3h8w==
@@ -6315,12 +6320,28 @@ request-promise-core@1.1.2:
   dependencies:
     lodash "^4.17.11"
 
+request-promise-core@1.1.3:
+  version "1.1.3"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/request-promise-core/-/request-promise-core-1.1.3.tgz#e9a3c081b51380dfea677336061fea879a829ee9"
+  integrity sha512-QIs2+ArIGQVp5ZYbWD5ZLCY29D5CfWizP8eWnm8FoGD1TX61veauETVQbrV60662V0oFBkrDOuaBI8XgtuyYAQ==
+  dependencies:
+    lodash "^4.17.15"
+
 request-promise-native@^1.0.7:
   version "1.0.7"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/request-promise-native/-/request-promise-native-1.0.7.tgz#a49868a624bdea5069f1251d0a836e0d89aa2c59"
   integrity sha512-rIMnbBdgNViL37nZ1b3L/VfPOpSi0TqVDQPAvO6U14lMzOLrt5nilxCQqtDKhZeDiW0/hkCXGoQjhgJd/tCh6w==
   dependencies:
     request-promise-core "1.1.2"
+    stealthy-require "^1.1.1"
+    tough-cookie "^2.3.3"
+
+request-promise-native@^1.0.8:
+  version "1.0.8"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/request-promise-native/-/request-promise-native-1.0.8.tgz#a455b960b826e44e2bf8999af64dff2bfe58cb36"
+  integrity sha512-dapwLGqkHtwL5AEbfenuzjTYg35Jd6KPytsC2/TLkVMz8rm+tNt72MGUWT1RP/aYawMpN6HqbNGBQaRcBtjQMQ==
+  dependencies:
+    request-promise-core "1.1.3"
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
@@ -7434,6 +7455,17 @@ ts-node@^8.1.0:
     source-map-support "^0.5.6"
     yn "^3.0.0"
 
+ts-node@^8.4.1:
+  version "8.5.0"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/ts-node/-/ts-node-8.5.0.tgz#bc7d5a39133d222bf25b1693651e4d893785f884"
+  integrity sha512-fbG32iZEupNV2E2Fd2m2yt1TdAwR3GTCrJQBHDevIiEBNy1A8kqnyl1fv7jmRmmbtcapFab2glZXHJvfD1ed0Q==
+  dependencies:
+    arg "^4.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    source-map-support "^0.5.6"
+    yn "^3.0.0"
+
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
@@ -7497,6 +7529,11 @@ typescript@^3.4.5, typescript@^3.6.3:
   version "3.6.4"
   resolved "https://nexusrepo.looker.com/repository/looker-npm-group/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
   integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
+
+typescript@^3.6.0:
+  version "3.7.2"
+  resolved "https://nexusrepo.looker.com/repository/looker-npm-group/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
+  integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
 
 ua-parser-js@^0.7.18:
   version "0.7.20"

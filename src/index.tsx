@@ -24,7 +24,7 @@ injectGlobal`
     }
 `
 
-window.addEventListener("DOMContentLoaded", async event => {
+window.addEventListener("DOMContentLoaded", () => {
   const root = document.createElement("div")
   document.body.appendChild(root)
   ReactDOM.render(

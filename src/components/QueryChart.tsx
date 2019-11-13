@@ -59,7 +59,6 @@ export class QueryChart extends React.Component<
       loading: false,
       response: getCached(JSON.stringify(props.type))
     }
-    this.runQuery = this.runQuery.bind(this)
   }
 
   async runQuery() {
@@ -172,7 +171,7 @@ export class QueryChart extends React.Component<
       return (
         <MetadataItem label={this.props.type.type} compact>
           <Button
-            onClick={this.runQuery}
+            onClick={this.runQuery.bind(this)}
             iconBefore="CacheRefresh"
             variant="outline"
             size="xsmall"
