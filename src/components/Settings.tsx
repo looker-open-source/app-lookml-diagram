@@ -69,6 +69,7 @@ export const SettingsContextProvider = (props: { children: JSX.Element }) => {
     // } else {
     //   localStorage.setItem(HIDDEN_COLUMNS, JSON.stringify(hiddenColumns))
     // }
+    /* eslint-disable @typescript-eslint/no-use-before-define */
     setState({ ...state, hiddenColumns })
   }
 

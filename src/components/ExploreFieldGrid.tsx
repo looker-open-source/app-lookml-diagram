@@ -78,7 +78,7 @@ const GroupTable: React.FC<{
       {/* Don't want styles on this. */}
       <tr>
         <td colSpan={4}>
-          <Heading mb="small" mt={index == 0 ? "none" : "small"}>
+          <Heading mb="small" mt={index === 0 ? "none" : "small"}>
             {group}
           </Heading>
         </td>

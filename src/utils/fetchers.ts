@@ -3,12 +3,10 @@ import { LookerSDK, ExtensionContext } from "@looker/extension-sdk-react"
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/dist/sdk/models"
 
 const globalCache: any = {}
-// if (!pending[key]) {
-//   pending[key] = callback()
-// }
-// const val = await pending[key]
-// globalCache[key] = val
-// delete pending[key]
+
+export function getCached<T>(key: string): T {
+  return globalCache[key]
+}
 
 export async function loadCached<T>(
   key: string,
@@ -18,13 +16,10 @@ export async function loadCached<T>(
     return getCached(key)
   } else {
     const val = await callback()
+    /* eslint-disable require-atomic-updates */
     globalCache[key] = val
     return val
   }
-}
-
-export function getCached<T>(key: string): T {
-  return globalCache[key]
 }
 
 export const loadCachedExplore = async (
@@ -67,27 +62,8 @@ export function useExplore(modelName?: string, exploreName?: string) {
   return value
 }
 
-export function useModelDetail(modelName?: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [value, setter] = useState<DetailedModel | undefined>(undefined)
-  useEffect(() => {
-    async function fetcher() {
-      if (modelName) {
-        setter(await loadModelDetail(coreSDK, modelName))
-      }
-    }
-    fetcher()
-  }, [coreSDK, modelName])
-  return value
-}
-
 export const loadModel = async (sdk: LookerSDK, modelName: string) => {
-  return (await loadAllModels(sdk)).find(m => m.name == modelName)
-}
-
-export interface DetailedModel {
-  model: ILookmlModel
-  explores: ILookmlModelExplore[]
+  return (await loadAllModels(sdk)).find(m => m.name === modelName)
 }
 
 export async function loadModelDetail(
@@ -104,4 +80,23 @@ export async function loadModelDetail(
     model,
     explores
   }
+}
+
+export function useModelDetail(modelName?: string) {
+  const { coreSDK } = useContext(ExtensionContext)
+  const [value, setter] = useState<DetailedModel | undefined>(undefined)
+  useEffect(() => {
+    async function fetcher() {
+      if (modelName) {
+        setter(await loadModelDetail(coreSDK, modelName))
+      }
+    }
+    fetcher()
+  }, [coreSDK, modelName])
+  return value
+}
+
+export interface DetailedModel {
+  model: ILookmlModel
+  explores: ILookmlModelExplore[]
 }

@@ -8,7 +8,7 @@ const WideSelect = styled(Select)`
   width: 100%;
 `
 
-export const ExplorePicker: React.FC = props => {
+export const ExplorePicker: React.FC = () => {
   const models = useAllModels() || []
   const currentModel = useCurrentModel()
   const history = useHistory()

@@ -11,9 +11,6 @@ import {
   PageMaster
 } from "../components-generalized/Page"
 import { ModelRelationshipsCustomizer } from "./ModelRelationshipsCustomizer"
-import _flatten from "lodash/flatten"
-import _values from "lodash/values"
-import _escape from "lodash/escape"
 import {
   ILookmlModelExplore,
   ILookmlModelExploreJoins
@@ -27,7 +24,7 @@ const UnpaddedMaster = styled(PageMaster)`
   padding: 0;
 `
 
-export const ModelRelationships: React.FC = props => {
+export const ModelRelationships: React.FC = () => {
   const { modelName } = usePathNames()
   const modelDetail = useModelDetail(modelName)
   const [selectedExplore, setSelectedExplore] = useState<ILookmlModelExplore>()

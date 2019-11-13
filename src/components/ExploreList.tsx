@@ -92,7 +92,7 @@ export const ExploreList: React.FC = props => {
               <MenuGroup label="Explores" key="explores">
                 {currentModel.explores!.filter(notHidden).map(explore => (
                   <MenuItem
-                    current={exploreName == explore.name}
+                    current={exploreName === explore.name}
                     key={explore.name}
                     onClick={() =>
                       history.push(

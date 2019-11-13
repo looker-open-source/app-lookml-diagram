@@ -5,7 +5,9 @@
   "scripts": {
     "start": "webpack-dev-server --https --no-inline --no-hot",
     "test": "tsc --noEmit",
-    "build": "yarn test && webpack --mode=production"
+    "build": "yarn test && webpack --mode=production",
+    "lint": "eslint '**/*.ts{,x}'",
+    "lint-fix": "eslint '**/*.ts{,x}' --fix"
   },
   "license": "MIT",
   "dependencies": {
@@ -48,7 +50,19 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
     "babel-preset-nano-react-app": "^0.1.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.19.1",
     "typescript": "^3.6.3"
   },
   "babel": {

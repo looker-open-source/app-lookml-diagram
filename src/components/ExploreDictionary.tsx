@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import {
   ILookmlModelExplore,
-  ILookmlModelExploreField,
-  ILookmlModel
+  ILookmlModelExploreField
 } from "@looker/sdk/dist/sdk/models"
 import { Text, Button, Box, Divider } from "looker-lens"
 import { exploreURL } from "../utils/urls"

@@ -130,7 +130,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
                   key="item"
                   onClick={() => {
                     const item = result.item
-                    if (item.type == "field") {
+                    if (item.type === "field") {
                       if (item.exploreNames.length > 1) {
                         selectedResult
                           ? setSelectedResult(undefined)
@@ -157,10 +157,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
                   <MatchPreview matches={result.matches} item={result.item} />
                 </BlockMenuItem>
                 {selectedResult &&
-                  selectedResult == result.item &&
+                  selectedResult === result.item &&
                   selectedResult.exploreNames.map(explore => {
                     const exploreData = modelDetail.explores.find(
-                      e => e.name == explore
+                      e => e.name === explore
                     )
                     return (
                       <BlockMenuItemChild
@@ -184,7 +184,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ query }) => {
           })}
         </Box>
       )}
-      {results.length == 0 && modelDetail && (
+      {results.length === 0 && modelDetail && (
         <Box key="no-results" m="xxxlarge" textAlign="center">
           <Text variant="subdued">No Results</Text>
         </Box>
@@ -203,9 +203,9 @@ const MatchPreview: React.FC<{
   item: SearchResult
 }> = ({ matches, item }) => {
   const firstMatch = matches[0]
-  if (firstMatch && firstMatch.key == "label") {
+  if (firstMatch && firstMatch.key === "label") {
     return <SearchResultString match={firstMatch} />
-  } else if (firstMatch && firstMatch.key == "description") {
+  } else if (firstMatch && firstMatch.key === "description") {
     return (
       <>
         <Text fontSize="small">{item.label}</Text>
@@ -215,7 +215,7 @@ const MatchPreview: React.FC<{
     )
   } else if (
     firstMatch &&
-    (firstMatch.key == "name" || firstMatch.key == "sql")
+    (firstMatch.key === "name" || firstMatch.key === "sql")
   ) {
     return (
       <>
@@ -244,7 +244,7 @@ const SearchResultString: React.FC<{
 }> = ({ match, fontSize }) => {
   fontSize = fontSize || "small"
   let cursor = 0
-  let parts: JSX.Element[] = []
+  const parts: JSX.Element[] = []
   const str = match.value
   match.indices.forEach(([start, end], i) => {
     if (cursor < start) {

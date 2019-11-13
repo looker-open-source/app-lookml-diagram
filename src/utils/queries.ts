@@ -38,23 +38,6 @@ export interface Histogram {
   data: { value: number; min: number; max: number }[]
 }
 
-export async function runChartQuery(
-  sdk: LookerSDK,
-  type: QueryChartType
-): Promise<SimpleResult> {
-  if (type.type == "Values") {
-    const result = await loadCached(JSON.stringify(type), () =>
-      getTopValues({ sdk, ...type })
-    )
-    return result
-  } else if (type.type == "Distribution") {
-    const result = await loadCached(JSON.stringify(type), () =>
-      getDistribution({ sdk, ...type })
-    )
-    return result
-  }
-}
-
 function formatData(d: any): SimpleDatum {
   const link = d.links && d.links[0] && d.links[0].url
   const string = d.rendered || `${d.value}`
@@ -70,12 +53,11 @@ export function countFieldForField({
   field: ILookmlModelExploreField
 }): ILookmlModelExploreField | undefined {
   return explore.fields.measures.filter(
-    f => f.label_short === "Count" && f.view_label == field.view_label
+    f => f.label_short === "Count" && f.view_label === field.view_label
   )[0]
 }
 
 export function canGetTopValues({
-  model,
   explore,
   field
 }: {
@@ -89,7 +71,6 @@ export function canGetTopValues({
 }
 
 export function canGetDistribution({
-  model,
   explore,
   field
 }: {
@@ -224,7 +205,7 @@ export async function getDistribution({
 
     histogram = {
       data: bins.map(([min, max], i) => {
-        const row = histogramQR.data.filter((d: any) => d.bin.value == i)[0]
+        const row = histogramQR.data.filter((d: any) => d.bin.value === i)[0]
         return {
           value: row ? row[countField.name].value : 0,
           min,
@@ -246,6 +227,23 @@ export async function getDistribution({
       ]
     ],
     max: [undefined, undefined]
+  }
+}
+
+export async function runChartQuery(
+  sdk: LookerSDK,
+  type: QueryChartType
+): Promise<SimpleResult> {
+  if (type.type === "Values") {
+    const result = await loadCached(JSON.stringify(type), () =>
+      getTopValues({ sdk, ...type })
+    )
+    return result
+  } else if (type.type === "Distribution") {
+    const result = await loadCached(JSON.stringify(type), () =>
+      getDistribution({ sdk, ...type })
+    )
+    return result
   }
 }
 

@@ -3,7 +3,7 @@ import { ThemeProvider, theme } from "looker-lens"
 import { DataDictionary } from "./DataDictionary"
 import { SettingsContextProvider } from "./Settings"
 
-export default () => (
+export const Extension: React.FC = () => (
   <ThemeProvider theme={theme}>
     <SettingsContextProvider>
       <DataDictionary />

@@ -1,4 +1,4 @@
-import { useParams, useRouteMatch } from "react-router-dom"
+import { useRouteMatch } from "react-router-dom"
 import { useAllModels, useExplore } from "./fetchers"
 
 export function internalExploreURL({
@@ -25,18 +25,6 @@ export function relationshipsURL({ model }: { model: string }) {
 
 export function internalModelURL({ model }: { model: string }) {
   return `/models/${encodeURIComponent(model)}`
-}
-
-export function useCurrentModel() {
-  const { modelName } = usePathNames()
-  const models = useAllModels()
-  if (!modelName) {
-    return (
-      models &&
-      models.filter(m => m.explores && m.explores.some(e => !e.hidden))[0]
-    )
-  }
-  return models && models.find(m => m.name == modelName)
 }
 
 export function usePathNames(): {
@@ -71,4 +59,16 @@ export function usePathNames(): {
 export function useCurrentExplore() {
   const { modelName, exploreName } = usePathNames()
   return useExplore(modelName, exploreName)
+}
+
+export function useCurrentModel() {
+  const { modelName } = usePathNames()
+  const models = useAllModels()
+  if (!modelName) {
+    return (
+      models &&
+      models.filter(m => m.explores && m.explores.some(e => !e.hidden))[0]
+    )
+  }
+  return models && models.find(m => m.name === modelName)
 }

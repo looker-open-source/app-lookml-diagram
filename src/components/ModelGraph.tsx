@@ -14,6 +14,7 @@ import {
   ILookmlModelExploreJoins
 } from "@looker/sdk/dist/sdk/models"
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { ForceGraph2D, ForceGraph3D } = require("react-force-graph")
 
 interface GraphNode {
@@ -73,9 +74,9 @@ function graphDataForExplore(model: DetailedModel): GraphData {
   model.explores.forEach(explore => {
     explore.joins!.forEach(join => {
       // These nodes represent views that are not explores
-      if (!nodes.some(n => n.id == join.name!)) {
+      if (!nodes.some(n => n.id === join.name!)) {
         const fields = _flatten(_values(explore.fields)).filter(
-          f => !f.hidden && f.scope == join.name!
+          f => !f.hidden && f.scope === join.name!
         )
         nodes.push({
           id: join.name!,
@@ -138,7 +139,7 @@ export const ModelGraph: React.FC<ModelGraphProps> = ({
   const handleNodeClick = useCallback(
     (node: GraphNode) => {
       setSelectedJoin(undefined)
-      setSelectedExplore(model.explores.find(e => e.name == node.exploreName))
+      setSelectedExplore(model.explores.find(e => e.name === node.exploreName))
     },
     [setSelectedExplore, model]
   )
