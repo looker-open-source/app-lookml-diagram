@@ -1,5 +1,6 @@
 import React from "react"
-import { Box, Text, styled, Flex, FlexItem } from "looker-lens"
+import { Box, Text, Flex, FlexItem } from "@looker/components"
+import styled from "styled-components"
 
 export const MetadataList = styled.div``
 
@@ -17,8 +18,8 @@ export const MetadataItem = ({
   if (compact) {
     return (
       <Flex my="large">
-        <FlexItem>
-          <Text fontSize="small" fontWeight="bold" flex="0 0 auto">
+        <FlexItem flex="0 0 auto">
+          <Text fontSize="small" fontWeight="bold">
             {label}
           </Text>
         </FlexItem>
@@ -32,8 +33,8 @@ export const MetadataItem = ({
       <Box my="large">
         <Box>
           <Flex my="large">
-            <FlexItem>
-              <Text fontSize="small" fontWeight="bold" flex="0 0 auto">
+            <FlexItem flex="0 0 auto">
+              <Text fontSize="small" fontWeight="bold">
                 {label}
               </Text>
             </FlexItem>

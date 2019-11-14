@@ -1,4 +1,4 @@
-import { Spinner } from "looker-lens"
+import { Spinner } from "@looker/components"
 import React from "react"
 import styled from "styled-components"
 

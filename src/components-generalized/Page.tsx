@@ -1,5 +1,11 @@
 import React from "react"
-import { FlexItem, Flex, Heading, Button, Icon } from "looker-lens"
+import {
+  FlexItem,
+  Flex,
+  Heading,
+  Icon,
+  ButtonTransparent
+} from "@looker/components"
 import styled from "styled-components"
 
 export const Page = styled(Flex)`
@@ -57,14 +63,9 @@ export const PageDetail: React.FC<PageDetailProps> = props => {
           <Heading>{props.title}</Heading>
         </FlexItem>
         <FlexItem flex="0 0 auto">
-          <Button
-            p="none"
-            variant="transparent"
-            color="neutral"
-            onClick={props.onClose}
-          >
+          <ButtonTransparent p="none" color="neutral" onClick={props.onClose}>
             <Icon name="Close" size="1.25rem" />
-          </Button>
+          </ButtonTransparent>
         </FlexItem>
       </Flex>
       {props.children}

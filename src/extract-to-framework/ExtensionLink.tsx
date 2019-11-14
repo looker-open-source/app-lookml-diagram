@@ -1,11 +1,11 @@
 import React from "react"
-import { Link, LinkProps } from "looker-lens"
+import { Link, LinkProps } from "@looker/components"
 import { ExtensionContext } from "@looker/extension-sdk-react"
 import { Link as InternalLink } from "react-router-dom"
 
 export { InternalLink }
 
-export const ExternalLink: React.FC<LinkProps> = props => {
+export const ExternalLink: React.FC<Omit<LinkProps, "color">> = props => {
   return (
     <ExtensionContext.Consumer>
       {context => {

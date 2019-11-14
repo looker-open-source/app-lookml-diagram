@@ -4,7 +4,7 @@ import {
   ILookmlModel,
   ILookmlModelExplore
 } from "@looker/sdk/dist/sdk/models"
-import { Button, styled, Flex, FlexItem, Divider } from "looker-lens"
+import { Flex, FlexItem, Divider, ButtonTransparent } from "@looker/components"
 import { FieldName, Enumerations } from "./ExploreFieldGrid"
 import humanize from "humanize-string"
 import { SQLSnippet } from "./SQLSnippet"
@@ -17,6 +17,7 @@ import {
   MetadataList
 } from "../components-generalized/MetadataList"
 import { Tags } from "../components-generalized/Tags"
+import styled from "styled-components"
 
 const DetailPane = styled.div``
 
@@ -94,21 +95,17 @@ export const FieldDetail = ({
         <FlexItem flex="0 0 auto">
           {field.lookml_link && (
             <ExternalLink target="_blank" href={field.lookml_link}>
-              <Button
-                iconBefore="LogoRings"
-                variant="transparent"
-                size="xsmall"
-              >
+              <ButtonTransparent iconBefore="LogoRings" size="xsmall">
                 Go to LookML
-              </Button>
+              </ButtonTransparent>
             </ExternalLink>
           )}
         </FlexItem>
         <FlexItem flex="1 1 auto" textAlign="right">
           <ExternalLink target="_blank" href={exploreFieldURL(explore, field)}>
-            <Button iconBefore="Explore" variant="transparent" size="xsmall">
+            <ButtonTransparent iconBefore="Explore" size="xsmall">
               Explore with Field
-            </Button>
+            </ButtonTransparent>
           </ExternalLink>
         </FlexItem>
       </Flex>

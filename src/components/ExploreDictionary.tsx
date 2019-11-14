@@ -3,7 +3,7 @@ import {
   ILookmlModelExplore,
   ILookmlModelExploreField
 } from "@looker/sdk/dist/sdk/models"
-import { Text, Button, Box, Divider } from "looker-lens"
+import { Text, Button, Box, Divider, ButtonOutline } from "@looker/components"
 import { exploreURL } from "../utils/urls"
 import { ExploreFieldGrid } from "./ExploreFieldGrid"
 import {
@@ -40,14 +40,9 @@ export const ExploreDictionary: React.FC = () => {
         <PageHeaderControls>
           <ViewCustomizer />
           <ExternalLink target="_blank" href={exploreURL(explore)}>
-            <Button
-              iconBefore="Explore"
-              ml="large"
-              variant="outline"
-              size="small"
-            >
+            <ButtonOutline iconBefore="Explore" ml="large" size="small">
               Explore
-            </Button>
+            </ButtonOutline>
           </ExternalLink>
         </PageHeaderControls>
       </PageHeader>

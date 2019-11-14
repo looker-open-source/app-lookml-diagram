@@ -17,7 +17,7 @@ import {
   ListItem,
   List,
   Heading
-} from "looker-lens"
+} from "@looker/components"
 import { SQLSnippet } from "./SQLSnippet"
 import styled from "styled-components"
 import humanize from "humanize-string"

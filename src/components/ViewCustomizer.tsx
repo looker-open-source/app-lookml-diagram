@@ -7,7 +7,8 @@ import {
   areSettingsDefault,
   resetSettingsToDefault
 } from "./Settings"
-import { styled, FieldCheckbox, Popover, Button, Box } from "looker-lens/dist"
+import { FieldCheckbox, Popover, Box, ButtonOutline } from "@looker/components"
+import styled from "styled-components"
 
 const PopoverBox = styled(Box)`
   // min-width: 150px;
@@ -61,29 +62,27 @@ export const ViewCustomizer = () => {
               <ColumnHideToggle label="SQL" id="sql" settings={settings} />
               <ColumnHideToggle label="Tags" id="tags" settings={settings} />
               {!areSettingsDefault(settings) && (
-                <Button
+                <ButtonOutline
                   iconBefore="Refresh"
-                  variant="outline"
                   onClick={() => resetSettingsToDefault(settings)}
                   size="xsmall"
                 >
                   Reset View
-                </Button>
+                </ButtonOutline>
               )}
             </PopoverBox>
           }
         >
           {(onClick, ref) => (
-            <Button
+            <ButtonOutline
               aria-haspopup="true"
-              variant="outline"
               iconBefore="ViewFile"
               onClick={onClick}
-              innerRef={ref}
+              ref={ref}
               size="small"
             >
               View Options
-            </Button>
+            </ButtonOutline>
           )}
         </Popover>
         // <FieldToggleSwitch

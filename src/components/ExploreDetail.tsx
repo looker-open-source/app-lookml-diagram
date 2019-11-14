@@ -5,7 +5,7 @@ import {
   MetadataItem,
   MetadataList
 } from "../components-generalized/MetadataList"
-import { Flex, FlexItem, Button } from "looker-lens/dist"
+import { Flex, FlexItem, Button, ButtonTransparent } from "@looker/components"
 import { ExternalLink } from "../extract-to-framework/ExtensionLink"
 import { exploreURL } from "../utils/urls"
 import { FieldName } from "./ExploreFieldGrid"
@@ -60,9 +60,9 @@ export const ExploreDetail: React.FC<ExploreDetailProps> = ({
       <Flex>
         <FlexItem flex="1 1 auto" textAlign="center">
           <ExternalLink target="_blank" href={exploreURL(explore)}>
-            <Button iconBefore="Explore" variant="transparent" size="xsmall">
+            <ButtonTransparent iconBefore="Explore" size="xsmall">
               Explore
-            </Button>
+            </ButtonTransparent>
           </ExternalLink>
         </FlexItem>
       </Flex>

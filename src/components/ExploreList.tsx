@@ -1,14 +1,13 @@
 import React, { useState } from "react"
 import {
-  Menu,
+  MenuList,
   MenuItem,
   MenuGroup,
   Text,
   palette,
   Box,
-  InputText,
-  styled
-} from "looker-lens"
+  InputText
+} from "@looker/components"
 import {
   internalExploreURL,
   useCurrentModel,
@@ -18,6 +17,7 @@ import {
 import { useHistory } from "react-router-dom"
 import { SearchResults } from "./SearchResults"
 import { useDebounce } from "use-debounce/lib"
+import styled from "styled-components"
 
 const notHidden = (explore: { hidden?: boolean }) => !explore.hidden
 
@@ -52,7 +52,7 @@ export const ExploreList: React.FC = props => {
   const [debouncedSearch] = useDebounce(search, 100, { leading: true })
 
   return (
-    <Menu customizationProps={menuCustomizations}>
+    <MenuList customizationProps={menuCustomizations}>
       <Box m="medium" mb="none">
         <Text fontWeight="extraBold" fontSize="large">
           Data Dictionary
@@ -111,6 +111,6 @@ export const ExploreList: React.FC = props => {
           )}
         </>
       )}
-    </Menu>
+    </MenuList>
   )
 }

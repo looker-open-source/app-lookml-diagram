@@ -1,5 +1,5 @@
 import React from "react"
-import { styled } from "looker-lens"
+import styled from "styled-components"
 
 const Tag = styled.span`
   background: #dee1e5;

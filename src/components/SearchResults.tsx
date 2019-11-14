@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react"
-import { MenuItem, Box, Text, RampSizes } from "looker-lens/dist"
+import { MenuItem, Box, Text } from "@looker/components"
+import { FontSizeProps } from "@looker/design-tokens"
 import { useCurrentModel, internalExploreURL } from "../utils/routes"
 import Fuse from "fuse.js"
 import {
@@ -8,7 +9,6 @@ import {
   ILookmlModelExploreFieldset
 } from "@looker/sdk/dist/sdk/models"
 import { useHistory } from "react-router"
-import { ResponsiveValue } from "styled-system"
 import styled from "styled-components"
 import { useModelDetail, DetailedModel } from "../utils/fetchers"
 
@@ -240,8 +240,7 @@ interface FuseMatch {
 
 const SearchResultString: React.FC<{
   match: FuseMatch
-  fontSize?: ResponsiveValue<RampSizes>
-}> = ({ match, fontSize }) => {
+} & FontSizeProps> = ({ match, fontSize }) => {
   fontSize = fontSize || "small"
   let cursor = 0
   const parts: JSX.Element[] = []

@@ -1,14 +1,15 @@
 import React from "react"
 import {
-  Button,
   Spinner,
   Table,
   TableBody,
   TableRow,
   TableDataCell,
   Box,
-  Text
-} from "looker-lens/dist"
+  Text,
+  ButtonOutline,
+  ButtonTransparent
+} from "@looker/components"
 import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
@@ -158,9 +159,9 @@ export class QueryChart extends React.Component<
                   target="_blank"
                   href={this.state.response.moreLink}
                 >
-                  <Button variant="transparent" size="xsmall">
+                  <ButtonTransparent size="xsmall">
                     Explore More
-                  </Button>
+                  </ButtonTransparent>
                 </ExternalLink>
               </Box>
             )}
@@ -170,14 +171,13 @@ export class QueryChart extends React.Component<
     } else {
       return (
         <MetadataItem label={this.props.type.type} compact>
-          <Button
+          <ButtonOutline
             onClick={this.runQuery.bind(this)}
             iconBefore="CacheRefresh"
-            variant="outline"
             size="xsmall"
           >
             Calculate
-          </Button>
+          </ButtonOutline>
         </MetadataItem>
       )
     }

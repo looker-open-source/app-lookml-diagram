@@ -1,14 +1,14 @@
 import React, { useContext, useState, useCallback, useMemo } from "react"
 import { DetailedModel } from "../utils/fetchers"
 import PlainPageLoading from "../components-generalized/PlainPageLoading"
-import { palette } from "looker-lens"
+import { palette } from "@looker/components"
 import { SettingsContext } from "./Settings"
 import _flatten from "lodash/flatten"
 import _values from "lodash/values"
 import _escape from "lodash/escape"
 import { scaleLinear } from "d3-scale"
 import { extent } from "d3-array"
-import { injectGlobal } from "styled-components"
+import { createGlobalStyle } from "styled-components"
 import {
   ILookmlModelExplore,
   ILookmlModelExploreJoins
@@ -36,7 +36,7 @@ interface GraphData {
   links: GraphLink[]
 }
 
-injectGlobal`
+const TooltipStyles = createGlobalStyle`
   .graph-tooltip {
     font-family: inherit !important;
     padding: 5px !important;
@@ -208,19 +208,24 @@ export const ModelGraph: React.FC<ModelGraphProps> = ({
       link === highlightLink ? 4 : 0
   }
 
-  return is2D ? (
-    <ForceGraph2D
-      {...sharedParams}
-      nodeCanvasObject={paintRing}
-      nodeCanvasObjectMode={(node: GraphNode) =>
-        highlightNodes.includes(node) ? "before" : undefined
-      }
-    />
-  ) : (
-    <ForceGraph3D
-      {...sharedParams}
-      linkDirectionalParticles={0}
-      backgroundColor={palette.charcoal700}
-    />
+  return (
+    <>
+      <TooltipStyles />
+      {is2D ? (
+        <ForceGraph2D
+          {...sharedParams}
+          nodeCanvasObject={paintRing}
+          nodeCanvasObjectMode={(node: GraphNode) =>
+            highlightNodes.includes(node) ? "before" : undefined
+          }
+        />
+      ) : (
+        <ForceGraph3D
+          {...sharedParams}
+          linkDirectionalParticles={0}
+          backgroundColor={palette.charcoal700}
+        />
+      )}
+    </>
   )
 }

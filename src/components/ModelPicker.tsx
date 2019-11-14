@@ -1,8 +1,9 @@
 import React from "react"
-import { Select, Box, styled } from "looker-lens"
+import { Select, Box } from "@looker/components"
 import { internalModelURL, useCurrentModel } from "../utils/routes"
 import { useAllModels } from "../utils/fetchers"
 import { useHistory } from "react-router"
+import styled from "styled-components"
 
 const WideSelect = styled(Select)`
   width: 100%;

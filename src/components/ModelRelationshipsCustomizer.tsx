@@ -1,6 +1,6 @@
 import React from "react"
 import { SettingsContextConsumer } from "./Settings"
-import { Popover, Button, Box } from "looker-lens/dist"
+import { Popover, Box, ButtonOutline } from "@looker/components"
 import { ColumnHideToggle } from "./ViewCustomizer"
 
 export const ModelRelationshipsCustomizer = () => {
@@ -19,16 +19,15 @@ export const ModelRelationshipsCustomizer = () => {
           }
         >
           {(onClick, ref) => (
-            <Button
+            <ButtonOutline
               aria-haspopup="true"
-              variant="outline"
               iconBefore="ViewFile"
               onClick={onClick}
-              innerRef={ref}
+              ref={ref}
               size="small"
             >
               View Options
-            </Button>
+            </ButtonOutline>
           )}
         </Popover>
       )}

@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { useModelDetail } from "../utils/fetchers"
 import { usePathNames } from "../utils/routes"
-import { styled } from "looker-lens"
 import {
   Page,
   PageHeader,
@@ -19,6 +18,7 @@ import { ExploreDetail } from "./ExploreDetail"
 import { JoinDetail } from "./JoinDetail"
 import { ModelGraph } from "./ModelGraph"
 import Measure from "react-measure"
+import styled from "styled-components"
 
 const UnpaddedMaster = styled(PageMaster)`
   padding: 0;
@@ -49,7 +49,7 @@ export const ModelRelationships: React.FC = () => {
           }}
         >
           {({ measureRef }) => (
-            <UnpaddedMaster innerRef={measureRef}>
+            <UnpaddedMaster ref={measureRef}>
               <ModelGraph
                 width={graphDimensions.width}
                 height={graphDimensions.height}
