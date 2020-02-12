@@ -4,3 +4,4 @@ dist
 .cache
 .npmrc
 yarn-error.log
+.idea/
