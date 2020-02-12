@@ -7,7 +7,7 @@ This is a template for a React and TypeScript extension.
 - Install dependencies with Yarn: `yarn install`
 - To run a development server: `yarn start`
 
-  In LookML:
+  In manifest for a LookML project on your local helltool instance:
 
   ```
   application: data-dictionary-dev {
