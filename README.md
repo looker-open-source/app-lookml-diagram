@@ -1,5 +1,8 @@
 # Data Dictionary Extension
 
+- Before `yarn install` you may need to copy your `.npmrc` from helltool
+  so you can install from Nexus.
+
 This is a template for a React and TypeScript extension.
 
 # Usage
@@ -14,6 +17,13 @@ This is a template for a React and TypeScript extension.
     label: "Data Dictionary (dev)"
     uri: "https://localhost:8080/bundle.js"
   }
+  ```
+  
+  And you will also need to add a dummy model to the project.
+  
+  ```
+    connection: "thelook"
+
   ```
 
 - To do a build: `yarn build` (You should commit the built file.)
