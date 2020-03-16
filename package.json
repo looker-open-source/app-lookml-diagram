@@ -5,13 +5,13 @@
   "scripts": {
     "start": "webpack-dev-server --https --no-inline --no-hot",
     "test": "tsc --noEmit",
-    "build": "yarn test && webpack --mode=production",
+    "build": "webpack --mode=production",
     "lint": "eslint '**/*.ts{,x}'",
     "lint-fix": "eslint '**/*.ts{,x}' --fix"
   },
   "license": "MIT",
   "dependencies": {
-    "@looker/components": "^0.7.2",
+    "@looker/components": "^0.7.25",
     "@looker/design-tokens": "^0.7.2",
     "@looker/extension-sdk": "^0.1.8",
     "@looker/extension-sdk-react": "^0.1.8",
@@ -25,6 +25,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-measure": "^2.0.5",
     "@types/react-router-dom": "^5.1.0",
+    "@types/react-sticky-el": "^1.0.2",
     "@types/react-syntax-highlighter": "^11.0.0",
     "@types/readable-stream": "^2.3.5",
     "@types/recharts": "^1.1.21",
@@ -40,6 +41,7 @@
     "react-force-graph": "^1.27.1",
     "react-measure": "^2.3.0",
     "react-router-dom": "^5.1.2",
+    "react-sticky-el": "^1.1.0",
     "react-syntax-highlighter": "^11.0.2",
     "recharts": "^1.7.1",
     "styled-components": "^4.4.1",
@@ -55,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
     "babel-preset-nano-react-app": "^0.1.0",
+    "css-loader": "^3.4.2",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-config-standard": "^14.1.0",
@@ -64,7 +67,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
+    "file-loader": "^6.0.0",
     "prettier": "^1.19.1",
+    "style-loader": "^1.1.3",
     "typescript": "^3.7.2"
   },
   "babel": {

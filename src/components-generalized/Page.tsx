@@ -55,7 +55,7 @@ interface PageDetailProps {
   onClose: () => void
 }
 
-export const PageDetail: React.FC<PageDetailProps> = props => {
+export const PageDetail: React.FC<PageDetailProps> = (props: any) => {
   return (
     <DetailWrapper>
       <Flex>

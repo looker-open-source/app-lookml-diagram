@@ -1,5 +1,7 @@
 import React from "react"
 import {
+  FlexItem,
+  Heading,
   Spinner,
   Table,
   TableBody,
@@ -170,15 +172,23 @@ export class QueryChart extends React.Component<
       }
     } else {
       return (
-        <MetadataItem label={this.props.type.type} compact>
+
+        <FlexItem pb="xlarge">
+          <Heading
+            as="h4"
+            fontSize="small"
+            fontWeight="semiBold"
+            mb="small"
+          >
+            { this.props.type.type }
+          </Heading>
           <ButtonOutline
-            onClick={this.runQuery.bind(this)}
             iconBefore="CacheRefresh"
-            size="xsmall"
+            onClick={this.runQuery.bind(this)}
           >
             Calculate
           </ButtonOutline>
-        </MetadataItem>
+        </FlexItem>
       )
     }
   }

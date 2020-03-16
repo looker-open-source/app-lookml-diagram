@@ -5,7 +5,7 @@ import { Link as InternalLink } from "react-router-dom"
 
 export { InternalLink }
 
-export const ExternalLink: React.FC<Omit<LinkProps, "color">> = props => {
+export const ExternalLink: React.FC<Omit<LinkProps, "color">> = (props: any) => {
   return (
     <ExtensionContext.Consumer>
       {context => {
