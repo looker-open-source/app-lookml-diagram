@@ -15,9 +15,9 @@ import values from "lodash/values"
 import flatten from "lodash/flatten"
 import toPairs from "lodash/toPairs"
 import orderBy from "lodash/orderBy"
-import { ExternalLink } from "../extract-to-framework/ExtensionLink";
+import { ExternalLink } from "./ExternalLink";
 import { exploreURL } from "../utils/urls";
-import {iColumnDescriptor} from "./interfaces";
+import {ColumnDescriptor} from "./interfaces";
 import { ILookmlModel } from "@looker/sdk";
 
 
@@ -32,14 +32,14 @@ export const ExploreSearch = styled(InputSearch)`
 `
 
 
-export const PanelFields: React.FC<{columns: iColumnDescriptor[], model: ILookmlModel}> = ({ columns, model }) => {
+export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlModel}> = ({ columns, model }) => {
   const currentExplore = useCurrentExplore()
   const [search, setSearch] = useState('')
   const [shownColumns, setShownColumns] = useState([
     'label_short',
     'description',
     'name',
-    'category',
+    'type',
     'sql',
     'tags',
   ])

@@ -20,7 +20,7 @@ export const ExploreList: React.FC<{search: String}> = ({ search }) => {
     <FlexItem pt="xlarge">
       <List>
         { currentModel && currentModel.explores.map((explore: any) => {
-          if (!search || explore.label.includes(search)) {
+          if (!explore.hidden && (!search || explore.label.toLowerCase().includes(search.toLowerCase()))) {
             return (
               <ListItem mb="0" key={explore.name}>
                 <CustomLink

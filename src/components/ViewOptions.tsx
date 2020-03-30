@@ -5,7 +5,7 @@ import {
   Popover,
   PopoverContent
 } from "@looker/components";
-import { iColumnDescriptor } from "./interfaces";
+import { ColumnDescriptor } from "./interfaces";
 
 const checkChange = (setShownColumns: (newState: string[]) => void, shownColumns: string[], columnDesc: string) => {
   return (e: any) => {
@@ -18,7 +18,7 @@ const checkChange = (setShownColumns: (newState: string[]) => void, shownColumns
 }
 
 export const ViewOptions: React.FC<{
-  columns: iColumnDescriptor[],
+  columns: ColumnDescriptor[],
   shownColumns: string[],
   setShownColumns: (newState: string[]) => void}
 > = ({
