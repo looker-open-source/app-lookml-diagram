@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<tr
+  className="TableRow-sc-16332ku sc-bdVaJa cHtJEZ"
+  onClick={[Function]}
+>
+  <td
+    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    color="palette.charcoal700"
+  >
+    Comment
+  </td>
+  <td
+    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    color="palette.charcoal700"
+  />
+  <td
+    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    color="palette.charcoal700"
+  >
+    databases.comment
+  </td>
+  <td
+    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    color="palette.charcoal700"
+  >
+    String
+  </td>
+  <td
+    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    color="palette.charcoal700"
+  >
+    <pre
+      style={
+        Object {
+          "margin": "0",
+        }
+      }
+    >
+      <code
+        className="sc-EHOje kAGUsL"
+        style={
+          Object {
+            "MozHyphens": "none",
+            "MozTabSize": "4",
+            "OTabSize": "4",
+            "WebkitHyphens": "none",
+            "color": "#393A34",
+            "direction": "ltr",
+            "fontFamily": "\\"Consolas\\", \\"Bitstream Vera Sans Mono\\", \\"Courier New\\", Courier, monospace",
+            "fontSize": "0.95em",
+            "hyphens": "none",
+            "lineHeight": "1.2em",
+            "msHyphens": "none",
+            "tabSize": "4",
+            "textAlign": "left",
+            "whiteSpace": "pre",
+            "wordBreak": "normal",
+            "wordSpacing": "normal",
+          }
+        }
+      >
+        \${
+        <span
+          className="token"
+          style={
+            Object {
+              "color": "#0000ff",
+            }
+          }
+        >
+          TABLE
+        </span>
+        }
+        <span
+          className="token"
+          style={
+            Object {
+              "color": "#393A34",
+            }
+          }
+        >
+          .
+        </span>
+        <span
+          className="token"
+          style={
+            Object {
+              "color": "#0000ff",
+            }
+          }
+        >
+          COMMENT
+        </span>
+         
+      </code>
+    </pre>
+  </td>
+  <td
+    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    color="palette.charcoal700"
+  />
+</tr>
+`;

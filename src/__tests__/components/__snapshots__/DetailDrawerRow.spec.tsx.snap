@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<tr
+  className="TableRow-sc-16332ku iaBpXn"
+>
+  <td
+    className="TableDataCell-sc-1rh91s3 fskiHy"
+    color="palette.charcoal700"
+  >
+    Field Label
+  </td>
+  <td
+    className="TableDataCell-sc-1rh91s3 fskiHy break"
+    color="palette.charcoal700"
+  >
+    <code
+      className="TextBase-sc-1rkc9wq Code-sc-1ccl49 jodBJW break"
+      color="palette.charcoal700"
+      fontFamily="code"
+      fontSize="small"
+    >
+      Comment
+    </code>
+  </td>
+</tr>
+`;

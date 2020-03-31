@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Array [
+  <div
+    className="FlexItem-sc-1re6mwg fxCVEF"
+  >
+    <ul
+      className="List-sc-1dd290l VHTwG"
+      type="none"
+    >
+      <li
+        className="ListItem-sc-16mi6gz ejtiuJ"
+      >
+        <li
+          bg="#FFFFFF"
+          className="MenuItemListItem-sc-t4lwjd dOUswS sc-bdVaJa dyjsNj"
+          color="#4C535B"
+          fontSize="small"
+          fontWeight="normal"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyUp={[Function]}
+        >
+          <button
+            className="MenuItemButton-sc-f5mc0o iUjhjR"
+            role="menuitem"
+          >
+            Login History
+          </button>
+        </li>
+      </li>
+      <li
+        className="ListItem-sc-16mi6gz ejtiuJ"
+      >
+        <li
+          bg="#FFFFFF"
+          className="MenuItemListItem-sc-t4lwjd dOUswS sc-bdVaJa dyjsNj active"
+          color="#4C535B"
+          fontSize="small"
+          fontWeight="normal"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyUp={[Function]}
+        >
+          <button
+            className="MenuItemButton-sc-f5mc0o iUjhjR"
+            role="menuitem"
+          >
+            Query History
+          </button>
+        </li>
+      </li>
+      <li
+        className="ListItem-sc-16mi6gz ejtiuJ"
+      >
+        <li
+          bg="#FFFFFF"
+          className="MenuItemListItem-sc-t4lwjd dOUswS sc-bdVaJa dyjsNj"
+          color="#4C535B"
+          fontSize="small"
+          fontWeight="normal"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyUp={[Function]}
+        >
+          <button
+            className="MenuItemButton-sc-f5mc0o iUjhjR"
+            role="menuitem"
+          >
+            Load History
+          </button>
+        </li>
+      </li>
+      <li
+        className="ListItem-sc-16mi6gz ejtiuJ"
+      >
+        <li
+          bg="#FFFFFF"
+          className="MenuItemListItem-sc-t4lwjd dOUswS sc-bdVaJa dyjsNj"
+          color="#4C535B"
+          fontSize="small"
+          fontWeight="normal"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyUp={[Function]}
+        >
+          <button
+            className="MenuItemButton-sc-f5mc0o iUjhjR"
+            role="menuitem"
+          >
+            Storage Usage
+          </button>
+        </li>
+      </li>
+      <li
+        className="ListItem-sc-16mi6gz ejtiuJ"
+      >
+        <li
+          bg="#FFFFFF"
+          className="MenuItemListItem-sc-t4lwjd dOUswS sc-bdVaJa dyjsNj"
+          color="#4C535B"
+          fontSize="small"
+          fontWeight="normal"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onKeyUp={[Function]}
+        >
+          <button
+            className="MenuItemButton-sc-f5mc0o iUjhjR"
+            role="menuitem"
+          >
+            Warehouse Metering History
+          </button>
+        </li>
+      </li>
+    </ul>
+  </div>,
+  ")",
+]
+`;

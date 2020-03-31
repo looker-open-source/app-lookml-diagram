@@ -20,8 +20,9 @@ import { ColumnDescriptor } from "./interfaces";
 import { SQLSnippet } from "./SQLSnippet";
 import { Sidebar } from './Sidebar'
 import { SidebarStyleProps } from "./interfaces";
+import { NoModelsAvailable } from "./NoModelsAvailable";
 
-const columns: ColumnDescriptor[] = [
+export const columns: ColumnDescriptor[] = [
   {
     name: 'field-label',
     label: 'Field Label',
@@ -65,18 +66,25 @@ const columns: ColumnDescriptor[] = [
 ]
 
 export const DataDictionary: React.FC<{}> = () => {
-  const models = useAllModels()
+  const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
   const [search, setSearch] = React.useState('')
+
+  let models
+
+  if (unfilteredModels) {
+    models = unfilteredModels.filter(m => m.explores && m.explores.some(e => !e.hidden))
+    if (!models.length) {
+      return <NoModelsAvailable />
+    }
+  }
 
   if (!models) {
     return <Flex alignItems="center" height="100%" justifyContent="center"><Spinner /></Flex>
   }
 
   const toggleFn = () => setSidebarOpen(!sidebarOpen);
-
 
   return (
     <ThemeProvider theme={theme}>

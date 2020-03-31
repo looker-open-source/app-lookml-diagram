@@ -71,6 +71,7 @@ export const DetailDrawer: React.FC<{
                   { columns.map(column => {
                     return (
                       <DetailDrawerRow
+                        key={column.rowValueDescriptor}
                         column={column}
                         field={field}
                       />
