@@ -63,12 +63,12 @@ export function useCurrentExplore() {
 
 export function useCurrentModel() {
   const { modelName } = usePathNames()
-  const models = useAllModels()
+  const modelData = useAllModels()
   if (!modelName) {
     return (
-      models &&
-      models.filter(m => m.explores && m.explores.some(e => !e.hidden))[0]
+      modelData &&
+      modelData.filter(m => m.explores && m.explores.some(e => !e.hidden))[0]
     )
   }
-  return models && models.find(m => m.name === modelName)
+  return modelData && modelData.find(m => m.name === modelName)
 }

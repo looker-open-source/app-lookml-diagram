@@ -1,78 +1,169 @@
-import React from "react"
-import { ExploreList } from "./ExploreList"
-import PlainPageLoading from "../components-generalized/PlainPageLoading"
-import { ExploreDictionary } from "./ExploreDictionary"
-import { Flex, FlexItem, Icon, Heading } from "@looker/components"
-import styled from "styled-components"
-import { useAllModels } from "../utils/fetchers"
-import { usePathNames } from "../utils/routes"
-import { ExplorePicker } from "./ModelPicker"
-import { Switch, Route } from "react-router"
-import { ModelRelationships } from "./ModelRelationships"
+import React, { PureComponent, useState } from "react";
+import {
+  Chip,
+  Flex,
+  FlexItem,
+  Heading,
+  Spinner,
+  theme,
+} from "@looker/components";
+import humanize from 'humanize-string'
+import styled, { ThemeProvider } from "styled-components";
+import { useAllModels } from "../utils/fetchers";
+import "./styles.css";
+import { PanelFields } from "./PanelFields";
+import SidebarToggle from "./SidebarToggle";
+import Spirals from "../images/spirals.png";
+import "./styles.css";
+import { useCurrentModel } from "../utils/routes"
+import { ColumnDescriptor } from "./interfaces";
+import { SQLSnippet } from "./SQLSnippet";
+import { Sidebar } from './Sidebar'
+import { SidebarStyleProps } from "./interfaces";
 
-const NavContainer = styled(Flex)`
-  top: 0;
-  left: 0;
-  height: 100vh;
-  position: absolute;
-  width: 100%;
-  overflow: hidden;
-`
-
-const NavSidebar = styled(FlexItem)`
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: #f5f5f5;
-  border: #e8e8e8 solid;
-  border-width: 0 1px 0 0;
-`
-
-const NavMainPage = styled(FlexItem)`
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  position: relative;
-`
-
-const DictionaryEmptyState: React.FC<{}> = () => {
-  return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      mb="medium"
-      flexDirection="column"
-      height="100vh"
-    >
-      <Icon name="CircleExplore" size={128} color="palette.charcoal300" />
-      <Heading fontSize="xxlarge" color="palette.charcoal300">
-        Pick an explore to see what data is available.
-      </Heading>
-    </Flex>
-  )
-}
+const columns: ColumnDescriptor[] = [
+  {
+    name: 'field-label',
+    label: 'Field Label',
+    rowValueDescriptor: 'label_short',
+    formatter: (x: any) => x,
+  },
+  {
+    name: 'description',
+    label: 'Description',
+    rowValueDescriptor: 'description',
+    formatter: (x: any) => x,
+  },
+  {
+    name: 'lookml-name',
+    label: 'LookML Name',
+    rowValueDescriptor: 'name',
+    formatter: (x: any) => x,
+  },
+  {
+    name: 'type',
+    label: 'Type',
+    rowValueDescriptor: 'type',
+    formatter: (x: any) => humanize(x),
+  },
+  {
+    name: 'sql',
+    label: 'SQL',
+    rowValueDescriptor: 'sql',
+    formatter: (x: any) => <SQLSnippet src={x} />
+  },
+  {
+    name: 'tags',
+    label: 'Tags',
+    rowValueDescriptor: 'tags',
+    formatter: (tags: any) => {
+      return tags.map((tag: string) => (
+        <Chip disabled>{tag}</Chip>
+      ))
+    },
+  },
+]
 
 export const DataDictionary: React.FC<{}> = () => {
   const models = useAllModels()
-  const { exploreName } = usePathNames()
+  const currentModel = useCurrentModel()
+
+  const [sidebarOpen, setSidebarOpen] = React.useState(true)
+  const [search, setSearch] = React.useState('')
+
   if (!models) {
-    return <PlainPageLoading />
+    return <Flex alignItems="center" height="100%" justifyContent="center"><Spinner /></Flex>
   }
+
+  const toggleFn = () => setSidebarOpen(!sidebarOpen);
+
+
   return (
-    <NavContainer justifyContent="stretch">
-      <NavSidebar flex="0 0 300px">
-        <ExploreList>
-          <ExplorePicker />
-        </ExploreList>
-      </NavSidebar>
-      <NavMainPage flex="1 1 auto">
-        <Switch>
-          <Route path="/models/:model/relationships">
-            <ModelRelationships />
-          </Route>
-          <Route path="*">
-            {exploreName ? <ExploreDictionary /> : <DictionaryEmptyState />}
-          </Route>
-        </Switch>
-      </NavMainPage>
-    </NavContainer>
-  )
+    <ThemeProvider theme={theme}>
+      <PageHeader style={{ backgroundImage: "url(" + Spirals + ")" }}>
+        <FlexItem>
+          <Heading as="h1" fontSize="xlarge" fontWeight="semiBold" mb="xsmall">
+            Data Dictionary
+          </Heading>
+        </FlexItem>
+      </PageHeader>
+      <PageLayout open={sidebarOpen}>
+        <LayoutSidebar>
+          {sidebarOpen && <Sidebar
+             models={models}
+             currentModel={currentModel}
+             search={search}
+             setSearch={setSearch}
+          />}
+        </LayoutSidebar>
+        <SidebarDivider open={sidebarOpen}>
+          <SidebarToggle
+            isOpen={sidebarOpen}
+            onClick={toggleFn}
+            headerHeight="114px"
+          />
+        </SidebarDivider>
+        <PageContent>
+          <PanelFields
+            columns={columns}
+            model={currentModel}
+          />
+        </PageContent>
+      </PageLayout>
+    </ThemeProvider>
+  );
 }
+
+
+const PageHeader = styled(Flex)`
+  background-color: ${theme.colors.palette.purple400};
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  background-size: 836px 120px;
+  padding: ${theme.space.large};
+
+  h1 {
+    color: ${theme.colors.palette.white};
+  }
+`;
+
+const PageLayout = styled.div<SidebarStyleProps>`
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: ${({ open }) =>
+    open ? "16.625rem 0 1fr" : "1.5rem 0 1fr"};
+  grid-template-areas: "sidebar divider main";
+  position: relative;
+`;
+
+const PageContent = styled.div`
+  grid-area: main;
+  position: relative;
+`;
+
+const LayoutSidebar = styled.aside`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16.625rem;
+  grid-area: sidebar;
+  z-index: 0;
+`;
+
+const SidebarDivider = styled.div<SidebarStyleProps>`
+  transition: border 0.3s;
+  border-left: 1px solid
+    ${({ theme, open }) =>
+      open ? theme.colors.palette.charcoal200 : "transparent"};
+  grid-area: divider;
+  overflow: visible;
+  position: relative;
+  &:hover {
+    border-left: 1px solid
+      ${({ theme, open }) =>
+        open
+          ? theme.colors.palette.charcoal300
+          : theme.colors.palette.charcoal200};
+  }
+`;
+

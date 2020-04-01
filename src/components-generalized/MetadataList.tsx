@@ -1,8 +1,5 @@
 import React from "react"
 import { Box, Text, Flex, FlexItem } from "@looker/components"
-import styled from "styled-components"
-
-export const MetadataList = styled.div``
 
 export const MetadataItem = ({
   aux,

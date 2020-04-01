@@ -1,116 +1,61 @@
-import React, { useState } from "react"
+import React, { PureComponent, useState } from "react";
+import styled from "styled-components";
 import {
-  MenuList,
+  FlexItem,
+  List,
+  ListItem,
   MenuItem,
-  MenuGroup,
-  Text,
-  palette,
-  Box,
-  InputText
-} from "@looker/components"
-import {
-  internalExploreURL,
-  useCurrentModel,
-  usePathNames,
-  relationshipsURL
-} from "../utils/routes"
-import { useHistory } from "react-router-dom"
-import { SearchResults } from "./SearchResults"
-import { useDebounce } from "use-debounce/lib"
-import styled from "styled-components"
+  theme,
+} from "@looker/components";
+import "./styles.css";
+import { useCurrentExplore} from "../utils/routes";
+import { internalExploreURL, useCurrentModel } from "../utils/routes"
+import { useHistory } from "react-router"
 
-const notHidden = (explore: { hidden?: boolean }) => !explore.hidden
-
-const menuCustomizations = {
-  bg: "#f5f5f5",
-  color: palette.charcoal500,
-  iconColor: palette.purple300,
-  iconSize: 40,
-  marker: {
-    color: palette.purple300,
-    size: 10
-  },
-  hover: {
-    bg: palette.charcoal100,
-    color: palette.charcoal700
-  },
-  current: {
-    bg: palette.charcoal200,
-    color: palette.charcoal700
-  }
-}
-
-const GlobalSearch = styled(InputText)`
-  width: 100%;
-`
-
-export const ExploreList: React.FC = props => {
-  const history = useHistory()
+export const ExploreList: React.FC<{search: String}> = ({ search }) => {
+  const currentExplore = useCurrentExplore()
   const currentModel = useCurrentModel()
-  const { exploreName, isRelationships } = usePathNames()
-  const [search, setSearch] = useState("")
-  const [debouncedSearch] = useDebounce(search, 100, { leading: true })
-
+  const history = useHistory()
   return (
-    <MenuList customizationProps={menuCustomizations}>
-      <Box m="medium" mb="none">
-        <Text fontWeight="extraBold" fontSize="large">
-          Data Dictionary
-        </Text>
-      </Box>
-      {props.children}
-      {currentModel && (
-        <>
-          <Box m="medium" mb="none">
-            <GlobalSearch
-              placeholder="Search Model..."
-              display="block"
-              value={search}
-              // onClear={() => setSearch("")}
-              onChange={e => setSearch(e.currentTarget.value)}
-            />
-          </Box>
-          {search.length ? (
-            <SearchResults query={debouncedSearch} />
-          ) : (
-            <>
-              <MenuGroup label="Information" key="model">
-                <MenuItem
-                  current={isRelationships}
-                  key="relationships"
-                  onClick={() =>
+    <FlexItem pt="xlarge">
+      <List>
+        { currentModel && currentModel.explores.map((explore: any) => {
+          if (!explore.hidden && (!search || explore.label.toLowerCase().includes(search.toLowerCase()))) {
+            return (
+              <ListItem mb="0" key={explore.name}>
+                <CustomLink
+                  onClick={() => {
                     history.push(
-                      relationshipsURL({
-                        model: currentModel.name
+                      internalExploreURL({
+                        model: currentModel.name,
+                        explore: explore.name
                       })
                     )
-                  }
+                  }}
+                  className={currentExplore && explore.name === currentExplore.name ? "active" : null}
                 >
-                  Relationships
-                </MenuItem>
-              </MenuGroup>
-              <MenuGroup label="Explores" key="explores">
-                {currentModel.explores.filter(notHidden).map(explore => (
-                  <MenuItem
-                    current={exploreName === explore.name}
-                    key={explore.name}
-                    onClick={() =>
-                      history.push(
-                        internalExploreURL({
-                          model: currentModel.name,
-                          explore: explore.name
-                        })
-                      )
-                    }
-                  >
-                    {explore.label}
-                  </MenuItem>
-                ))}
-              </MenuGroup>
-            </>
-          )}
-        </>
-      )}
-    </MenuList>
+                  {explore.label}
+                </CustomLink>
+              </ListItem>
+            )
+          }
+        }) }
+      </List>
+    </FlexItem>
   )
 }
+
+const CustomLink = styled(MenuItem)`
+  color: ${theme.colors.palette.purple700};
+  display: block;
+  padding: ${theme.space.small} ${theme.space.large};
+  transition: all 0.3s ease;
+
+  &.active,
+  &:hover,
+  &:focus {
+    background-color: ${theme.colors.palette.purple000};
+    color: ${theme.colors.palette.purple400};
+    text-decoration: none;
+  }
+`;

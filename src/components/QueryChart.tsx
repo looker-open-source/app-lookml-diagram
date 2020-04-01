@@ -1,5 +1,7 @@
 import React from "react"
 import {
+  FlexItem,
+  Heading,
   Spinner,
   Table,
   TableBody,
@@ -14,7 +16,7 @@ import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar } from "recharts"
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { ExternalLink } from "../extract-to-framework/ExtensionLink"
+import { ExternalLink } from "./ExternalLink"
 import { getCached } from "../utils/fetchers"
 import { MetadataItem } from "../components-generalized/MetadataList"
 
@@ -170,15 +172,23 @@ export class QueryChart extends React.Component<
       }
     } else {
       return (
-        <MetadataItem label={this.props.type.type} compact>
+
+        <FlexItem pb="xlarge">
+          <Heading
+            as="h4"
+            fontSize="small"
+            fontWeight="semiBold"
+            mb="small"
+          >
+            { this.props.type.type }
+          </Heading>
           <ButtonOutline
-            onClick={this.runQuery.bind(this)}
             iconBefore="CacheRefresh"
-            size="xsmall"
+            onClick={this.runQuery.bind(this)}
           >
             Calculate
           </ButtonOutline>
-        </MetadataItem>
+        </FlexItem>
       )
     }
   }
