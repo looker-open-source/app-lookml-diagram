@@ -2,9 +2,9 @@ import {
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField
-} from "@looker/sdk/dist/sdk/models"
+} from '@looker/sdk/dist/sdk/3.1/models'
 import { exploreURL } from "./urls"
-import { LookerSDK } from "@looker/extension-sdk-react"
+import { Looker31SDK as LookerSDK } from '@looker/sdk/dist/sdk/3.1/methods'
 import { loadCached } from "./fetchers"
 
 interface FieldInfo {

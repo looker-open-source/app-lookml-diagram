@@ -36,9 +36,9 @@ export const Sidebar: React.FC<{
           label="Select a Model"
           labelFontSize="xsmall"
           labelFontWeight="normal"
-          options={models
-            .filter(m => m.explores && m.explores.some(e => !e.hidden))
-            .map(m => ({ value: m.name, label: m.label }))}
+          options={models.map(
+            m => ({ value: m.name, label: m.label })
+          )}
           onChange={selectedModel =>
             history.push(internalModelURL({ model: selectedModel }))
           }

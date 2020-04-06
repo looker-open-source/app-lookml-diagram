@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "webpack-dev-server --https --no-inline --no-hot",
-    "test": "tsc --noEmit",
+    "test": "jest",
     "build": "webpack --mode=production",
     "lint": "eslint '**/*.ts{,x}'",
     "lint-fix": "eslint '**/*.ts{,x}' --fix"
@@ -13,12 +13,11 @@
   "dependencies": {
     "@looker/components": "^0.7.25",
     "@looker/design-tokens": "^0.7.2",
-    "@looker/extension-sdk": "^0.1.8",
-    "@looker/extension-sdk-react": "^0.1.8",
-    "@looker/sdk": "^0.2.0-beta.23",
-    "@types/d3-array": "^2.0.0",
-    "@types/d3-scale": "^2.1.1",
+    "@looker/extension-sdk": "^0.5.0",
+    "@looker/extension-sdk-react": "^0.4.0",
+    "@looker/sdk": "^0.2.0-beta.32",
     "@types/humanize-string": "^2.0.2",
+    "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.139",
     "@types/node": "^12.7.5",
     "@types/react": "^16.9.2",
@@ -27,13 +26,11 @@
     "@types/react-router-dom": "^5.1.0",
     "@types/react-sticky-el": "^1.0.2",
     "@types/react-syntax-highlighter": "^11.0.0",
+    "@types/react-test-renderer": "^16.9.2",
     "@types/readable-stream": "^2.3.5",
     "@types/recharts": "^1.1.21",
     "@types/styled-components": "^4.4.0",
     "@types/styled-system": "^5.1.3",
-    "d3-array": "^2.3.3",
-    "d3-scale": "^3.1.0",
-    "fuse.js": "^3.4.5",
     "humanize-string": "^2.1.0",
     "lodash": "^4.17.15",
     "react": "^16.9.0",
@@ -45,6 +42,7 @@
     "react-syntax-highlighter": "^11.0.2",
     "recharts": "^1.7.1",
     "styled-components": "^4.4.1",
+    "ts-jest": "^25.3.0",
     "ts-loader": "^6.2.1",
     "use-debounce": "^3.1.0",
     "webpack": "^4.41.2",
@@ -54,6 +52,9 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
     "babel-preset-nano-react-app": "^0.1.0",
@@ -68,13 +69,25 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
     "file-loader": "^6.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^25.2.4",
     "prettier": "^1.19.1",
+    "react-test-renderer": "^16.13.1",
     "style-loader": "^1.1.3",
     "typescript": "^3.7.2"
   },
   "babel": {
     "presets": [
-      "nano-react-app"
+      "@babel/preset-react",
+      "@babel/preset-typescript",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "esmodules": true
+          }
+        }
+      ]
     ],
     "plugins": [
       [
@@ -89,6 +102,18 @@
           "pragmaFrag": "React.Fragment"
         }
       ]
+    ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/?!(react-syntax-highlighter)"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/__tests__/MockData"
     ]
   }
 }

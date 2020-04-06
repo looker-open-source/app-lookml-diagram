@@ -31,9 +31,19 @@ export const ExploreSearch = styled(InputSearch)`
   margin-bottom: 2em;
 `
 
+export const defaultShowColumns = [
+  'label_short',
+  'description',
+  'name',
+  'type',
+  'sql',
+  'tags',
+]
+
 
 export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlModel}> = ({ columns, model }) => {
   const currentExplore = useCurrentExplore()
+  console.log('currentExplore', JSON.stringify(currentExplore))
   const [search, setSearch] = useState('')
   const [shownColumns, setShownColumns] = useState([
     'label_short',
