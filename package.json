@@ -13,7 +13,7 @@
   "dependencies": {
     "@looker/components": "^0.7.25",
     "@looker/design-tokens": "^0.7.2",
-    "@looker/extension-sdk": "^0.5.0",
+    "@looker/extension-sdk": "^0.5.1",
     "@looker/extension-sdk-react": "^0.4.0",
     "@looker/sdk": "^0.2.0-beta.32",
     "@types/humanize-string": "^2.0.2",

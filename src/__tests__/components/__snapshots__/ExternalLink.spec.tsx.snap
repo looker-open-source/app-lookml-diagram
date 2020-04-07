@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<a
+  className="Link-sc-9w9yc8 hgzBvv"
+  color="palette.blue500"
+  href="looker.com"
+  onClick={[Function]}
+  target="_blank"
+  textDecoration="none"
+>
+  <div>
+    External Link
+  </div>
+</a>
+`;

@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="sc-bdVaJa bjpSV"
+>
+  <div
+    className="Flex-sc-vm49hu VNAwo"
+  >
+    <div
+      className="FlexItem-sc-1re6mwg eLXSKG"
+    >
+      <h2
+        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 gJuPWl"
+        fontSize="xlarge"
+        fontWeight="semiBold"
+      >
+        Databases
+      </h2>
+    </div>
+  </div>
+  <div
+    className="Flex-sc-vm49hu VNAwo"
+  >
+    <table
+      className="Table-sc-155gngt hYKdHW"
+      width="100%"
+    >
+      <thead
+        className="TableHead-sc-s2dsdh cqEAsI"
+      >
+        <tr
+          className="TableRow-sc-16332ku iaBpXn"
+        >
+          <th
+            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
+            color="palette.charcoal900"
+            fontSize="xsmall"
+            fontWeight="semiBold"
+          >
+            Field Label
+          </th>
+          <th
+            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
+            color="palette.charcoal900"
+            fontSize="xsmall"
+            fontWeight="semiBold"
+          >
+            Description
+          </th>
+          <th
+            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
+            color="palette.charcoal900"
+            fontSize="xsmall"
+            fontWeight="semiBold"
+          >
+            LookML Name
+          </th>
+          <th
+            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
+            color="palette.charcoal900"
+            fontSize="xsmall"
+            fontWeight="semiBold"
+          >
+            Type
+          </th>
+          <th
+            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
+            color="palette.charcoal900"
+            fontSize="xsmall"
+            fontWeight="semiBold"
+          >
+            SQL
+          </th>
+          <th
+            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
+            color="palette.charcoal900"
+            fontSize="xsmall"
+            fontWeight="semiBold"
+          >
+            Tags
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        className="TableBody-sc-14b7kn1 kkzfqn"
+        fontSize="small"
+      >
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+        DetailDrawer
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
