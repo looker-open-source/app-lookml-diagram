@@ -48,7 +48,6 @@ export const ExploreList: React.FC<{search: String}> = ({ search }) => {
 const CustomLink = styled(MenuItem)`
   color: ${theme.colors.palette.purple700};
   display: block;
-  padding: ${theme.space.small} ${theme.space.large};
   transition: all 0.3s ease;
 
   &.active,
