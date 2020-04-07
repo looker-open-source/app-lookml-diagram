@@ -101,9 +101,10 @@ export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlM
               <Fields
                 columns={columns}
                 explore={currentExplore}
+                fields={group[1]}
+                key={group[0]}
                 label={group[0]}
                 model={model}
-                fields={group[1]}
                 search={search}
                 shownColumns={shownColumns}
               />

@@ -45,7 +45,12 @@ export const Fields: React.FC<{
               { columns.map(column => {
                 if (shownColumns.includes(column.rowValueDescriptor)) {
                   return (
-                    <TableHeaderCell color="palette.charcoal900" pl="small" pr="medium">
+                    <TableHeaderCell
+                      key={column.label}
+                      color="palette.charcoal900"
+                      pl="small"
+                      pr="medium"
+                    >
                       { column.label }
                     </TableHeaderCell>
                   )
@@ -63,6 +68,7 @@ export const Fields: React.FC<{
                     field={field}
                     columns={columns}
                     explore={explore}
+                    key={field.label_short}
                     model={model}
                     shownColumns={shownColumns}
                   />

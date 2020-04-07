@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Array [
+  <div
+    className="Flex-sc-vm49hu dwvoHs"
+  >
+    <div
+      className="FlexItem-sc-1re6mwg ctmHnz"
+    >
+      FieldSelect
+    </div>
+    <div
+      className="FlexItem-sc-1re6mwg hjoSNW"
+    >
+      <h5
+        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 hZIYwl"
+        color="palette.charcoal900"
+        fontSize="small"
+        fontWeight="semiBold"
+      >
+        Explores
+      </h5>
+      <div
+        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg dIHYJB"
+        fontSize="small"
+        onMouseDown={[Function]}
+      >
+        <input
+          className="StyledInput-sc-f13pa jzRlTN InputText-sc-vhjogy dQduGO"
+          onChange={[Function]}
+          placeholder="Search Model"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    ExploreList
+  </div>,
+  ")",
+]
+`;

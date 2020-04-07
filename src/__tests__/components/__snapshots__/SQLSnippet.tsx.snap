@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Array [
+  <pre
+    style={
+      Object {
+        "margin": "0",
+      }
+    }
+  >
+    <code
+      className="sc-bdVaJa eHajpj"
+      style={
+        Object {
+          "MozHyphens": "none",
+          "MozTabSize": "4",
+          "OTabSize": "4",
+          "WebkitHyphens": "none",
+          "color": "#393A34",
+          "direction": "ltr",
+          "fontFamily": "\\"Consolas\\", \\"Bitstream Vera Sans Mono\\", \\"Courier New\\", Courier, monospace",
+          "fontSize": "0.95em",
+          "hyphens": "none",
+          "lineHeight": "1.2em",
+          "msHyphens": "none",
+          "tabSize": "4",
+          "textAlign": "left",
+          "whiteSpace": "pre",
+          "wordBreak": "normal",
+          "wordSpacing": "normal",
+        }
+      }
+    >
+      <span
+        className="token"
+        style={
+          Object {
+            "color": "#0000ff",
+          }
+        }
+      >
+        SELECT
+      </span>
+       
+      <span
+        className="token"
+        style={
+          Object {
+            "color": "#393A34",
+          }
+        }
+      >
+        *
+      </span>
+       
+      <span
+        className="token"
+        style={
+          Object {
+            "color": "#0000ff",
+          }
+        }
+      >
+        from
+      </span>
+       users
+      <span
+        className="token"
+        style={
+          Object {
+            "color": "#393A34",
+          }
+        }
+      >
+        ;
+      </span>
+    </code>
+  </pre>,
+  ")",
+]
+`;

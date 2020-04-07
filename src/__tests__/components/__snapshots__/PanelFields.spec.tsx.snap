@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="Box-sc-xja7ec sc-bdVaJa kGBWeN"
+>
+  <div
+    className="Flex-sc-vm49hu bGjiYC"
+  >
+    <div
+      className="FlexItem-sc-1re6mwg dNebzy"
+      width="350px"
+    >
+      <div
+        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg sc-bwzfXH idaggx"
+        fontSize="small"
+        onMouseDown={[Function]}
+      >
+        <input
+          className="StyledInput-sc-f13pa jzRlTN InputText-sc-vhjogy dQduGO"
+          onChange={[Function]}
+          placeholder="Filter fields in this Explore"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="FlexItem-sc-1re6mwg eLXSKG"
+    >
+      <a
+        className="Link-sc-9w9yc8 hlbwPV"
+        color="palette.blue500"
+        href="/explore/snowflake_usage/query_history"
+        onClick={[Function]}
+        target="_blank"
+        textDecoration="none"
+      >
+        <button
+          className="ButtonOuter-sc-wugisi cHalYv ButtonBase-sc-18wmtoc ButtonOutline-sc-275zsb jhloJm"
+          onBlur={[Function]}
+          onKeyUp={[Function]}
+          size="medium"
+        >
+          Explore
+        </button>
+      </a>
+      ViewOptions
+    </div>
+  </div>
+  <div
+    className="Box-sc-xja7ec brBdWi"
+  >
+    Fields
+    Fields
+    Fields
+  </div>
+</div>
+`;

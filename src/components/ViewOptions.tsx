@@ -33,6 +33,7 @@ export const ViewOptions: React.FC<{
           { columns.map(column => {
             return (
               <FieldCheckbox
+                key={column.name}
                 name={column.name}
                 label={column.label}
                 labelFontSize="small"

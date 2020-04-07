@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Array [
+  <button
+    aria-haspopup="true"
+    className="ButtonOuter-sc-wugisi gTSaoM ButtonBase-sc-18wmtoc ButtonOutline-sc-275zsb jhloJm"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onKeyUp={[Function]}
+    size="medium"
+  >
+    View Options
+  </button>,
+  ")",
+]
+`;
