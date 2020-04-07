@@ -1,5 +1,4 @@
 node_modules
-dist
 !dist/index.js
 .cache
 .npmrc
