@@ -24,6 +24,7 @@ import { ILookmlModel } from "@looker/sdk";
 export const Main = styled(Box)`
   position: relative;
   width: 100%;
+  height: 95vh;
 `;
 
 export const ExploreSearch = styled(InputSearch)`
@@ -43,7 +44,7 @@ export const defaultShowColumns = [
 
 export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlModel}> = ({ columns, model }) => {
   const currentExplore = useCurrentExplore()
-  console.log('currentExplore', JSON.stringify(currentExplore))
+  const [oldExplore, setOldExplore] = useState(currentExplore)
   const [search, setSearch] = useState('')
   const [shownColumns, setShownColumns] = useState([
     'label_short',
@@ -55,6 +56,11 @@ export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlM
   ])
 
   if (currentExplore) {
+    if (currentExplore !== oldExplore) {
+      setSearch('')
+      setOldExplore(currentExplore)
+    }
+
     const groups = orderBy(
       toPairs(
         groupBy(
