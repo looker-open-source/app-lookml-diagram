@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="Box-sc-xja7ec sc-bdVaJa kGBWeN"
+  className="Box-sc-xja7ec sc-bdVaJa iWAyti"
 >
   <div
     className="Flex-sc-vm49hu bGjiYC"
@@ -48,12 +48,6 @@ exports[`renders correctly 1`] = `
       ViewOptions
     </div>
   </div>
-  <div
-    className="Box-sc-xja7ec brBdWi"
-  >
-    Fields
-    Fields
-    Fields
-  </div>
+  Box
 </div>
 `;
