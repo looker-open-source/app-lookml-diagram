@@ -40,7 +40,6 @@ jest.mock("../../components/DetailDrawer", () => ({
 
 
 it('renders correctly', () => {
-  console.log('wut', mockGroups[0][0])
   const tree = renderer.create(
     <ThemeProvider theme={theme}>
       <Fields

@@ -26,7 +26,7 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mockModels, mockCurrentModel } from "../MockData/MockData";
+import {mockModels, mockCurrentModel, mockCurrentExplore} from "../MockData/MockData";
 
 import { DataDictionary } from '../../components/DataDictionary'
 
@@ -42,6 +42,9 @@ jest.mock('../../utils/routes', () => {
   return {
     useCurrentModel: jest.fn(() => {
       return mockCurrentModel
+    }),
+    useCurrentExplore: jest.fn(() => {
+      return mockCurrentExplore
     }),
   }
 })

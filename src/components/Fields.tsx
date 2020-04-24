@@ -93,7 +93,7 @@ export const Fields: React.FC<{
                     field={field}
                     columns={columns}
                     explore={explore}
-                    key={field.label_short}
+                    key={field.name}
                     model={model}
                     shownColumns={shownColumns}
                   />

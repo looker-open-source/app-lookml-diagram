@@ -26,28 +26,29 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mockCurrentModel, mockCurrentExplore} from "../MockData/MockData";
+import { mockCurrentExplore, mockModels } from "../MockData/MockData";
 import { theme} from "@looker/components"
 import { ThemeProvider } from "styled-components"
 
 import { ExploreList } from '../../components/ExploreList'
 
-jest.mock('../../utils/routes', () => {
-  return {
-    useCurrentModel: jest.fn(() => {
-      return mockCurrentModel
-    }),
-    useCurrentExplore: jest.fn(() => {
-      return mockCurrentExplore
-    })
-  }
-})
-
 jest.mock('react-router', () => {
   return {
     useHistory: jest.fn(() => {
       push: () => {}
+    }),
+    useRouteMatch: jest.fn(() => {
+      return ''
     })
+  }
+})
+
+
+jest.mock('../../utils/fetchers', () => {
+  return {
+    useAllModels: jest.fn(() => {
+      return mockModels
+    }),
   }
 })
 
@@ -64,6 +65,8 @@ it('renders correctly', () => {
     .create(
       <ThemeProvider theme={theme}>
         <ExploreList
+          currentExplore={mockCurrentExplore}
+          loadingExplore={''}
           search={null}
         />)
       </ThemeProvider>

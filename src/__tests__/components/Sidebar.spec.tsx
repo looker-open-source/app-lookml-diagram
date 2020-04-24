@@ -26,7 +26,7 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mockCurrentModel, mockModels } from "../MockData/MockData";
+import {mockCurrentExplore, mockCurrentModel, mockModels} from "../MockData/MockData";
 import { ThemeProvider } from "styled-components"
 import * as mockComponents from '@looker/components'
 
@@ -52,7 +52,9 @@ it('renders correctly', () => {
     .create(
       <ThemeProvider theme={mockComponents.theme}>
         <Sidebar
+          currentExplore={mockCurrentExplore}
           currentModel={mockCurrentModel}
+          loadingExplore={null}
           models={mockModels}
           search={''}
           setSearch={() => {}}

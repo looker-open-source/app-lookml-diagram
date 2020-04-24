@@ -39,28 +39,31 @@ export const loadAllModels = async (sdk: LookerSDK) => {
 
 export function useAllModels() {
   const { coreSDK } = useContext(ExtensionContext)
-  const [value, setter] = useState<ILookmlModel[] | undefined>(undefined)
+  const [allModels, allModelsSetter] = useState<ILookmlModel[] | undefined>(undefined)
   useEffect(() => {
     async function fetcher() {
-      setter(await loadAllModels(coreSDK))
+      allModelsSetter(await loadAllModels(coreSDK))
     }
     fetcher()
   }, [coreSDK])
-  return value
+  return allModels
 }
 
 export function useExplore(modelName?: string, exploreName?: string) {
   const { coreSDK } = useContext(ExtensionContext)
-  const [value, setter] = useState<ILookmlModelExplore | undefined>(undefined)
+  const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
+  const [loadingExplore, loadingExploreSetter] = useState(null)
   useEffect(() => {
     async function fetcher() {
       if (modelName && exploreName) {
-        setter(await loadCachedExplore(coreSDK, modelName, exploreName))
+        loadingExploreSetter(exploreName)
+        exploreSetter(await loadCachedExplore(coreSDK, modelName, exploreName))
+        loadingExploreSetter(null)
       }
     }
     fetcher()
   }, [coreSDK, modelName, exploreName])
-  return value
+  return { loadingExplore, currentExplore }
 }
 
 export const loadModel = async (sdk: LookerSDK, modelName: string) => {
@@ -85,16 +88,16 @@ export async function loadModelDetail(
 
 export function useModelDetail(modelName?: string) {
   const { coreSDK } = useContext(ExtensionContext)
-  const [value, setter] = useState<DetailedModel | undefined>(undefined)
+  const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
   useEffect(() => {
     async function fetcher() {
       if (modelName) {
-        setter(await loadModelDetail(coreSDK, modelName))
+        setModelDetail(await loadModelDetail(coreSDK, modelName))
       }
     }
     fetcher()
   }, [coreSDK, modelName])
-  return value
+  return modelDetail
 }
 
 export interface DetailedModel {
