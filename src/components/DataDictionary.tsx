@@ -41,7 +41,7 @@ import { PanelFields } from "./PanelFields";
 import SidebarToggle from "./SidebarToggle";
 import Spirals from "../images/spirals.png";
 import "./styles.css";
-import { useCurrentModel } from "../utils/routes"
+import { useCurrentModel, useCurrentExplore } from "../utils/routes"
 import { ColumnDescriptor } from "./interfaces";
 import { SQLSnippet } from "./SQLSnippet";
 import { Sidebar } from './Sidebar'
@@ -96,6 +96,7 @@ export const DataDictionary: React.FC<{}> = () => {
   const currentModel = useCurrentModel()
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
   const [search, setSearch] = React.useState('')
+  const { currentExplore, loadingExplore } = useCurrentExplore()
 
   let models
 
@@ -124,10 +125,12 @@ export const DataDictionary: React.FC<{}> = () => {
       <PageLayout open={sidebarOpen}>
         <LayoutSidebar>
           {sidebarOpen && <Sidebar
-             models={models}
-             currentModel={currentModel}
-             search={search}
-             setSearch={setSearch}
+            currentExplore={currentExplore}
+            currentModel={currentModel}
+            loadingExplore={loadingExplore}
+            models={models}
+            search={search}
+            setSearch={setSearch}
           />}
         </LayoutSidebar>
         <SidebarDivider open={sidebarOpen}>
@@ -140,6 +143,8 @@ export const DataDictionary: React.FC<{}> = () => {
         <PageContent>
           <PanelFields
             columns={columns}
+            currentExplore={currentExplore}
+            loadingExplore={loadingExplore}
             model={currentModel}
           />
         </PageContent>

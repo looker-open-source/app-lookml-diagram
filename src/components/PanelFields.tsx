@@ -32,10 +32,10 @@ import {
   Flex,
   FlexItem,
   InputSearch,
+  Spinner,
 } from "@looker/components";
 import { ViewOptions } from './ViewOptions'
 import styled from "styled-components";
-import { useCurrentExplore} from "../utils/routes";
 import groupBy from "lodash/groupBy"
 import values from "lodash/values"
 import flatten from "lodash/flatten"
@@ -44,7 +44,7 @@ import orderBy from "lodash/orderBy"
 import { ExternalLink } from "./ExternalLink";
 import { exploreURL } from "../utils/urls";
 import {ColumnDescriptor} from "./interfaces";
-import { ILookmlModel } from "@looker/sdk";
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk";
 
 export const Main = styled(Box)`
   position: relative;
@@ -67,9 +67,13 @@ export const defaultShowColumns = [
 ]
 
 
-export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlModel}> = ({ columns, model }) => {
-  const currentExplore = useCurrentExplore()
-  const [oldExplore, setOldExplore] = useState(currentExplore)
+export const PanelFields: React.FC<{
+  columns: ColumnDescriptor[],
+  currentExplore: ILookmlModelExplore | null,
+  loadingExplore: string,
+  model: ILookmlModel}
+> = ({ columns, currentExplore, loadingExplore, model }) => {
+
   const [search, setSearch] = useState('')
   const [shownColumns, setShownColumns] = useState([
     'label_short',
@@ -80,10 +84,17 @@ export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlM
     'tags',
   ])
 
+  if (loadingExplore) {
+    return (
+      <Main p="xxlarge">
+        <Flex alignItems="center" height="100%" justifyContent="center"><Spinner /></Flex>
+      </Main>
+    )
+  }
+
   if (currentExplore) {
-    if (currentExplore !== oldExplore) {
+    if (loadingExplore && search) {
       setSearch('')
-      setOldExplore(currentExplore)
     }
 
     const groups = orderBy(
@@ -140,6 +151,6 @@ export const PanelFields: React.FC<{columns: ColumnDescriptor[], model: ILookmlM
       </Main>
     )
   } else {
-    return null
+    return <Main p="xxlarge" />
   }
 };

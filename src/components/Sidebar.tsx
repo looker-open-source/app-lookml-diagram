@@ -34,19 +34,20 @@ import {
   theme,
 } from "@looker/components";
 import { useHistory } from 'react-router'
-import { ILookmlModel } from "@looker/sdk";
+import {ILookmlModel, ILookmlModelExplore} from "@looker/sdk";
 import "./styles.css";
 import "./styles.css";
 import { internalModelURL } from "../utils/routes"
 import { ExploreList } from "./ExploreList";
 
 export const Sidebar: React.FC<{
-  models: ILookmlModel[],
+  currentExplore: ILookmlModelExplore
   currentModel: ILookmlModel,
+  loadingExplore: string,
+  models: ILookmlModel[],
   search: string,
   setSearch: (search: string) => void
-}> = ({ models, currentModel, search, setSearch }) => {
-
+}> = ({ currentExplore, currentModel, loadingExplore, models, search, setSearch }) => {
   const history = useHistory()
 
   return (
@@ -88,6 +89,8 @@ export const Sidebar: React.FC<{
         />
       </FlexItem>
       <ExploreList
+        currentExplore={currentExplore}
+        loadingExplore={loadingExplore}
         search={search}
       />
     </Flex>

@@ -34,12 +34,29 @@ import {
   theme,
 } from "@looker/components";
 import "./styles.css";
-import { useCurrentExplore} from "../utils/routes";
 import { internalExploreURL, useCurrentModel } from "../utils/routes"
 import { useHistory } from "react-router"
+import { ILookmlModelExplore } from "@looker/sdk";
 
-export const ExploreList: React.FC<{search: String}> = ({ search }) => {
-  const currentExplore = useCurrentExplore()
+const isActive = (
+  currentExplore: ILookmlModelExplore,
+  listExplore: ILookmlModelExplore,
+  loadingExplore: string
+) => {
+  if (!loadingExplore && currentExplore && listExplore.name === currentExplore.name) {
+    return "active"
+  } else if (loadingExplore && listExplore.name === loadingExplore) {
+    return "active"
+  } else {
+    return null
+  }
+}
+
+export const ExploreList: React.FC<{
+  currentExplore: ILookmlModelExplore
+  search: string,
+  loadingExplore: string,
+}> = ({ currentExplore, loadingExplore, search }) => {
   const currentModel = useCurrentModel()
   const history = useHistory()
   return (
@@ -58,7 +75,7 @@ export const ExploreList: React.FC<{search: String}> = ({ search }) => {
                       })
                     )
                   }}
-                  className={currentExplore && explore.name === currentExplore.name ? "active" : null}
+                  className={isActive(currentExplore, explore, loadingExplore)}
                 >
                   {explore.label}
                 </CustomLink>
