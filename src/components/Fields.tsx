@@ -63,7 +63,7 @@ export const Fields: React.FC<{
         </Heading>
       </FlexItem>
       </Flex>
-      <Flex>
+      <Flex flexDirection="column">
         <Table width="100%">
           <TableHead>
             <TableRow>

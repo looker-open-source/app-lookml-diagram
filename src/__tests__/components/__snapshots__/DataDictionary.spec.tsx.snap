@@ -1,7 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-Array [
+<div
+  style={
+    Object {
+      "minWidth": "1200px",
+    }
+  }
+>
   <div
     className="Flex-sc-vm49hu sc-bxivhb RYmxn"
     style={
@@ -21,7 +27,7 @@ Array [
         Data Dictionary
       </h1>
     </div>
-  </div>,
+  </div>
   <div
     className="sc-ifAKCX ePZlVM"
     open={true}
@@ -85,6 +91,6 @@ Array [
     >
       PanelFields
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
