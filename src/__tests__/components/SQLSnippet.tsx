@@ -36,6 +36,7 @@ it('renders correctly', () => {
     .create(
       <ThemeProvider theme={theme}>
         <SQLSnippet
+          isRow={false}
           src={"SELECT * from users;"}
         />)
       </ThemeProvider>

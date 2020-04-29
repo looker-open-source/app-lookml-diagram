@@ -60,8 +60,8 @@ export const DetailDrawerRow: React.FC<{
           fontSize="small"
           className="break"
         >
-          {/* Sorry, I promise the value is there.
-  // @ts-ignore */}
+          {/*
+          // @ts-ignore */}
           {column.formatter(field[column.rowValueDescriptor])}
         </Code>
       </TableDataCell>

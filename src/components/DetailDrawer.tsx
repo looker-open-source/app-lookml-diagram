@@ -183,10 +183,12 @@ export const DetailDrawer: React.FC<{
                   p="medium"
                   pl="small"
                   key={column.rowValueDescriptor}
+                  maxWidth={column.maxWidth}
+                  minWidth={column.minWidth}
                 >
-                  {/* This is bad, sorry, I promise the value is there.
+                  {/*
                     // @ts-ignore */}
-                  {column.formatter(field[column.rowValueDescriptor])}
+                  {column.formatter(field[column.rowValueDescriptor], true)}
                 </TableDataCell>
               )
             }

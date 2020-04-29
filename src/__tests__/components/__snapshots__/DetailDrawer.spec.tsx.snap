@@ -6,29 +6,29 @@ exports[`renders correctly 1`] = `
   onClick={[Function]}
 >
   <td
-    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    className="TableDataCell-sc-1rh91s3 hzVJWe"
     color="palette.charcoal700"
   >
     Comment
   </td>
   <td
-    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    className="TableDataCell-sc-1rh91s3 cSshjI"
     color="palette.charcoal700"
   />
   <td
-    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    className="TableDataCell-sc-1rh91s3 hpSUDY"
     color="palette.charcoal700"
   >
-    databases.comment
+    databases.​comment
   </td>
   <td
-    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    className="TableDataCell-sc-1rh91s3 gntvdr"
     color="palette.charcoal700"
   >
     String
   </td>
   <td
-    className="TableDataCell-sc-1rh91s3 iIRtqL"
+    className="TableDataCell-sc-1rh91s3 cSshjI"
     color="palette.charcoal700"
   >
     <pre

@@ -54,30 +54,44 @@ export const columns: ColumnDescriptor[] = [
     label: 'Field Label',
     rowValueDescriptor: 'label_short',
     formatter: (x: any) => x,
+    minWidth: '12em',
   },
   {
     name: 'description',
     label: 'Description',
     rowValueDescriptor: 'description',
-    formatter: (x: any) => x,
+    formatter: (x: any, isRow: boolean) => {
+      if (x && isRow && x.length > 200) {
+        return x.substring(0, 200) + '...'
+      }
+      return x
+    },
+    maxWidth: '20em',
   },
   {
     name: 'lookml-name',
     label: 'LookML Name',
     rowValueDescriptor: 'name',
-    formatter: (x: any) => x,
+    formatter: (x: any) => {
+      return x.replace(/\./g, '.\u200B');
+    },
+    minWidth: '15em',
   },
   {
     name: 'type',
     label: 'Type',
     rowValueDescriptor: 'type',
     formatter: (x: any) => humanize(x),
+    minWidth: '8em',
   },
   {
-    name: 'sql',
     label: 'SQL',
     rowValueDescriptor: 'sql',
-    formatter: (x: any) => <SQLSnippet src={x} />
+    formatter: (x: any, isRow: boolean) => {
+      return (<SQLSnippet isRow={isRow} src={x} />)
+    },
+    maxWidth: '20em',
+    name: 'sql',
   },
   {
     name: 'tags',
@@ -115,40 +129,42 @@ export const DataDictionary: React.FC<{}> = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <PageHeader style={{ backgroundImage: "url(" + Spirals + ")" }}>
-        <FlexItem>
-          <Heading as="h1" fontSize="xlarge" fontWeight="semiBold" mb="xsmall">
-            Data Dictionary
-          </Heading>
-        </FlexItem>
-      </PageHeader>
-      <PageLayout open={sidebarOpen}>
-        <LayoutSidebar>
-          {sidebarOpen && <Sidebar
-            currentExplore={currentExplore}
-            currentModel={currentModel}
-            loadingExplore={loadingExplore}
-            models={models}
-            search={search}
-            setSearch={setSearch}
-          />}
-        </LayoutSidebar>
-        <SidebarDivider open={sidebarOpen}>
-          <SidebarToggle
-            isOpen={sidebarOpen}
-            onClick={toggleFn}
-            headerHeight="114px"
-          />
-        </SidebarDivider>
-        <PageContent>
-          <PanelFields
-            columns={columns}
-            currentExplore={currentExplore}
-            loadingExplore={loadingExplore}
-            model={currentModel}
-          />
-        </PageContent>
-      </PageLayout>
+      <div style={{minWidth: "1200px"}}>
+        <PageHeader style={{ backgroundImage: "url(" + Spirals + ")" }}>
+          <FlexItem>
+            <Heading as="h1" fontSize="xlarge" fontWeight="semiBold" mb="xsmall">
+              Data Dictionary
+            </Heading>
+          </FlexItem>
+        </PageHeader>
+        <PageLayout open={sidebarOpen}>
+          <LayoutSidebar>
+            {sidebarOpen && <Sidebar
+              currentExplore={currentExplore}
+              currentModel={currentModel}
+              loadingExplore={loadingExplore}
+              models={models}
+              search={search}
+              setSearch={setSearch}
+            />}
+          </LayoutSidebar>
+          <SidebarDivider open={sidebarOpen}>
+            <SidebarToggle
+              isOpen={sidebarOpen}
+              onClick={toggleFn}
+              headerHeight="114px"
+            />
+          </SidebarDivider>
+          <PageContent>
+            <PanelFields
+              columns={columns}
+              currentExplore={currentExplore}
+              loadingExplore={loadingExplore}
+              model={currentModel}
+            />
+          </PageContent>
+        </PageLayout>
+      </div>
     </ThemeProvider>
   );
 }

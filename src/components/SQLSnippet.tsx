@@ -41,7 +41,11 @@ const CodeTag = styled.code`
   word-break: break-word !important;
 `
 
-export const SQLSnippet = ({ src }: { src: string }) => {
+export const SQLSnippet = ({ src, isRow }: { src: string, isRow: boolean }) => {
+  let truncatedSrc = src
+  if (isRow && src && src.length > 200) {
+    truncatedSrc = src.substring(0, 200) + '...'
+  }
   return (
     <SyntaxHighlighter
       language="sql"
@@ -51,7 +55,7 @@ export const SQLSnippet = ({ src }: { src: string }) => {
         hljs: { margin: "0" }
       }}
     >
-      {src}
+      {truncatedSrc}
     </SyntaxHighlighter>
   )
 }

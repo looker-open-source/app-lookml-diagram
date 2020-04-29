@@ -28,7 +28,9 @@ export interface ColumnDescriptor {
   name: string
   label: string
   rowValueDescriptor: string
-  formatter: (x: string) => string
+  formatter: (x: string, isRow?: boolean) => string | JSX.Element
+  minWidth?: string
+  maxWidth?: string
 }
 
 export interface SidebarStyleProps {
