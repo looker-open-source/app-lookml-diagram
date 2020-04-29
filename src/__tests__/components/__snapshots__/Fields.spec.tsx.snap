@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="sc-bdVaJa bjpSV"
+  className="Box-sc-xja7ec sc-bdVaJa kJazQz"
 >
   <div
     className="Flex-sc-vm49hu VNAwo"
@@ -11,7 +11,7 @@ exports[`renders correctly 1`] = `
       className="FlexItem-sc-1re6mwg eLXSKG"
     >
       <h2
-        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 gJuPWl"
+        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 iOglnH"
         fontSize="xlarge"
         fontWeight="semiBold"
       >
@@ -33,49 +33,49 @@ exports[`renders correctly 1`] = `
           className="TableRow-sc-16332ku iaBpXn"
         >
           <th
-            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
-            color="palette.charcoal900"
-            fontSize="xsmall"
+            className="TableHeaderCell-sc-10vsqzs bDLIPj"
+            color="palette.charcoal800"
+            fontSize="small"
             fontWeight="semiBold"
           >
             Field Label
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
-            color="palette.charcoal900"
-            fontSize="xsmall"
+            className="TableHeaderCell-sc-10vsqzs bDLIPj"
+            color="palette.charcoal800"
+            fontSize="small"
             fontWeight="semiBold"
           >
             Description
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
-            color="palette.charcoal900"
-            fontSize="xsmall"
+            className="TableHeaderCell-sc-10vsqzs bDLIPj"
+            color="palette.charcoal800"
+            fontSize="small"
             fontWeight="semiBold"
           >
             LookML Name
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
-            color="palette.charcoal900"
-            fontSize="xsmall"
+            className="TableHeaderCell-sc-10vsqzs bDLIPj"
+            color="palette.charcoal800"
+            fontSize="small"
             fontWeight="semiBold"
           >
             Type
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
-            color="palette.charcoal900"
-            fontSize="xsmall"
+            className="TableHeaderCell-sc-10vsqzs bDLIPj"
+            color="palette.charcoal800"
+            fontSize="small"
             fontWeight="semiBold"
           >
             SQL
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs ksbiyZ"
-            color="palette.charcoal900"
-            fontSize="xsmall"
+            className="TableHeaderCell-sc-10vsqzs bDLIPj"
+            color="palette.charcoal800"
+            fontSize="small"
             fontWeight="semiBold"
           >
             Tags

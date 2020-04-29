@@ -59,7 +59,15 @@ export const Fields: React.FC<{
   fields: ILookmlModelExploreField[],
   search: string,
   shownColumns: string[],
-}> = ({ columns, explore, label, fields, model, search, shownColumns }) => {
+}> = ({
+  columns,
+  explore,
+  label,
+  fields,
+  model,
+  search,
+  shownColumns
+}) => {
   return (
     <TableWrapper p="xxlarge">
       <Flex>

@@ -45,7 +45,9 @@ import orderBy from "lodash/orderBy"
 import { ExternalLink } from "./ExternalLink";
 import { exploreURL } from "../utils/urls";
 import {ColumnDescriptor} from "./interfaces";
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk";
+import { ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk";
+import { QuickSearch } from "./QuickSearch";
+import humanize from 'humanize-string'
 
 export const Main = styled(Box)`
   position: relative;
@@ -66,6 +68,21 @@ export const defaultShowColumns = [
   'tags',
 ]
 
+export const defaultHasDescription = [
+  'yes',
+  'no',
+]
+
+export const defaultHasTags = [
+  'yes',
+  'no',
+]
+
+export const defaultFieldTypes = [
+  'dimensions',
+  'measures',
+]
+
 
 export const PanelFields: React.FC<{
   columns: ColumnDescriptor[],
@@ -76,37 +93,62 @@ export const PanelFields: React.FC<{
 > = ({ columns, currentExplore, currentModel, loadingExplore, model }) => {
 
   const [search, setSearch] = useState('')
-  const [shownColumns, setShownColumns] = useState([
-    'label_short',
-    'description',
-    'name',
-    'type',
-    'sql',
-    'tags',
-  ])
+  const [shownColumns, setShownColumns] = useState([...defaultShowColumns])
+  const [hasDescription, setHasDescription] = useState([...defaultHasDescription])
+  const [hasTags, setHasTags] = useState([...defaultHasTags])
+  const [fieldTypes, setFieldTypes] = useState([...defaultFieldTypes])
+
+  const [deselectedFields, setDeselectedFields] = useState([])
+
+  const typeMaker = (field: ILookmlModelExploreField) => {
+    return humanize(field.type.split('_')[0])
+  }
 
   if (loadingExplore) {
     return (
       <Main p="xxlarge">
-        <Flex alignItems="center" height="100%" justifyContent="center"><Spinner /></Flex>
+        <Flex alignItems="center" height="100%" justifyContent="center">
+          <Spinner />
+        </Flex>
       </Main>
     )
   }
 
   if (currentModel && currentExplore) {
-    if (loadingExplore && search) {
-      setSearch('')
-    }
+    const fields = flatten(values(currentExplore.fields)).map(
+      f => typeMaker(f)
+    ).filter(
+      (value, index, self) => self.indexOf(value) === index
+    )
 
     const groups = orderBy(
       toPairs(
         groupBy(
-          flatten(values(currentExplore.fields)).filter(f => !f.hidden),
+          flatten(values(currentExplore.fields)).filter(f => {
+            return !f.hidden &&
+              (
+                (hasDescription.includes('yes') && f.description) ||
+                (hasDescription.includes('no') && !f.description)
+              ) &&
+              (
+                (hasTags.includes('yes') && f.tags.length > 0) ||
+                (hasTags.includes('no') && f.tags.length === 0)
+              ) &&
+              (
+                (fieldTypes.includes('dimensions') && f.category === 'dimension') ||
+                (fieldTypes.includes('measures') && f.category == 'measure')
+              ) &&
+              (
+                !deselectedFields.includes(typeMaker(f))
+              )
+          }),
           f => f.view_label
         )
       ),
       ([group]) => group
     )
+
+
     return (
       <Main pt="large">
         <Flex flexDirection="row" justifyContent="space-between" mt="large" mb="xxlarge" pl="xxlarge" pr="xxlarge">
@@ -138,20 +180,35 @@ export const PanelFields: React.FC<{
             />
           </FlexItem>
         </Flex>
+
+        <QuickSearch
+          deselectedFields={deselectedFields}
+          fields={fields}
+          fieldTypes={fieldTypes}
+          hasDescription={hasDescription}
+          hasTags={hasTags}
+          setDeselectedFields={setDeselectedFields}
+          setFieldTypes={setFieldTypes}
+          setHasDescription={setHasDescription}
+          setHasTags={setHasTags}
+        />
+
         <Box>
           {groups.map(group => {
-            return (
-              <Fields
-                columns={columns}
-                explore={currentExplore}
-                fields={group[1]}
-                key={group[0]}
-                label={group[0]}
-                model={model}
-                search={search}
-                shownColumns={shownColumns}
-              />
-            )
+            if (group[1].length > 0) {
+              return (
+                <Fields
+                  columns={columns}
+                  explore={currentExplore}
+                  fields={group[1]}
+                  key={group[0]}
+                  label={group[0]}
+                  model={model}
+                  search={search}
+                  shownColumns={shownColumns}
+                />
+              )
+            }
           })
           }
         </Box>
