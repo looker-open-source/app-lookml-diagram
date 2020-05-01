@@ -2,28 +2,28 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="Box-sc-xja7ec sc-bdVaJa iWAyti"
+  className="Box-sc-xja7ec sc-bxivhb jrrYqb"
 >
   <div
-    className="Flex-sc-vm49hu bGjiYC"
+    className="Flex-sc-vm49hu ljMeNV"
   >
     <div
-      className="FlexItem-sc-1re6mwg dNebzy"
-      width="350px"
+      className="FlexItem-sc-1re6mwg eLXSKG"
     >
-      <div
-        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg sc-bwzfXH idaggx"
-        fontSize="small"
-        onMouseDown={[Function]}
+      <h1
+        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 gbsXsz"
+        fontSize="xxlarge"
+        fontWeight="semiBold"
       >
-        <input
-          className="StyledInput-sc-f13pa jzRlTN InputText-sc-vhjogy dQduGO"
-          onChange={[Function]}
-          placeholder="Filter fields in this Explore"
-          type="text"
-          value=""
-        />
-      </div>
+        Snowflake Usage
+      </h1>
+      <h4
+        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 fLuWuF"
+        fontSize="medium"
+        fontWeight="normal"
+      >
+        Select a field for more information.
+      </h4>
     </div>
     <div
       className="FlexItem-sc-1re6mwg eLXSKG"
@@ -46,6 +46,351 @@ exports[`renders correctly 1`] = `
         </button>
       </a>
       ViewOptions
+    </div>
+  </div>
+  <div
+    className="Flex-sc-vm49hu eoGueT"
+  >
+    <div
+      className="FlexItem-sc-1re6mwg dNebzy"
+      width="350px"
+    >
+      <div
+        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg sc-ifAKCX ielzDp"
+        fontSize="small"
+        onMouseDown={[Function]}
+      >
+        <input
+          className="StyledInput-sc-f13pa jzRlTN InputText-sc-vhjogy dQduGO"
+          onChange={[Function]}
+          placeholder="Filter fields in this Explore"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="Box-sc-xja7ec sc-bdVaJa cOZUhj"
+  >
+    <div
+      className="Flex-sc-vm49hu flLYsP"
+    >
+      <div
+        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
+      >
+        <h6
+          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
+          fontSize="xsmall"
+          fontWeight="normal"
+        >
+          Has Description
+        </h6>
+        <div
+          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
+          display="inline-flex"
+          fontSize="small"
+        >
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="yes"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Yes
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="no"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              No
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
+      >
+        <h6
+          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
+          fontSize="xsmall"
+          fontWeight="normal"
+        >
+          Fields
+        </h6>
+        <div
+          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
+          display="inline-flex"
+          fontSize="small"
+        >
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="dimensions"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Dimension
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="measures"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Measure
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
+      >
+        <h6
+          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
+          fontSize="xsmall"
+          fontWeight="normal"
+        >
+          Has Tags
+        </h6>
+        <div
+          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
+          display="inline-flex"
+          fontSize="small"
+        >
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="yes"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Yes
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="no"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              No
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
+      >
+        <h6
+          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
+          fontSize="xsmall"
+          fontWeight="normal"
+        >
+          Type
+        </h6>
+        <div
+          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
+          display="inline-flex"
+          fontSize="small"
+        >
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="String"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              String
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="Date"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Date
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="Number"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Number
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="Yesno"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Yesno
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="Count"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Count
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="Average"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Average
+            </span>
+          </label>
+          <label
+            className="ButtonItemLabel-sc-1beway8 haVHER ButtonItem-sc-11a1q7g NkLis"
+            fontFamily="brand"
+            selected={true}
+            type="checkbox"
+          >
+            <input
+              checked={true}
+              className="ButtonInput-sc-1346jqs cOfiUU"
+              onChange={[Function]}
+              type="checkbox"
+              value="Sum"
+            />
+            <span
+              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
+            >
+              Sum
+            </span>
+          </label>
+        </div>
+      </div>
     </div>
   </div>
   Box
