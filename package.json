@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server --https --no-inline --no-hot",
+    "start": "webpack-dev-server --no-inline --no-hot",
     "test": "jest",
     "build": "webpack --mode=production",
     "lint": "eslint '**/*.ts{,x}'",

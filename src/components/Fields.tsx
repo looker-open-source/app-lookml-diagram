@@ -26,6 +26,7 @@
 
 import React from "react";
 import {
+  Box,
   Flex,
   FlexItem,
   Heading,
@@ -33,7 +34,8 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
-  TableBody
+  TableBody,
+  theme
 } from "@looker/components";
 import styled from "styled-components";
 
@@ -41,9 +43,13 @@ import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField} from "@look
 import {ColumnDescriptor} from "./interfaces";
 import { DetailDrawer } from "./DetailDrawer";
 
-const FieldSet = styled.div`
-  margin-bottom: 20px
-`
+export const TableWrapper = styled(Box)`
+  border-bottom: 1px solid ${theme.colors.palette.charcoal200};
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
 
 export const Fields: React.FC<{
   columns: ColumnDescriptor[],
@@ -55,13 +61,13 @@ export const Fields: React.FC<{
   shownColumns: string[],
 }> = ({ columns, explore, label, fields, model, search, shownColumns }) => {
   return (
-    <FieldSet>
+    <TableWrapper p="xxlarge">
       <Flex>
         <FlexItem>
-        <Heading as="h2" fontWeight="semiBold">
-          { label }
-        </Heading>
-      </FlexItem>
+          <Heading as="h2" fontWeight="semiBold" mb="large">
+            { label }
+          </Heading>
+        </FlexItem>
       </Flex>
       <Flex flexDirection="column">
         <Table width="100%">
@@ -72,9 +78,11 @@ export const Fields: React.FC<{
                   return (
                     <TableHeaderCell
                       key={column.label}
-                      color="palette.charcoal900"
+                      backgroundColor="palette.charcoal100"
+                      color="palette.charcoal800"
+                      fontSize="small"
+                      p="medium"
                       pl="small"
-                      pr="medium"
                     >
                       { column.label }
                     </TableHeaderCell>
@@ -103,6 +111,6 @@ export const Fields: React.FC<{
           </TableBody>
         </Table>
       </Flex>
-    </FieldSet>
+    </TableWrapper>
   );
 };
