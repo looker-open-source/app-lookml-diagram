@@ -78,15 +78,18 @@ export const DetailDrawer: React.FC<{
             {field.label_short}
           </Heading>
           <Flex flexDirection="column">
-            <FlexItem pt="large" pb="xlarge">
-              <Paragraph>{field.description}</Paragraph>
-            </FlexItem>
+            { field.description &&
+              <FlexItem pb="xlarge">
+                <Paragraph>{field.description}</Paragraph>
+              </FlexItem>
+            }
             <FlexItem>
               <Heading
                 as="h4"
                 fontSize="small"
                 fontWeight="semiBold"
                 mb="small"
+                style={{marginTop: '2em'}}
               >
                 About this Field
               </Heading>
@@ -95,13 +98,15 @@ export const DetailDrawer: React.FC<{
               <Table width="100%">
                 <TableBody fontSize="small">
                   { columns.map(column => {
-                    return (
-                      <DetailDrawerRow
-                        key={column.rowValueDescriptor}
-                        column={column}
-                        field={field}
-                      />
-                    )
+                    if (column.rowValueDescriptor !== 'description') {
+                      return (
+                        <DetailDrawerRow
+                          key={column.rowValueDescriptor}
+                          column={column}
+                          field={field}
+                        />
+                      )
+                    }
                   })}
                 </TableBody>
               </Table>

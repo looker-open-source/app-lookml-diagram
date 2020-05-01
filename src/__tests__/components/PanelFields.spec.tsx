@@ -65,6 +65,7 @@ it('renders correctly', () => {
   const tree = renderer.create(
     <ThemeProvider theme={theme}>
       <PanelFields
+        currentModel={mockCurrentModel}
         currentExplore={mockCurrentExplore}
         loadingExplore={null}
         columns={columns}

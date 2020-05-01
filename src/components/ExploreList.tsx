@@ -93,6 +93,10 @@ const CustomLink = styled(MenuItem)`
   display: block;
   transition: all 0.3s ease;
 
+  button {
+    padding: ${theme.space.small} ${theme.space.large};
+  }
+
   &.active,
   &:hover,
   &:focus {

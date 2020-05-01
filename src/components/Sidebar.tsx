@@ -36,7 +36,6 @@ import {
 import { useHistory } from 'react-router'
 import {ILookmlModel, ILookmlModelExplore} from "@looker/sdk";
 import "./styles.css";
-import "./styles.css";
 import { internalModelURL } from "../utils/routes"
 import { ExploreList } from "./ExploreList";
 

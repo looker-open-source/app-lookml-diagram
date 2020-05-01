@@ -31,14 +31,16 @@ import {
 import styled from "styled-components";
 
 const Main = styled(Flex)`
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  position: relative;
   background-color: #ff000021;
   color: red;
 `
 
 export const NoModelsAvailable = () => {
   return (
-    <Main alignItems="center" justifyContent="center" flexDirection="column">
+    <Main pt="large" alignItems="center" justifyContent="center" flexDirection="column">
       <div>Error: No Models Available</div>
       <div>Are all the explores on your model hidden?</div>
     </Main>

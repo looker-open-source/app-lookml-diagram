@@ -40,7 +40,6 @@ import "./styles.css";
 import { PanelFields } from "./PanelFields";
 import SidebarToggle from "./SidebarToggle";
 import Spirals from "../images/spirals.png";
-import "./styles.css";
 import { useCurrentModel, useCurrentExplore } from "../utils/routes"
 import { ColumnDescriptor } from "./interfaces";
 import { SQLSnippet } from "./SQLSnippet";
@@ -159,6 +158,7 @@ export const DataDictionary: React.FC<{}> = () => {
             <PanelFields
               columns={columns}
               currentExplore={currentExplore}
+              currentModel={currentModel}
               loadingExplore={loadingExplore}
               model={currentModel}
             />
@@ -221,4 +221,3 @@ const SidebarDivider = styled.div<SidebarStyleProps>`
           : theme.colors.palette.charcoal200};
   }
 `;
-

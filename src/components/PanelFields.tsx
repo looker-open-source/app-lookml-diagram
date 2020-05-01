@@ -31,6 +31,7 @@ import {
   ButtonOutline,
   Flex,
   FlexItem,
+  Heading,
   InputSearch,
   Spinner,
 } from "@looker/components";
@@ -49,12 +50,11 @@ import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk";
 export const Main = styled(Box)`
   position: relative;
   width: 100%;
-  height: 95vh;
+  min-height: 95vh;
 `;
 
 export const ExploreSearch = styled(InputSearch)`
   margin-top: 0;
-  margin-bottom: 2em;
 `
 
 export const defaultShowColumns = [
@@ -70,9 +70,10 @@ export const defaultShowColumns = [
 export const PanelFields: React.FC<{
   columns: ColumnDescriptor[],
   currentExplore: ILookmlModelExplore | null,
+  currentModel: ILookmlModel | null
   loadingExplore: string,
   model: ILookmlModel}
-> = ({ columns, currentExplore, loadingExplore, model }) => {
+> = ({ columns, currentExplore, currentModel, loadingExplore, model }) => {
 
   const [search, setSearch] = useState('')
   const [shownColumns, setShownColumns] = useState([
@@ -92,7 +93,7 @@ export const PanelFields: React.FC<{
     )
   }
 
-  if (currentExplore) {
+  if (currentModel && currentExplore) {
     if (loadingExplore && search) {
       setSearch('')
     }
@@ -107,16 +108,11 @@ export const PanelFields: React.FC<{
       ([group]) => group
     )
     return (
-      <Main p="xxlarge">
-        <Flex flexDirection="row" justifyContent="space-between">
-          <FlexItem width="350px">
-            <ExploreSearch
-              hideSearchIcon
-              placeholder="Filter fields in this Explore"
-              mt="medium"
-              onChange={e => setSearch(e.currentTarget.value)}
-              value={search}
-            />
+      <Main pt="large">
+        <Flex flexDirection="row" justifyContent="space-between" mt="large" mb="xxlarge" pl="xxlarge" pr="xxlarge">
+          <FlexItem>
+            <Heading as="h1" fontWeight="semiBold">{currentModel.label}</Heading>
+            <Heading as="h4" variant="secondary">Select a field for more information.</Heading>
           </FlexItem>
           <FlexItem>
             <ExternalLink target="_blank" href={exploreURL(currentExplore)}>
@@ -128,6 +124,17 @@ export const PanelFields: React.FC<{
               columns={columns}
               shownColumns={shownColumns}
               setShownColumns={setShownColumns}
+            />
+          </FlexItem>
+        </Flex>
+        <Flex mt="xlarge" pl="xxlarge" pr="xxlarge">
+          <FlexItem width="350px">
+            <ExploreSearch
+              hideSearchIcon
+              placeholder="Filter fields in this Explore"
+              mt="medium"
+              onChange={e => setSearch(e.currentTarget.value)}
+              value={search}
             />
           </FlexItem>
         </Flex>
