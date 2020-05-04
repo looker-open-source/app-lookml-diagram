@@ -1,9 +1,10 @@
 {
   "label": "Data Dictionary",
-  "category_label": "Extensions",
+  "category_label": "Applications",
   "branding": {
-    "image_uri": "https://marketplace-api.looker.com/extension-screenshots/kitchensink.png",
-    "tagline": "Data Dictionary"
+    "image_uri": "https://marketplace-api.looker.com/app-icons/icon_digital_marketing.svg",
+    "tagline": "Find the fields and metrics you need for analysis",
+    "brand_color": "#fe007d"
   },
   "constants": {
     "CONNECTION_NAME": {
