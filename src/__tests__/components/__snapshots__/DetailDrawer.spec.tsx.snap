@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <tr
-  className="TableRow-sc-16332ku sc-bdVaJa cHtJEZ"
+  className="TableRow-sc-16332ku sc-bdVaJa gruhGf"
   onClick={[Function]}
 >
   <td
