@@ -63,37 +63,26 @@ export const Group = styled(FlexItem)`
 `
 
 export const QuickSearch: React.FC<{
-  deselectedFields: string[]
+  selectedFields: string[]
   fields: string[]
   fieldTypes: string[]
   hasDescription: string[]
   hasTags: string[]
-  setDeselectedFields: (fields: string[]) => void
+  setSelectedFields: (fields: string[]) => void
   setFieldTypes: (fieldTypes: string[]) => void
   setHasDescription: (hasDescription: string[]) => void
   setHasTags: (hasTags: string[]) => void
 }> = ({
-  deselectedFields,
+  selectedFields,
   fields,
   fieldTypes,
   hasDescription,
   hasTags,
-  setDeselectedFields,
+  setSelectedFields,
   setFieldTypes,
   setHasDescription,
   setHasTags,
 }) => {
-  const newDeselected = (deselected: string[]) => {
-    /* This is a little awkward and feels inside out because
-    in PanelFields we have to declare the state and setter before
-    we are able to access all the field types (because hook order matters),
-    so instead of tracking fields in state we track which ones have
-    been deselected, allowing us to start with an empty array.
-     */
-    const missing = fields.filter(f => !deselected.includes(f))
-    setDeselectedFields(missing)
-  }
-
   return (
     <Main>
       <Flex flexDirection="row" flexWrap="wrap" mt="xlarge" pl="xxlarge" pr="xxlarge">
@@ -123,7 +112,7 @@ export const QuickSearch: React.FC<{
 
         <Group>
           <FilterHeading as="h6">Type</FilterHeading>
-          <ButtonGroup value={fields.filter(f => !deselectedFields.includes(f))} onChange={newDeselected}>
+          <ButtonGroup value={selectedFields} onChange={setSelectedFields}>
             { fields.map(field => {
               return (
                 <ButtonItem key={field} value={field}>{ field }</ButtonItem>

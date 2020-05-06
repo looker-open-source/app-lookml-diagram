@@ -68,22 +68,6 @@ export const defaultShowColumns = [
   'tags',
 ]
 
-export const defaultHasDescription = [
-  'yes',
-  'no',
-]
-
-export const defaultHasTags = [
-  'yes',
-  'no',
-]
-
-export const defaultFieldTypes = [
-  'dimensions',
-  'measures',
-]
-
-
 export const PanelFields: React.FC<{
   columns: ColumnDescriptor[],
   currentExplore: ILookmlModelExplore | null,
@@ -91,14 +75,12 @@ export const PanelFields: React.FC<{
   loadingExplore: string,
   model: ILookmlModel}
 > = ({ columns, currentExplore, currentModel, loadingExplore, model }) => {
-
   const [search, setSearch] = useState('')
   const [shownColumns, setShownColumns] = useState([...defaultShowColumns])
-  const [hasDescription, setHasDescription] = useState([...defaultHasDescription])
-  const [hasTags, setHasTags] = useState([...defaultHasTags])
-  const [fieldTypes, setFieldTypes] = useState([...defaultFieldTypes])
-
-  const [deselectedFields, setDeselectedFields] = useState([])
+  const [hasDescription, setHasDescription] = useState([])
+  const [hasTags, setHasTags] = useState([])
+  const [fieldTypes, setFieldTypes] = useState([])
+  const [selectedFields, setSelectedFields] = useState([])
 
   const typeMaker = (field: ILookmlModelExploreField) => {
     return humanize(field.type.split('_')[0])
@@ -121,33 +103,39 @@ export const PanelFields: React.FC<{
       (value, index, self) => self.indexOf(value) === index
     )
 
+    const allFilters = hasDescription.concat(hasTags, fieldTypes, selectedFields)
     const groups = orderBy(
       toPairs(
         groupBy(
           flatten(values(currentExplore.fields)).filter(f => {
-            return !f.hidden &&
+            return !f.hidden && (allFilters.length === 0 || (
               (
-                (hasDescription.includes('yes') && f.description) ||
-                (hasDescription.includes('no') && !f.description)
+                hasDescription.length === 0 || ((hasDescription.includes('yes') && f.description) || (
+                  hasDescription.includes('no') && !f.description)
+                )
               ) &&
               (
-                (hasTags.includes('yes') && f.tags.length > 0) ||
-                (hasTags.includes('no') && f.tags.length === 0)
+                hasTags.length === 0 || (
+                  (hasTags.includes('yes') && f.tags.length > 0) || (hasTags.includes('no') && f.tags.length === 0)
+                )
               ) &&
               (
-                (fieldTypes.includes('dimensions') && f.category === 'dimension') ||
-                (fieldTypes.includes('measures') && f.category == 'measure')
+                fieldTypes.length === 0 || (
+                  (fieldTypes.includes('dimensions') && f.category === 'dimension') || (fieldTypes.includes('measures') && f.category == 'measure')
+                )
               ) &&
               (
-                !deselectedFields.includes(typeMaker(f))
+                selectedFields.length === 0 || (
+                  (selectedFields.includes(typeMaker(f)))
+                )
               )
+            ))
           }),
           f => f.view_label
         )
       ),
       ([group]) => group
     )
-
 
     return (
       <Main pt="large">
@@ -182,12 +170,12 @@ export const PanelFields: React.FC<{
         </Flex>
 
         <QuickSearch
-          deselectedFields={deselectedFields}
+          selectedFields={selectedFields}
           fields={fields}
           fieldTypes={fieldTypes}
           hasDescription={hasDescription}
           hasTags={hasTags}
-          setDeselectedFields={setDeselectedFields}
+          setSelectedFields={setSelectedFields}
           setFieldTypes={setFieldTypes}
           setHasDescription={setHasDescription}
           setHasTags={setHasTags}
