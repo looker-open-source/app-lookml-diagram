@@ -61,6 +61,7 @@ const TableRowCustom = styled(TableRow)`
   td {
     word-break: break-word;
   }
+  cursor: pointer;
 `;
 
 export const DetailDrawer: React.FC<{

@@ -104,4 +104,5 @@ const CustomLink = styled(MenuItem)`
     color: ${theme.colors.palette.purple400};
     text-decoration: none;
   }
+  cursor: pointer;
 `;
