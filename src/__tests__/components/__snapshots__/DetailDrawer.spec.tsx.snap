@@ -97,9 +97,5 @@ exports[`renders correctly 1`] = `
       </code>
     </pre>
   </td>
-  <td
-    className="TableDataCell-sc-1rh91s3 iIRtqL"
-    color="palette.charcoal700"
-  />
 </tr>
 `;

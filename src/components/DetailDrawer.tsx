@@ -194,7 +194,7 @@ export const DetailDrawer: React.FC<{
                 >
                   {/*
                     // @ts-ignore */}
-                  {column.formatter(field[column.rowValueDescriptor], true)}
+                  {column.formatter(field[column.rowValueDescriptor], true, field)}
                 </TableDataCell>
               )
             }

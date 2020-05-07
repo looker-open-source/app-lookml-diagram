@@ -72,14 +72,6 @@ exports[`renders correctly 1`] = `
           >
             SQL
           </th>
-          <th
-            className="TableHeaderCell-sc-10vsqzs bDLIPj"
-            color="palette.charcoal800"
-            fontSize="small"
-            fontWeight="semiBold"
-          >
-            Tags
-          </th>
         </tr>
       </thead>
       <tbody

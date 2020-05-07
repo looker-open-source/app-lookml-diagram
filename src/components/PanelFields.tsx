@@ -48,6 +48,7 @@ import {ColumnDescriptor} from "./interfaces";
 import { ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk";
 import { QuickSearch } from "./QuickSearch";
 import humanize from 'humanize-string'
+import { DIMENSION, MEASURE } from "./CategorizedLabel";
 
 export const Main = styled(Box)`
   position: relative;
@@ -65,7 +66,6 @@ export const defaultShowColumns = [
   'name',
   'type',
   'sql',
-  'tags',
 ]
 
 export const PanelFields: React.FC<{
@@ -121,7 +121,7 @@ export const PanelFields: React.FC<{
               ) &&
               (
                 fieldTypes.length === 0 || (
-                  (fieldTypes.includes('dimensions') && f.category === 'dimension') || (fieldTypes.includes('measures') && f.category == 'measure')
+                  (fieldTypes.includes('dimensions') && f.category === DIMENSION) || (fieldTypes.includes('measures') && f.category == MEASURE)
                 )
               ) &&
               (

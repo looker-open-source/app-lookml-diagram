@@ -46,6 +46,8 @@ import { SQLSnippet } from "./SQLSnippet";
 import { Sidebar } from './Sidebar'
 import { SidebarStyleProps } from "./interfaces";
 import { NoModelsAvailable } from "./NoModelsAvailable";
+import { ILookmlModelExploreField } from "@looker/sdk";
+import { CategorizedLabel } from './CategorizedLabel'
 
 export const columns: ColumnDescriptor[] = [
   {
@@ -53,6 +55,15 @@ export const columns: ColumnDescriptor[] = [
     label: 'Field Label',
     rowValueDescriptor: 'label_short',
     formatter: (x: any) => x,
+    minWidth: '12em',
+  },
+  {
+    name: 'category',
+    label: 'Category',
+    rowValueDescriptor: 'category',
+    formatter: (x: any, isRow: boolean, field: ILookmlModelExploreField) => {
+      return <CategorizedLabel label={x} category={field.category} />
+    },
     minWidth: '12em',
   },
   {

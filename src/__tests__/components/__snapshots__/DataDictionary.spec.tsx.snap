@@ -9,7 +9,7 @@ exports[`renders correctly 1`] = `
   }
 >
   <div
-    className="Flex-sc-vm49hu sc-bxivhb RYmxn"
+    className="Flex-sc-vm49hu sc-EHOje hlTwJf"
     style={
       Object {
         "backgroundImage": "url(test-file-stub)",
@@ -29,16 +29,16 @@ exports[`renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="sc-ifAKCX ePZlVM"
+    className="sc-bZQynM daVCun"
     open={true}
   >
     <aside
-      className="sc-bZQynM cuLRot"
+      className="sc-htoDjs cybUkI"
     >
       Sidebar
     </aside>
     <div
-      className="sc-gzVnrw vFkOX"
+      className="sc-dnqmqq geodzx"
       open={true}
     >
       <div
@@ -87,7 +87,7 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
     <div
-      className="sc-EHOje gycRaY"
+      className="sc-gzVnrw feoOem"
     >
       PanelFields
     </div>
