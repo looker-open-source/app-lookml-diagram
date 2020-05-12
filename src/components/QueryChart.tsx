@@ -45,6 +45,7 @@ import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExternalLink } from "./ExternalLink"
 import { getCached } from "../utils/fetchers"
 import { MetadataItem } from "../components-generalized/MetadataList"
+import { QueryChartButton } from "./QueryChartButton";
 
 interface QueryChartState {
   loading: boolean
@@ -52,6 +53,8 @@ interface QueryChartState {
 }
 
 interface QueryChartProps {
+  disabledText: string
+  enabled: boolean
   type: QueryChartType
 }
 
@@ -198,23 +201,12 @@ export class QueryChart extends React.Component<
       }
     } else {
       return (
-
-        <FlexItem pb="xlarge">
-          <Heading
-            as="h4"
-            fontSize="small"
-            fontWeight="semiBold"
-            mb="small"
-          >
-            { this.props.type.type }
-          </Heading>
-          <ButtonOutline
-            iconBefore="CacheRefresh"
-            onClick={this.runQuery.bind(this)}
-          >
-            Calculate
-          </ButtonOutline>
-        </FlexItem>
+        <QueryChartButton
+          disabledText={this.props.disabledText}
+          enabled={this.props.enabled}
+          title={this.props.type.type}
+          onClick={this.runQuery.bind(this)}
+        />
       )
     }
   }

@@ -27,6 +27,7 @@
 import React from "react";
 import {
   theme,
+  ButtonOutline,
   ButtonTransparent,
   DrawerManager,
   Flex,
@@ -113,35 +114,28 @@ export const DetailDrawer: React.FC<{
               </Table>
             </FlexItem>
 
-            {canGetDistribution({
-              model,
-              explore,
-              field
-            }) && (
-              <QueryChart
-                type={{
-                  type: "Distribution",
-                  model,
-                  explore,
-                  field
-                }}
-              />
-            )}
+            <QueryChart
+              disabledText={'Distributions can only be shown for numeric dimensions on a view with a count measure.'}
+              enabled={canGetDistribution({model, explore, field})}
+              type={{
+                type: "Distribution",
+                model,
+                explore,
+                field
+              }}
 
-            {canGetTopValues({
-              model,
-              explore,
-              field
-            }) && (
-              <QueryChart
-                type={{
-                  type: "Values",
-                  model,
-                  explore,
-                  field
-                }}
-              />
-            )}
+            />
+
+            <QueryChart
+              disabledText={'Values can only be shown for dimensions on a view with a count measure.'}
+              enabled={canGetTopValues({ model, explore, field })}
+              type={{
+                type: "Values",
+                model,
+                explore,
+                field
+              }}
+            />
 
             <FlexItem
               borderTop={`1px solid ${
