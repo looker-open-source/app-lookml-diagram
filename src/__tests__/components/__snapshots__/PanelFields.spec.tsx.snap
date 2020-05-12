@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="Box-sc-xja7ec sc-bxivhb jrrYqb"
+  className="Box-sc-xja7ec sc-EHOje eCuQVQ"
 >
   <div
     className="Flex-sc-vm49hu ljMeNV"
@@ -56,7 +56,7 @@ exports[`renders correctly 1`] = `
       width="350px"
     >
       <div
-        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg sc-ifAKCX ielzDp"
+        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg sc-bZQynM dDVXCh"
         fontSize="small"
         onMouseDown={[Function]}
       >

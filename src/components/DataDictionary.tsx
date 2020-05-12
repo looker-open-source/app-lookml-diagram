@@ -54,7 +54,13 @@ export const columns: ColumnDescriptor[] = [
     name: 'field-label',
     label: 'Field Label',
     rowValueDescriptor: 'label_short',
-    formatter: (x: any) => x,
+    formatter: (x: any, isRow: boolean, field: ILookmlModelExploreField) => {
+      if (field.field_group_label && field.field_group_variant) {
+        return `${field.field_group_label} ${field.field_group_variant}`
+      } else {
+        return x
+      }
+    },
     minWidth: '12em',
   },
   {
