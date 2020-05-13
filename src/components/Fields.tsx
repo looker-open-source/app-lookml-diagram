@@ -51,6 +51,15 @@ export const TableWrapper = styled(Box)`
   }
 `;
 
+// Sticky Table Header
+export const StickyHeader = styled(TableHeaderCell)`
+  @supports (position: sticky) {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+`;
+
 export const Fields: React.FC<{
   columns: ColumnDescriptor[],
   explore: ILookmlModelExplore,
@@ -84,7 +93,7 @@ export const Fields: React.FC<{
               { columns.map(column => {
                 if (shownColumns.includes(column.rowValueDescriptor)) {
                   return (
-                    <TableHeaderCell
+                    <StickyHeader
                       key={column.label}
                       backgroundColor="palette.charcoal100"
                       color="palette.charcoal800"
@@ -93,7 +102,7 @@ export const Fields: React.FC<{
                       pl="small"
                     >
                       { column.label }
-                    </TableHeaderCell>
+                    </StickyHeader>
                   )
                 }
               })}
