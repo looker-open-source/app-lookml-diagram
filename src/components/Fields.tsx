@@ -56,7 +56,6 @@ export const StickyHeader = styled(TableHeaderCell)`
   @supports (position: sticky) {
     position: sticky;
     top: 0;
-    z-index: 2;
 }
 `;
 
