@@ -2,9 +2,10 @@
   "label": "Data Dictionary",
   "category_label": "Applications",
   "branding": {
-    "image_uri": "https://marketplace-api.looker.com/app-icons/icon_digital_marketing.svg",
+    "image_uri": "https://marketplace-api.looker.com/app-icons/data_dictionary_icon.svg",
     "tagline": "Find the fields and metrics you need for analysis",
-    "brand_color": "#fe007d"
+    "brand_color": "#fe007d",
+    "badge": "Beta"
   },
   "constants": {
     "CONNECTION_NAME": {
