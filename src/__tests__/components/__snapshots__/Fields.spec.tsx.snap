@@ -33,7 +33,7 @@ exports[`renders correctly 1`] = `
           className="TableRow-sc-16332ku iaBpXn"
         >
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH ioDMVa"
+            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
             color="palette.charcoal800"
             fontSize="small"
             fontWeight="semiBold"
@@ -41,7 +41,7 @@ exports[`renders correctly 1`] = `
             Field Label
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH ioDMVa"
+            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
             color="palette.charcoal800"
             fontSize="small"
             fontWeight="semiBold"
@@ -49,7 +49,7 @@ exports[`renders correctly 1`] = `
             Description
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH ioDMVa"
+            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
             color="palette.charcoal800"
             fontSize="small"
             fontWeight="semiBold"
@@ -57,7 +57,7 @@ exports[`renders correctly 1`] = `
             LookML Name
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH ioDMVa"
+            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
             color="palette.charcoal800"
             fontSize="small"
             fontWeight="semiBold"
@@ -65,7 +65,7 @@ exports[`renders correctly 1`] = `
             Type
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH ioDMVa"
+            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
             color="palette.charcoal800"
             fontSize="small"
             fontWeight="semiBold"
