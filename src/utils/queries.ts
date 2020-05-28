@@ -146,7 +146,7 @@ export async function getDistribution({
       body: {
         model: model.name,
         view: explore.name,
-        fields: ["min", "max", "average"],
+        fields: ["min", "max", "average", "count"],
         dynamic_fields: JSON.stringify([
           {
             measure: "min",
@@ -162,6 +162,11 @@ export async function getDistribution({
             measure: "average",
             type: "average",
             based_on: field.name
+          },
+          {
+            measure: "count",
+            type: "count",
+            based_on: field.name
           }
         ])
       }
@@ -170,6 +175,7 @@ export async function getDistribution({
   const min = qr.data[0].min
   const max = qr.data[0].max
   const average = qr.data[0].average
+  const count = qr.data[0].count
 
   const binCount = 20
   const range = Math.abs(max.value - min.value)
@@ -224,7 +230,8 @@ export async function getDistribution({
       [
         { v: "Average" },
         { v: (average.value && average.value.toLocaleString()) || "–" }
-      ]
+      ],
+      [{ v: "Count" }, { v: (count.value && count.value.toLocaleString()) || "–" }],
     ],
     max: [undefined, undefined]
   }
