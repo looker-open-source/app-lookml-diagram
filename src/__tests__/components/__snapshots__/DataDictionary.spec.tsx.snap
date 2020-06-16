@@ -9,12 +9,7 @@ exports[`renders correctly 1`] = `
   }
 >
   <div
-    className="Flex-sc-vm49hu sc-EHOje hlTwJf"
-    style={
-      Object {
-        "backgroundImage": "url(test-file-stub)",
-      }
-    }
+    className="Flex-sc-vm49hu sc-EHOje cqXEQA"
   >
     <div
       className="FlexItem-sc-1re6mwg eLXSKG"

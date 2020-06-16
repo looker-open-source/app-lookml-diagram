@@ -29,7 +29,7 @@ import renderer from 'react-test-renderer';
 import { theme} from "@looker/components"
 import { ThemeProvider } from "styled-components"
 
-import { SQLSnippet } from '../../components/SqlSnippet'
+import { SQLSnippet } from '../../components/SQLSnippet'
 
 it('renders correctly', () => {
   const tree = renderer

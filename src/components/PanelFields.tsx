@@ -33,7 +33,9 @@ import {
   FlexItem,
   Heading,
   InputSearch,
+  Paragraph,
   Spinner,
+  theme,
 } from "@looker/components";
 import { ViewOptions } from './ViewOptions'
 import styled from "styled-components";
@@ -53,8 +55,26 @@ import { DIMENSION, MEASURE } from "./CategorizedLabel";
 export const Main = styled(Box)`
   position: relative;
   width: 100%;
-  min-height: 95vh;
+  min-height: 93vh;
 `;
+
+const FullPage = styled(Box)`
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 93vh;
+  flex-direction: column;
+`;
+
+const IntroText = styled(Paragraph)`
+  text-align: center;
+  margin-top: 5em;
+  max-width: 40%;
+  color: ${theme.colors.palette.charcoal500};
+`
 
 export const ExploreSearch = styled(InputSearch)`
   margin-top: 0;
@@ -203,6 +223,15 @@ export const PanelFields: React.FC<{
       </Main>
     )
   } else {
-    return <Main p="xxlarge" />
+    return (
+      <FullPage>
+        <div style={{width: '30%'}}>
+          <img src={'https://marketplace-api.looker.com/misc/INC-100373/data_dictionary_2x.png'} alt="Empty Image" />
+        </div>
+        <IntroText>
+          Click on one of the Explores to the left to begin searching through your data. You’ll see labels, descriptions, SQL definitions, and more for each field.
+        </IntroText>
+      </FullPage>
+    )
   }
 };

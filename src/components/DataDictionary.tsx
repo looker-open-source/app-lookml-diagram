@@ -39,7 +39,6 @@ import { useAllModels } from "../utils/fetchers";
 import "./styles.css";
 import { PanelFields } from "./PanelFields";
 import SidebarToggle from "./SidebarToggle";
-import Spirals from "../images/spirals.png";
 import { useCurrentModel, useCurrentExplore } from "../utils/routes"
 import { ColumnDescriptor } from "./interfaces";
 import { SQLSnippet } from "./SQLSnippet";
@@ -146,7 +145,7 @@ export const DataDictionary: React.FC<{}> = () => {
   return (
     <ThemeProvider theme={theme}>
       <div style={{minWidth: "1200px"}}>
-        <PageHeader style={{ backgroundImage: "url(" + Spirals + ")" }}>
+        <PageHeader>
           <FlexItem>
             <Heading as="h1" fontSize="xlarge" fontWeight="semiBold" mb="xsmall">
               Data Dictionary
@@ -193,6 +192,7 @@ const PageHeader = styled(Flex)`
   background-repeat: no-repeat;
   background-size: 836px 120px;
   padding: ${theme.space.large};
+  background-image: url('https://marketplace-api.looker.com/misc/INC-100373/spirals.png');
 
   h1 {
     color: ${theme.colors.palette.white};
