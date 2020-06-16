@@ -226,7 +226,7 @@ export const PanelFields: React.FC<{
     return (
       <FullPage>
         <div style={{width: '30%'}}>
-          <img src={'https://marketplace-api.looker.com/misc/INC-100373/data_dictionary_2x.png'} alt="Empty Image" />
+          <img src={'https://berlin-test-2.s3-us-west-1.amazonaws.com/data_dictionary_2x.png'} alt="Empty Image" />
         </div>
         <IntroText>
           Click on one of the Explores to the left to begin searching through your data. You’ll see labels, descriptions, SQL definitions, and more for each field.
