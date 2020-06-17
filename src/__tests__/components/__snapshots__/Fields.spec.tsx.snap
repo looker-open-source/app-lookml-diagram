@@ -38,6 +38,14 @@ exports[`renders correctly 1`] = `
             fontSize="small"
             fontWeight="semiBold"
           >
+            Group Label
+          </th>
+          <th
+            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
+            color="palette.charcoal800"
+            fontSize="small"
+            fontWeight="semiBold"
+          >
             Field Label
           </th>
           <th
