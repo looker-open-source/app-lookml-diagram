@@ -50,12 +50,19 @@ import { CategorizedLabel } from './CategorizedLabel'
 
 export const columns: ColumnDescriptor[] = [
   {
+    name: 'group-label',
+    label: 'Group Label',
+    rowValueDescriptor: 'field_group_label',
+    formatter: (x: any) => x,
+    minWidth: '12em',
+  },
+  {
     name: 'field-label',
     label: 'Field Label',
     rowValueDescriptor: 'label_short',
     formatter: (x: any, isRow: boolean, field: ILookmlModelExploreField) => {
       if (field.field_group_label && field.field_group_variant) {
-        return `${field.field_group_label} ${field.field_group_variant}`
+        return `${field.field_group_variant}`
       } else {
         return x
       }
