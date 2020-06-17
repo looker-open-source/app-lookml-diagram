@@ -8,7 +8,7 @@ exports[`renders correctly 1`] = `
     className="TableDataCell-sc-1rh91s3 fskiHy"
     color="palette.charcoal700"
   >
-    Group Label
+    Field Label
   </td>
   <td
     className="TableDataCell-sc-1rh91s3 fskiHy break"
@@ -19,7 +19,9 @@ exports[`renders correctly 1`] = `
       color="palette.charcoal700"
       fontFamily="code"
       fontSize="small"
-    />
+    >
+      Comment
+    </code>
   </td>
 </tr>
 `;
