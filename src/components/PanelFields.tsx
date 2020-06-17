@@ -81,7 +81,6 @@ export const ExploreSearch = styled(InputSearch)`
 `
 
 export const defaultShowColumns = [
-  'field_group_label',
   'label_short',
   'description',
   'name',

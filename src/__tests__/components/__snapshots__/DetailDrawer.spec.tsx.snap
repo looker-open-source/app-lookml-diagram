@@ -8,10 +8,6 @@ exports[`renders correctly 1`] = `
   <td
     className="TableDataCell-sc-1rh91s3 hzVJWe"
     color="palette.charcoal700"
-  />
-  <td
-    className="TableDataCell-sc-1rh91s3 hzVJWe"
-    color="palette.charcoal700"
   >
     Comment
   </td>
