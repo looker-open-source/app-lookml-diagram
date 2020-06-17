@@ -111,7 +111,9 @@ export const Fields: React.FC<{
             {fields.map((field) => {
               if (!search ||
                   (field.label_short && field.label_short.toLowerCase().includes(search.toLowerCase())) ||
-                  (field.description && field.description.toLowerCase().includes(search.toLowerCase()))) {
+                  (field.description && field.description.toLowerCase().includes(search.toLowerCase())) || 
+                  (field.field_group_label && field.field_group_label.toLowerCase().includes(search.toLowerCase())))
+             {
                 return (
                   <DetailDrawer
                     field={field}
