@@ -192,7 +192,7 @@ const PageHeader = styled(Flex)`
   background-repeat: no-repeat;
   background-size: 836px 120px;
   padding: ${theme.space.large};
-  background-image: url('https://berlin-test-2.s3-us-west-1.amazonaws.com/spirals.png');
+  background-image: url('https://marketplace-api.looker.com/app-assets/spirals.png');
 
   h1 {
     color: ${theme.colors.palette.white};
