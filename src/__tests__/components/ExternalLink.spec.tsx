@@ -29,6 +29,11 @@ import renderer from 'react-test-renderer';
 
 import { ExternalLink } from '../../components/ExternalLink'
 
+jest.mock("@looker/components", () => ({
+  Link: () => "Link",
+  LinkProps: () => "LinkProps",
+}))
+
 it('renders correctly', () => {
   const tree = renderer.create(
     <ExternalLink

@@ -24,31 +24,24 @@
 
  */
 
-import React from "react"
-import styled from "styled-components"
-import { theme } from '@looker/components'
-import humanize from 'humanize-string'
+import React from "react";
+import { FlexItem, ButtonTransparent, IconButton, Tooltip, theme } from "@looker/components";
 
-const Dimension = styled.div`
-  color: ${theme.colors.text3}
-`
-
-const Measure = styled.div`
-color: ${theme.colors.text3}
-`
-
-export const DIMENSION = 'dimension'
-export const MEASURE = 'measure'
-
-export const CategorizedLabel: React.FC<{
-  label: string,
-  category: string
-}> = ({ label, category }) => {
-  if (category === DIMENSION) {
-    return <Dimension>{humanize(label)}</Dimension>
-  } else if (category === MEASURE) {
-    return <Measure>{humanize(label)}</Measure>
-  } else {
-    return <div>{humanize(label)}</div>
-  }
-}
+export const CommentIcon: React.FC<{
+  count: number,
+}> = ({
+  count,
+}) => {
+  return (
+    <FlexItem> {
+    count !== null ?
+    <Tooltip content="View Comments">
+      <ButtonTransparent iconBefore="Comment" color="neutral" size="small">
+        {count}
+      </ButtonTransparent>
+    </Tooltip> :
+    <IconButton label="Add Comment" icon="AddComment" color="neutral" className="disabled"/>
+    }
+    </FlexItem>
+  );
+};

@@ -26,14 +26,19 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {mockModels, mockCurrentModel, mockCurrentExplore} from "../MockData/MockData";
-
+import {mockModels, mockComments, mockCurrentModel, mockCurrentExplore} from "../MockData/MockData";
+import { ComponentsProvider, theme } from "@looker/components"
+import { assertSnapshot } from "@looker/components-test-utils"
+import { ThemeProvider } from "styled-components"
 import { DataDictionary } from '../../components/DataDictionary'
 
 jest.mock('../../utils/fetchers', () => {
   return {
     useAllModels: jest.fn(() => {
       return mockModels
+    }),
+    getComments: jest.fn(() => {
+      return mockComments
     }),
   }
 })
@@ -57,9 +62,20 @@ jest.mock("../../components/Sidebar", () => ({
   Sidebar: () => "Sidebar"
 }))
 
+jest.mock("../../components/CategorizedLabel", () => ({
+  CategorizedLabel: () => "CategorizedLabel"
+}))
+
+jest.mock("@looker/components", () => ({
+  Chip: () => "Chip",
+  Flex: () => "Flex",
+  FlexItem: () => "FlexItem",
+  Heading: () => "Heading",
+  Spinner: () => "Spinner",
+  IconButton: () => "IconButton",
+  theme: {colors: {key:"purple"}, space: {large: "2em"}},
+}))
+
 it('renders correctly', () => {
-  const tree = renderer
-    .create(<DataDictionary/>)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+  assertSnapshot(<DataDictionary />)
 })

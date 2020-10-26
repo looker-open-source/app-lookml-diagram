@@ -88,8 +88,9 @@ export const ExploreList: React.FC<{
   )
 }
 
+// @ts-ignore
 const CustomLink = styled(MenuItem)`
-  color: ${theme.colors.palette.purple700};
+  color: ${theme.colors.keyPressed};
   display: block;
   transition: all 0.3s ease;
 
@@ -100,8 +101,8 @@ const CustomLink = styled(MenuItem)`
   &.active,
   &:hover,
   &:focus {
-    background-color: ${theme.colors.palette.purple000};
-    color: ${theme.colors.palette.purple400};
+    background-color: ${theme.colors.keySubtle};
+    color: ${theme.colors.key};
     text-decoration: none;
   }
   cursor: pointer;

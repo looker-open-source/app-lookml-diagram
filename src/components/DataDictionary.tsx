@@ -24,31 +24,49 @@
 
  */
 
-import React, { PureComponent, useState } from "react";
+import React from "react";
 import {
   Chip,
   Flex,
   FlexItem,
   Heading,
+  Button,
   Spinner,
+  MessageBar,
   theme,
 } from "@looker/components";
 import humanize from 'humanize-string'
 import styled, { ThemeProvider } from "styled-components";
-import { useAllModels } from "../utils/fetchers";
+import { useAllModels, getComments } from "../utils/fetchers";
 import "./styles.css";
 import { PanelFields } from "./PanelFields";
 import SidebarToggle from "./SidebarToggle";
 import { useCurrentModel, useCurrentExplore } from "../utils/routes"
-import { ColumnDescriptor } from "./interfaces";
+import { ColumnDescriptor, CommentPermissions } from "./interfaces";
 import { SQLSnippet } from "./SQLSnippet";
 import { Sidebar } from './Sidebar'
+import { CommentIcon } from './CommentIcon'
 import { SidebarStyleProps } from "./interfaces";
 import { NoModelsAvailable } from "./NoModelsAvailable";
 import { ILookmlModelExploreField } from "@looker/sdk";
 import { CategorizedLabel } from './CategorizedLabel'
 
 export const columns: ColumnDescriptor[] = [
+  {
+    name: 'comment-icon',
+    label: ' ',
+    rowValueDescriptor: 'comment',
+    formatter: (x: any, isRow: boolean, field: ILookmlModelExploreField, commentCount: number, canComment: boolean, reader: boolean) => {
+      let showIcon = !reader || commentCount > 0
+      if (canComment && isRow && showIcon) {
+        return <CommentIcon count={commentCount}/>
+      } else {
+        return null
+      }
+    },
+    maxWidth: '4em',
+    default: true,
+  },
   {
     name: 'field-label',
     label: 'Field Label',
@@ -61,6 +79,7 @@ export const columns: ColumnDescriptor[] = [
       }
     },
     minWidth: '12em',
+    default: true,
   },
   {
     name: 'category',
@@ -69,7 +88,8 @@ export const columns: ColumnDescriptor[] = [
     formatter: (x: any, isRow: boolean, field: ILookmlModelExploreField) => {
       return <CategorizedLabel label={x} category={field.category} />
     },
-    minWidth: '12em',
+    minWidth: '10em',
+    default: false,
   },
   {
     name: 'description',
@@ -81,7 +101,8 @@ export const columns: ColumnDescriptor[] = [
       }
       return x
     },
-    maxWidth: '20em',
+    minWidth: '10em',
+    default: true,
   },
   {
     name: 'lookml-name',
@@ -90,7 +111,8 @@ export const columns: ColumnDescriptor[] = [
     formatter: (x: any) => {
       return x.replace(/\./g, '.\u200B');
     },
-    minWidth: '15em',
+    minWidth: '8em',
+    default: true,
   },
   {
     name: 'type',
@@ -98,6 +120,7 @@ export const columns: ColumnDescriptor[] = [
     rowValueDescriptor: 'type',
     formatter: (x: any) => humanize(x),
     minWidth: '8em',
+    default: true,
   },
   {
     label: 'SQL',
@@ -105,8 +128,9 @@ export const columns: ColumnDescriptor[] = [
     formatter: (x: any, isRow: boolean) => {
       return (<SQLSnippet isRow={isRow} src={x} />)
     },
-    maxWidth: '20em',
+    minWidth: '10em',
     name: 'sql',
+    default: true,
   },
   {
     name: 'tags',
@@ -117,6 +141,7 @@ export const columns: ColumnDescriptor[] = [
         <Chip disabled>{tag}</Chip>
       ))
     },
+    default: false,
   },
 ]
 
@@ -126,7 +151,8 @@ export const DataDictionary: React.FC<{}> = () => {
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
   const [search, setSearch] = React.useState('')
   const { currentExplore, loadingExplore } = useCurrentExplore()
-
+  const { comments, authors, me, permissions, addComment, editComment, deleteComment } = getComments(currentExplore)
+  
   let models
 
   if (unfilteredModels) {
@@ -177,6 +203,13 @@ export const DataDictionary: React.FC<{}> = () => {
               currentModel={currentModel}
               loadingExplore={loadingExplore}
               model={currentModel}
+              comments={comments}
+              addComment={addComment}
+              editComment={editComment}
+              deleteComment={deleteComment}
+              authors={authors}
+              me={me}
+              permissions={permissions}
             />
           </PageContent>
         </PageLayout>
@@ -185,9 +218,9 @@ export const DataDictionary: React.FC<{}> = () => {
   );
 }
 
-
+// @ts-ignore
 const PageHeader = styled(Flex)`
-  background-color: ${theme.colors.palette.purple400};
+  background-color: ${theme.colors.key};
   background-position: 100% 0;
   background-repeat: no-repeat;
   background-size: 836px 120px;
@@ -195,10 +228,11 @@ const PageHeader = styled(Flex)`
   background-image: url('https://marketplace-api.looker.com/app-assets/spirals.png');
 
   h1 {
-    color: ${theme.colors.palette.white};
+    color: ${theme.colors.keyText};
   }
 `;
 
+// @ts-ignore
 const PageLayout = styled.div<SidebarStyleProps>`
   display: grid;
   grid-template-rows: 1fr;
@@ -208,11 +242,13 @@ const PageLayout = styled.div<SidebarStyleProps>`
   position: relative;
 `;
 
+// @ts-ignore
 const PageContent = styled.div`
   grid-area: main;
   position: relative;
 `;
 
+// @ts-ignore
 const LayoutSidebar = styled.aside`
   position: absolute;
   top: 0;
@@ -222,11 +258,12 @@ const LayoutSidebar = styled.aside`
   z-index: 0;
 `;
 
+// @ts-ignore
 const SidebarDivider = styled.div<SidebarStyleProps>`
   transition: border 0.3s;
   border-left: 1px solid
     ${({ theme, open }) =>
-      open ? theme.colors.palette.charcoal200 : "transparent"};
+      open ? theme.colors.ui2 : "transparent"};
   grid-area: divider;
   overflow: visible;
   position: relative;
@@ -234,7 +271,7 @@ const SidebarDivider = styled.div<SidebarStyleProps>`
     border-left: 1px solid
       ${({ theme, open }) =>
         open
-          ? theme.colors.palette.charcoal300
-          : theme.colors.palette.charcoal200};
+          ? theme.colors.ui2
+          : theme.colors.ui4};
   }
 `;

@@ -24,31 +24,22 @@
 
  */
 
-import React from "react"
-import styled from "styled-components"
-import { theme } from '@looker/components'
-import humanize from 'humanize-string'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { FlexItem, ButtonTransparent, IconButton, Tooltip, theme } from "@looker/components";
+import { assertSnapshot } from "@looker/components-test-utils"
+import { ThemeProvider } from "styled-components"
+import { CommentIcon } from '../../components/CommentIcon'
 
-const Dimension = styled.div`
-  color: ${theme.colors.text3}
-`
+jest.mock("@looker/components", () => ({
+  FlexItem: () => "FlexItem",
+  ButtonTransparent: () => "ButtonTransparent",
+  IconButton: () => "IconButton",
+  Tooltip: () => "Tooltip",
+}))
 
-const Measure = styled.div`
-color: ${theme.colors.text3}
-`
-
-export const DIMENSION = 'dimension'
-export const MEASURE = 'measure'
-
-export const CategorizedLabel: React.FC<{
-  label: string,
-  category: string
-}> = ({ label, category }) => {
-  if (category === DIMENSION) {
-    return <Dimension>{humanize(label)}</Dimension>
-  } else if (category === MEASURE) {
-    return <Measure>{humanize(label)}</Measure>
-  } else {
-    return <div>{humanize(label)}</div>
-  }
-}
+it('renders correctly', () => {
+  assertSnapshot(<CommentIcon
+    count={10}
+  />)
+})

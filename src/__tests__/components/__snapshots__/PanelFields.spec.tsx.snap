@@ -2,23 +2,25 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="Box-sc-xja7ec sc-EHOje bCXiAY"
+  className="Box-sc-5738oh-0 sc-dlnjPT eqlWJo eWlZuf"
 >
   <div
-    className="Flex-sc-vm49hu ljMeNV"
+    className="Flex-sc-1ak395a-0 kYivOg"
   >
     <div
-      className="FlexItem-sc-1re6mwg eLXSKG"
+      className="FlexItem-sc-1xhpm9o-0 iunkBy"
     >
       <h1
-        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 gbsXsz"
+        className="TextBase-sc-1sjok63-0 Heading-sc-63s0tz-0 jxVrDv hTEfbx"
+        fontFamily="brand"
         fontSize="xxlarge"
         fontWeight="semiBold"
       >
         Snowflake Usage
       </h1>
       <h4
-        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 fLuWuF"
+        className="TextBase-sc-1sjok63-0 Heading-sc-63s0tz-0 ilTIhv lksPkV"
+        fontFamily="brand"
         fontSize="medium"
         fontWeight="normal"
       >
@@ -26,42 +28,25 @@ exports[`renders correctly 1`] = `
       </h4>
     </div>
     <div
-      className="FlexItem-sc-1re6mwg eLXSKG"
+      className="FlexItem-sc-1xhpm9o-0 iunkBy"
     >
-      <a
-        className="Link-sc-9w9yc8 hlbwPV"
-        color="palette.blue500"
-        href="/explore/snowflake_usage/query_history"
-        onClick={[Function]}
-        target="_blank"
-        textDecoration="none"
-      >
-        <button
-          className="ButtonOuter-sc-wugisi cHalYv ButtonBase-sc-18wmtoc ButtonOutline-sc-275zsb jhloJm"
-          onBlur={[Function]}
-          onKeyUp={[Function]}
-          size="medium"
-        >
-          Explore
-        </button>
-      </a>
+      ExternalLink
       ViewOptions
     </div>
   </div>
   <div
-    className="Flex-sc-vm49hu eoGueT"
+    className="Flex-sc-1ak395a-0 cOonEg"
   >
     <div
-      className="FlexItem-sc-1re6mwg dNebzy"
+      className="FlexItem-sc-1xhpm9o-0 ijaGTj"
       width="350px"
     >
       <div
-        className="Flex-sc-vm49hu eOMeYs InputSearch-sc-2764tg sc-htoDjs knjixi"
-        fontSize="small"
+        className="InputText-sc-6cvg1f-2 fFlyRR sc-jSFkmK iHdHnq"
         onMouseDown={[Function]}
       >
         <input
-          className="StyledInput-sc-f13pa jzRlTN InputText-sc-vhjogy dQduGO"
+          className="InputText__StyledInput-sc-6cvg1f-0 kPMZOS"
           onChange={[Function]}
           placeholder="Filter fields in this Explore"
           type="text"
@@ -70,329 +55,13 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
   </div>
+  QuickSearch
   <div
-    className="Box-sc-xja7ec sc-bdVaJa cOZUhj"
+    className="Box-sc-5738oh-0 hPsATA"
   >
-    <div
-      className="Flex-sc-vm49hu flLYsP"
-    >
-      <div
-        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
-      >
-        <h6
-          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
-          fontSize="xsmall"
-          fontWeight="normal"
-        >
-          Has Description
-        </h6>
-        <div
-          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
-          display="inline-flex"
-          fontSize="small"
-        >
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="yes"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Yes
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="no"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              No
-            </span>
-          </label>
-        </div>
-      </div>
-      <div
-        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
-      >
-        <h6
-          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
-          fontSize="xsmall"
-          fontWeight="normal"
-        >
-          Fields
-        </h6>
-        <div
-          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
-          display="inline-flex"
-          fontSize="small"
-        >
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="dimensions"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Dimension
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="measures"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Measure
-            </span>
-          </label>
-        </div>
-      </div>
-      <div
-        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
-      >
-        <h6
-          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
-          fontSize="xsmall"
-          fontWeight="normal"
-        >
-          Has Tags
-        </h6>
-        <div
-          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
-          display="inline-flex"
-          fontSize="small"
-        >
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="yes"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Yes
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="no"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              No
-            </span>
-          </label>
-        </div>
-      </div>
-      <div
-        className="FlexItem-sc-1re6mwg sc-htpNat kVstQD"
-      >
-        <h6
-          className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 sc-bwzfXH jKtyhP"
-          fontSize="xsmall"
-          fontWeight="normal"
-        >
-          Type
-        </h6>
-        <div
-          className="Box-sc-xja7ec gqzGoP ButtonGroup-sc-chg3ap kiShRM"
-          display="inline-flex"
-          fontSize="small"
-        >
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="String"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              String
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="Date"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Date
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="Number"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Number
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="Yesno"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Yesno
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="Count"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Count
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="Average"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Average
-            </span>
-          </label>
-          <label
-            className="ButtonItemLabel-sc-1beway8 iqRTth ButtonItem-sc-11a1q7g NkLis"
-            fontFamily="brand"
-            selected={false}
-            type="checkbox"
-          >
-            <input
-              checked={false}
-              className="ButtonInput-sc-1346jqs cOfiUU"
-              onChange={[Function]}
-              type="checkbox"
-              value="Sum"
-            />
-            <span
-              className="ButtonItemLabelText-sc-1xqs192 jSfzmm"
-            >
-              Sum
-            </span>
-          </label>
-        </div>
-      </div>
-    </div>
+    Fields
+    Fields
+    Fields
   </div>
-  Box
 </div>
 `;

@@ -29,6 +29,7 @@ import {
   Code,
   TableRow,
   TableDataCell,
+  theme,
 } from "@looker/components";
 
 import { ILookmlModelExploreField } from "@looker/sdk";
@@ -41,7 +42,7 @@ export const DetailDrawerRow: React.FC<{
   return (
     <TableRow key={column.rowValueDescriptor}>
       <TableDataCell
-        color="palette.charcoal700"
+        color="text"
         p="medium"
         pl="small"
         pr="small"
@@ -50,13 +51,13 @@ export const DetailDrawerRow: React.FC<{
       </TableDataCell>
       <TableDataCell
         className="break"
-        color="palette.charcoal700"
+        color="text3"
         p="medium"
         pl="small"
         pr="small"
       >
         <Code
-          color="palette.charcoal700"
+          color="text3"
           fontSize="small"
           className="break"
         >

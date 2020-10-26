@@ -3,8 +3,9 @@
 exports[`renders correctly 1`] = `
 Array [
   <button
-    aria-haspopup="true"
-    className="ButtonOuter-sc-wugisi gTSaoM ButtonBase-sc-18wmtoc ButtonOutline-sc-275zsb jhloJm"
+    aria-expanded={false}
+    aria-haspopup={true}
+    className="ButtonBase__ButtonOuter-sc-1bpio6j-0 ctbWtP ButtonBase-sc-1bpio6j-1 ButtonOutline-ncggc7-0 gzZLNH jpTvjv"
     onBlur={[Function]}
     onClick={[Function]}
     onKeyUp={[Function]}

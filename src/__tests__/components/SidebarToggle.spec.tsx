@@ -26,22 +26,20 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { theme} from "@looker/components"
-import { ThemeProvider } from "styled-components"
+import { theme, ComponentsProvider } from "@looker/components"
+import { assertSnapshot, renderWithTheme } from "@looker/components-test-utils"
 
 import SidebarToggle from '../../components/SidebarToggle'
 
+jest.mock("@looker/components", () => ({
+  IconButton: () => "IconButton",
+  IconNames: () => "IconNames",
+}))
+
 it('renders correctly', () => {
-  const tree = renderer
-    .create(
-      <ThemeProvider theme={theme}>
-        <SidebarToggle
-          isOpen={true}
-          onClick={() => {}}
-          headerHeight="114px"
-        />
-      </ThemeProvider>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+  assertSnapshot(<SidebarToggle
+    isOpen={true}
+    onClick={() => {}}
+    headerHeight="114px"
+  />)
 })
