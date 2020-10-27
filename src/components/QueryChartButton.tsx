@@ -36,7 +36,7 @@ import styled from 'styled-components'
 const DisabledText = styled.div`
   font-style: italic
   font-size: 70%
-  color: ${theme.colors.palette.charcoal500}
+  color: ${theme.colors.neutralText}
   margin-top: 0.2em;
 `
 

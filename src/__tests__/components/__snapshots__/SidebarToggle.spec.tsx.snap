@@ -1,48 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
+.c0 {
+  position: relative;
+  margin-top: calc(114px / 2);
+  z-index: 1;
+}
+
+.c0 IconButton {
+  background: #fff;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+}
+
 <div
-  className="sc-bdVaJa fENiVh"
+  className="c0"
 >
-  <button
-    className="ButtonOuter-sc-wugisi eFTclI ButtonBase-sc-18wmtoc ButtonTransparent-sc-1gse89j cYulav IconButton-sc-1yur21t cnuNGW"
-    color="neutral"
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onKeyUp={[Function]}
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
-    shape="round"
-    size="small"
-    type="button"
-    width={28}
-  >
-    <div
-      className="VisuallyHidden-sc-10j76d8 gsEqg"
-    >
-      Close Sidebar
-    </div>
-    <div
-      aria-hidden={true}
-      className="Styled-sc-1rq5u7z eqQSq Icon-sc-1079d6u cWvDzp"
-      size={22}
-    >
-      <svg
-        fill="currentColor"
-        height="100%"
-        viewBox="0 0 24 24"
-        width="100%"
-      >
-        <title>
-          Caret Left
-        </title>
-        <path
-          d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"
-          fill="currentColor"
-        />
-      </svg>
-    </div>
-  </button>
+  IconButton
 </div>
 `;

@@ -38,13 +38,14 @@ import {
   theme
 } from "@looker/components";
 import styled from "styled-components";
-
-import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField} from "@looker/sdk";
-import {ColumnDescriptor} from "./interfaces";
+import {ColumnDescriptor, CommentPermissions} from "./interfaces";
+import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField, IUser} from "@looker/sdk";
 import { DetailDrawer } from "./DetailDrawer";
+import { DETAILS_PANE } from "../utils/constants";
 
+// @ts-ignore
 export const TableWrapper = styled(Box)`
-  border-bottom: 1px solid ${theme.colors.palette.charcoal200};
+  border-bottom: .5px solid ${theme.colors.ui2};
 
   &:last-child {
     border-bottom: none;
@@ -52,6 +53,7 @@ export const TableWrapper = styled(Box)`
 `;
 
 // Sticky Table Header
+// @ts-ignore
 export const StickyHeader = styled(TableHeaderCell)`
   @supports (position: sticky) {
     position: sticky;
@@ -67,6 +69,13 @@ export const Fields: React.FC<{
   fields: ILookmlModelExploreField[],
   search: string,
   shownColumns: string[],
+  comments: string,
+  addComment: (newCommentStr: string, field: string) => void,
+  editComment: (newCommentStr: string, field: string) => void,
+  deleteComment: (newCommentStr: string, field: string) => void,
+  authors: IUser[],
+  me: IUser,
+  permissions: CommentPermissions,
 }> = ({
   columns,
   explore,
@@ -74,8 +83,16 @@ export const Fields: React.FC<{
   fields,
   model,
   search,
-  shownColumns
+  shownColumns,
+  comments,
+  addComment,
+  editComment,
+  deleteComment,
+  authors,
+  me,
+  permissions,
 }) => {
+  const [tab, setTab] = React.useState(DETAILS_PANE)
   return (
     <TableWrapper p="xxlarge">
       <Flex>
@@ -94,8 +111,9 @@ export const Fields: React.FC<{
                   return (
                     <StickyHeader
                       key={column.label}
-                      backgroundColor="palette.charcoal100"
-                      color="palette.charcoal800"
+                      backgroundColor="ui1"
+                      fontWeight="medium"
+                      color="text"
                       fontSize="small"
                       p="medium"
                       pl="small"
@@ -110,9 +128,9 @@ export const Fields: React.FC<{
           <TableBody fontSize="small">
             {fields.map((field) => {
               if (!search ||
-                  (field.label_short && field.label_short.toLowerCase().includes(search.toLowerCase())) ||
-                  (field.description && field.description.toLowerCase().includes(search.toLowerCase())) || 
-                  (field.field_group_label && field.field_group_label.toLowerCase().includes(search.toLowerCase())))
+                (field.label_short && field.label_short.toLowerCase().includes(search.toLowerCase())) ||
+                (field.description && field.description.toLowerCase().includes(search.toLowerCase())) || 
+                (field.field_group_label && field.field_group_label.toLowerCase().includes(search.toLowerCase())))
              {
                 return (
                   <DetailDrawer
@@ -122,6 +140,15 @@ export const Fields: React.FC<{
                     key={field.name}
                     model={model}
                     shownColumns={shownColumns}
+                    tab={tab}
+                    setTab={setTab}
+                    comments={comments}
+                    addComment={addComment}
+                    editComment={editComment}
+                    deleteComment={deleteComment}
+                    authors={authors}
+                    me={me}
+                    permissions={permissions}
                   />
                 )
               }

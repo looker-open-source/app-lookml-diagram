@@ -43,8 +43,8 @@ const CodeTag = styled.code`
 
 export const SQLSnippet = ({ src, isRow }: { src: string, isRow: boolean }) => {
   let truncatedSrc = src
-  if (isRow && src && src.length > 200) {
-    truncatedSrc = src.substring(0, 200) + '...'
+  if (isRow && src && src.length > 100) {
+    truncatedSrc = src.substring(0, 100) + '...'
   }
   return (
     <SyntaxHighlighter

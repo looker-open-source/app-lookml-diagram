@@ -13875,3 +13875,12 @@ export const mockGroups = [
   "sql": "${credits_used} ",
   "sql_case": null
 }]]]
+
+export const mockComments = {
+  comments: "{}",
+  authors: [],
+  me: {},
+  addComment: ()=>{},
+  editComment: ()=>{},
+  deleteComment: ()=>{},
+}

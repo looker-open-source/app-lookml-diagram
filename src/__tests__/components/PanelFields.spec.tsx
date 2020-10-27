@@ -46,8 +46,16 @@ jest.mock("../../components/ViewOptions", () => ({
   ViewOptions: () => "ViewOptions"
 }))
 
+jest.mock("../../components/ExternalLink", () => ({
+  ExternalLink: () => "ExternalLink"
+}))
+
+jest.mock("../../components/QuickSearch", () => ({
+  QuickSearch: () => "QuickSearch"
+}))
+
 // @ts-ignore
-mockComponents.Box = jest.fn(() => 'Box')
+// mockComponents.Box = jest.fn(() => 'Box')
 
 jest.mock('../../utils/routes', () => {
   return {
@@ -70,6 +78,13 @@ it('renders correctly', () => {
         loadingExplore={null}
         columns={columns}
         model={mockCurrentModel}
+        comments={"{}"}
+        addComment={()=>{}}
+        editComment={()=>{}}
+        deleteComment={()=>{}}
+        authors={[]}
+        me={{}}
+        permissions={{}}
       />
     </ThemeProvider>
   ).toJSON();

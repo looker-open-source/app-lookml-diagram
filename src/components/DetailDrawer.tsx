@@ -24,39 +24,36 @@
 
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   theme,
-  ButtonOutline,
-  ButtonTransparent,
-  DrawerManager,
-  Flex,
-  FlexItem,
-  Heading,
-  ModalContent,
-  Paragraph,
-  Table,
+  Drawer,
   TableRow,
   TableDataCell,
-  TableBody
 } from "@looker/components";
 import styled from "styled-components";
 
-import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField} from "@looker/sdk";
-import {ColumnDescriptor} from "./interfaces";
-import { ExternalLink } from "./ExternalLink";
-import { exploreFieldURL } from "../utils/urls";
-import { canGetDistribution, canGetTopValues } from "../utils/queries";
-import { QueryChart } from './QueryChart'
-import { DetailDrawerRow } from "./DetailDrawerRow";
+import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField, IUser } from "@looker/sdk";
+import { ColumnDescriptor, FieldComments, CommentPermissions } from "./interfaces";
+import { FieldMetadata } from "./FieldMetadata";
+import { DETAILS_PANE, COMMENTS_PANE } from "../utils/constants";
+import { internalExploreURL, useCurrentModel, usePathNames } from "../utils/routes"
+import { useHistory } from "react-router"
 
-
-// Page Header
+// @ts-ignore
 const TableRowCustom = styled(TableRow)`
   transition: background-color 0.3s ease;
   &.active,
   &:hover {
-    background-color: ${theme.colors.palette.charcoal100};
+    background-color: ${theme.colors.ui1};
+  }
+
+  .disabled{
+    visibility: hidden;
+  }
+
+  &:hover .disabled{
+    visibility: visible;
   }
 
   td {
@@ -71,130 +68,134 @@ export const DetailDrawer: React.FC<{
   model: ILookmlModel,
   field: ILookmlModelExploreField,
   shownColumns: string[],
-}> = ({ columns, explore, field, model, shownColumns }) => {
-  return (
-    <DrawerManager
-      content={
-        <ModalContent>
-          <Heading as="h3" fontWeight="semiBold">
-            {field.label_short}
-          </Heading>
-          <Flex flexDirection="column">
-            { field.description &&
-              <FlexItem pb="xlarge">
-                <Paragraph>{field.description}</Paragraph>
-              </FlexItem>
-            }
-            <FlexItem>
-              <Heading
-                as="h4"
-                fontSize="small"
-                fontWeight="semiBold"
-                mb="small"
-                style={{marginTop: '2em'}}
-              >
-                About this Field
-              </Heading>
-            </FlexItem>
-            <FlexItem pb="xlarge">
-              <Table width="100%">
-                <TableBody fontSize="small">
-                  { columns.map(column => {
-                    if (column.rowValueDescriptor !== 'description') {
-                      return (
-                        <DetailDrawerRow
-                          key={column.rowValueDescriptor}
-                          column={column}
-                          field={field}
-                        />
-                      )
-                    }
-                  })}
-                </TableBody>
-              </Table>
-            </FlexItem>
+  tab: number,
+  setTab: (tabIndex: number) => void,
+  comments: string,
+  addComment: (newCommentStr: string, field: string) => void,
+  editComment: (newCommentStr: string, field: string) => void,
+  deleteComment: (newCommentStr: string, field: string) => void,
+  authors: IUser[],
+  me: IUser,
+  permissions: CommentPermissions,
+}> = ({ columns, 
+        explore, 
+        field, 
+        model, 
+        shownColumns, 
+        tab, 
+        setTab,
+        comments,
+        addComment,
+        editComment,
+        deleteComment,
+        authors,
+        me,
+        permissions,
+  }) => {
+    const history = useHistory()
+    const path = usePathNames()
 
-            <QueryChart
-              disabledText={'Distributions can only be shown for numeric dimensions on a view with a count measure.'}
-              enabled={canGetDistribution({model, explore, field})}
-              type={{
-                type: "Distribution",
-                model,
-                explore,
-                field
-              }}
+    let parsedComments = JSON.parse(comments)
 
-            />
-
-            <QueryChart
-              disabledText={'Values can only be shown for dimensions on a view with a count measure.'}
-              enabled={canGetTopValues({ model, explore, field })}
-              type={{
-                type: "Values",
-                model,
-                explore,
-                field
-              }}
-            />
-
-            <FlexItem
-              borderTop={`1px solid ${
-                theme.colors.palette.charcoal200
-                }`}
-              pb="xlarge"
-              pt="xlarge"
-            >
-              <Flex alignItems="center" justifyContent="center">
-                <ExternalLink target="_blank" href={field.lookml_link}>
-                  <ButtonTransparent
-                    mr="small"
-                    ml="small"
-                    iconBefore="LogoRings"
-                  >
-                    Go to LookML
-                  </ButtonTransparent>
-                </ExternalLink>
-
-
-                <ExternalLink target="_blank" href={exploreFieldURL(explore, field)}>
-                  <ButtonTransparent
-                    mr="small"
-                    ml="small"
-                    iconBefore="Explore"
-                  >
-                    Explore with Field
-                  </ButtonTransparent>
-                </ExternalLink>
-
-
-              </Flex>
-            </FlexItem>
-          </Flex>
-        </ModalContent>
+    const getFieldCommentsLength = (field: string) => {
+      let exploreComments = parsedComments[explore.name] ? parsedComments[explore.name] : {}
+      let commentFields = Object.keys(exploreComments)
+      if (commentFields.includes(field) && exploreComments[field].length > 0) {
+        return exploreComments[field].length
+      } else {
+        return null
       }
-    >
-      {onClick => (
-        <TableRowCustom onClick={onClick}>
+    }
+
+    let fieldComments = parsedComments[explore.name] && parsedComments[explore.name][field.name] || []
+    let sortedComments = fieldComments.sort((x: FieldComments, y: FieldComments) => { return x.timestamp - y.timestamp })
+
+    const canViewComments = () => {
+      if (permissions.disabled) {
+        return false
+      } else {
+        return ((permissions.reader && sortedComments.length > 0) || permissions.writer || permissions.manager)
+      }
+    }
+
+    function paneUrl(pane: number) {
+      field && history.push(
+        internalExploreURL({
+          model: explore.model_name,
+          explore: explore.name,
+          field: field.name,
+          tab: pane.toString()
+        })
+      )
+    }
+
+    function closePaneUrl() {
+      field && history.push(
+        internalExploreURL({
+          model: explore.model_name,
+          explore: explore.name,
+        })
+      )
+    }
+
+    function detailsPane() {
+      paneUrl(DETAILS_PANE);
+      setTab(DETAILS_PANE);
+    }
+    
+    function commentsPane() {
+      canViewComments() && paneUrl(COMMENTS_PANE);
+      canViewComments() && setTab(COMMENTS_PANE);
+    }
+
+    return (
+      <Drawer
+        content={(
+          <FieldMetadata
+            field={field}
+            columns={columns}
+            explore={explore}
+            key={field.name}
+            model={model}
+            tab={path.detailPane ? parseInt(path.detailPane) : tab}
+            detailsPane={detailsPane}
+            commentsPane={commentsPane}
+            sortedComments={sortedComments}
+            addComment={addComment}
+            editComment={editComment}
+            deleteComment={deleteComment}
+            fieldCommentLength={getFieldCommentsLength(field.name)}
+            commentAuthors={authors}
+            me={me}
+            permissions={permissions}
+            canViewComments={canViewComments()}
+          />
+        )}
+        isOpen={field.name === path.fieldName}
+        onClose={closePaneUrl}
+      >
+        <TableRowCustom>
           { columns.map(column => {
             if (shownColumns.includes(column.rowValueDescriptor)) {
               return (
                 <TableDataCell
-                  color="palette.charcoal700"
+                  color="text3"
                   p="medium"
                   pl="small"
+                  fontWeight="normal"
                   key={column.rowValueDescriptor}
                   maxWidth={column.maxWidth}
                   minWidth={column.minWidth}
+                  onClick={column.rowValueDescriptor === "comment" ? commentsPane : detailsPane}
                 >
-                  {/*
-                    // @ts-ignore */}
-                  {column.formatter(field[column.rowValueDescriptor], true, field)}
+                  {/* 
+                  // @ts-ignore */}
+                  { column.formatter(field[column.rowValueDescriptor], true, field, getFieldCommentsLength(field.name), canViewComments(), permissions.reader) }
                 </TableDataCell>
               )
             }
           })}
         </TableRowCustom>
-      )}
-    </DrawerManager>
-  );
+      </Drawer>
+    );
 };

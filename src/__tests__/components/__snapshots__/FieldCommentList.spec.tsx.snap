@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="Flex-sc-1ak395a-0 jAuRlG"
+>
+  <button
+    className="ButtonBase__ButtonOuter-sc-1bpio6j-0 cSzqXc ButtonBase-sc-1bpio6j-1 Button-sc-18euc9m-0 gzZLNH ekbhoA"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onKeyUp={[Function]}
+    size="medium"
+  >
+    Add Comment
+  </button>
+  <span
+    className="TextBase-sc-1sjok63-0 Text-sc-1wcc5y1-0 gdjBpx kdlxrc"
+    fontSize="xsmall"
+  >
+    These comments are unique to fields in the Data Dictionary and are not saved to any LookML description.
+  </span>
+</div>
+`;

@@ -55,7 +55,7 @@ export const Main = styled(Box)`
 
 export const FilterHeading = styled(Heading)`
   margin-bottom: 0.4em;
-  color: ${theme.colors.palette.charcoal500};
+  color: ${theme.colors.text1};
 `;
 
 export const Group = styled(FlexItem)`
@@ -68,20 +68,26 @@ export const QuickSearch: React.FC<{
   fieldTypes: string[]
   hasDescription: string[]
   hasTags: string[]
+  hasComments: string[]
   setSelectedFields: (fields: string[]) => void
   setFieldTypes: (fieldTypes: string[]) => void
   setHasDescription: (hasDescription: string[]) => void
   setHasTags: (hasTags: string[]) => void
+  setHasComments: (hasTags: string[]) => void,
+  showComments: boolean,
 }> = ({
   selectedFields,
   fields,
   fieldTypes,
   hasDescription,
   hasTags,
+  hasComments,
   setSelectedFields,
   setFieldTypes,
   setHasDescription,
   setHasTags,
+  setHasComments,
+  showComments,
 }) => {
   return (
     <Main>
@@ -109,6 +115,14 @@ export const QuickSearch: React.FC<{
             <ButtonItem value="no">No</ButtonItem>
           </ButtonGroup>
         </Group>
+
+        {showComments && <Group>
+          <FilterHeading as="h6">Has Comments</FilterHeading>
+          <ButtonGroup value={hasComments} onChange={setHasComments}>
+            <ButtonItem value="yes">Yes</ButtonItem>
+            <ButtonItem value="no">No</ButtonItem>
+          </ButtonGroup>
+        </Group>}
 
         <Group>
           <FilterHeading as="h6">Type</FilterHeading>

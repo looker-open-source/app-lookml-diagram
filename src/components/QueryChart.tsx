@@ -58,6 +58,7 @@ interface QueryChartProps {
   type: QueryChartType
 }
 
+// @ts-ignore
 const SpinnerBlock = styled(Spinner)`
   display: inline-block;
 `

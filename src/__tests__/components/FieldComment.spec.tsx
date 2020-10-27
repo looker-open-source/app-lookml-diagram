@@ -26,56 +26,43 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mockCurrentModel, mockCurrentExplore } from "../MockData/MockData";
-import { columns } from '../../components/DataDictionary'
-import { defaultShowColumns } from "../../components/PanelFields";
-import { theme} from "@looker/components"
+import { theme } from "@looker/components"
 import { ThemeProvider } from "styled-components"
-import { DetailDrawer } from '../../components/DetailDrawer'
+import { FieldComment } from '../../components/FieldComment'
 
-jest.mock('react-router', () => {
-  return {
-    useHistory: jest.fn(() => {
-      push: () => {}
-    }),
-    useRouteMatch: jest.fn(() => {
-      return ''
-    })
-  }
-})
-
-jest.mock("../../components/DetailDrawerRow", () => ({
-  DetailDrawerRow: () => "DetailDrawerRow"
-}))
-
-jest.mock("../../components/QueryChart", () => ({
-  QueryChart: () => "QueryChart"
-}))
-
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
+jest.mock("../../components/FieldCommentDisplay", () => ({
+  FieldCommentDisplay: () => "FieldCommentDisplay"
 }))
 
 it('renders correctly', () => {
   const tree = renderer
     .create(
       <ThemeProvider theme={theme}>
-        <DetailDrawer
-          columns={columns}
-          explore={mockCurrentExplore}
-          model={mockCurrentModel}
-          field={mockCurrentExplore.fields.dimensions[0]}
-          shownColumns={defaultShowColumns}
-          tab={0}
-          setTab={()=>{}}
-          comments={"{}"}
-          addComment={()=>{}}
+        <FieldComment
+          comment={{
+            pk: "timestamp::author",
+            author: 1,
+            content: "This is my comment.",
+            timestamp: 7171717171,
+            edited: false
+          }}
+          editingComment={""}
+          setEditingComment={()=>{}}
+          setCommentContent={()=>{}}
           editComment={()=>{}}
           deleteComment={()=>{}}
-          authors={[]}
+          commentContent={""}
+          field={{}}
+          authorData={{
+            display_name: "Mr. Foo Bar",
+            first_name: "Foo",
+            last_name: "Bar",
+            avatar_url: "imgsrv.com/foo/bar"
+          }}
           me={{}}
+          addingNew={false}
           permissions={{}}
-        />
+          />
       </ThemeProvider>
     )
     .toJSON();

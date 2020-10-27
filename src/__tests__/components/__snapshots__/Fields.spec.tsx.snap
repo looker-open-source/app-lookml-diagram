@@ -2,16 +2,17 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="Box-sc-xja7ec sc-bdVaJa kJazQz"
+  className="Box-sc-5738oh-0 sc-bdnylx fmGVSD fvPRTy"
 >
   <div
-    className="Flex-sc-vm49hu VNAwo"
+    className="Flex-sc-1ak395a-0 eYyEcC"
   >
     <div
-      className="FlexItem-sc-1re6mwg eLXSKG"
+      className="FlexItem-sc-1xhpm9o-0 iunkBy"
     >
       <h2
-        className="TextBase-sc-1rkc9wq Heading-sc-cg3kf8 iOglnH"
+        className="TextBase-sc-1sjok63-0 Heading-sc-63s0tz-0 dMcdfa hTEfbx"
+        fontFamily="brand"
         fontSize="xlarge"
         fontWeight="semiBold"
       >
@@ -20,62 +21,62 @@ exports[`renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="Flex-sc-vm49hu gijtsu"
+    className="Flex-sc-1ak395a-0 jAuRlG"
   >
     <table
-      className="Table-sc-155gngt hYKdHW"
+      className="Table-sc-1x77f3i-0 kuXVYl"
       width="100%"
     >
       <thead
-        className="TableHead-sc-s2dsdh cqEAsI"
+        className="TableHead-sc-1p30re3-0 fJIoAY"
       >
         <tr
-          className="TableRow-sc-16332ku iaBpXn"
+          className="TableRow-sc-1tgwedx-0 gYAnID"
         >
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
-            color="palette.charcoal800"
+            className="TableHeaderCell-sc-1gjfki4-0 sc-gtssRu hVPIVg csEUrh"
+            color="text"
             fontSize="small"
-            fontWeight="semiBold"
+            fontWeight="medium"
           >
             Field Label
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
-            color="palette.charcoal800"
+            className="TableHeaderCell-sc-1gjfki4-0 sc-gtssRu hVPIVg csEUrh"
+            color="text"
             fontSize="small"
-            fontWeight="semiBold"
+            fontWeight="medium"
           >
             Description
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
-            color="palette.charcoal800"
+            className="TableHeaderCell-sc-1gjfki4-0 sc-gtssRu hVPIVg csEUrh"
+            color="text"
             fontSize="small"
-            fontWeight="semiBold"
+            fontWeight="medium"
           >
             LookML Name
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
-            color="palette.charcoal800"
+            className="TableHeaderCell-sc-1gjfki4-0 sc-gtssRu hVPIVg csEUrh"
+            color="text"
             fontSize="small"
-            fontWeight="semiBold"
+            fontWeight="medium"
           >
             Type
           </th>
           <th
-            className="TableHeaderCell-sc-10vsqzs sc-bwzfXH gVpcES"
-            color="palette.charcoal800"
+            className="TableHeaderCell-sc-1gjfki4-0 sc-gtssRu hVPIVg csEUrh"
+            color="text"
             fontSize="small"
-            fontWeight="semiBold"
+            fontWeight="medium"
           >
             SQL
           </th>
         </tr>
       </thead>
       <tbody
-        className="TableBody-sc-14b7kn1 kkzfqn"
+        className="TableBody-sc-17lboeq-0 fxWXsB"
         fontSize="small"
       >
         DetailDrawer

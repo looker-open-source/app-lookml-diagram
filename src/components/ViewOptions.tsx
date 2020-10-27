@@ -62,9 +62,6 @@ export const ViewOptions: React.FC<{
                 key={column.name}
                 name={column.name}
                 label={column.label}
-                labelFontSize="small"
-                labelFontWeight="normal"
-                alignLabel="right"
                 onChange={checkChange(setShownColumns, shownColumns, column.rowValueDescriptor)}
                 checked={shownColumns.includes(column.rowValueDescriptor)}
               />
@@ -73,16 +70,11 @@ export const ViewOptions: React.FC<{
         </PopoverContent>
       }
     >
-      {(onClick, ref, className) => (
-        <ButtonOutline
-          aria-haspopup="true"
-          onClick={onClick}
-          ref={ref}
-          className={className}
-        >
-          View Options
-        </ButtonOutline>
-      )}
+      <ButtonOutline
+        aria-haspopup="true"
+      >
+        View Options
+      </ButtonOutline>
     </Popover>
   );
 };

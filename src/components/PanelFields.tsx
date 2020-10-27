@@ -46,8 +46,8 @@ import toPairs from "lodash/toPairs"
 import orderBy from "lodash/orderBy"
 import { ExternalLink } from "./ExternalLink";
 import { exploreURL } from "../utils/urls";
-import {ColumnDescriptor} from "./interfaces";
-import { ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField } from "@looker/sdk";
+import { ColumnDescriptor, CommentPermissions } from "./interfaces";
+import { ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField, IUser } from "@looker/sdk";
 import { QuickSearch } from "./QuickSearch";
 import humanize from 'humanize-string'
 import { DIMENSION, MEASURE } from "./CategorizedLabel";
@@ -73,7 +73,7 @@ const IntroText = styled(Paragraph)`
   text-align: center;
   margin-top: 5em;
   max-width: 40%;
-  color: ${theme.colors.palette.charcoal500};
+  color: ${theme.colors.text1};
 `
 
 export const ExploreSearch = styled(InputSearch)`
@@ -93,12 +93,32 @@ export const PanelFields: React.FC<{
   currentExplore: ILookmlModelExplore | null,
   currentModel: ILookmlModel | null
   loadingExplore: string,
-  model: ILookmlModel}
-> = ({ columns, currentExplore, currentModel, loadingExplore, model }) => {
+  model: ILookmlModel,
+  comments: string,
+  addComment: (newCommentStr: string, field: string) => void,
+  editComment: (newCommentStr: string, field: string) => void,
+  deleteComment: (newCommentStr: string, field: string) => void,
+  authors: IUser[],
+  me: IUser,
+  permissions: CommentPermissions,
+}> = ({ columns, 
+        currentExplore, 
+        currentModel, 
+        loadingExplore, 
+        model,
+        comments,
+        addComment,
+        editComment,
+        deleteComment,
+        authors,
+        me,
+        permissions,
+       }) => {
   const [search, setSearch] = useState('')
-  const [shownColumns, setShownColumns] = useState([...defaultShowColumns])
+  const [shownColumns, setShownColumns] = useState([...columns.filter(d => { return d.default }).map(d => d.rowValueDescriptor)])
   const [hasDescription, setHasDescription] = useState([])
   const [hasTags, setHasTags] = useState([])
+  const [hasComments, setHasComments] = useState([])
   const [fieldTypes, setFieldTypes] = useState([])
   const [selectedFields, setSelectedFields] = useState([])
 
@@ -116,18 +136,23 @@ export const PanelFields: React.FC<{
     )
   }
 
-  if (currentModel && currentExplore) {
+  if ((currentModel && currentExplore) && (currentModel.name === currentExplore.model_name)) {
     const fields = flatten(values(currentExplore.fields)).map(
       f => typeMaker(f)
     ).filter(
       (value, index, self) => self.indexOf(value) === index
     )
 
-    const allFilters = hasDescription.concat(hasTags, fieldTypes, selectedFields)
+    let revivedComments = JSON.parse(comments)
+    let encExplores = Object.keys(revivedComments)
+    let commentObj = encExplores.includes(currentExplore.name) ? revivedComments[currentExplore.name] : revivedComments[currentExplore.name] = {}
+
+    const allFilters = hasDescription.concat(hasTags, hasComments, fieldTypes, selectedFields)
     const groups = orderBy(
       toPairs(
         groupBy(
           flatten(values(currentExplore.fields)).filter(f => {
+            let commentFlag = commentObj[f.name] && commentObj[f.name].length > 0 ? true : false
             return !f.hidden && (allFilters.length === 0 || (
               (
                 hasDescription.length === 0 || ((hasDescription.includes('yes') && f.description) || (
@@ -137,6 +162,11 @@ export const PanelFields: React.FC<{
               (
                 hasTags.length === 0 || (
                   (hasTags.includes('yes') && f.tags.length > 0) || (hasTags.includes('no') && f.tags.length === 0)
+                )
+              ) &&
+              (
+                hasComments.length === 0 || (
+                  (hasComments.includes('yes') && commentFlag) || (hasComments.includes('no') && !commentFlag)
                 )
               ) &&
               (
@@ -171,7 +201,7 @@ export const PanelFields: React.FC<{
               </ButtonOutline>
             </ExternalLink>
             <ViewOptions
-              columns={columns}
+              columns={columns.filter(d => { return d.rowValueDescriptor !== "comment"})}
               shownColumns={shownColumns}
               setShownColumns={setShownColumns}
             />
@@ -195,10 +225,13 @@ export const PanelFields: React.FC<{
           fieldTypes={fieldTypes}
           hasDescription={hasDescription}
           hasTags={hasTags}
+          hasComments={hasComments}
           setSelectedFields={setSelectedFields}
           setFieldTypes={setFieldTypes}
           setHasDescription={setHasDescription}
           setHasTags={setHasTags}
+          setHasComments={setHasComments}
+          showComments={!permissions.disabled}
         />
 
         <Box>
@@ -214,6 +247,13 @@ export const PanelFields: React.FC<{
                   model={model}
                   search={search}
                   shownColumns={shownColumns}
+                  comments={comments}
+                  addComment={addComment}
+                  editComment={editComment}
+                  deleteComment={deleteComment}
+                  authors={authors}
+                  me={me}
+                  permissions={permissions}
                 />
               )
             }

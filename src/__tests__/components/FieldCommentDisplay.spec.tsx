@@ -26,50 +26,43 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mockCurrentExplore, mockModels } from "../MockData/MockData";
-import { theme } from "@looker/components"
-import { ThemeProvider } from "styled-components"
+import { theme, ComponentsProvider } from "@looker/components"
+import { assertSnapshot } from "@looker/components-test-utils"
+import { FieldCommentDisplay } from '../../components/FieldCommentDisplay'
 
-import { ExploreList } from '../../components/ExploreList'
-
-jest.mock('react-router', () => {
-  return {
-    useHistory: jest.fn(() => {
-      push: () => {}
-    }),
-    useRouteMatch: jest.fn(() => {
-      return ''
-    })
-  }
-})
-
-
-jest.mock('../../utils/fetchers', () => {
-  return {
-    useAllModels: jest.fn(() => {
-      return mockModels
-    }),
-  }
-})
-
-jest.mock("../../components/PanelFields", () => ({
-  PanelFields: () => "PanelFields"
-}))
-
-jest.mock("../../components/Sidebar", () => ({
-  Sidebar: () => "Sidebar"
+jest.mock("@looker/components", () => ({
+  FlexItem: () => "FlexItem",
+  Card: () => "Card",
+  CardContent: () => "CardContent",
+  Flex: () => "Flex",
+  AvatarUser: () => "AvatarUser",
+  Text: () => "Text",
+  IconButton: () => "IconButton",
+  SpaceVertical: () => "SpaceVertical",
+  Menu: () => "Menu",
+  MenuDisclosure: () => "MenuDisclosure",
+  MenuList: () => "MenuList",
+  MenuItem: () => "Heading",
+  Icon: () => "Icon",
 }))
 
 it('renders correctly', () => {
-  const tree = renderer
-    .create(
-      <ThemeProvider theme={theme}>
-        <ExploreList
-          currentExplore={mockCurrentExplore}
-          loadingExplore={''}
-          search={null}
-        />)
-      </ThemeProvider>
-    ).toJSON();
-  expect(tree).toMatchSnapshot();
+  assertSnapshot(<FieldCommentDisplay
+    authorData={{
+      display_name: "Mr. Foo Bar",
+      first_name: "Foo",
+      last_name: "Bar",
+      avatar_url: "imgsrv.com/foo/bar"
+    }}
+    comment={{
+      pk: "timestamp::author",
+      author: 1,
+      content: "This is my comment.",
+      timestamp: 7171717171,
+      edited: false
+    }}
+    showDetails={()=>""}
+    toggleEdit={()=>{}}
+    openDialog={()=>{}}
+/>)
 })

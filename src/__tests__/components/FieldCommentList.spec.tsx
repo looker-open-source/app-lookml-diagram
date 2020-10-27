@@ -24,31 +24,33 @@
 
  */
 
-import React from "react"
-import styled from "styled-components"
-import { theme } from '@looker/components'
-import humanize from 'humanize-string'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { theme} from "@looker/components"
+import { ThemeProvider } from "styled-components"
+import { FieldCommentList } from '../../components/FieldCommentList'
 
-const Dimension = styled.div`
-  color: ${theme.colors.text3}
-`
+jest.mock("../../components/FieldComment", () => ({
+  FieldComment: () => "FieldComment"
+}))
 
-const Measure = styled.div`
-color: ${theme.colors.text3}
-`
-
-export const DIMENSION = 'dimension'
-export const MEASURE = 'measure'
-
-export const CategorizedLabel: React.FC<{
-  label: string,
-  category: string
-}> = ({ label, category }) => {
-  if (category === DIMENSION) {
-    return <Dimension>{humanize(label)}</Dimension>
-  } else if (category === MEASURE) {
-    return <Measure>{humanize(label)}</Measure>
-  } else {
-    return <div>{humanize(label)}</div>
-  }
-}
+it('renders correctly', () => {
+  const tree = renderer
+    .create(
+      <ThemeProvider theme={theme}>
+        <FieldCommentList 
+            sortedComments={[]}
+            addComment={()=>{}}
+            editComment={()=>{}}
+            deleteComment={()=>{}}
+            explore={{}}
+            field={{}}
+            commentAuthors={[]}
+            me={{}}
+            permissions={{}}
+        />
+      </ThemeProvider>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+})
