@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Ignore spec files
+src/__tests__/components/__snapshots__/* linguist-generated=true
