@@ -61,14 +61,14 @@ export const FieldCommentDisplay: React.FC<{
   let timestamp = new Date(comment.timestamp);
 
   return (
-    <CustomCommentCard>
+    <CustomCommentCard aria-label="FieldCommentDisplay">
       <CardContent>
         <FlexItem>
           <Flex pb="small">
             <FlexItem flexBasis="10%" pr="xsmall" pt="xxxsmall">
               <AvatarUser user={authorData} size="xsmall"/>
             </FlexItem>
-            <FlexItem flexBasis="80%">
+            <FlexItem flexBasis="80%" aria-label="FieldCommentDisplayNameTime">
               <FlexItem>
                 <Text fontSize="small" fontWeight="semiBold">
                   {authorData.display_name}
@@ -95,7 +95,7 @@ export const FieldCommentDisplay: React.FC<{
               </SpaceVertical>
             </FlexItem>
           </Flex> 
-          <Text fontSize="small">
+          <Text fontSize="small" aria-label="FieldCommentDisplayContent">
             {comment.content}
           </Text>
         </FlexItem>
