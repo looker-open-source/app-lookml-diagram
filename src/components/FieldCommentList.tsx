@@ -139,7 +139,7 @@ export const FieldCommentList: React.FC<{
         })}
         { addingNew ?
           <FlexItem pb="small">
-            <FieldTextArea autoFocus onChange={handleChange} />
+            <FieldTextArea autoFocus onChange={handleChange} aria-label="NewCommentTextArea" />
               <Space pt="small" gap="xsmall" reverse>
                 <Button size="medium" onClick={addToComments}>Comment</Button>
                 <ButtonOutline size="medium" color="neutral" onClick={toggleNew}>Cancel</ButtonOutline>
