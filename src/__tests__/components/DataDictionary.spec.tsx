@@ -25,11 +25,8 @@
  */
 
 import React from 'react';
-import renderer from 'react-test-renderer';
-import {mockModels, mockComments, mockCurrentModel, mockCurrentExplore} from "../MockData/MockData";
-import { ComponentsProvider, theme } from "@looker/components"
+import { mockModels, mockComments, mockCurrentModel, mockCurrentExplore } from "../MockData/MockData";
 import { assertSnapshot } from "@looker/components-test-utils"
-import { ThemeProvider } from "styled-components"
 import { DataDictionary } from '../../components/DataDictionary'
 
 jest.mock('../../utils/fetchers', () => {

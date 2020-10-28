@@ -37,16 +37,16 @@ export interface ColumnDescriptor {
 }
 
 export interface SidebarStyleProps {
-  open: boolean;
+  open: boolean
 }
 
 export interface FieldComments {
-  author: number,
-  timestamp: number,
-  content: string,
-  edited: boolean,
-  pk: string,
-  deleted?: boolean,
+  author: number
+  timestamp: number
+  content: string
+  edited: boolean
+  pk: string
+  deleted?: boolean
 }
 
 export interface ExploreComments {
@@ -54,11 +54,11 @@ export interface ExploreComments {
 }
 
 export interface UserData {
-  display_name: string,
-  avatar_url: string,
-  first_name: string,
-  last_name: string,
-  color?: string,
+  display_name: string
+  avatar_url: string
+  first_name: string
+  last_name: string
+  color?: string
 }
 
 export interface AllComments {

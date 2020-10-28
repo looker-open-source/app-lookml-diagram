@@ -30,8 +30,6 @@ import { theme} from "@looker/components"
 import { ThemeProvider } from "styled-components"
 import { columns } from '../../components/DataDictionary'
 import { mockCurrentModel, mockCurrentExplore } from "../MockData/MockData";
-import * as mockComponents from '@looker/components'
-
 import { PanelFields } from '../../components/PanelFields'
 
 jest.mock("../../components/DetailDrawer", () => ({
@@ -53,9 +51,6 @@ jest.mock("../../components/ExternalLink", () => ({
 jest.mock("../../components/QuickSearch", () => ({
   QuickSearch: () => "QuickSearch"
 }))
-
-// @ts-ignore
-// mockComponents.Box = jest.fn(() => 'Box')
 
 jest.mock('../../utils/routes', () => {
   return {

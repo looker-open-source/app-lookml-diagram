@@ -32,12 +32,11 @@ import {
   TableDataCell,
 } from "@looker/components";
 import styled from "styled-components";
-
 import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField, IUser } from "@looker/sdk";
 import { ColumnDescriptor, FieldComments, CommentPermissions } from "./interfaces";
 import { FieldMetadata } from "./FieldMetadata";
 import { DETAILS_PANE, COMMENTS_PANE } from "../utils/constants";
-import { internalExploreURL, useCurrentModel, usePathNames } from "../utils/routes"
+import { internalExploreURL, usePathNames } from "../utils/routes"
 import { useHistory } from "react-router"
 
 // @ts-ignore

@@ -6,7 +6,7 @@
     "start": "webpack-dev-server --no-inline --no-hot",
     "test": "jest",
     "build": "webpack --mode=production",
-    "lint": "eslint '**/*.ts{,x}'",
+    "lint": "eslint 'src/components/*.ts{,x}'",
     "lint-fix": "eslint '**/*.ts{,x}' --fix"
   },
   "license": "MIT",
