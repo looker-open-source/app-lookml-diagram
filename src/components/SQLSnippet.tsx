@@ -27,7 +27,7 @@
 import React from "react"
 import styled from "styled-components"
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
-import { SQL_SNIPPET_LENGTH } from "../utils/constants";
+import { SQL_SNIPPET_LENGTH } from "../utils/constants"
 
 const theme = require("react-syntax-highlighter/dist/cjs/styles/prism/vs")
   .default
@@ -41,10 +41,10 @@ const CodeTag = styled.code`
   word-break: break-word !important;
 `
 
-export const SQLSnippet = ({ src, isRow }: { src: string, isRow: boolean }) => {
+export const SQLSnippet = ({ src, isRow }: { src: string; isRow: boolean }) => {
   let truncatedSrc = src
   if (isRow && src && src.length > SQL_SNIPPET_LENGTH) {
-    truncatedSrc = src.substring(0, SQL_SNIPPET_LENGTH) + '...'
+    truncatedSrc = src.substring(0, SQL_SNIPPET_LENGTH) + "..."
   }
   return (
     <SyntaxHighlighter

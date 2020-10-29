@@ -24,26 +24,19 @@
 
  */
 
-import React, { useState } from "react";
-import { Fields } from "./Fields";
+import React from "react"
 import {
   Box,
-  Button,
   ButtonGroup,
   ButtonItem,
-  ButtonOutline,
   Flex,
   FlexItem,
   Heading,
-  IconButton,
-  InputSearch,
-  Spinner,
-  theme,
-} from "@looker/components";
-import styled from "styled-components";
+  theme
+} from "@looker/components"
+import styled from "styled-components"
 
-
-export const Main = styled(Box)`
+export const Main = styled(Box as any)`
   border-radius: 0.25rem;
   min-height: 1.2em;
   padding 0.2em;
@@ -51,14 +44,14 @@ export const Main = styled(Box)`
   -moz-user-select: none;
   -khtml-user-select: none;
   -ms-user-select: none;
-`;
+`
 
-export const FilterHeading = styled(Heading)`
+export const FilterHeading = styled(Heading as any)`
   margin-bottom: 0.4em;
   color: ${theme.colors.text1};
-`;
+`
 
-export const Group = styled(FlexItem)`
+export const Group = styled(FlexItem as any)`
   margin-right: 1.2em;
 `
 
@@ -73,8 +66,8 @@ export const QuickSearch: React.FC<{
   setFieldTypes: (fieldTypes: string[]) => void
   setHasDescription: (hasDescription: string[]) => void
   setHasTags: (hasTags: string[]) => void
-  setHasComments: (hasTags: string[]) => void,
-  showComments: boolean,
+  setHasComments: (hasTags: string[]) => void
+  showComments: boolean
 }> = ({
   selectedFields,
   fields,
@@ -87,11 +80,17 @@ export const QuickSearch: React.FC<{
   setHasDescription,
   setHasTags,
   setHasComments,
-  showComments,
+  showComments
 }) => {
   return (
     <Main>
-      <Flex flexDirection="row" flexWrap="wrap" mt="xlarge" pl="xxlarge" pr="xxlarge">
+      <Flex
+        flexDirection="row"
+        flexWrap="wrap"
+        mt="xlarge"
+        pl="xxlarge"
+        pr="xxlarge"
+      >
         <Group>
           <FilterHeading as="h6">Has Description</FilterHeading>
           <ButtonGroup value={hasDescription} onChange={setHasDescription}>
@@ -116,25 +115,28 @@ export const QuickSearch: React.FC<{
           </ButtonGroup>
         </Group>
 
-        {showComments && <Group>
-          <FilterHeading as="h6">Has Comments</FilterHeading>
-          <ButtonGroup value={hasComments} onChange={setHasComments}>
-            <ButtonItem value="yes">Yes</ButtonItem>
-            <ButtonItem value="no">No</ButtonItem>
-          </ButtonGroup>
-        </Group>}
+        {showComments && (
+          <Group>
+            <FilterHeading as="h6">Has Comments</FilterHeading>
+            <ButtonGroup value={hasComments} onChange={setHasComments}>
+              <ButtonItem value="yes">Yes</ButtonItem>
+              <ButtonItem value="no">No</ButtonItem>
+            </ButtonGroup>
+          </Group>
+        )}
 
         <Group>
           <FilterHeading as="h6">Type</FilterHeading>
           <ButtonGroup value={selectedFields} onChange={setSelectedFields}>
-            { fields.map(field => {
+            {fields.map(field => {
               return (
-                <ButtonItem key={field} value={field}>{ field }</ButtonItem>
+                <ButtonItem key={field} value={field}>
+                  {field}
+                </ButtonItem>
               )
             })}
           </ButtonGroup>
         </Group>
-
       </Flex>
     </Main>
   )

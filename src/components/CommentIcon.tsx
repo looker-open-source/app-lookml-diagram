@@ -24,24 +24,34 @@
 
  */
 
-import React from "react";
-import { FlexItem, ButtonTransparent, IconButton, Tooltip, theme } from "@looker/components";
+import React from "react"
+import {
+  FlexItem,
+  ButtonTransparent,
+  IconButton,
+  Tooltip
+} from "@looker/components"
 
 export const CommentIcon: React.FC<{
-  count: number,
-}> = ({
-  count,
-}) => {
+  count: number
+}> = ({ count }) => {
   return (
-    <FlexItem> {
-    count !== null ?
-    <Tooltip content="View Comments">
-      <ButtonTransparent iconBefore="Comment" color="neutral" size="small">
-        {count}
-      </ButtonTransparent>
-    </Tooltip> :
-    <IconButton label="Add Comment" icon="AddComment" color="neutral" className="disabled"/>
-    }
+    <FlexItem>
+      {" "}
+      {count !== null ? (
+        <Tooltip content="View Comments">
+          <ButtonTransparent iconBefore="Comment" color="neutral" size="small">
+            {count}
+          </ButtonTransparent>
+        </Tooltip>
+      ) : (
+        <IconButton
+          label="Add Comment"
+          icon="AddComment"
+          color="neutral"
+          className="disabled"
+        />
+      )}
     </FlexItem>
-  );
-};
+  )
+}

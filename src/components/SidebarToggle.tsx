@@ -24,14 +24,14 @@
 
  */
 
-import React, { FC } from "react";
-import { IconButton, IconNames } from "@looker/components";
-import styled from "styled-components";
+import React, { FC } from "react"
+import { IconButton, IconNames } from "@looker/components"
+import styled from "styled-components"
 
 interface SidebarToggleProps {
-  isOpen: boolean;
-  headerHeight: string;
-  onClick: () => void;
+  isOpen: boolean
+  headerHeight: string
+  onClick: () => void
 }
 
 const SidebarToggle: FC<SidebarToggleProps> = ({
@@ -39,7 +39,7 @@ const SidebarToggle: FC<SidebarToggleProps> = ({
   onClick,
   headerHeight
 }) => {
-  const iconName: IconNames = isOpen ? "CaretLeft" : "CaretRight";
+  const iconName: IconNames = isOpen ? "CaretLeft" : "CaretRight"
 
   return (
     <SidebarToggleWrapper headerHeight={headerHeight}>
@@ -52,11 +52,11 @@ const SidebarToggle: FC<SidebarToggleProps> = ({
         outline
       />
     </SidebarToggleWrapper>
-  );
-};
+  )
+}
 
 interface WrapperProps {
-  headerHeight?: string;
+  headerHeight?: string
 }
 
 const SidebarToggleWrapper = styled.div<WrapperProps>`
@@ -68,6 +68,6 @@ const SidebarToggleWrapper = styled.div<WrapperProps>`
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
   }
-`;
+`
 
-export default SidebarToggle;
+export default SidebarToggle

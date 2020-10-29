@@ -24,30 +24,20 @@
 
  */
 
-import React from "react";
-import {
-  Code,
-  TableRow,
-  TableDataCell,
-  theme,
-} from "@looker/components";
+import React from "react"
+import { Code, TableRow, TableDataCell } from "@looker/components"
 
-import { ILookmlModelExploreField } from "@looker/sdk";
-import { ColumnDescriptor } from "./interfaces";
+import { ILookmlModelExploreField } from "@looker/sdk"
+import { ColumnDescriptor } from "./interfaces"
 
 export const DetailDrawerRow: React.FC<{
-  column: ColumnDescriptor,
-  field: ILookmlModelExploreField,
+  column: ColumnDescriptor
+  field: ILookmlModelExploreField
 }> = ({ column, field }) => {
   return (
     <TableRow key={column.rowValueDescriptor}>
-      <TableDataCell
-        color="text"
-        p="medium"
-        pl="small"
-        pr="small"
-      >
-        { column.label }
+      <TableDataCell color="text" p="medium" pl="small" pr="small">
+        {column.label}
       </TableDataCell>
       <TableDataCell
         className="break"
@@ -56,11 +46,7 @@ export const DetailDrawerRow: React.FC<{
         pl="small"
         pr="small"
       >
-        <Code
-          color="text3"
-          fontSize="small"
-          className="break"
-        >
+        <Code color="text3" fontSize="small" className="break">
           {/*
           // @ts-ignore */}
           {column.formatter(field[column.rowValueDescriptor], false, field)}
@@ -68,4 +54,4 @@ export const DetailDrawerRow: React.FC<{
       </TableDataCell>
     </TableRow>
   )
-};
+}

@@ -24,7 +24,7 @@
 
  */
 
-import React from "react";
+import React from "react"
 
 export const Spirals = (props: any) => {
   return (
@@ -92,5 +92,5 @@ export const Spirals = (props: any) => {
         fill="#ED3B53"
       />
     </svg>
-  );
-};
+  )
+}
