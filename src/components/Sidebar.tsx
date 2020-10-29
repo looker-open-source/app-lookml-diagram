@@ -24,29 +24,36 @@
 
  */
 
-import React, { PureComponent, useState } from "react";
+import React from "react"
 import {
   FieldSelect,
   Flex,
   FlexItem,
   Heading,
   InputSearch,
-  theme,
-} from "@looker/components";
-import { useHistory } from 'react-router'
-import {ILookmlModel, ILookmlModelExplore} from "@looker/sdk";
-import "./styles.css";
+  theme
+} from "@looker/components"
+import { useHistory } from "react-router"
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
+import "./styles.css"
 import { internalModelURL } from "../utils/routes"
-import { ExploreList } from "./ExploreList";
+import { ExploreList } from "./ExploreList"
 
 export const Sidebar: React.FC<{
   currentExplore: ILookmlModelExplore
-  currentModel: ILookmlModel,
-  loadingExplore: string,
-  models: ILookmlModel[],
-  search: string,
+  currentModel: ILookmlModel
+  loadingExplore: string
+  models: ILookmlModel[]
+  search: string
   setSearch: (search: string) => void
-}> = ({ currentExplore, currentModel, loadingExplore, models, search, setSearch }) => {
+}> = ({
+  currentExplore,
+  currentModel,
+  loadingExplore,
+  models,
+  search,
+  setSearch
+}) => {
   const history = useHistory()
 
   return (
@@ -60,9 +67,7 @@ export const Sidebar: React.FC<{
         <FieldSelect
           name="select-model"
           label="Select a Model"
-          options={models.map(
-            m => ({ value: m.name, label: m.label })
-          )}
+          options={models.map(m => ({ value: m.name, label: m.label }))}
           onChange={selectedModel =>
             history.push(internalModelURL({ model: selectedModel }))
           }
@@ -70,11 +75,7 @@ export const Sidebar: React.FC<{
         />
       </FlexItem>
       <FlexItem ml="large" mr="xlarge" pt="medium">
-        <Heading
-          as="h5"
-          color="text"
-          fontWeight="semiBold"
-        >
+        <Heading as="h5" color="text" fontWeight="semiBold">
           Explores
         </Heading>
         <InputSearch

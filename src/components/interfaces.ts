@@ -24,13 +24,20 @@
 
  */
 
-import { ILookmlModelExploreField } from '@looker/sdk'
+import { ILookmlModelExploreField } from "@looker/sdk"
 
 export interface ColumnDescriptor {
   name: string
   label: string
   rowValueDescriptor: string
-  formatter: (x: string, isRow?: boolean, field?: ILookmlModelExploreField, commentCount?: number, canComment?: boolean, reader?: boolean) => string | JSX.Element
+  formatter: (
+    x: string,
+    isRow?: boolean,
+    field?: ILookmlModelExploreField,
+    commentCount?: number,
+    canComment?: boolean,
+    reader?: boolean
+  ) => string | JSX.Element
   minWidth?: string
   maxWidth?: string
   default?: boolean

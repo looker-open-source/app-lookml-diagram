@@ -24,13 +24,26 @@
 
  */
 
-import React from "react";
-import { FlexItem, Card, CardContent, Flex, AvatarUser, Text, IconButton, SpaceVertical, Menu, MenuDisclosure, MenuList, MenuItem, Icon } from "@looker/components";
-import { FieldComments, UserData } from "./interfaces";
-import styled from "styled-components";
+import React from "react"
+import {
+  FlexItem,
+  Card,
+  CardContent,
+  Flex,
+  AvatarUser,
+  Text,
+  IconButton,
+  SpaceVertical,
+  Menu,
+  MenuDisclosure,
+  MenuList,
+  MenuItem,
+  Icon
+} from "@looker/components"
+import { FieldComments, UserData } from "./interfaces"
+import styled from "styled-components"
 
-// @ts-ignore
-const CustomCommentCard = styled(Card)`
+const CustomCommentCard = styled(Card as any)`
   .show {
     visibility: hidden;
   }
@@ -39,26 +52,19 @@ const CustomCommentCard = styled(Card)`
     visibility: hidden;
   }
 
-  &:hover .show{
+  &:hover .show {
     visibility: visible;
   }
-`;
+`
 
 export const FieldCommentDisplay: React.FC<{
-  authorData: UserData,
-  comment: FieldComments,
-  showDetails: ()=>string,
-  toggleEdit: ()=>void,
-  openDialog: ()=>void,
-}> = ({
-  authorData,
-  comment,
-  showDetails,
-  toggleEdit,
-  openDialog,
-}) => {
-
-  let timestamp = new Date(comment.timestamp);
+  authorData: UserData
+  comment: FieldComments
+  showDetails: () => string
+  toggleEdit: () => void
+  openDialog: () => void
+}> = ({ authorData, comment, showDetails, toggleEdit, openDialog }) => {
+  const timestamp = new Date(comment.timestamp)
 
   return (
     <CustomCommentCard aria-label="FieldCommentDisplay">
@@ -66,7 +72,7 @@ export const FieldCommentDisplay: React.FC<{
         <FlexItem>
           <Flex pb="small">
             <FlexItem flexBasis="10%" pr="xsmall" pt="xxxsmall">
-              <AvatarUser user={authorData} size="xsmall"/>
+              <AvatarUser user={authorData} size="xsmall" />
             </FlexItem>
             <FlexItem flexBasis="80%" aria-label="FieldCommentDisplayNameTime">
               <FlexItem>
@@ -76,8 +82,8 @@ export const FieldCommentDisplay: React.FC<{
               </FlexItem>
               <FlexItem>
                 <Text fontSize="xsmall" variant="secondary">
-                  { timestamp.toLocaleString() }
-                  { comment.edited ? " (edited)" : null }
+                  {timestamp.toLocaleString()}
+                  {comment.edited ? " (edited)" : null}
                 </Text>
               </FlexItem>
             </FlexItem>
@@ -85,21 +91,41 @@ export const FieldCommentDisplay: React.FC<{
               <SpaceVertical align="end">
                 <Menu>
                   <MenuDisclosure>
-                    <IconButton icon="DotsVert" label="More Options" className={showDetails()} />
+                    <IconButton
+                      icon="DotsVert"
+                      label="More Options"
+                      className={showDetails()}
+                    />
                   </MenuDisclosure>
                   <MenuList>
-                    <MenuItem onClick={toggleEdit}><Icon name="Edit" size="small" color="neutral" mr="small" />Edit Comment</MenuItem>
-                    <MenuItem onClick={openDialog}><Icon name="Trash" size="small" color="neutral" mr="small" />Delete Comment</MenuItem>
+                    <MenuItem onClick={toggleEdit}>
+                      <Icon
+                        name="Edit"
+                        size="small"
+                        color="neutral"
+                        mr="small"
+                      />
+                      Edit Comment
+                    </MenuItem>
+                    <MenuItem onClick={openDialog}>
+                      <Icon
+                        name="Trash"
+                        size="small"
+                        color="neutral"
+                        mr="small"
+                      />
+                      Delete Comment
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               </SpaceVertical>
             </FlexItem>
-          </Flex> 
+          </Flex>
           <Text fontSize="small" aria-label="FieldCommentDisplayContent">
             {comment.content}
           </Text>
         </FlexItem>
       </CardContent>
     </CustomCommentCard>
-  );
-};
+  )
+}

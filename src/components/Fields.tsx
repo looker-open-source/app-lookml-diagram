@@ -24,7 +24,7 @@
 
  */
 
-import React from "react";
+import React from "react"
 import {
   Box,
   Flex,
@@ -36,46 +36,49 @@ import {
   TableRow,
   TableBody,
   theme
-} from "@looker/components";
-import styled from "styled-components";
-import {ColumnDescriptor, CommentPermissions} from "./interfaces";
-import {ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField, IUser} from "@looker/sdk";
-import { DetailDrawer } from "./DetailDrawer";
-import { DETAILS_PANE } from "../utils/constants";
+} from "@looker/components"
+import styled from "styled-components"
+import { ColumnDescriptor, CommentPermissions } from "./interfaces"
+import {
+  ILookmlModel,
+  ILookmlModelExplore,
+  ILookmlModelExploreField,
+  IUser
+} from "@looker/sdk"
+import { DetailDrawer } from "./DetailDrawer"
+import { DETAILS_PANE } from "../utils/constants"
 
-// @ts-ignore
-export const TableWrapper = styled(Box)`
-  border-bottom: .5px solid ${theme.colors.ui2};
+export const TableWrapper = styled(Box as any)`
+  border-bottom: 0.5px solid ${theme.colors.ui2};
 
   &:last-child {
     border-bottom: none;
   }
-`;
+`
 
 // Sticky Table Header
-// @ts-ignore
-export const StickyHeader = styled(TableHeaderCell)`
+export const StickyHeader = styled(TableHeaderCell as any)`
   @supports (position: sticky) {
     position: sticky;
     top: 0;
-}
-`;
+  }
+`
 
 export const Fields: React.FC<{
-  columns: ColumnDescriptor[],
-  explore: ILookmlModelExplore,
-  label: String,
-  model: ILookmlModel,
-  fields: ILookmlModelExploreField[],
-  search: string,
-  shownColumns: string[],
-  comments: string,
-  addComment: (newCommentStr: string, field: string) => void,
-  editComment: (newCommentStr: string, field: string) => void,
-  deleteComment: (newCommentStr: string, field: string) => void,
-  authors: IUser[],
-  me: IUser,
-  permissions: CommentPermissions,
+  columns: ColumnDescriptor[]
+  explore: ILookmlModelExplore
+  label: string
+  model: ILookmlModel
+  fields: ILookmlModelExploreField[]
+  search: string
+  shownColumns: string[]
+  comments: string
+  addComment: (newCommentStr: string, field: string) => void
+  editComment: (newCommentStr: string, field: string) => void
+  deleteComment: (newCommentStr: string, field: string) => void
+  authors: IUser[]
+  me: IUser
+  permissions: CommentPermissions
 }> = ({
   columns,
   explore,
@@ -90,7 +93,7 @@ export const Fields: React.FC<{
   deleteComment,
   authors,
   me,
-  permissions,
+  permissions
 }) => {
   const [tab, setTab] = React.useState(DETAILS_PANE)
   return (
@@ -98,7 +101,7 @@ export const Fields: React.FC<{
       <Flex>
         <FlexItem>
           <Heading as="h2" fontWeight="semiBold" mb="large">
-            { label }
+            {label}
           </Heading>
         </FlexItem>
       </Flex>
@@ -106,7 +109,7 @@ export const Fields: React.FC<{
         <Table width="100%">
           <TableHead>
             <TableRow>
-              { columns.map(column => {
+              {columns.map(column => {
                 if (shownColumns.includes(column.rowValueDescriptor)) {
                   return (
                     <StickyHeader
@@ -118,7 +121,7 @@ export const Fields: React.FC<{
                       p="medium"
                       pl="small"
                     >
-                      { column.label }
+                      {column.label}
                     </StickyHeader>
                   )
                 }
@@ -126,12 +129,22 @@ export const Fields: React.FC<{
             </TableRow>
           </TableHead>
           <TableBody fontSize="small">
-            {fields.map((field) => {
-              if (!search ||
-                (field.label_short && field.label_short.toLowerCase().includes(search.toLowerCase())) ||
-                (field.description && field.description.toLowerCase().includes(search.toLowerCase())) || 
-                (field.field_group_label && field.field_group_label.toLowerCase().includes(search.toLowerCase())))
-             {
+            {fields.map(field => {
+              if (
+                !search ||
+                (field.label_short &&
+                  field.label_short
+                    .toLowerCase()
+                    .includes(search.toLowerCase())) ||
+                (field.description &&
+                  field.description
+                    .toLowerCase()
+                    .includes(search.toLowerCase())) ||
+                (field.field_group_label &&
+                  field.field_group_label
+                    .toLowerCase()
+                    .includes(search.toLowerCase()))
+              ) {
                 return (
                   <DetailDrawer
                     field={field}
@@ -157,5 +170,5 @@ export const Fields: React.FC<{
         </Table>
       </Flex>
     </TableWrapper>
-  );
-};
+  )
+}

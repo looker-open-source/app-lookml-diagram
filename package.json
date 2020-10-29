@@ -7,7 +7,7 @@
     "test": "jest",
     "build": "webpack --mode=production",
     "lint": "eslint 'src/components/*.ts{,x}'",
-    "lint-fix": "eslint '**/*.ts{,x}' --fix"
+    "lint-fix": "eslint 'src/components/*.ts{,x}' --fix"
   },
   "license": "MIT",
   "dependencies": {

@@ -24,8 +24,8 @@
 
  */
 
-import React, { useState } from "react";
-import { Fields } from "./Fields";
+import React, { useState, SyntheticEvent } from "react"
+import { Fields } from "./Fields"
 import {
   Box,
   ButtonOutline,
@@ -35,30 +35,35 @@ import {
   InputSearch,
   Paragraph,
   Spinner,
-  theme,
-} from "@looker/components";
-import { ViewOptions } from './ViewOptions'
-import styled from "styled-components";
+  theme
+} from "@looker/components"
+import { ViewOptions } from "./ViewOptions"
+import styled from "styled-components"
 import groupBy from "lodash/groupBy"
 import values from "lodash/values"
 import flatten from "lodash/flatten"
 import toPairs from "lodash/toPairs"
 import orderBy from "lodash/orderBy"
-import { ExternalLink } from "./ExternalLink";
-import { exploreURL } from "../utils/urls";
-import { ColumnDescriptor, CommentPermissions } from "./interfaces";
-import { ILookmlModel, ILookmlModelExplore, ILookmlModelExploreField, IUser } from "@looker/sdk";
-import { QuickSearch } from "./QuickSearch";
-import humanize from 'humanize-string'
-import { DIMENSION, MEASURE } from "./CategorizedLabel";
+import { ExternalLink } from "./ExternalLink"
+import { exploreURL } from "../utils/urls"
+import { ColumnDescriptor, CommentPermissions } from "./interfaces"
+import {
+  ILookmlModel,
+  ILookmlModelExplore,
+  ILookmlModelExploreField,
+  IUser
+} from "@looker/sdk"
+import { QuickSearch } from "./QuickSearch"
+import humanize from "humanize-string"
+import { DIMENSION, MEASURE } from "./CategorizedLabel"
 
-export const Main = styled(Box)`
+export const Main = styled(Box as any)`
   position: relative;
   width: 100%;
   min-height: 93vh;
-`;
+`
 
-const FullPage = styled(Box)`
+const FullPage = styled(Box as any)`
   position: relative;
   display: flex;
   align-items: stretch;
@@ -67,55 +72,62 @@ const FullPage = styled(Box)`
   width: 100%;
   min-height: 93vh;
   flex-direction: column;
-`;
+`
 
-const IntroText = styled(Paragraph)`
+const IntroText = styled(Paragraph as any)`
   text-align: center;
   margin-top: 5em;
   max-width: 40%;
   color: ${theme.colors.text1};
 `
 
-export const ExploreSearch = styled(InputSearch)`
+export const ExploreSearch = styled(InputSearch as any)`
   margin-top: 0;
 `
 
 export const defaultShowColumns = [
-  'label_short',
-  'description',
-  'name',
-  'type',
-  'sql',
+  "label_short",
+  "description",
+  "name",
+  "type",
+  "sql"
 ]
 
 export const PanelFields: React.FC<{
-  columns: ColumnDescriptor[],
-  currentExplore: ILookmlModelExplore | null,
+  columns: ColumnDescriptor[]
+  currentExplore: ILookmlModelExplore | null
   currentModel: ILookmlModel | null
-  loadingExplore: string,
-  model: ILookmlModel,
-  comments: string,
-  addComment: (newCommentStr: string, field: string) => void,
-  editComment: (newCommentStr: string, field: string) => void,
-  deleteComment: (newCommentStr: string, field: string) => void,
-  authors: IUser[],
-  me: IUser,
-  permissions: CommentPermissions,
-}> = ({ columns, 
-        currentExplore, 
-        currentModel, 
-        loadingExplore, 
-        model,
-        comments,
-        addComment,
-        editComment,
-        deleteComment,
-        authors,
-        me,
-        permissions,
-       }) => {
-  const [search, setSearch] = useState('')
-  const [shownColumns, setShownColumns] = useState([...columns.filter(d => { return d.default }).map(d => d.rowValueDescriptor)])
+  loadingExplore: string
+  model: ILookmlModel
+  comments: string
+  addComment: (newCommentStr: string, field: string) => void
+  editComment: (newCommentStr: string, field: string) => void
+  deleteComment: (newCommentStr: string, field: string) => void
+  authors: IUser[]
+  me: IUser
+  permissions: CommentPermissions
+}> = ({
+  columns,
+  currentExplore,
+  currentModel,
+  loadingExplore,
+  model,
+  comments,
+  addComment,
+  editComment,
+  deleteComment,
+  authors,
+  me,
+  permissions
+}) => {
+  const [search, setSearch] = useState("")
+  const [shownColumns, setShownColumns] = useState([
+    ...columns
+      .filter(d => {
+        return d.default
+      })
+      .map(d => d.rowValueDescriptor)
+  ])
   const [hasDescription, setHasDescription] = useState([])
   const [hasTags, setHasTags] = useState([])
   const [hasComments, setHasComments] = useState([])
@@ -123,7 +135,7 @@ export const PanelFields: React.FC<{
   const [selectedFields, setSelectedFields] = useState([])
 
   const typeMaker = (field: ILookmlModelExploreField) => {
-    return humanize(field.type.split('_')[0])
+    return humanize(field.type.split("_")[0])
   }
 
   if (loadingExplore) {
@@ -136,50 +148,54 @@ export const PanelFields: React.FC<{
     )
   }
 
-  if ((currentModel && currentExplore) && (currentModel.name === currentExplore.model_name)) {
-    const fields = flatten(values(currentExplore.fields)).map(
-      f => typeMaker(f)
-    ).filter(
-      (value, index, self) => self.indexOf(value) === index
+  if (
+    currentModel &&
+    currentExplore &&
+    currentModel.name === currentExplore.model_name
+  ) {
+    const fields = flatten(values(currentExplore.fields))
+      .map(f => typeMaker(f))
+      .filter((value, index, self) => self.indexOf(value) === index)
+
+    const revivedComments = JSON.parse(comments)
+    const encExplores = Object.keys(revivedComments)
+    const commentObj = encExplores.includes(currentExplore.name)
+      ? revivedComments[currentExplore.name]
+      : (revivedComments[currentExplore.name] = {})
+
+    const allFilters = hasDescription.concat(
+      hasTags,
+      hasComments,
+      fieldTypes,
+      selectedFields
     )
-
-    let revivedComments = JSON.parse(comments)
-    let encExplores = Object.keys(revivedComments)
-    let commentObj = encExplores.includes(currentExplore.name) ? revivedComments[currentExplore.name] : revivedComments[currentExplore.name] = {}
-
-    const allFilters = hasDescription.concat(hasTags, hasComments, fieldTypes, selectedFields)
     const groups = orderBy(
       toPairs(
         groupBy(
           flatten(values(currentExplore.fields)).filter(f => {
-            let commentFlag = commentObj[f.name] && commentObj[f.name].length > 0 ? true : false
-            return !f.hidden && (allFilters.length === 0 || (
-              (
-                hasDescription.length === 0 || ((hasDescription.includes('yes') && f.description) || (
-                  hasDescription.includes('no') && !f.description)
-                )
-              ) &&
-              (
-                hasTags.length === 0 || (
-                  (hasTags.includes('yes') && f.tags.length > 0) || (hasTags.includes('no') && f.tags.length === 0)
-                )
-              ) &&
-              (
-                hasComments.length === 0 || (
-                  (hasComments.includes('yes') && commentFlag) || (hasComments.includes('no') && !commentFlag)
-                )
-              ) &&
-              (
-                fieldTypes.length === 0 || (
-                  (fieldTypes.includes('dimensions') && f.category === DIMENSION) || (fieldTypes.includes('measures') && f.category == MEASURE)
-                )
-              ) &&
-              (
-                selectedFields.length === 0 || (
-                  (selectedFields.includes(typeMaker(f)))
-                )
-              )
-            ))
+            const commentFlag = !!(
+              commentObj[f.name] && commentObj[f.name].length > 0
+            )
+            return (
+              !f.hidden &&
+              (allFilters.length === 0 ||
+                ((hasDescription.length === 0 ||
+                  (hasDescription.includes("yes") && f.description) ||
+                  (hasDescription.includes("no") && !f.description)) &&
+                  (hasTags.length === 0 ||
+                    (hasTags.includes("yes") && f.tags.length > 0) ||
+                    (hasTags.includes("no") && f.tags.length === 0)) &&
+                  (hasComments.length === 0 ||
+                    (hasComments.includes("yes") && commentFlag) ||
+                    (hasComments.includes("no") && !commentFlag)) &&
+                  (fieldTypes.length === 0 ||
+                    (fieldTypes.includes("dimensions") &&
+                      f.category === DIMENSION) ||
+                    (fieldTypes.includes("measures") &&
+                      f.category === MEASURE)) &&
+                  (selectedFields.length === 0 ||
+                    selectedFields.includes(typeMaker(f)))))
+            )
           }),
           f => f.view_label
         )
@@ -189,19 +205,30 @@ export const PanelFields: React.FC<{
 
     return (
       <Main pt="large">
-        <Flex flexDirection="row" justifyContent="space-between" mt="large" mb="xxlarge" pl="xxlarge" pr="xxlarge">
+        <Flex
+          flexDirection="row"
+          justifyContent="space-between"
+          mt="large"
+          mb="xxlarge"
+          pl="xxlarge"
+          pr="xxlarge"
+        >
           <FlexItem>
-            <Heading as="h1" fontWeight="semiBold">{currentModel.label}</Heading>
-            <Heading as="h4" variant="secondary">Select a field for more information.</Heading>
+            <Heading as="h1" fontWeight="semiBold">
+              {currentModel.label}
+            </Heading>
+            <Heading as="h4" variant="secondary">
+              Select a field for more information.
+            </Heading>
           </FlexItem>
           <FlexItem>
             <ExternalLink target="_blank" href={exploreURL(currentExplore)}>
-              <ButtonOutline mr="small">
-                Explore
-              </ButtonOutline>
+              <ButtonOutline mr="small">Explore</ButtonOutline>
             </ExternalLink>
             <ViewOptions
-              columns={columns.filter(d => { return d.rowValueDescriptor !== "comment"})}
+              columns={columns.filter(d => {
+                return d.rowValueDescriptor !== "comment"
+              })}
               shownColumns={shownColumns}
               setShownColumns={setShownColumns}
             />
@@ -213,7 +240,9 @@ export const PanelFields: React.FC<{
               hideSearchIcon
               placeholder="Filter fields in this Explore"
               mt="medium"
-              onChange={e => setSearch(e.currentTarget.value)}
+              onChange={(e: SyntheticEvent) => {
+                const target = e.target as HTMLInputElement
+                setSearch(target.value)}}
               value={search}
             />
           </FlexItem>
@@ -257,21 +286,27 @@ export const PanelFields: React.FC<{
                 />
               )
             }
-          })
-          }
+          })}
         </Box>
       </Main>
     )
   } else {
     return (
       <FullPage>
-        <div style={{width: '30%'}}>
-          <img src={'https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png'} alt="Empty Image" />
+        <div style={{ width: "30%" }}>
+          <img
+            src={
+              "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
+            }
+            alt="Empty Image"
+          />
         </div>
         <IntroText>
-          Click on one of the Explores to the left to begin searching through your data. You’ll see labels, descriptions, SQL definitions, and more for each field.
+          Click on one of the Explores to the left to begin searching through
+          your data. You’ll see labels, descriptions, SQL definitions, and more
+          for each field.
         </IntroText>
       </FullPage>
     )
   }
-};
+}

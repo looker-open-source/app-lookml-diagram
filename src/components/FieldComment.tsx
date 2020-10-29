@@ -24,128 +24,125 @@
 
  */
 
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent } from "react"
 import {
-  theme,
-  AvatarUser,
   ButtonOutline,
   Button,
-  Card,
-  CardContent,
-  Flex,
   FlexItem,
-  Heading,
-  SpaceVertical,
-  Icon,
   FieldTextArea,
-  Menu,
-  MenuDisclosure,
-  MenuList,
-  MenuItem,
-  IconButton,
   useConfirm,
-  Text,
-  Space,
-} from "@looker/components";
-import styled from "styled-components";
+  Space
+} from "@looker/components"
 
-import {IUser, ILookmlModelExploreField} from "@looker/sdk";
-import { FieldComments, UserData, CommentPermissions } from "./interfaces";
-import { NOT_EDITING_COMMENT } from "../utils/constants";
-import { FieldCommentDisplay } from "./FieldCommentDisplay";
+import { IUser, ILookmlModelExploreField } from "@looker/sdk"
+import { FieldComments, UserData, CommentPermissions } from "./interfaces"
+import { NOT_EDITING_COMMENT } from "../utils/constants"
+import { FieldCommentDisplay } from "./FieldCommentDisplay"
 
 export const FieldComment: React.FC<{
-  comment: FieldComments,
-  editingComment: string,
-  setEditingComment: (editingCommentPk: string) => void,
-  commentContent: string,
-  setCommentContent: (newCommentContent: string) => void,
-  editComment: (newCommentStr: string, field: string) => void,
-  deleteComment: (newCommentStr: string, field: string) => void,
-  field: ILookmlModelExploreField,
-  authorData: UserData,
-  me: IUser,
-  addingNew: boolean,
-  permissions: CommentPermissions,
-}> = ({ comment, 
-        editingComment, 
-        setEditingComment, 
-        setCommentContent, 
-        editComment,
-        deleteComment, 
-        field, 
-        commentContent, 
-        authorData,
-        me,
-        addingNew,
-        permissions
-    }) => {
-
-    const showDetails = () => {
-      if (permissions.manager || (comment.author === me.id && !addingNew)) {
-        return "show";
-      }
-      return "hide";
+  comment: FieldComments
+  editingComment: string
+  setEditingComment: (editingCommentPk: string) => void
+  commentContent: string
+  setCommentContent: (newCommentContent: string) => void
+  editComment: (newCommentStr: string, field: string) => void
+  deleteComment: (newCommentStr: string, field: string) => void
+  field: ILookmlModelExploreField
+  authorData: UserData
+  me: IUser
+  addingNew: boolean
+  permissions: CommentPermissions
+}> = ({
+  comment,
+  editingComment,
+  setEditingComment,
+  setCommentContent,
+  editComment,
+  deleteComment,
+  field,
+  commentContent,
+  authorData,
+  me,
+  addingNew,
+  permissions
+}) => {
+  const showDetails = () => {
+    if (permissions.manager || (comment.author === me.id && !addingNew)) {
+      return "show"
     }
+    return "hide"
+  }
 
-    const toggleEdit = () => {
-      editingComment === NOT_EDITING_COMMENT ? setEditingComment(comment.pk) : setEditingComment(NOT_EDITING_COMMENT)
-    }
+  const toggleEdit = () => {
+    editingComment === NOT_EDITING_COMMENT
+      ? setEditingComment(comment.pk)
+      : setEditingComment(NOT_EDITING_COMMENT)
+  }
 
-    const endEdit = () => {
-      setEditingComment(NOT_EDITING_COMMENT)
-    }
+  const endEdit = () => {
+    setEditingComment(NOT_EDITING_COMMENT)
+  }
 
-    const handleChange = (e: SyntheticEvent) => {
-      const target = e.target as HTMLTextAreaElement;
-      setCommentContent(target.value)
-    }
+  const handleChange = (e: SyntheticEvent) => {
+    const target = e.target as HTMLTextAreaElement
+    setCommentContent(target.value)
+  }
 
-    const addToComments = () => {
-      let newComment = {
-        author: comment.author,
-        edited: true,
-        timestamp: comment.timestamp,
-        content: commentContent,
-        pk: comment.pk,
-      }
-      editComment(JSON.stringify(newComment), field.name);
-      toggleEdit();
+  const addToComments = () => {
+    const newComment = {
+      author: comment.author,
+      edited: true,
+      timestamp: comment.timestamp,
+      content: commentContent,
+      pk: comment.pk
     }
-    
-    function deleteFromComments(close: any) {
-      comment.deleted = true;
-      deleteComment(JSON.stringify(comment), field.name);
-      close();
-    }
-    
-    const [confirmationDialog, openDialog] = useConfirm({
-      confirmLabel: 'Delete',
-      buttonColor: 'critical',
-      title: `Delete Comment?`,
-      message: 'Deleting this comment will permanently remove it. You cannot undo this later.',
-      onConfirm: deleteFromComments,
-    })
+    editComment(JSON.stringify(newComment), field.name)
+    toggleEdit()
+  }
 
-    return (
-      <FlexItem>
-      { confirmationDialog }
-      { editingComment && comment.pk === editingComment ?
-      <FlexItem>
-        <FieldTextArea autoFocus onChange={handleChange} defaultValue={comment.content}/>
-        <Space pt="small" gap="xsmall" reverse>
-          <Button size="medium" onClick={addToComments}>Save</Button>
-          <ButtonOutline size="medium" color="neutral" onClick={endEdit}>Cancel</ButtonOutline>
-        </Space>
-      </FlexItem> :
-      <FieldCommentDisplay
-        authorData={authorData}
-        comment={comment}
-        showDetails={showDetails}
-        toggleEdit={toggleEdit}
-        openDialog={openDialog}
-      />
-      }
-      </FlexItem>
-    );
-};
+  function deleteFromComments(close: any) {
+    comment.deleted = true
+    deleteComment(JSON.stringify(comment), field.name)
+    close()
+  }
+
+  const [confirmationDialog, openDialog] = useConfirm({
+    confirmLabel: "Delete",
+    buttonColor: "critical",
+    title: `Delete Comment?`,
+    message:
+      "Deleting this comment will permanently remove it. You cannot undo this later.",
+    onConfirm: deleteFromComments
+  })
+
+  return (
+    <FlexItem>
+      {confirmationDialog}
+      {editingComment && comment.pk === editingComment ? (
+        <FlexItem>
+          <FieldTextArea
+            autoFocus
+            onChange={handleChange}
+            defaultValue={comment.content}
+          />
+          <Space pt="small" gap="xsmall" reverse>
+            <Button size="medium" onClick={addToComments}>
+              Save
+            </Button>
+            <ButtonOutline size="medium" color="neutral" onClick={endEdit}>
+              Cancel
+            </ButtonOutline>
+          </Space>
+        </FlexItem>
+      ) : (
+        <FieldCommentDisplay
+          authorData={authorData}
+          comment={comment}
+          showDetails={showDetails}
+          toggleEdit={toggleEdit}
+          openDialog={openDialog}
+        />
+      )}
+    </FlexItem>
+  )
+}

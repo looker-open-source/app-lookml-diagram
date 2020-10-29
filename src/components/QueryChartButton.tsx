@@ -25,13 +25,8 @@
  */
 
 import React, { FC } from "react"
-import {
-  theme,
-  ButtonOutline,
-  FlexItem,
-  Heading,
-} from "@looker/components"
-import styled from 'styled-components'
+import { theme, ButtonOutline, FlexItem, Heading } from "@looker/components"
+import styled from "styled-components"
 
 const DisabledText = styled.div`
   font-style: italic
@@ -44,27 +39,21 @@ export const QueryChartButton: React.FC<{
   disabledText: string
   enabled: boolean
   onClick: () => void
-  title: string,
-
+  title: string
 }> = ({ disabledText, enabled, title, onClick }) => {
   return (
     <FlexItem pb="xlarge">
-      <Heading
-        as="h4"
-        fontSize="small"
-        fontWeight="semiBold"
-        mb="small"
-      >
-        { title }
+      <Heading as="h4" fontSize="small" fontWeight="semiBold" mb="small">
+        {title}
       </Heading>
       <ButtonOutline
         iconBefore="CacheRefresh"
-        onClick={ onClick }
+        onClick={onClick}
         disabled={!enabled}
       >
         Calculate
       </ButtonOutline>
-      { !enabled ? <DisabledText>{disabledText}</DisabledText> : null }
+      {!enabled ? <DisabledText>{disabledText}</DisabledText> : null}
     </FlexItem>
   )
 }

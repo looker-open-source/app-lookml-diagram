@@ -26,22 +26,22 @@
 
 import React from "react"
 import styled from "styled-components"
-import { theme } from '@looker/components'
-import humanize from 'humanize-string'
+import { theme } from "@looker/components"
+import humanize from "humanize-string"
 
 const Dimension = styled.div`
-  color: ${theme.colors.text3}
+  color: ${theme.colors.text3};
 `
 
 const Measure = styled.div`
-color: ${theme.colors.text3}
+  color: ${theme.colors.text3};
 `
 
-export const DIMENSION = 'dimension'
-export const MEASURE = 'measure'
+export const DIMENSION = "dimension"
+export const MEASURE = "measure"
 
 export const CategorizedLabel: React.FC<{
-  label: string,
+  label: string
   category: string
 }> = ({ label, category }) => {
   if (category === DIMENSION) {

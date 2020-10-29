@@ -26,8 +26,6 @@
 
 import React from "react"
 import {
-  FlexItem,
-  Heading,
   Spinner,
   Table,
   TableBody,
@@ -35,7 +33,6 @@ import {
   TableDataCell,
   Box,
   Text,
-  ButtonOutline,
   ButtonTransparent
 } from "@looker/components"
 import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
@@ -45,7 +42,7 @@ import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExternalLink } from "./ExternalLink"
 import { getCached } from "../utils/fetchers"
 import { MetadataItem } from "../components-generalized/MetadataList"
-import { QueryChartButton } from "./QueryChartButton";
+import { QueryChartButton } from "./QueryChartButton"
 
 interface QueryChartState {
   loading: boolean
@@ -58,8 +55,7 @@ interface QueryChartProps {
   type: QueryChartType
 }
 
-// @ts-ignore
-const SpinnerBlock = styled(Spinner)`
+const SpinnerBlock = styled(Spinner as any)`
   display: inline-block;
 `
 
@@ -67,7 +63,7 @@ interface ProgressTableRowProps {
   progress: number
 }
 
-const ProgressTableRow = styled(TableRow)`
+const ProgressTableRow = styled(TableRow as any)`
   background-image: linear-gradient(
     to right,
     #f5f6f7 0%,
@@ -76,7 +72,7 @@ const ProgressTableRow = styled(TableRow)`
   );
 `
 
-const PaddedCell = styled(TableDataCell)`
+const PaddedCell = styled(TableDataCell as any)`
   padding: 4px;
 `
 

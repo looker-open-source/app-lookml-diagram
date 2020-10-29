@@ -24,18 +24,23 @@
 
  */
 
-import React from "react";
+import React, { SyntheticEvent } from "react"
 import {
   ButtonOutline,
   FieldCheckbox,
   Popover,
   PopoverContent
-} from "@looker/components";
-import { ColumnDescriptor } from "./interfaces";
+} from "@looker/components"
+import { ColumnDescriptor } from "./interfaces"
 
-const checkChange = (setShownColumns: (newState: string[]) => void, shownColumns: string[], columnDesc: string) => {
-  return (e: any) => {
-    if (e.target.checked) {
+const checkChange = (
+  setShownColumns: (newState: string[]) => void,
+  shownColumns: string[],
+  columnDesc: string
+) => {
+  return (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement
+    if (target.checked) {
       setShownColumns([...shownColumns, columnDesc])
     } else {
       setShownColumns(shownColumns.filter(x => x !== columnDesc))
@@ -44,37 +49,33 @@ const checkChange = (setShownColumns: (newState: string[]) => void, shownColumns
 }
 
 export const ViewOptions: React.FC<{
-  columns: ColumnDescriptor[],
-  shownColumns: string[],
-  setShownColumns: (newState: string[]) => void}
-> = ({
-  columns,
-  shownColumns,
-  setShownColumns
-}) => {
+  columns: ColumnDescriptor[]
+  shownColumns: string[]
+  setShownColumns: (newState: string[]) => void
+}> = ({ columns, shownColumns, setShownColumns }) => {
   return (
     <Popover
       content={
         <PopoverContent p="xsmall" width="150px">
-          { columns.map(column => {
+          {columns.map(column => {
             return (
               <FieldCheckbox
                 key={column.name}
                 name={column.name}
                 label={column.label}
-                onChange={checkChange(setShownColumns, shownColumns, column.rowValueDescriptor)}
+                onChange={checkChange(
+                  setShownColumns,
+                  shownColumns,
+                  column.rowValueDescriptor
+                )}
                 checked={shownColumns.includes(column.rowValueDescriptor)}
               />
             )
-            })}
+          })}
         </PopoverContent>
       }
     >
-      <ButtonOutline
-        aria-haspopup="true"
-      >
-        View Options
-      </ButtonOutline>
+      <ButtonOutline aria-haspopup="true">View Options</ButtonOutline>
     </Popover>
-  );
-};
+  )
+}
