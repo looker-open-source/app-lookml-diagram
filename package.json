@@ -1,9 +1,9 @@
 {
-  "name": "extension-template",
+  "name": "lookml-diagram-extension",
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server --no-inline --no-hot",
+    "start": "webpack-dev-server --no-inline --no-hot --mode=development",
     "test": "jest",
     "build": "webpack --mode=production",
     "lint": "eslint 'src/components/*.ts{,x}'",
@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@looker/components": "^0.9.16",
+    "@looker/components": "^0.9.22",
     "@looker/components-test-utils": "^0.9.17",
     "@looker/design-tokens": "^0.7.2",
     "@looker/extension-sdk": "^0.11.0",
@@ -40,6 +40,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-force-graph": "^1.27.1",
+    "react-json-inspector": "^7.1.1",
     "react-measure": "^2.3.0",
     "react-router-dom": "^5.1.2",
     "react-sticky-el": "^1.1.0",

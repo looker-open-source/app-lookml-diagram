@@ -1,7 +1,7 @@
-project_name: "app-data-dictionary"
+project_name: "app-lookml-diagram"
 
-application: data-dictionary {
-  label: "Looker Data Dictionary"
+application: lookml-diagram {
+  label: "LookML Diagram"
   file: "dist/bundle.js"
   entitlements: {
     local_storage: yes

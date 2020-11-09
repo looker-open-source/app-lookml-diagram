@@ -1,4 +1,4 @@
-# Data Dictionary Extension
+# LookML Diagram Extension
 
 ## Usage
 
@@ -8,8 +8,8 @@
   In manifest for a LookML project on your Looker instance:
 
   ```
-  application: data-dictionary-dev {
-    label: "Data Dictionary (dev)"
+  application: lookml-diagram-dev {
+    label: "LookML Diagram (dev)"
     uri: "https://localhost:8080/bundle.js"
   }
   ```
@@ -27,7 +27,7 @@
 
 
 
-# Looker Data Dictionary Extension
+# LookML Diagram Extension
 
 It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/) for writing your extension, the [React Extension SDK](https://github.com/looker-open-source/extension-sdk-react) for interacting with Looker, and [Webpack](https://webpack.js.org/) for building your code.
 
@@ -67,8 +67,8 @@ It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlan
     You can either drag & upload this file into your Looker project, or create a `manifest.lkml` with the same content. Change the `id`, `label`, or `url` as needed.
 
     ```
-    application: data-dictionary {
-      label: "Data Dictionary"
+    application: lookml-diagram {
+      label: "LookML Diagram"
       url: "http://localhost:8080/bundle.js"
     }
     ```

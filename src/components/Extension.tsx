@@ -26,11 +26,11 @@
 
 import React from "react"
 import { theme } from "@looker/components"
-import { DataDictionary } from "./DataDictionary"
+import { LookmlDiagram } from "./LookmlDiagram"
 import { ThemeProvider } from "styled-components"
 
 export const Extension: React.FC = () => (
   <ThemeProvider theme={theme}>
-    <DataDictionary />
+    <LookmlDiagram />
   </ThemeProvider>
 )
