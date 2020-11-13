@@ -1,5 +1,5 @@
 import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useExplore } from "./fetchers"
+import { useAllModels, useExplore, useModelDetail } from "./fetchers"
 
 export function internalExploreURL({
   model,
@@ -75,14 +75,14 @@ export function useCurrentExplore() {
   return useExplore(modelName, exploreName)
 }
 
+export function useSelectExplore() {
+  const { modelName, exploreName } = usePathNames()
+  let details = useModelDetail(modelName)
+  return {details, exploreName}
+}
+
 export function useCurrentModel() {
   const { modelName } = usePathNames()
   const modelData = useAllModels()
-  if (!modelName) {
-    return (
-      modelData &&
-      modelData.filter(m => m.explores && m.explores.some(e => !e.hidden))[0]
-    )
-  }
   return modelData && modelData.find(m => m.name === modelName)
 }

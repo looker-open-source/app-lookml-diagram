@@ -42,6 +42,8 @@ import {
   Label,
   ButtonTransparent,
   Icon,
+  Box,
+  Paragraph,
   Aside,
   Section,
   Header,
@@ -61,7 +63,8 @@ import JsonViewer from "./JsonViewer"
 import "./styles.css"
 import { useHistory } from "react-router"
 import { internalModelURL, internalExploreURL } from "../utils/routes"
-import { useCurrentModel, useCurrentExplore } from "../utils/routes"
+import { useCurrentModel, useSelectExplore } from "../utils/routes"
+import ExploreMetadata from "./ExploreMetadata"
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -76,6 +79,25 @@ export const ExploreList = styled.ul`
 `
 export const ExploreListitem = styled.li`
   border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+`
+
+
+const FullPage = styled(Box as any)`
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 93vh;
+  flex-direction: column;
+`
+
+const IntroText = styled(Paragraph as any)`
+  text-align: center;
+  margin-top: 5em;
+  max-width: 40%;
+  color: ${theme.colors.text1};
 `
 
 export const ExploreButton = styled.button`
@@ -93,7 +115,7 @@ export const ExploreButton = styled.button`
   } 
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.neutralSubtle};
+    background-color: ${(props) => props.theme.colors.keySubtle};
     
     ${Icon} {
       transform: translateX(4px);
@@ -120,7 +142,8 @@ export const DiagramHeader = styled(Header as any)`
   background-color: ${(props) => props.theme.colors.background};
   border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
   transition: transform 500ms ease-out;
-
+  position: relative;
+  z-index: 2;
 
 
   &.no-explore {
@@ -142,6 +165,7 @@ const Rail = styled(Aside as any)`
 const SettingsPanel = styled(Aside as any)`
   border-right: solid 1px ${(props) => props.theme.colors.ui2};
   overflow-y: auto;
+  z-index: 1;
 `
 
 const Stage = styled(Section as any)`
@@ -168,21 +192,26 @@ export const LookmlDiagram: React.FC<{}> = () => {
   const history = useHistory()
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-  const { currentExplore, loadingExplore } = useCurrentExplore()
-  const [flowView, setFlowView] = React.useState('Sidebar')
+  const { details, exploreName } = useSelectExplore()
   const [showSettings, setShowSettings] = React.useState(true)
+  const [showExploreInfo, setShowExploreInfo] = React.useState(false)
   const [selectedExplore, setSelectedExplore] = React.useState(false)
-  const [zoomLevel, setZoomLevel] = React.useState(65)
-  const [isLoading, setIsLoading] = React.useState(false)
+
+  function isExample(modelName: string) {
+    return modelName === "s_looker" ||
+    modelName === "pollooker" ||
+    modelName === "2020-election-betting" ||
+    modelName === "i_looker" ||
+    modelName === "covid"
+  }
 
   let modelDetails = unfilteredModels && unfilteredModels.filter(d=>{ 
-    return d.explores.length >= 1
+    return d.explores.length >= 1 && isExample(d.name)
   }).map(d=>{
     let numExplores = d.explores.length
     return {
       value: d.name,
-      label: d.label,
-      description: `${numExplores} explores`
+      label: d.label
     }
   })
 
@@ -190,6 +219,10 @@ export const LookmlDiagram: React.FC<{}> = () => {
     let modelMatch = currentModel && currentModel.name
     return d.name === modelMatch
   })
+
+  let currentExplore = details && details.explores.filter(d=>{
+    return d.name === exploreName
+  })[0]
 
   let exploreList = currentModel && currentModel.explores.map((d)=>{
     return {
@@ -204,197 +237,155 @@ export const LookmlDiagram: React.FC<{}> = () => {
     }
   }
 
+  function toggleExploreInfo() {
+    if (currentExplore && currentModel) {
+      setShowExploreInfo(!showExploreInfo)
+    }
+  }
+  function buttonShade(exploreNameSel: string) {
+    if (currentExplore && currentExplore.name === exploreNameSel) {
+      return theme.colors.keySubtle
+    }
+    if (exploreName === exploreNameSel) {
+      return theme.colors.keySubtle
+    }
+    return undefined
+  }
+
   return (
     <ComponentsProvider>
-      {/* <Flex p="large">
-        <FlexItem flexBasis="20%">
-          <Text>Model</Text>
-          <Select
-            label="Model"
-            options={modelDetails}
-            onChange={selectedModel =>
-              history.push(internalModelURL({ model: selectedModel }))
-            }
-          />
-        </FlexItem>
-        <FlexItem flexBasis="20%">
-          <JsonViewer data={modelData}/>
-        </FlexItem>
-        <FlexItem flexBasis="20%">
-          <Text>Explore</Text>
-          <Select
-            label="Explore"
-            options={exploreList}
-            onChange={(explore) => {
-              history.push(
-                internalExploreURL({
-                  model: currentModel.name,
-                  explore: explore
-                })
-              )
-            }}
-          />
-        </FlexItem>
-        <FlexItem flexBasis="20%">
-          <JsonViewer data={currentExplore}/>
-        </FlexItem>
-      </Flex> */}
       <Layout hasAside height="100%">
-          {flowView === 'Sidebar' && (
-            <>
-              <Rail width="50px">
-                <SpaceVertical alignItems="center" gap="xsmall">
-                  <IconButton
-                    icon="GearOutline"
-                    label="Settings"
-                    size="large"
-                    onClick={() => setShowSettings(!showSettings)}
-                    toggle={showSettings}
-                  />
-                  <IconButton
-                    icon="Dashboard"
-                    label="Diagram"
-                    size="large"
-                    toggle={selectedExplore && !showSettings ? true : undefined}
-                    onClick={showDiagram}
-                  />
-                </SpaceVertical>
-              </Rail>
-              {showSettings && (
-                <SettingsPanel width="275px" px="medium" py="large">
-                  <SpaceVertical>
-                    <Heading fontSize="large">Diagram Settings</Heading>
-                    <FieldSelect
-                      options={modelDetails}
-                      label="Choose Model"
-                      placeholder="Select a model"
-                      value={currentModel && currentModel.name}
-                      onChange={(selectedModel: string) =>
-                        history.push(internalModelURL({ model: selectedModel }))
-                      }
-                    />
-                    {currentModel && (
-                      <div>
-                        <SpaceVertical size="xxsmall">
-                          <Label>Choose an Explore</Label>
-                          <ExploreList>
-                            {exploreList.map((item, index) => {
-                              return (
-                                <ExploreListitem key={`explore-${index}`}>
-                                  <ExploreButton
-                                    onClick={(e: any) => {
-                                      history.push(
-                                        internalExploreURL({
-                                          model: currentModel.name,
-                                          explore: item.value
-                                        })
-                                      )
-                                    }}
-                                    value={item.value}
-                                  >
-                                    {item.label}
-                                  </ExploreButton>
-                                </ExploreListitem>
-                              )
-                            })}
-                          </ExploreList>
-                        </SpaceVertical>
-                      </div>
-                    )}
-                  </SpaceVertical>
-                </SettingsPanel>
-              )}
-            </>
-          )}
-
-          <Stage>
-            <DiagramHeader
-              py="xsmall"
-              px="large"
-              className={currentExplore ? 'has-explore' : 'no-explore'}
-            >
-              <Space between>
-                {flowView === 'List' ? (
-                  <Space gap="large">
-                  </Space>
-                ) : (
-                  <Space gap="xsmall">
-                    <Heading>{currentExplore && currentExplore.label}</Heading>
-                  </Space>
-                )}
-
-                <Space gap="xxsmall" justifyContent="flex-end">
-                  <Menu>
-                    <MenuDisclosure>
-                      <ButtonTransparent iconAfter="CaretDown" color="neutral">
-                        View Options
-                      </ButtonTransparent>
-                    </MenuDisclosure>
-                    <MenuList>
-                      <MenuItem>
-                        <FieldCheckbox label="Hide hidden fields" />
-                      </MenuItem>
-                      <MenuItem>
-                        <FieldCheckbox label="Show only joined fields" />
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-
-                  <Menu>
-                    <MenuDisclosure>
-                      <ButtonTransparent iconAfter="CaretDown" color="neutral">
-                        {zoomLevel}%
-                      </ButtonTransparent>
-                    </MenuDisclosure>
-                    <MenuList>
-                      <MenuItem detail="⌘+">Zoom In</MenuItem>
-                      <MenuItem detail="⌘-">Zoom Out</MenuItem>
-                      <MenuItem detail="⇧1">Zoom to fit</MenuItem>
-                      <MenuItem>Zoom to 50%</MenuItem>
-                      <MenuItem detail="⇧0">Zoom to 100%</MenuItem>
-                      <MenuItem>Zoom to 200%</MenuItem>
-                    </MenuList>
-                  </Menu>
-
-                  <IconButton label="" icon="CircleInfoOutline" size="large" />
-                  <IconButton label="" icon="Refresh" size="large" />
-                </Space>
-              </Space>
-            </DiagramHeader>
-
-            {/* {flowView === 'List' && !isLoading && !selectedExplore && (
-              <ListViewFlow
-                models={modelOptions}
-                explores={explores}
-                selectedExplore={selectedExplore}
-                selectedModel={selectedModel}
-                setModel={handleModel}
-                setExplore={selectExplore}
+        <Rail width="50px">
+          <SpaceVertical alignItems="center" gap="xsmall">
+            <IconButton
+              icon="GearOutline"
+              label="Settings"
+              size="large"
+              onClick={() => setShowSettings(!showSettings)}
+              toggle={showSettings}
+            />
+            <IconButton
+              icon="Dashboard"
+              label="Diagram"
+              size="large"
+              toggle={selectedExplore && !showSettings ? true : undefined}
+              onClick={showDiagram}
+            />
+          </SpaceVertical>
+        </Rail>
+        {showSettings && (
+          <SettingsPanel width="275px" px="medium" py="large">
+            <SpaceVertical>
+              <Heading fontSize="large">Diagram Settings</Heading>
+              <FieldSelect
+                options={modelDetails}
+                label="Choose Model"
+                placeholder="Select a model"
+                value={currentModel && currentModel.name}
+                onChange={(selectedModel: string) =>
+                  history.push(internalModelURL({ model: selectedModel }))
+                }
               />
-            )} */}
-
-            {!currentExplore && (
-              <>
-                <PageLoading>
-                  <Spinner/>{' '}
-                  <Heading mt="large">
-                    Generating Diagram
-                  </Heading>
-                </PageLoading>
-              </>
-            )}
-
-            {currentModel && currentExplore && (
-              <>
-                <JsonViewer data={currentExplore}/>
-              </>
-            )}
-            
-          
-            
-          
-   
+              {currentModel && (
+                <div>
+                  <SpaceVertical size="xxsmall">
+                    <Label>Choose an Explore</Label>
+                    <ExploreList>
+                      {exploreList.map((item, index) => {
+                        return (
+                          <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(item.value)}}>
+                            <ExploreButton
+                              onClick={(e: any) => {
+                                history.push(
+                                  internalExploreURL({
+                                    model: currentModel.name,
+                                    explore: item.value
+                                  })
+                                )
+                              }}
+                              value={item.value}
+                            >
+                              {item.label}
+                            </ExploreButton>
+                          </ExploreListitem>
+                        )
+                      })}
+                    </ExploreList>
+                  </SpaceVertical>
+                </div>
+              )}
+            </SpaceVertical>
+          </SettingsPanel>
+        )}
+        <Stage>
+          <DiagramHeader
+            py="xsmall"
+            px="large"
+            className={currentExplore ? 'has-explore' : 'no-explore'}
+          >
+            <Space between>
+              <Space gap="xsmall">
+                <Heading as="h1">{currentExplore && currentExplore.label}</Heading>
+              </Space>
+              <Space gap="xxsmall" justifyContent="flex-end">
+                <IconButton 
+                  label="" 
+                  icon="CircleInfoOutline" 
+                  onClick={toggleExploreInfo}
+                  style={{color: showExploreInfo && theme.colors.key, 
+                    backgroundColor: showExploreInfo && theme.colors.keySubtle,
+                    borderRadius: "25px"}}
+                  size="large" 
+                />
+                <IconButton label="" icon="Refresh" size="large" />
+              </Space>
+            </Space>
+          </DiagramHeader>
+          <Layout hasAside height="100%">
+          <Stage>
+          {!currentExplore && !exploreName && (
+              <FullPage>
+                <div style={{ width: "30%" }}>
+                  <img
+                    src={
+                      "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
+                    }
+                    alt="Empty Image"
+                  />
+                </div>
+                <IntroText>
+                  Select a model and click on one of the Explores to the left to begin visualizing your LookML model. You’ll see views, joins, SQL definitions, and more
+                  for each object.
+                </IntroText>
+              </FullPage>
+          )}
+          {currentModel && !currentExplore && exploreName && (
+            <PageLoading>
+              <Spinner/>{' '}
+              <Heading mt="large">
+                Generating Diagram
+              </Heading>
+            </PageLoading>
+          )}
+          {!currentModel && !currentExplore && (
+            <PageLoading>
+              <Spinner/>{' '}
+              <Heading mt="large">
+                Loading Extension
+              </Heading>
+            </PageLoading>
+          )}
+          {currentModel && currentExplore && (
+            <JsonViewer data={currentExplore}/>
+          )}
           </Stage>
+          {currentExplore && showExploreInfo && (
+            <ExploreMetadata
+              explore={currentExplore}
+            />
+          )}
+          </Layout>
+        </Stage>
         </Layout>
     </ComponentsProvider>
   )

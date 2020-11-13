@@ -7,6 +7,8 @@ const VizWrapper = styled.div`
   color: #3a4245;
   height: 100%;
   margin-top: 10px;
+  padding-left: 15px;
+  z-index: -100;
   .json-inspector,
 .json-inspector__selection {
     font: 14px/1.4 Consolas, monospace;

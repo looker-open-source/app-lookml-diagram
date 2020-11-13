@@ -3,6 +3,7 @@ import { ExtensionContext, ExtensionContextData } from "@looker/extension-sdk-re
 import { Looker31SDK as LookerSDK, Looker31SDK } from '@looker/sdk/lib/sdk/3.1/methods'
 import { ILookmlModel, ILookmlModelExplore, IUser, IGroup } from "@looker/sdk/lib/sdk/4.0/models"
 import { FieldComments, CommentPermissions } from "../../src/components/interfaces";
+import { delay } from "lodash";
 
 const globalCache: any = {}
 
@@ -57,7 +58,7 @@ export function useAllModels() {
 export function useExplore(modelName?: string, exploreName?: string) {
   const { coreSDK } = useContext(ExtensionContext)
   const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
-  const [loadingExplore, loadingExploreSetter] = useState(null)
+  const [loadingExplore, loadingExploreSetter] = useState(exploreName)
   useEffect(() => {
     async function fetcher() {
       if (modelName && exploreName) {
