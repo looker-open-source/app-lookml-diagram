@@ -58,13 +58,14 @@ import {
   theme
 } from "@looker/components"
 import styled, { ThemeProvider } from "styled-components"
-import { useAllModels } from "../utils/fetchers"
+import { useAllModels, getExtLog } from "../utils/fetchers"
 import JsonViewer from "./JsonViewer"
 import "./styles.css"
 import { useHistory } from "react-router"
 import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { useCurrentModel, useSelectExplore } from "../utils/routes"
 import ExploreMetadata from "./ExploreMetadata"
+import BarChart from "./BarChart"
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -143,7 +144,7 @@ export const DiagramHeader = styled(Header as any)`
   border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
   transition: transform 500ms ease-out;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
 
   &.no-explore {
@@ -152,7 +153,6 @@ export const DiagramHeader = styled(Header as any)`
 
   &.has-explore {
     transform: translateY(0);
-
   }
 `
 
@@ -160,6 +160,7 @@ export const DiagramHeader = styled(Header as any)`
 const Rail = styled(Aside as any)`
   border-right: solid 1px ${(props) => props.theme.colors.ui2};
   align-items: center;
+  z-index: 1;
 `
 
 const SettingsPanel = styled(Aside as any)`
@@ -188,14 +189,20 @@ const InlineSelect = styled(Space as any)`
   cursor: pointer;
 `
 
-export const LookmlDiagram: React.FC<{}> = () => {
+export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const history = useHistory()
+  const { extensionLog, extensionLogger } = getExtLog()
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-  const { details, exploreName } = useSelectExplore()
+  const { details, exploreName, metadata, dimensions } = useSelectExplore()
   const [showSettings, setShowSettings] = React.useState(true)
+  const [showGit, setShowGit] = React.useState(false)
   const [showExploreInfo, setShowExploreInfo] = React.useState(false)
   const [selectedExplore, setSelectedExplore] = React.useState(false)
+
+  metadata.explore && metaBuffer.push(metadata)
+
+  console.log(dimensions)
 
   function isExample(modelName: string) {
     return modelName === "s_looker" ||
@@ -224,6 +231,10 @@ export const LookmlDiagram: React.FC<{}> = () => {
     return d.name === exploreName
   })[0]
 
+  let currentDimensions = dimensions && dimensions.filter(d=>{
+    return d.exploreName === exploreName
+  })[0]
+
   let exploreList = currentModel && currentModel.explores.map((d)=>{
     return {
       value: d.name,
@@ -232,9 +243,15 @@ export const LookmlDiagram: React.FC<{}> = () => {
   })
 
   function showDiagram() {
-    if (currentExplore && currentModel) {
-      setShowSettings(false)
-    }
+    setShowSettings(false)
+    setShowGit(false)
+    return true
+  }
+
+  function saveLog() {
+    extensionLogger(metaBuffer)
+    metaBuffer.length = 0;
+    console.log("total log entries:", extensionLog.diagramLog.length)
   }
 
   function toggleExploreInfo() {
@@ -252,24 +269,84 @@ export const LookmlDiagram: React.FC<{}> = () => {
     return undefined
   }
 
+  const dataTest = [
+    {year: 1980, efficiency: 24.3, sales: 8949000},
+    {year: 1985, efficiency: 27.6, sales: 10979000},
+    {year: 1990, efficiency: 28, sales: 9303000},
+    {year: 1991, efficiency: 28.4, sales: 8185000},
+    {year: 1992, efficiency: 27.9, sales: 8213000},
+    {year: 1993, efficiency: 28.4, sales: 8518000},
+    {year: 1994, efficiency: 28.3, sales: 8991000},
+    {year: 1995, efficiency: 28.6, sales: 8620000},
+    {year: 1996, efficiency: 28.5, sales: 8479000},
+    {year: 1997, efficiency: 28.7, sales: 8217000},
+    {year: 1998, efficiency: 28.8, sales: 8085000},
+    {year: 1999, efficiency: 28.3, sales: 8638000},
+    {year: 2000, efficiency: 28.5, sales: 8778000},
+    {year: 2001, efficiency: 28.8, sales: 8352000},
+    {year: 2002, efficiency: 29, sales: 8042000},
+    {year: 2003, efficiency: 29.5, sales: 7556000},
+    {year: 2004, efficiency: 29.5, sales: 7483000},
+    {year: 2005, efficiency: 30.3, sales: 7660000},
+    {year: 2006, efficiency: 30.1, sales: 7762000},
+    {year: 2007, efficiency: 31.2, sales: 7562000},
+    {year: 2008, efficiency: 31.5, sales: 6769000},
+    {year: 2009, efficiency: 32.9, sales: 5402000},
+    {year: 2010, efficiency: 33.9, sales: 5636000},
+    {year: 2011, efficiency: 33.1, sales: 6093000},
+    {year: 2012, efficiency: 35.3, sales: 7245000},
+    {year: 2013, efficiency: 36.4, sales: 7586000},
+    {year: 2014, efficiency: 36.5, sales: 7708000},
+    {year: 2015, efficiency: 37.2, sales: 7517000},
+    {year: 2016, efficiency: 37.7, sales: 6873000},
+    {year: 2017, efficiency: 39.4, sales: 6081000},
+  ]
+  
+
   return (
     <ComponentsProvider>
       <Layout hasAside height="100%">
         <Rail width="50px">
           <SpaceVertical alignItems="center" gap="xsmall">
             <IconButton
-              icon="GearOutline"
-              label="Settings"
-              size="large"
-              onClick={() => setShowSettings(!showSettings)}
-              toggle={showSettings}
-            />
-            <IconButton
               icon="Dashboard"
               label="Diagram"
+              tooltipPlacement="right"
               size="large"
               toggle={selectedExplore && !showSettings ? true : undefined}
               onClick={showDiagram}
+              style={{color: !showGit && !showSettings && theme.colors.key, 
+                backgroundColor: !showGit && !showSettings && theme.colors.keySubtle,
+                borderTopRightRadius: "25px", borderBottomRightRadius: "25px"}}
+            />
+            <IconButton
+              icon="GearOutline"
+              label="Settings"
+              tooltipPlacement="right"
+              size="large"
+              onClick={() => showDiagram() && setShowSettings(!showSettings)}
+              toggle={showSettings}
+              style={{color: showSettings && theme.colors.key, 
+                backgroundColor: showSettings && theme.colors.keySubtle,
+                borderTopRightRadius: "25px", borderBottomRightRadius: "25px"}}
+            />
+            <IconButton
+              icon="GitBranch"
+              label="Git"
+              tooltipPlacement="right"
+              size="large"
+              onClick={() => showDiagram() && setShowGit(!showGit)}
+              toggle={showGit}
+              style={{color: showGit && theme.colors.key, 
+                backgroundColor: showGit && theme.colors.keySubtle,
+                borderTopRightRadius: "25px", borderBottomRightRadius: "25px"}}
+            />
+            <IconButton
+              icon="Api"
+              label={`Save Log (${metaBuffer.length})`}
+              tooltipPlacement="right"
+              size="large"
+              onClick={()=>{saveLog()}}
             />
           </SpaceVertical>
         </Rail>
@@ -314,6 +391,19 @@ export const LookmlDiagram: React.FC<{}> = () => {
                   </SpaceVertical>
                 </div>
               )}
+            </SpaceVertical>
+          </SettingsPanel>
+        )}
+        {showGit && (
+          <SettingsPanel width="275px" px="medium" py="large">
+            <SpaceVertical>
+              <Heading fontSize="large">Git Actions</Heading>
+              <FieldSelect
+                options={[{value:"master",label:"master"}]}
+                label="Current Branch"
+                // placeholder="Select a model"
+                value={"master"}
+              />
             </SpaceVertical>
           </SettingsPanel>
         )}
@@ -376,7 +466,8 @@ export const LookmlDiagram: React.FC<{}> = () => {
             </PageLoading>
           )}
           {currentModel && currentExplore && (
-            <JsonViewer data={currentExplore}/>
+            // <JsonViewer data={currentExplore}/>
+            <BarChart data={dataTest} dimensions={currentDimensions}/>
           )}
           </Stage>
           {currentExplore && showExploreInfo && (

@@ -29,8 +29,10 @@ import { theme } from "@looker/components"
 import { LookmlDiagram } from "./LookmlDiagram"
 import { ThemeProvider } from "styled-components"
 
-export const Extension: React.FC = () => (
+export const Extension: React.FC = () => {
+  let metaBuffer: any[] = [];
+  return (
   <ThemeProvider theme={theme}>
-    <LookmlDiagram />
+    <LookmlDiagram metaBuffer={metaBuffer}/>
   </ThemeProvider>
-)
+)}

@@ -1,5 +1,6 @@
 import { useRouteMatch } from "react-router-dom"
 import { useAllModels, useExplore, useModelDetail } from "./fetchers"
+import { getDiagramDimensions } from "./diagrammer"
 
 export function internalExploreURL({
   model,
@@ -76,9 +77,27 @@ export function useCurrentExplore() {
 }
 
 export function useSelectExplore() {
+  var start = performance.now()
   const { modelName, exploreName } = usePathNames()
+  // get model and all explore info
   let details = useModelDetail(modelName)
-  return {details, exploreName}
+  // calculate diagram dimensions and add to object
+  let dimensions = getDiagramDimensions(details)
+  var end = performance.now()
+  var time = end - start;
+  let explore = details && details.explores.filter(d=>{
+    return d.name === exploreName
+  })[0]
+  let metadata = {
+    source: "useSelectExplore",
+    date: new Date().toISOString(),
+    duration: time, 
+    model: modelName,
+    explore: exploreName,
+    joins: explore && explore.joins.length,
+    fields: explore && (explore.fields.dimensions.length + explore.fields.measures.length),
+  };
+  return {details, exploreName, metadata, dimensions}
 }
 
 export function useCurrentModel() {

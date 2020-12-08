@@ -21,7 +21,7 @@ const ExploreInfoPanel = styled(Aside as any)`
   overflow-y: auto;
   background-color: ${(props) => props.theme.colors.background};
   box-shadow: -10px 0px 20px 0px ${(props) => props.theme.colors.ui2};
-  z-index: 1;
+  z-index: 0;
 `
 const MetadataRow = styled(Flex as any)`
   border-top: solid 1px ${(props) => props.theme.colors.ui2};

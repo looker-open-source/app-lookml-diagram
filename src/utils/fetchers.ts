@@ -110,3 +110,32 @@ export interface DetailedModel {
   model: ILookmlModel
   explores: ILookmlModelExplore[]
 }
+
+export function getExtLog() {
+  const extensionContext = useContext<ExtensionContextData>(ExtensionContext)
+  const { extensionSDK, initializeError } = extensionContext
+  const [extensionLog, extensionLoggerState] = useState({diagramLog: []})
+
+  const extensionLogger = async (newMetadata: any): Promise<void> => {
+    try {
+      // let staging = extensionLog.push(newMetadata)
+      let staging = extensionLog
+      staging.diagramLog.push(...newMetadata)
+      await extensionSDK.saveContextData(staging)
+      extensionLoggerState(staging)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    const initialize = async () => {
+      let context
+      context = await extensionSDK.getContextData() || extensionLog
+      extensionLoggerState(context)
+    }
+    initialize()
+  }, [])
+
+  return { extensionLog, extensionLogger }
+}

@@ -28,7 +28,7 @@ const VizWrapper = styled.div`
     left: -200px;
     right: -50px;
     bottom: 0;
-    z-index: -1;
+    z-index: -2;
     pointer-events: none;
 }
 .json-inspector__line:hover:after {
