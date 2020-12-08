@@ -81,7 +81,7 @@ export function useSelectExplore() {
   const { modelName, exploreName } = usePathNames()
   // get model and all explore info
   let details = useModelDetail(modelName)
-  // calculate diagram dimensions and add to object
+  // calculate diagram dimensions
   let dimensions = getDiagramDimensions(details)
   var end = performance.now()
   var time = end - start;
