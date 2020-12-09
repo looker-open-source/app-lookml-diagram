@@ -431,7 +431,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           )}
           {currentModel && currentExplore && (
             // <JsonViewer data={currentExplore}/>
-            <Diagram dimensions={currentDimensions} explore={currentExplore}/>
+            <Diagram dimensions={currentDimensions} explore={currentExplore} />
           )}
           </Stage>
           {currentExplore && showExploreInfo && (
