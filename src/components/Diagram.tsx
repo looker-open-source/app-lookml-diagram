@@ -24,6 +24,11 @@ export const Diagram: React.FC<{
       let zoom = addZoom(svg);
       let filter = addFilter(svg);
 
+      // Create all joins
+      dimensions.diagramDict._joinData.map((join: any, index: number) => {
+        createLookmlJoinElement(svg, join, dimensions.diagramDict);
+      })
+
       // Create all tables
       diagramViews.map((lookmlViewName: string, index: number) => {
         const nonViews = ["_joinData"]
@@ -32,10 +37,10 @@ export const Diagram: React.FC<{
         createLookmlViewElement(svg, tableData);
       })
 
-      // Create all joins
-      dimensions.diagramDict._joinData.map((join: any, index: number) => {
-        createLookmlJoinElement(svg, join, dimensions.diagramDict);
-      })
+      // // Create all joins
+      // dimensions.diagramDict._joinData.map((join: any, index: number) => {
+      //   createLookmlJoinElement(svg, join, dimensions.diagramDict);
+      // })
     },
     // useD3 dependencies array
     [

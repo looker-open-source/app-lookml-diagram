@@ -2,7 +2,7 @@ import { DetailedModel } from "./fetchers";
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/sdk/4.0/models"
 import { exploreFieldURL } from "./urls";
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
-import { stringComparator } from "@looker/components/lib/ActionList/utils/sort_utils";
+import { getRowOffset } from "../d3-utils/position";
 import { TABLE_WIDTH } from "./constants";
 
 // TODO: refactor getFields, getViews, getDiagramDict to be composable
@@ -106,6 +106,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   let buildOrder = views.sort((a: string, b: string)=>{
     return joinCount[a] > joinCount[b] ? -1 : 1;
   })
+
   let scaffold: any = {}
   buildOrder.map((viewName: string)=>{
     let joined: any[] = []
@@ -123,45 +124,43 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     })
     scaffold[viewName] = joined
   })
+
   function getTableX(index: number, degree: number) {
-    const width = TABLE_WIDTH * 2
-    if ((index % 2) === 0) {
+    const width = TABLE_WIDTH * 2.3
+    index = (degree % 2)===0 ? index-degree : index+degree
+    if (((index) % 2) === 0) {
       return -1 * width * degree
     }
     return width * degree
   }
+
   let built: string[] = []
-  let degree = 1
-  buildOrder.forEach((table: string, index: number) => {
-    built.push(table)
-    scaffold[table].forEach((join: string, joinIndex: number) => {
-      let joinX = diagramDict[join][0].diagramX
-      if (!built.includes(join)) {
-        // make this table
-        diagramDict[join] = diagramDict[join].map((field: any, i: number) => {
-          return {
-            ...field,
-            diagramX: getTableX(built.length, 1)+joinX,
-          }
-        })
-        // then make its joins, if any
-        scaffold[join].forEach((j: string) => {
-          let jX = diagramDict[j][0].diagramX
-          if (!built.includes(j)) {
-            diagramDict[j] = diagramDict[j].map((f: any, i: number) => {
-              return {
-                ...f,
-                diagramX: getTableX(built.length, 2)+jX,
-              }
-            })
-            built.push(j)
-          }
-        })
-        built.push(join)
+  let shift: any = {}
+
+  function arrangeTables(table: string, degree: number) {
+    let joinX = diagramDict[table][0].diagramX
+    let joinY = diagramDict[table][0].diagramY
+    let calcX = getTableX(built.length, degree) + joinX
+    shift[calcX] ? shift[calcX] = shift[calcX] + diagramDict[table].length : shift[calcX] = diagramDict[table].length
+    let calcY = getRowOffset(shift[calcX] - diagramDict[table].length) + joinY + (degree * 100)
+    diagramDict[table] = diagramDict[table].map((field: any, i: number) => {
+      return {
+        ...field,
+        diagramX: calcX,
+        diagramY: calcY*2,
       }
     })
-  })
-  console.log(buildOrder, scaffold)
+    built.push(table)
+    scaffold[table].forEach((t: string, i: number) => {
+      if (!built.includes(t)) {
+        arrangeTables(t, degree+1)
+      }
+    })
+  }
+
+  arrangeTables(buildOrder[0], 0)
+  // TODO: check to see if we have to rerun this with any other individual nodes in explore if they exist
+
   return diagramDict
 }
 

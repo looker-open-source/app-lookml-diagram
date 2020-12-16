@@ -60,6 +60,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
   .attr("fill", "none")
   .attr("stroke", theme.colors.inverse)
   .attr("stroke-width", 2.5)
+  .attr("z-index", -1)
   .attr("id", (d:any) => d.viewName)
   .attr("d", d3.line().curve(d3.curveStepAfter)
     .x((d: any) => diagramDict[d.viewName][0].diagramX + d.xShift)
