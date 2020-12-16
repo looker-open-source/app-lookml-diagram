@@ -76,13 +76,13 @@ export function useCurrentExplore() {
   return useExplore(modelName, exploreName)
 }
 
-export function useSelectExplore() {
+export function useSelectExplore(diagramPersist: any) {
   var start = performance.now()
   const { modelName, exploreName } = usePathNames()
   // get model and all explore info
   let details = useModelDetail(modelName)
   // calculate diagram dimensions
-  let dimensions = getDiagramDimensions(details)
+  let dimensions = getDiagramDimensions(details, diagramPersist)
   var end = performance.now()
   var time = end - start;
   let explore = details && details.explores.filter(d=>{

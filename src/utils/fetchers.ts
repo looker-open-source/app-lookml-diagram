@@ -114,13 +114,25 @@ export interface DetailedModel {
 export function getExtLog() {
   const extensionContext = useContext<ExtensionContextData>(ExtensionContext)
   const { extensionSDK, initializeError } = extensionContext
-  const [extensionLog, extensionLoggerState] = useState({diagramLog: []})
+  const [extensionLog, extensionLoggerState] = useState<{diagramLog:any,diagramPersist:any}>({diagramLog: [], diagramPersist: {}})
 
   const extensionLogger = async (newMetadata: any): Promise<void> => {
     try {
       // let staging = extensionLog.push(newMetadata)
       let staging = extensionLog
       staging.diagramLog.push(...newMetadata)
+      await extensionSDK.saveContextData(staging)
+      extensionLoggerState(staging)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const extensionPersistDiagram = async (newMetadata: any): Promise<void> => {
+    try {
+      // let staging = extensionLog.push(newMetadata)
+      let staging = extensionLog
+      staging.diagramPersist = newMetadata
       await extensionSDK.saveContextData(staging)
       extensionLoggerState(staging)
     } catch (error) {
@@ -137,5 +149,5 @@ export function getExtLog() {
     initialize()
   }, [])
 
-  return { extensionLog, extensionLogger }
+  return { extensionLog, extensionLogger, extensionPersistDiagram }
 }

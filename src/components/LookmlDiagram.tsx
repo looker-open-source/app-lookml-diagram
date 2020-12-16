@@ -33,6 +33,7 @@ import {
   Spinner,
   Select,
   Text,
+  Button,
   SpaceVertical,
   FieldSelect,
   Space,
@@ -191,11 +192,12 @@ const InlineSelect = styled(Space as any)`
 
 export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const history = useHistory()
-  const { extensionLog, extensionLogger } = getExtLog()
+  const { extensionLog, extensionLogger, extensionPersistDiagram } = getExtLog()
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-  const { details, exploreName, metadata, dimensions } = useSelectExplore()
+  const { details, exploreName, metadata, dimensions } = useSelectExplore(extensionLog.diagramPersist || {})
   const [showSettings, setShowSettings] = React.useState(true)
+  const [reload, setReload] = React.useState(false)
   const [showGit, setShowGit] = React.useState(false)
   const [showExploreInfo, setShowExploreInfo] = React.useState(false)
   const [selectedExplore, setSelectedExplore] = React.useState(false)
@@ -203,6 +205,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   metadata.explore && metaBuffer.push(metadata)
 
   function isExample(modelName: string) {
+    // return true
     return modelName === "s_looker" ||
     modelName === "pollooker" ||
     modelName === "2020-election-betting" ||
@@ -251,7 +254,16 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     metaBuffer.length = 0;
     console.log("total log entries:", extensionLog.diagramLog.length, extensionLog)
   }
-
+  function toggleReload() {
+    if (currentExplore && currentModel) {
+      setReload(!reload)
+      let exploreName = currentExplore.name
+      let initialPersist = extensionLog.diagramPersist || {}
+      let explorePersist = initialPersist[exploreName] || {}
+      explorePersist[exploreName] = {}
+      extensionPersistDiagram({...extensionLog.diagramPersist, ...explorePersist})
+    }
+  }
   function toggleExploreInfo() {
     if (currentExplore && currentModel) {
       setShowExploreInfo(!showExploreInfo)
@@ -368,6 +380,25 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 // placeholder="Select a model"
                 value={"master"}
               />
+              <Button
+              onClick={(e: any) => {
+                let exploreName = currentExplore.name
+                let initialPersist = extensionLog.diagramPersist || {}
+                let diagramData = dimensions.filter((d:any,i:number)=>{
+                  return d.exploreName === exploreName
+                })[0]
+                let explorePersist = initialPersist[exploreName] || {}
+                explorePersist[exploreName] = {}
+                let diagramViews = Object.keys(diagramData.diagramDict)
+                diagramViews.map((d:any,i:number)=>{
+                  const nonViews = ["_joinData"]
+                  if (nonViews.includes(d)) { return }
+                  let elementSel = document.getElementsByClassName("table-"+d)[0].getBoundingClientRect()
+                  console.log(elementSel)
+                  explorePersist[exploreName][d] = {x: elementSel.left, y: elementSel.top}
+                })
+                extensionPersistDiagram({...extensionLog.diagramPersist, ...explorePersist})
+              }}>Save Layout</Button>
             </SpaceVertical>
           </SettingsPanel>
         )}
@@ -391,7 +422,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                     borderRadius: "25px"}}
                   size="large" 
                 />
-                <IconButton label="" icon="Refresh" size="large" />
+                <IconButton label="" icon="Refresh" size="large" onClick={toggleReload} />
               </Space>
             </Space>
           </DiagramHeader>
@@ -431,7 +462,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           )}
           {currentModel && currentExplore && (
             // <JsonViewer data={currentExplore}/>
-            <Diagram dimensions={currentDimensions} explore={currentExplore} />
+            <Diagram dimensions={currentDimensions} explore={currentExplore} reload={reload}/>
           )}
           </Stage>
           {currentExplore && showExploreInfo && (
