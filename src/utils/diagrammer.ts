@@ -11,7 +11,7 @@ export function getFields(exploreFields: ILookmlModelExploreFieldset) {
   return fields
 }
 
-function onlyUnique(value: any, index: any, self: any) {
+export function onlyUnique(value: any, index: any, self: any) {
   return self.indexOf(value) === index;
 }
 
@@ -72,7 +72,8 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
           fieldIndex: fieldIndex,
           selector: field.replace(".","-"),
           type: "core",
-          joinName: join.name
+          joinName: join.name,
+          joinObj: join,
         })
         
       })
@@ -82,14 +83,16 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
         fieldIndex: 0,
         selector: join.name.replace(".","-"),
         type: "core",
-        joinName: join.name
+        joinName: join.name,
+        joinObj: join,
       })
       joinPath.push({
         viewName: explore.name, 
         fieldIndex: 0,
         selector: join.name.replace(".","-"),
         type: "core",
-        joinName: join.name
+        joinName: join.name,
+        joinObj: join,
       })
     }
     return joinPath
@@ -126,7 +129,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   })
 
   function getTableX(index: number, degree: number) {
-    const width = TABLE_WIDTH * 2.3
+    const width = TABLE_WIDTH * 3
     index = (degree % 2)===0 ? index-degree : index+degree
     if (((index) % 2) === 0) {
       return -1 * width * degree
@@ -141,13 +144,14 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     let joinX = diagramDict[table][0].diagramX
     let joinY = diagramDict[table][0].diagramY
     let calcX = getTableX(built.length, degree) + joinX
-    shift[calcX] ? shift[calcX] = shift[calcX] + diagramDict[table].length : shift[calcX] = diagramDict[table].length
-    let calcY = getRowOffset(shift[calcX] - diagramDict[table].length) + joinY + (degree * 100)
+    let step = diagramDict[table].length + 5
+    shift[calcX] ? shift[calcX] = shift[calcX] + step : shift[calcX] = step
+    let calcY = getRowOffset(shift[calcX] - diagramDict[table].length) + joinY + (degree * -200)
     diagramDict[table] = diagramDict[table].map((field: any, i: number) => {
       return {
         ...field,
         diagramX: calcX,
-        diagramY: calcY*2,
+        diagramY: calcY,
       }
     })
     built.push(table)

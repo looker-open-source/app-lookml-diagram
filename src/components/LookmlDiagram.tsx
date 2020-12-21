@@ -205,12 +205,12 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   metadata.explore && metaBuffer.push(metadata)
 
   function isExample(modelName: string) {
-    // return true
-    return modelName === "s_looker" ||
-    modelName === "pollooker" ||
-    modelName === "2020-election-betting" ||
-    modelName === "i_looker" ||
-    modelName === "covid"
+    return true
+    // return modelName === "s_looker" ||
+    // modelName === "pollooker" ||
+    // modelName === "2020-election-betting" ||
+    // modelName === "i_looker" ||
+    // modelName === "covid"
   }
 
   let modelDetails = unfilteredModels && unfilteredModels.filter(d=>{ 
