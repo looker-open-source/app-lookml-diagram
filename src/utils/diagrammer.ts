@@ -3,7 +3,7 @@ import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExpl
 import { exploreFieldURL } from "./urls";
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
 import { getRowOffset } from "../d3-utils/position";
-import { TABLE_WIDTH } from "./constants";
+import { TABLE_WIDTH, TABLE_PADDING } from "./constants";
 
 // TODO: refactor getFields, getViews, getDiagramDict to be composable
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
@@ -129,29 +129,34 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   })
 
   function getTableX(index: number, degree: number) {
-    const width = TABLE_WIDTH * 3
     index = (degree % 2)===0 ? index-degree : index+degree
     if (((index) % 2) === 0) {
-      return -1 * width * degree
+      return -1 * TABLE_PADDING * degree
     }
-    return width * degree
+    return TABLE_PADDING * degree
   }
 
   let built: string[] = []
   let shift: any = {}
+  let yOrder: any = {}
 
   function arrangeTables(table: string, degree: number) {
     let joinX = diagramDict[table][0].diagramX
     let joinY = diagramDict[table][0].diagramY
+    // let sign = Math.random() > .5 ? 1 : -1
+    // let mag = Math.random() * 100 * sign
     let calcX = getTableX(built.length, degree) + joinX
     let step = diagramDict[table].length + 5
     shift[calcX] ? shift[calcX] = shift[calcX] + step : shift[calcX] = step
+    yOrder[calcX] ? yOrder[calcX] = yOrder[calcX] + 1 : yOrder[calcX] = 1
     let calcY = getRowOffset(shift[calcX] - diagramDict[table].length) + joinY + (degree * -200)
     diagramDict[table] = diagramDict[table].map((field: any, i: number) => {
       return {
         ...field,
         diagramX: calcX,
         diagramY: calcY,
+        diagramDegree: degree,
+        verticalIndex: yOrder[calcX],
       }
     })
     built.push(table)
@@ -162,6 +167,10 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     })
   }
 
+  diagramDict._yOrderLookup = yOrder
+
+  // TODO: assign a signed degree for L/R
+  // TODO: build from base view or top of build order?
   arrangeTables(buildOrder[0], 0)
   // TODO: check to see if we have to rerun this with any other individual nodes in explore if they exist
 

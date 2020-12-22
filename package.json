@@ -44,6 +44,7 @@
     "react-force-graph": "^1.27.1",
     "react-json-inspector": "^7.1.1",
     "react-measure": "^2.3.0",
+    "react-minimap": "^0.7.4",
     "react-router-dom": "^5.1.2",
     "react-sticky-el": "^1.1.0",
     "react-syntax-highlighter": "^11.0.2",

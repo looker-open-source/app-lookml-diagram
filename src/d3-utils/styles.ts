@@ -55,8 +55,8 @@ export function addFilter(svg: any) {
   // store result in offsetBlur
   filter.append("feOffset")
   .attr("in", "blur")
-  .attr("dx", 7)
-  .attr("dy", 7)
+  .attr("dx", 5)
+  .attr("dy", 5)
   .attr("result", "offsetBlur");
   // overlay original SourceGraphic over translated blurred opacity by using
   // feMerge filter. Order of specifying inputs is important!

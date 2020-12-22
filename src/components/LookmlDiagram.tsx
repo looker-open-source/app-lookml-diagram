@@ -206,11 +206,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
 
   function isExample(modelName: string) {
     return true
-    // return modelName === "s_looker" ||
-    // modelName === "pollooker" ||
-    // modelName === "2020-election-betting" ||
-    // modelName === "i_looker" ||
-    // modelName === "covid"
+    // let allowed = ["pollooker", "2020-election-betting", "covid", "braintree"]
+    // return allowed.includes(modelName)
   }
 
   let modelDetails = unfilteredModels && unfilteredModels.filter(d=>{ 

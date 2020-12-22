@@ -26,12 +26,12 @@ export const Diagram: React.FC<{
 
       // Create all joins
       dimensions.diagramDict._joinData.map((join: any, index: number) => {
-        createLookmlJoinElement(svg, join, dimensions.diagramDict);
+        createLookmlJoinElement(svg, join, dimensions.diagramDict, explore);
       })
 
       // Create all tables
       diagramViews.map((lookmlViewName: string, index: number) => {
-        const nonViews = ["_joinData"]
+        const nonViews = ["_joinData", "_yOrderLookup"]
         if (nonViews.includes(lookmlViewName)) { return }
         let tableData = dimensions.diagramDict[lookmlViewName];
         createLookmlViewElement(svg, tableData);
