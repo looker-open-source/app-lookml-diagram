@@ -59,13 +59,14 @@ import {
   theme
 } from "@looker/components"
 import styled, { ThemeProvider } from "styled-components"
+import { SelectionInfoPacket } from "./interfaces"
 import { useAllModels, getExtLog } from "../utils/fetchers"
 import JsonViewer from "./JsonViewer"
 import "./styles.css"
 import { useHistory } from "react-router"
 import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { useCurrentModel, useSelectExplore } from "../utils/routes"
-import ExploreMetadata from "./ExploreMetadata"
+import MetadataPanel from "./MetadataPanel"
 import Diagram from "./Diagram"
 
 export const DontShrink = styled(SpaceVertical as any)`
@@ -74,7 +75,6 @@ export const DontShrink = styled(SpaceVertical as any)`
 
   ${props => props.alignCenter ? 'align-items: center': undefined};
 `
-
 
 export const ExploreList = styled.ul`
   margin: 0;
@@ -201,6 +201,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const [showGit, setShowGit] = React.useState(false)
   const [showExploreInfo, setShowExploreInfo] = React.useState(false)
   const [selectedExplore, setSelectedExplore] = React.useState(false)
+  const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
 
   metadata.explore && metaBuffer.push(metadata)
 
@@ -263,14 +264,16 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   }
   function toggleExploreInfo() {
     if (currentExplore && currentModel) {
-      setShowExploreInfo(!showExploreInfo)
+      Object.keys(selectionInfo).length === 0 || selectionInfo.lookmlElement !== "explore"
+      ? setSelectionInfo({
+        lookmlElement: "explore"
+      })
+      : setSelectionInfo({})
     }
   }
+
   function buttonShade(exploreNameSel: string) {
     if (currentExplore && currentExplore.name === exploreNameSel) {
-      return theme.colors.keySubtle
-    }
-    if (exploreName === exploreNameSel) {
       return theme.colors.keySubtle
     }
     return undefined
@@ -346,6 +349,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                           <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(item.value)}}>
                             <ExploreButton
                               onClick={(e: any) => {
+                                selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
                                 history.push(
                                   internalExploreURL({
                                     model: currentModel.name,
@@ -414,8 +418,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                   label="" 
                   icon="CircleInfoOutline" 
                   onClick={toggleExploreInfo}
-                  style={{color: showExploreInfo && theme.colors.key, 
-                    backgroundColor: showExploreInfo && theme.colors.keySubtle,
+                  style={{color: selectionInfo.lookmlElement === "explore" && theme.colors.key, 
+                    backgroundColor: selectionInfo.lookmlElement === "explore" && theme.colors.keySubtle,
                     borderRadius: "25px"}}
                   size="large" 
                 />
@@ -459,12 +463,13 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           )}
           {currentModel && currentExplore && (
             // <JsonViewer data={currentExplore}/>
-            <Diagram dimensions={currentDimensions} explore={currentExplore} reload={reload}/>
+            <Diagram dimensions={currentDimensions} explore={currentExplore} reload={reload} setSelectionInfo={setSelectionInfo}/>
           )}
           </Stage>
-          {currentExplore && showExploreInfo && (
-            <ExploreMetadata
+          {currentExplore && Object.keys(selectionInfo).length > 0 && (
+            <MetadataPanel
               explore={currentExplore}
+              selectionInfo={selectionInfo}
             />
           )}
           </Layout>

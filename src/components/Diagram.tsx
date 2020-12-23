@@ -7,12 +7,14 @@ import { addFilter } from '../d3-utils/styles'
 import { addZoom } from '../d3-utils/zoom'
 import { createLookmlViewElement } from '../d3-utils/tables'
 import { createLookmlJoinElement } from '../d3-utils/joins'
+import { SelectionInfoPacket } from "./interfaces"
 
 export const Diagram: React.FC<{
   dimensions: any, 
   explore: ILookmlModelExplore,
   reload: boolean,
-}> = ({dimensions, explore, reload}) => {
+  setSelectionInfo: (packet: SelectionInfoPacket) => void,
+}> = ({dimensions, explore, reload, setSelectionInfo}) => {
   let diagramViews = Object.keys(dimensions.diagramDict)
   const ref = useD3(
     // useD3 callback
@@ -20,13 +22,25 @@ export const Diagram: React.FC<{
       // Clean up the previous d3 render
       d3.selectAll(".diagram-area > *").remove();
 
+      // Add clickable background 
+      d3.select(".diagram-area").append("rect")
+      .attr("class", "diagram-background")
+      .attr("fill", theme.colors.ui1)
+      .attr("width", "10000")
+      .attr("height", "10000")
+      .attr("x", "-5000")
+      .attr("y", "-5000")
+      .on("click", () => {
+        setSelectionInfo({})
+      })
+
       // Add global svg defs
       let zoom = addZoom(svg);
       let filter = addFilter(svg);
 
       // Create all joins
       dimensions.diagramDict._joinData.map((join: any, index: number) => {
-        createLookmlJoinElement(svg, join, dimensions.diagramDict, explore);
+        createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, setSelectionInfo);
       })
 
       // Create all tables
@@ -34,13 +48,8 @@ export const Diagram: React.FC<{
         const nonViews = ["_joinData", "_yOrderLookup"]
         if (nonViews.includes(lookmlViewName)) { return }
         let tableData = dimensions.diagramDict[lookmlViewName];
-        createLookmlViewElement(svg, tableData);
+        createLookmlViewElement(svg, tableData, setSelectionInfo);
       })
-
-      // // Create all joins
-      // dimensions.diagramDict._joinData.map((join: any, index: number) => {
-      //   createLookmlJoinElement(svg, join, dimensions.diagramDict);
-      // })
     },
     // useD3 dependencies array
     [

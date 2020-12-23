@@ -4,6 +4,7 @@ import { TABLE_WIDTH, TABLE_PADDING } from '../utils/constants'
 import { getJoinX, getRowOffset } from './position'
 import { getNextFocusTarget, theme } from '@looker/components'
 import { onlyUnique } from '../utils/diagrammer'
+import { SelectionInfoPacket } from "../components/interfaces"
 
 export function getManyPath(connectorSize: number, rightmost: number, joinField: any) {
   let path = []
@@ -49,7 +50,7 @@ export function getOnePath(connectorSize: number, rightmost: number, joinField: 
   return path
 }
 
-export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore) {
+export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, setSelectionInfo: (packet: SelectionInfoPacket) => void) {
   let partArray: any[] = []
   let tablePad = 25
   let r_shift = TABLE_WIDTH + tablePad
@@ -117,36 +118,6 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
     let joinTables = joinPath.map((d: any) => { return d.viewName})
     let terminalAlign = joinTables.filter(onlyUnique)
-    joinPath.forEach((joinField: any, i: number) => {
-      let connectorSize = (tablePad / 2)
-      let rightmost = terminalAlign.indexOf(joinField.viewName)
-      let connectorPath: any[] = []
-      let connectorOther = terminalAlign.filter((d: string) => { return d !== joinField.viewName})[0]
-      // check not if lower, but if lowest in join-at-large
-      if (diagramDict[joinField.viewName][0].diagramDegree < diagramDict[connectorOther][0].diagramDegree) {
-        let manyKinds = ["many_to_one", "many_to_many"]
-        manyKinds.includes(joinField.joinObj.relationship) 
-        ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
-        : connectorPath = getOnePath(connectorSize, rightmost, joinField)
-      } else {
-        let manyKinds = ["one_to_many", "many_to_many"]
-        manyKinds.includes(joinField.joinObj.relationship) 
-        ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
-        : connectorPath = getOnePath(connectorSize, rightmost, joinField)
-      }
-
-      join.append("path")
-      .datum(connectorPath)
-      .attr("class", "join-connector-"+joinData[0].joinName)
-      .attr("fill", "none")
-      .attr("stroke", theme.colors.inverse)
-      .attr("stroke-width", 3)
-      .attr("id", (d:any) => d.viewName)
-      .attr("d", d3.line().curve(d3.curveLinear)
-        .x((d: any) => d.x)
-        .y((d: any) => d.y)
-      )
-    })
 
     let targetFirstIndex = joinTables.indexOf(terminalAlign[1])
     let sourceLasttIndex = joinTables.lastIndexOf(terminalAlign[0])
@@ -156,17 +127,17 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     
     let verticalIndex = firstExt.diagramDegree > nextExt.diagramDegree ? firstExt.verticalIndex : nextExt.verticalIndex
     let verticalDestMax = firstExt.diagramDegree > nextExt.diagramDegree ? diagramDict._yOrderLookup[firstExt.diagramX] : diagramDict._yOrderLookup[nextExt.diagramX]
-    let extWidth = (verticalIndex / verticalDestMax) * (TABLE_WIDTH)
+    let extWidth = (1 - (verticalIndex / verticalDestMax)) * (TABLE_WIDTH)
 
     let extension: any = {}
     extension = Object.assign(extension, joinPath[sourceLasttIndex])
 
     extension.joinX = extension.joinX + extWidth
-    joinPath = [...joinPath.slice(0, sourceLasttIndex+1), extension, ...joinPath.slice(sourceLasttIndex + 1, joinPath.length)]
+    let extendedjoinPath = [...joinPath.slice(0, sourceLasttIndex+1), extension, ...joinPath.slice(sourceLasttIndex + 1, joinPath.length)]
     console.log(joinPath)
 
     join.append("path")
-    .datum(joinPath)
+    .datum(extendedjoinPath)
     .attr("class", "join-"+joinData[0].joinName)
     .attr("fill", "none")
     .attr("stroke", theme.colors.inverse)
@@ -178,7 +149,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     )
 
     join.append("path")
-    .datum(joinPath)
+    .datum(extendedjoinPath)
     .attr("class", "join-hover-"+joinData[0].joinName)
     .attr("fill", "none")
     .attr("stroke", "transparent")
@@ -199,7 +170,58 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     .on("click", (d: any, i: number) => {
       let arr = d3.select(d.toElement).datum()
       // @ts-ignore
-      console.log(arr[0].joinObj)
+      let joinObj = arr[0].joinObj
+      setSelectionInfo({
+        lookmlElement: "join",
+        name: joinObj.name
+      })
+    })
+
+    joinPath.forEach((joinField: any, i: number) => {
+      let connectorSize = (tablePad / 2)
+      let rightmost = terminalAlign.indexOf(joinField.viewName)
+      let connectorPath: any[] = []
+      let connectorOther = terminalAlign.filter((d: string) => { return d !== joinField.viewName})[0]
+      // check not if lower, but if lowest in join-at-large
+      if (diagramDict[joinField.viewName][0].diagramDegree < diagramDict[connectorOther][0].diagramDegree) {
+        let manyKinds = ["many_to_one", "many_to_many"]
+        manyKinds.includes(joinField.joinObj.relationship) 
+        ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
+        : connectorPath = getOnePath(connectorSize, rightmost, joinField)
+      } else {
+        let manyKinds = ["one_to_many", "many_to_many"]
+        manyKinds.includes(joinField.joinObj.relationship) 
+        ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
+        : connectorPath = getOnePath(connectorSize, rightmost, joinField)
+      }
+
+      let connectorAlign = rightmost ? connectorSize : connectorSize * -1
+      let baseAdj = rightmost ? -1 : 1
+
+      let baseX = joinField.joinX + baseAdj
+      let baseY = joinField.joinY + 10
+
+      join.append("path")
+      .datum(connectorPath)
+      .attr("class", "join-connector-"+joinData[0].joinName)
+      .attr("fill", "none")
+      .attr("stroke", theme.colors.inverse)
+      .attr("stroke-width", 3)
+      .attr("id", (d:any) => d.viewName)
+      .attr("d", d3.line().curve(d3.curveLinear)
+        .x((d: any) => d.x)
+        .y((d: any) => d.y)
+      )
+
+      join.append("circle")
+      .attr("class", "join-connector-"+joinData[0].joinName)
+      .attr("fill", theme.colors.ui1)
+      .attr("stroke", theme.colors.inverse)
+      .attr("stroke-width", 3)
+      .attr("r", 5)
+      .attr("cx", baseX)
+      .attr("cy", baseY)
+
     })
   })
   

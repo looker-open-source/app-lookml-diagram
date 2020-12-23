@@ -4,10 +4,12 @@ import * as d3 from 'd3';
 import { theme } from '@looker/components'
 import { getLabelColor, getColor, getLabelWeight, getLabel } from './styles';
 import { getX, getY, getRowOffset } from './position';
+import { SelectionInfoPacket } from "../components/interfaces"
 
 export function createLookmlViewElement(
   svg: d3.Selection<SVGElement, {}, HTMLElement, any>, 
-  tableData: any[]
+  tableData: any[],
+  setSelectionInfo: (packet: SelectionInfoPacket) => void,
   ) {
   
   let header = tableData[0]
