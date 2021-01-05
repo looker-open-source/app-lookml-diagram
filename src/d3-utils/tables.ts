@@ -5,10 +5,12 @@ import { theme } from '@looker/components'
 import { getLabelColor, getColor, getLabelWeight, getLabel } from './styles';
 import { getX, getY, getRowOffset } from './position';
 import { SelectionInfoPacket } from "../components/interfaces"
+import { isArrayLike } from 'lodash';
 
 export function createLookmlViewElement(
   svg: d3.Selection<SVGElement, {}, HTMLElement, any>, 
   tableData: any[],
+  selectionInfo: SelectionInfoPacket,
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
   ) {
   
@@ -37,15 +39,7 @@ export function createLookmlViewElement(
   .attr("transform", (d: any, i: number) => {
     return `translate(${header.diagramX}, ${header.diagramY + getRowOffset(i)})`
   })
-  .on("mouseenter", function (this: SVGGElement, event: any, d: unknown) {
-    d3.select(this).attr("stroke-width", "20px")
-  })
-  .on("mouseleave", function (this: SVGGElement, event: any, d: unknown) {
-    d3.select(this).attr("stroke-width", "10px")
-  })
-  .on("click", function (this: SVGGElement, event: any, d: unknown) {
-    console.log(d)
-  });
+  .style("cursor", "pointer");
 
   // Create table elements
   tableRow.append("rect")
@@ -64,4 +58,30 @@ export function createLookmlViewElement(
   .attr("font-weight", (d: any) => getLabelWeight(d))
   .attr("dy", "0.8em")
   .text((d: any) => getLabel(d));
+
+
+  tableRow.on("mouseenter", (d: any, i: number) => {
+    let arr: any = d3.select(d.toElement).datum()
+    d3.select("#" + arr.name.replace(".","-") + " > rect").attr("stroke", theme.colors.key).attr("fill", theme.colors.key)
+    d3.select("#" + arr.name.replace(".","-") + " > text").attr("fill", theme.colors.keyText)
+  })
+  .on("mouseleave", (d: any, i: number) => {
+    let arr: any = d3.select(d.fromElement).datum()
+    if (JSON.stringify(selectionInfo) !== JSON.stringify({
+      lookmlElement: arr.category,
+      name: arr.name
+    })) {
+      d3.select("#" + arr.name.replace(".","-") + " > rect").attr("stroke", getColor(arr)).attr("fill", getColor(arr))
+      d3.select("#" + arr.name.replace(".","-") + " > text").attr("fill", getLabelColor(arr))
+    }
+  })
+  .on("click", (d: any, i: number) => {
+    let arr: any = d3.select(d.toElement).datum()
+    setSelectionInfo({
+      lookmlElement: arr.category,
+      name: arr.name
+    })
+    d3.select("#" + arr.name.replace(".","-") + " > rect").attr("stroke", theme.colors.key).attr("fill", theme.colors.key)
+    d3.select("#" + arr.name.replace(".","-") + " > text").attr("fill", theme.colors.keyText)
+  });
 }

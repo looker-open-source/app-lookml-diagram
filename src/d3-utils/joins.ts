@@ -50,7 +50,7 @@ export function getOnePath(connectorSize: number, rightmost: number, joinField: 
   return path
 }
 
-export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, setSelectionInfo: (packet: SelectionInfoPacket) => void) {
+export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void) {
   let partArray: any[] = []
   let tablePad = 25
   let r_shift = TABLE_WIDTH + tablePad
@@ -134,7 +134,6 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
     extension.joinX = extension.joinX + extWidth
     let extendedjoinPath = [...joinPath.slice(0, sourceLasttIndex+1), extension, ...joinPath.slice(sourceLasttIndex + 1, joinPath.length)]
-    console.log(joinPath)
 
     join.append("path")
     .datum(extendedjoinPath)
@@ -148,7 +147,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       .y((d: any) => d.joinY + 10)
     )
 
-    join.append("path")
+    let drawnJoinHover = join.append("path")
     .datum(extendedjoinPath)
     .attr("class", "join-hover-"+joinData[0].joinName)
     .attr("fill", "none")
@@ -159,18 +158,26 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       .x((d: any) => d.joinX)
       .y((d: any) => d.joinY + 7)
     )
-    .on("mouseenter", (d: any, i: number) => {
+    .style("cursor", "pointer")
+    drawnJoinHover.on("mouseenter", (d: any, i: number) => {
       d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
       d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
     })
-    .on("mouseleave", (d: any, i: number) => {
-      d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 3).attr("stroke", theme.colors.inverse)
-      d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 3).attr("stroke", theme.colors.inverse)
+    drawnJoinHover.on("mouseleave", (d: any, i: number) => {
+      if (JSON.stringify(selectionInfo) !== JSON.stringify({
+        lookmlElement: "join",
+        name: joinData[0].joinName
+      })) {
+        d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 3).attr("stroke", theme.colors.inverse)
+        d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 3).attr("stroke", theme.colors.inverse)
+      }
     })
-    .on("click", (d: any, i: number) => {
+    drawnJoinHover.on("click", (d: any, i: number) => {
       let arr = d3.select(d.toElement).datum()
       // @ts-ignore
       let joinObj = arr[0].joinObj
+      d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
+      d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
       setSelectionInfo({
         lookmlElement: "join",
         name: joinObj.name

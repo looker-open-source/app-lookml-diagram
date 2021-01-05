@@ -96,5 +96,18 @@ export interface LookmlObjectMetadata {
   accessFilters?: any[],
   joinType?: string,
   joinRelationship?: string,
+  joinIconType?: string,
+  fieldType?: string,
+  labelShort?: string,
+  fieldGroupLabel?: string,
+  viewLabel?: string,
+  valueFormat?: string,
+  userAttributeFilterTypes?: string[],
+  fieldSql?: string,
+  primaryKey?: boolean,
+  fieldCode?: string,
+  fieldName?: string,
+  mapLayer?: string,
+
 }
 

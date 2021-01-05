@@ -31,6 +31,7 @@ import {
   FlexItem,
   Heading,
   Spinner,
+  Divider,
   Select,
   Text,
   Button,
@@ -41,6 +42,7 @@ import {
   ComponentsProvider,
   Page,
   Label,
+  Grid,
   ButtonTransparent,
   Icon,
   Box,
@@ -54,9 +56,13 @@ import {
   MenuDisclosure,
   Layout,
   FieldCheckbox,
+  RadioGroup,
   ButtonToggle,
+  Tooltip,
   ButtonItem,
-  theme
+  theme,
+  FieldRadioGroup,
+  FieldToggleSwitch
 } from "@looker/components"
 import styled, { ThemeProvider } from "styled-components"
 import { SelectionInfoPacket } from "./interfaces"
@@ -195,15 +201,20 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const { extensionLog, extensionLogger, extensionPersistDiagram } = getExtLog()
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-  const { details, exploreName, metadata, dimensions } = useSelectExplore(extensionLog.diagramPersist || {})
+  const [hiddenToggle, setHiddenToggle] = React.useState(true)
+  const [displayFieldType, setDisplayFieldType] = React.useState('all')
+  const { details, exploreName, metadata, dimensions } = useSelectExplore(extensionLog.diagramPersist || {}, hiddenToggle, displayFieldType)
   const [showSettings, setShowSettings] = React.useState(true)
   const [reload, setReload] = React.useState(false)
   const [showGit, setShowGit] = React.useState(false)
   const [showExploreInfo, setShowExploreInfo] = React.useState(false)
   const [selectedExplore, setSelectedExplore] = React.useState(false)
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
+  const [viewOptionsOpen, setViewOptionsOpen] = React.useState(false)
 
   metadata.explore && metaBuffer.push(metadata)
+
+  const handleHiddenToggle = (event: any) => setHiddenToggle(event.target.checked)
 
   function isExample(modelName: string) {
     return true
@@ -274,6 +285,9 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
 
   function buttonShade(exploreNameSel: string) {
     if (currentExplore && currentExplore.name === exploreNameSel) {
+      return theme.colors.keySubtle
+    }
+    if (exploreName === exploreNameSel) {
       return theme.colors.keySubtle
     }
     return undefined
@@ -413,7 +427,51 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               <Space gap="xsmall">
                 <Heading as="h1">{currentExplore && currentExplore.label}</Heading>
               </Space>
-              <Space gap="xxsmall" justifyContent="flex-end">
+              <Space gap="xsmall" justifyContent="flex-end">
+                <Menu isOpen={viewOptionsOpen} setOpen={setViewOptionsOpen}>
+                  <MenuDisclosure>
+                    <ButtonTransparent iconAfter="CaretDown" color="key" style={{color: viewOptionsOpen ? theme.colors.key : theme.colors.neutral}}>
+                      View Options
+                    </ButtonTransparent>
+                  </MenuDisclosure>
+                  <MenuList placement="bottom-start" width="250px">
+                    <MenuItem>
+                      <Text fontWeight="normal">Fields to display</Text>
+                      <RadioGroup 
+                        pt="small" 
+                        name="fieldScopeSelection" 
+                        value={displayFieldType}
+                        onChange={setDisplayFieldType}
+                        options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem>
+                      <Flex mb="small">
+                        <FlexItem>
+                          <FieldToggleSwitch onChange={handleHiddenToggle} on={hiddenToggle} label="Hide hidden fields    " />
+                        </FlexItem>
+                        <FlexItem ml="xxlarge">
+                          <Tooltip content="Enabled by default, this toggle hides fields from the diagram that contain 'hidden: yes'."><Icon size="xsmall" color="subdued" name="CircleInfoOutline"/></Tooltip>
+                        </FlexItem>
+                      </Flex>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+                <Menu>
+                  <MenuDisclosure>
+                    <ButtonTransparent iconAfter="CaretDown" color="neutral">
+                      75%
+                    </ButtonTransparent>
+                  </MenuDisclosure>
+                  <MenuList placement="bottom-start">
+                    <MenuItem>
+                      <FieldCheckbox label="Hide hidden fields" />
+                    </MenuItem>
+                    <MenuItem>
+                      <FieldCheckbox label="Show only joined fields" />
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
                 <IconButton 
                   label="" 
                   icon="CircleInfoOutline" 
@@ -463,13 +521,22 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           )}
           {currentModel && currentExplore && (
             // <JsonViewer data={currentExplore}/>
-            <Diagram dimensions={currentDimensions} explore={currentExplore} reload={reload} setSelectionInfo={setSelectionInfo}/>
+            <Diagram 
+              dimensions={currentDimensions} 
+              explore={currentExplore} 
+              reload={reload} 
+              selectionInfo={selectionInfo} 
+              setSelectionInfo={setSelectionInfo}
+              hiddenToggle={hiddenToggle}
+              displayFieldType={displayFieldType}
+            />
           )}
           </Stage>
           {currentExplore && Object.keys(selectionInfo).length > 0 && (
             <MetadataPanel
               explore={currentExplore}
               selectionInfo={selectionInfo}
+              model={currentModel}
             />
           )}
           </Layout>

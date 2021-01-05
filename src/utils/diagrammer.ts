@@ -5,7 +5,6 @@ import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
 import { getRowOffset } from "../d3-utils/position";
 import { TABLE_WIDTH, TABLE_PADDING } from "./constants";
 
-// TODO: refactor getFields, getViews, getDiagramDict to be composable
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
   let fields = [...exploreFields.dimensions, ...exploreFields.measures]
   return fields
@@ -16,7 +15,7 @@ export function onlyUnique(value: any, index: any, self: any) {
 }
 
 export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[]) {
-  let fields = [...exploreFields.dimensions, ...exploreFields.measures]
+  let fields = getFields(exploreFields)
   let views = fields.map((field: ILookmlModelExploreField)=>{return field.view}).filter(onlyUnique)
   joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
     join.dependent_fields.map((field: string, depFieldIndex: number) => {
@@ -30,11 +29,15 @@ export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILoo
   return views
 }
 
-export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], diagramPersist: any, explore: ILookmlModelExplore) {
-  let fields = [...exploreFields.dimensions, ...exploreFields.measures]
+export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], diagramPersist: any, explore: ILookmlModelExplore, hiddenToggle: boolean, displayFieldType: string) {
+  let fields = getFields(exploreFields)
   let views = getViews(exploreFields, joins)
   // TODO: type diagramDict
   let diagramDict: any = {}
+
+  let joinSql = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
+    return join.sql_on
+  })
 
   // Add table data to DiagramDict for each view
   views.map((viewName: string, viewIndex: number) => {
@@ -46,7 +49,16 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     diagramDict[viewName] = [
       {category:"view", view: viewName, name: viewName, base: explore.name === viewName, diagramX: initX, diagramY: initY, fieldTypeIndex: 0},
       ...fields.filter((field: ILookmlModelExploreField) => {
-        return field.view === viewName
+        if (hiddenToggle && field.hidden) {
+          return false
+        }
+        if (displayFieldType === "joined") {
+          return field.view === viewName && joinSql.map((d: any, i: number) => {
+            return d.includes("${"+field.name+"}")
+          }).includes(true)
+        } else if (displayFieldType === "all") {
+          return field.view === viewName
+        }
       }).map((datum: any, i: number) => {
         let tableDatum = datum
         tableDatum.diagramX = initX,
@@ -60,14 +72,16 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   diagramDict._joinData = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
     let joinPath: any[] = []
     if (join.dependent_fields.length > 0) {
-      join.dependent_fields.sort((a, b) => (a > b) ? 1 : -1).map((field: string, depFieldIndex: number) => {
+      join.dependent_fields.forEach((field: string, depFieldIndex: number) => {
         let joinFieldArr = field.split(".")
         let tableRef = diagramDict[joinFieldArr[0]]
         let fieldIndex = tableRef && tableRef.findIndex((x: ILookmlModelExploreField) => x.name === field)
         if (fieldIndex === -1) {
+          // If the field doesn't exist in the diagram view fieldset, 
+          // point to the diagram view header.
           fieldIndex = 0
         }
-        joinPath.push({
+        join.sql_on.includes("${"+field+"}") && joinPath.push({
           viewName: joinFieldArr[0], 
           fieldIndex: fieldIndex,
           selector: field.replace(".","-"),
@@ -177,14 +191,14 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   return diagramDict
 }
 
-export function getDiagramDimensions(details: DetailedModel, diagramPersist: any) {
+export function getDiagramDimensions(details: DetailedModel, diagramPersist: any, hiddenToggle: boolean, displayFieldType: string) {
   let modifiedDetails: any[] = []
   details && details.explores.map((d,i) => {
     // TODO: type modifiedDetail
     let modifiedDetail = {
       exploreName: d.name,
       modelName: d.model_name,
-      diagramDict: getDiagramDict(d.fields, d.joins, diagramPersist[d.name] || {}, d),
+      diagramDict: getDiagramDict(d.fields, d.joins, diagramPersist[d.name] || {}, d, hiddenToggle, displayFieldType),
     }
     modifiedDetails.push(modifiedDetail)
   })

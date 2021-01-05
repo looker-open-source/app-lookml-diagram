@@ -13,8 +13,11 @@ export const Diagram: React.FC<{
   dimensions: any, 
   explore: ILookmlModelExplore,
   reload: boolean,
+  selectionInfo: SelectionInfoPacket,
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
-}> = ({dimensions, explore, reload, setSelectionInfo}) => {
+  hiddenToggle: boolean,
+  displayFieldType: string,
+}> = ({dimensions, explore, reload, selectionInfo, setSelectionInfo, hiddenToggle, displayFieldType}) => {
   let diagramViews = Object.keys(dimensions.diagramDict)
   const ref = useD3(
     // useD3 callback
@@ -30,6 +33,7 @@ export const Diagram: React.FC<{
       .attr("height", "10000")
       .attr("x", "-5000")
       .attr("y", "-5000")
+      .style("cursor", "move")
       .on("click", () => {
         setSelectionInfo({})
       })
@@ -40,7 +44,7 @@ export const Diagram: React.FC<{
 
       // Create all joins
       dimensions.diagramDict._joinData.map((join: any, index: number) => {
-        createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, setSelectionInfo);
+        createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, selectionInfo, setSelectionInfo);
       })
 
       // Create all tables
@@ -48,14 +52,17 @@ export const Diagram: React.FC<{
         const nonViews = ["_joinData", "_yOrderLookup"]
         if (nonViews.includes(lookmlViewName)) { return }
         let tableData = dimensions.diagramDict[lookmlViewName];
-        createLookmlViewElement(svg, tableData, setSelectionInfo);
+        createLookmlViewElement(svg, tableData, selectionInfo, setSelectionInfo);
       })
     },
     // useD3 dependencies array
     [
       diagramViews.length,
       explore.name,
-      reload
+      reload,
+      selectionInfo,
+      hiddenToggle,
+      displayFieldType
     ]
   );
   return (
