@@ -1,16 +1,9 @@
-import { MAX_TEXT_LENGTH } from '../utils/constants'
-import { theme } from '@looker/components'
+import { 
+  MAX_TEXT_LENGTH, 
+  DIAGRAM_SHADOW_RADIUS, 
+  DIAGRAM_SHADOW_ALPHA
+ } from '../utils/constants'
 
-export function getColor(row: any) {
-  let category = row.category
-  if (category === "view") {
-    return row.base ? "steelblue" : "#ccd8e4"
-  } else if (category === "dimension") {
-    return row.fieldTypeIndex % 2 ? "#f6f8fa" : "#FFF" 
-  } else if (category === "measure") {
-    return row.fieldTypeIndex % 2 ? "#FFF" : "#f7f2ee"
-  }
-}
 export function truncateLabel(text: string) {
   if (text.length > MAX_TEXT_LENGTH) {
     return text.substring(0, MAX_TEXT_LENGTH)+"..."
@@ -24,20 +17,7 @@ export function getLabel(field: any) {
     return truncateLabel(field.name.split(".")[1])
   } 
 }
-export function getLabelColor(field: any) {
-  if (field.category === "view") {
-    return field.base ? theme.colors.keyText : theme.colors.text
-  } else {
-    return theme.colors.text
-  } 
-}
-export function getLabelWeight(field: any) {
-  if (field.category === "view") {
-    return theme.fontWeights.medium
-  } else {
-    return theme.fontWeights.normal
-  } 
-}
+
 export function addFilter(svg: any) {
   var defs = svg.append("defs");
   var filter = defs.append("filter")
@@ -49,14 +29,14 @@ export function addFilter(svg: any) {
   // in blur
   filter.append("feGaussianBlur")
   .attr("in", "SourceAlpha")
-  .attr("stdDeviation", 6)
+  .attr("stdDeviation", DIAGRAM_SHADOW_ALPHA)
   .attr("result", "blur");
   // translate output of Gaussian blur to the right and downwards with 2px
   // store result in offsetBlur
   filter.append("feOffset")
   .attr("in", "blur")
-  .attr("dx", 5)
-  .attr("dy", 5)
+  .attr("dx", DIAGRAM_SHADOW_RADIUS)
+  .attr("dy", DIAGRAM_SHADOW_RADIUS)
   .attr("result", "offsetBlur");
   // overlay original SourceGraphic over translated blurred opacity by using
   // feMerge filter. Order of specifying inputs is important!

@@ -1,10 +1,26 @@
 import * as d3 from 'd3';
-import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
-import { TABLE_WIDTH, TABLE_PADDING } from '../utils/constants'
-import { getJoinX, getRowOffset } from './position'
-import { getNextFocusTarget, theme } from '@looker/components'
+import { ILookmlModelExplore } from '@looker/sdk/lib/sdk/3.1/models';
+import { 
+  TABLE_WIDTH, 
+  JOIN_CONNECTOR_WIDTH, 
+  TABLE_ROW_HEIGHT,
+  DIAGRAM_FIELD_STROKE_WIDTH,
+} from '../utils/constants'
 import { onlyUnique } from '../utils/diagrammer'
 import { SelectionInfoPacket } from "../components/interfaces"
+
+export let addJoinArrowheads = (join: any, joinName: string) => {
+  join.append("marker")
+  .attr("id", "arrows-"+joinName)
+  .attr("refX", 18)
+  .attr("refY", 18)
+  .attr("markerWidth", 50)
+  .attr("markerHeight", 50)
+  .attr("markerUnits","userSpaceOnUse")
+  .attr("orient", "auto")
+  .append("path")
+  .attr("d", "M 12 12 24 18 12 24 15 18");
+}
 
 export function getManyPath(connectorSize: number, rightmost: number, joinField: any) {
   let path = []
@@ -12,25 +28,27 @@ export function getManyPath(connectorSize: number, rightmost: number, joinField:
   let baseAdj = rightmost ? -1 : 1
 
   let baseX = joinField.joinX + baseAdj
-  let baseY = joinField.joinY + 10
+  let baseY = joinField.joinY + (TABLE_ROW_HEIGHT/2)
 
   let headX = baseX + (connectorAlign/2)
   let headY = baseY
 
-  let manyTopX = headX + connectorAlign
-  let manyTopY = baseY - 10
+  let manyTopX = headX + (connectorAlign*0.8)
+  let manyTopY = baseY - 8
 
-  let manyBotX = headX + connectorAlign
-  let manyBotY = baseY + 10
+  let manyBotX = headX + (connectorAlign*0.8)
+  let manyBotY = baseY + 8
 
-  path.push({x: baseX, y: baseY})
-  path.push({x: headX, y: headY})
-  path.push({x: manyTopX, y: manyTopY})
-  path.push({x: headX, y: headY})
-  path.push({x: manyBotX, y: manyBotY})
-  path.push({x: headX, y: headY})
+  let topFork = []
+  let bottomFork = []
 
-  return path
+  topFork.push({x: baseX, y: baseY})
+  topFork.push({x: headX, y: headY})
+  topFork.push({x: manyTopX, y: manyTopY})
+  bottomFork.push({x: headX, y: headY})
+  bottomFork.push({x: manyBotX, y: manyBotY})
+
+  return [topFork, bottomFork]
 }
 
 export function getOnePath(connectorSize: number, rightmost: number, joinField: any) {
@@ -39,22 +57,25 @@ export function getOnePath(connectorSize: number, rightmost: number, joinField: 
   let baseAdj = rightmost ? -1 : 1
 
   let baseX = joinField.joinX + baseAdj
-  let baseY = joinField.joinY + 10
+  let baseY = joinField.joinY + (TABLE_ROW_HEIGHT/2)
 
-  let headX = baseX + (connectorAlign*3)
+  let headX = baseX + (connectorAlign*1.5)
   let headY = baseY
 
   path.push({x: baseX, y: baseY})
   path.push({x: headX, y: headY})
 
-  return path
+  return [path]
 }
 
 export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void) {
   let partArray: any[] = []
-  let tablePad = 25
+  let tablePad = JOIN_CONNECTOR_WIDTH
   let r_shift = TABLE_WIDTH + tablePad
   let l_shift = tablePad * -1
+
+  // TODO: refactor for readability, testability
+  // Break up join between multiple tables into join-parts between two tables
   let joinParts = joinData.map((d: any) => { return d.viewName}).filter(onlyUnique).sort((a: any, b: any) => {
     if (diagramDict[a][0].diagramX < diagramDict[b][0].diagramX) {
       return -1
@@ -71,6 +92,13 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     }
   })
 
+  // Establish degrees in join
+  let joinDegrees = joinData.map((d: any, i: number) => {
+    return Math.abs(diagramDict[d.viewName][0].diagramDegree)
+  })
+
+  // TODO: refactor for readability, testability
+  // Calculate the x,y of every field in join and sort by view and by index
   partArray.map((path: any) => {
     let joinPath: any[]
     let xLookup = path.map((d:any)=>{
@@ -93,14 +121,14 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
           ...d,
           toX: diagramDict[d.viewName][0].diagramX,
           joinX: diagramDict[d.viewName][0].diagramX + r_shift,
-          joinY: diagramDict[d.viewName][0].diagramY + getRowOffset(d.fieldIndex),
+          joinY: diagramDict[d.viewName][0].diagramY + (d.fieldIndex*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))),
         }
       }
       return {
         ...d,
         toX: diagramDict[d.viewName][0].diagramX,
         joinX: diagramDict[d.viewName][0].diagramX + l_shift,
-        joinY: diagramDict[d.viewName][0].diagramY + getRowOffset(d.fieldIndex),
+        joinY: diagramDict[d.viewName][0].diagramY + (d.fieldIndex*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))),
       }
     }).sort((a: any, b: any) => {
       if (a.toX < b.toX) {
@@ -115,7 +143,10 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let join = svg
     .select(".diagram-area")
     .append("g")
+    .attr("class", "join-"+joinData[0].joinName)
 
+    // TODO: refactor for readability, testability
+    // Add an untangling "extension" to join-part
     let joinTables = joinPath.map((d: any) => { return d.viewName})
     let terminalAlign = joinTables.filter(onlyUnique)
 
@@ -125,8 +156,8 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let firstExt = diagramDict[joinPath[sourceLasttIndex].viewName][0]
     let nextExt = diagramDict[joinPath[targetFirstIndex].viewName][0]
     
-    let verticalIndex = firstExt.diagramDegree > nextExt.diagramDegree ? firstExt.verticalIndex : nextExt.verticalIndex
-    let verticalDestMax = firstExt.diagramDegree > nextExt.diagramDegree ? diagramDict._yOrderLookup[firstExt.diagramX] : diagramDict._yOrderLookup[nextExt.diagramX]
+    let verticalIndex = Math.abs(firstExt.diagramDegree) > Math.abs(nextExt.diagramDegree) ? firstExt.verticalIndex : nextExt.verticalIndex
+    let verticalDestMax = Math.abs(firstExt.diagramDegree) > Math.abs(nextExt.diagramDegree) ? diagramDict._yOrderLookup[firstExt.diagramX] : diagramDict._yOrderLookup[nextExt.diagramX]
     let extWidth = (1 - (verticalIndex / verticalDestMax)) * (TABLE_WIDTH)
 
     let extension: any = {}
@@ -135,62 +166,58 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     extension.joinX = extension.joinX + extWidth
     let extendedjoinPath = [...joinPath.slice(0, sourceLasttIndex+1), extension, ...joinPath.slice(sourceLasttIndex + 1, joinPath.length)]
 
+    // Draw join-part path
     join.append("path")
     .datum(extendedjoinPath)
-    .attr("class", "join-"+joinData[0].joinName)
-    .attr("fill", "none")
-    .attr("stroke", theme.colors.inverse)
-    .attr("stroke-width", 3)
+    .attr("class", "join-path")
     .attr("id", (d:any) => d.viewName)
     .attr("d", d3.line().curve(d3.curveStep)
       .x((d: any) => d.joinX)
-      .y((d: any) => d.joinY + 10)
+      .y((d: any) => d.joinY + (TABLE_ROW_HEIGHT/2))
     )
 
+    // TODO: extract to function
+    // Draw hover element for join-part path
     let drawnJoinHover = join.append("path")
     .datum(extendedjoinPath)
-    .attr("class", "join-hover-"+joinData[0].joinName)
-    .attr("fill", "none")
-    .attr("stroke", "transparent")
-    .attr("stroke-width", 100)
+    .attr("class", "join-path-hover")
     .attr("id", (d:any) => d.viewName)
     .attr("d", d3.line().curve(d3.curveStep)
       .x((d: any) => d.joinX)
-      .y((d: any) => d.joinY + 7)
+      .y((d: any) => d.joinY + (TABLE_ROW_HEIGHT/2))
     )
-    .style("cursor", "pointer")
-    drawnJoinHover.on("mouseenter", (d: any, i: number) => {
-      d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
-      d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
+    .on("mouseenter", (d: any, i: number) => {
+      d3.selectAll("g.join-"+joinData[0].joinName)
+      .classed("join-path-selected", true)
+      .raise()
     })
-    drawnJoinHover.on("mouseleave", (d: any, i: number) => {
+    .on("mouseleave", (d: any, i: number) => {
       if (JSON.stringify(selectionInfo) !== JSON.stringify({
         lookmlElement: "join",
         name: joinData[0].joinName
       })) {
-        d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 3).attr("stroke", theme.colors.inverse)
-        d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 3).attr("stroke", theme.colors.inverse)
+        d3.selectAll("g.join-"+joinData[0].joinName)
+        .classed("join-path-selected", false)
       }
     })
-    drawnJoinHover.on("click", (d: any, i: number) => {
+    .on("click", (d: any, i: number) => {
       let arr = d3.select(d.toElement).datum()
       // @ts-ignore
       let joinObj = arr[0].joinObj
-      d3.selectAll(".join-connector-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
-      d3.selectAll(".join-"+joinData[0].joinName).attr("stroke-width", 8).attr("stroke", theme.colors.key)
       setSelectionInfo({
         lookmlElement: "join",
         name: joinObj.name
       })
     })
 
+    // TODO: refactor for readability, testability
+    // Draw all join-path field connectors
     joinPath.forEach((joinField: any, i: number) => {
       let connectorSize = (tablePad / 2)
       let rightmost = terminalAlign.indexOf(joinField.viewName)
       let connectorPath: any[] = []
-      let connectorOther = terminalAlign.filter((d: string) => { return d !== joinField.viewName})[0]
-      // check not if lower, but if lowest in join-at-large
-      if (diagramDict[joinField.viewName][0].diagramDegree < diagramDict[connectorOther][0].diagramDegree) {
+
+      if (Math.abs(diagramDict[joinField.viewName][0].diagramDegree) === Math.min(...joinDegrees)) {
         let manyKinds = ["many_to_one", "many_to_many"]
         manyKinds.includes(joinField.joinObj.relationship) 
         ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
@@ -202,32 +229,19 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
         : connectorPath = getOnePath(connectorSize, rightmost, joinField)
       }
 
-      let connectorAlign = rightmost ? connectorSize : connectorSize * -1
-      let baseAdj = rightmost ? -1 : 1
+      addJoinArrowheads(join, joinData[0].joinName)
 
-      let baseX = joinField.joinX + baseAdj
-      let baseY = joinField.joinY + 10
-
-      join.append("path")
-      .datum(connectorPath)
-      .attr("class", "join-connector-"+joinData[0].joinName)
-      .attr("fill", "none")
-      .attr("stroke", theme.colors.inverse)
-      .attr("stroke-width", 3)
-      .attr("id", (d:any) => d.viewName)
-      .attr("d", d3.line().curve(d3.curveLinear)
-        .x((d: any) => d.x)
-        .y((d: any) => d.y)
-      )
-
-      join.append("circle")
-      .attr("class", "join-connector-"+joinData[0].joinName)
-      .attr("fill", theme.colors.ui1)
-      .attr("stroke", theme.colors.inverse)
-      .attr("stroke-width", 3)
-      .attr("r", 5)
-      .attr("cx", baseX)
-      .attr("cy", baseY)
+      connectorPath.map((connector: any) => {
+        join.append("path")
+        .datum(connector)
+        .attr("class", "join-path")
+        .attr("marker-end", (d:any) => "url(#arrows-" + joinData[0].joinName + ")")
+        .attr("id", (d:any) => d.viewName)
+        .attr("d", d3.line().curve(d3.curveLinear)
+          .x((d: any) => d.x)
+          .y((d: any) => d.y)
+        )
+      })
 
     })
   })

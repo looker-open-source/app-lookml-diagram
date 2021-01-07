@@ -46,6 +46,7 @@ import {
   ButtonTransparent,
   Icon,
   Box,
+  Popover,
   Paragraph,
   Aside,
   Section,
@@ -74,6 +75,7 @@ import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { useCurrentModel, useSelectExplore } from "../utils/routes"
 import MetadataPanel from "./MetadataPanel"
 import Diagram from "./Diagram"
+import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT } from '../utils/constants'
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -201,8 +203,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const { extensionLog, extensionLogger, extensionPersistDiagram } = getExtLog()
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-  const [hiddenToggle, setHiddenToggle] = React.useState(true)
-  const [displayFieldType, setDisplayFieldType] = React.useState('all')
+  const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
+  const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
   const { details, exploreName, metadata, dimensions } = useSelectExplore(extensionLog.diagramPersist || {}, hiddenToggle, displayFieldType)
   const [showSettings, setShowSettings] = React.useState(true)
   const [reload, setReload] = React.useState(false)
@@ -264,6 +266,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     console.log("total log entries:", extensionLog.diagramLog.length, extensionLog)
   }
   function toggleReload() {
+    setHiddenToggle(VIEW_OPTIONS_HIDDEN_DEFAULT)
+    setDisplayFieldType(VIEW_OPTIONS_FIELDS_DEFAULT)
     if (currentExplore && currentModel) {
       setReload(!reload)
       let exploreName = currentExplore.name
@@ -307,7 +311,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               onClick={showDiagram}
               style={{color: !showGit && !showSettings && theme.colors.key, 
                 backgroundColor: !showGit && !showSettings && theme.colors.keySubtle,
-                borderTopRightRadius: "25px", borderBottomRightRadius: "25px"}}
+                borderRadius: "25px"}}
             />
             <IconButton
               icon="GearOutline"
@@ -318,7 +322,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               toggle={showSettings}
               style={{color: showSettings && theme.colors.key, 
                 backgroundColor: showSettings && theme.colors.keySubtle,
-                borderTopRightRadius: "25px", borderBottomRightRadius: "25px"}}
+                borderRadius: "25px"}}
             />
             <IconButton
               icon="GitBranch"
@@ -329,15 +333,15 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               toggle={showGit}
               style={{color: showGit && theme.colors.key, 
                 backgroundColor: showGit && theme.colors.keySubtle,
-                borderTopRightRadius: "25px", borderBottomRightRadius: "25px"}}
+                borderRadius: "25px"}}
             />
-            <IconButton
+            {/* <IconButton
               icon="Api"
               label={`Save Log (${metaBuffer.length})`}
               tooltipPlacement="right"
               size="large"
               onClick={()=>{saveLog()}}
-            />
+            /> */}
           </SpaceVertical>
         </Rail>
         {showSettings && (
@@ -428,14 +432,9 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 <Heading as="h1">{currentExplore && currentExplore.label}</Heading>
               </Space>
               <Space gap="xsmall" justifyContent="flex-end">
-                <Menu isOpen={viewOptionsOpen} setOpen={setViewOptionsOpen}>
-                  <MenuDisclosure>
-                    <ButtonTransparent iconAfter="CaretDown" color="key" style={{color: viewOptionsOpen ? theme.colors.key : theme.colors.neutral}}>
-                      View Options
-                    </ButtonTransparent>
-                  </MenuDisclosure>
-                  <MenuList placement="bottom-start" width="250px">
-                    <MenuItem>
+                <Popover isOpen={viewOptionsOpen} setOpen={setViewOptionsOpen} placement="bottom-start" content={
+                  <Flex width="250px" flexDirection="column">
+                    <FlexItem p="small">
                       <Text fontWeight="normal">Fields to display</Text>
                       <RadioGroup 
                         pt="small" 
@@ -443,9 +442,9 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                         value={displayFieldType}
                         onChange={setDisplayFieldType}
                         options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
-                    </MenuItem>
+                    </FlexItem>
                     <Divider />
-                    <MenuItem>
+                    <FlexItem p="small">
                       <Flex mb="small">
                         <FlexItem>
                           <FieldToggleSwitch onChange={handleHiddenToggle} on={hiddenToggle} label="Hide hidden fields    " />
@@ -454,9 +453,13 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                           <Tooltip content="Enabled by default, this toggle hides fields from the diagram that contain 'hidden: yes'."><Icon size="xsmall" color="subdued" name="CircleInfoOutline"/></Tooltip>
                         </FlexItem>
                       </Flex>
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+                    </FlexItem>
+                  </Flex>
+                }>
+                  <ButtonTransparent iconAfter="CaretDown" color="key" style={{color: viewOptionsOpen ? theme.colors.key : theme.colors.neutral}}>
+                    View Options
+                  </ButtonTransparent>
+                </Popover>
                 <Menu>
                   <MenuDisclosure>
                     <ButtonTransparent iconAfter="CaretDown" color="neutral">
