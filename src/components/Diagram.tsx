@@ -49,13 +49,14 @@ const DiagramSpace = styled.svg`
     cursor: pointer;
   }
 
-  g.table-row > rect {
+  g.table-row > rect,
+  g.table-row > path.table-row {
     stroke-width: ${DIAGRAM_FIELD_STROKE_WIDTH}px;
     stroke: ${DIAGRAM_FIELD_COLOR};
     fill: ${DIAGRAM_FIELD_COLOR};
   }
 
-  g.table-row > path {
+  g.table-row > path.datatype-icon {
     fill: ${DIAGRAM_FIELD_ICON_COLOR};
   }
 
@@ -63,22 +64,26 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_PK_ICON_COLOR};
   }
 
-  g.table-row-view > rect {
+  g.table-row-view > rect,
+  g.table-row-view > path.table-row {
     stroke: ${DIAGRAM_VIEW_COLOR};
     fill: ${DIAGRAM_VIEW_COLOR};
   }
 
-  g.table-row-base-view > rect {
+  g.table-row-base-view > rect,
+  g.table-row-base-view > path.table-row {
     stroke: ${DIAGRAM_BASE_VIEW_COLOR};
     fill: ${DIAGRAM_BASE_VIEW_COLOR};
   }
 
-  g.table-row-dimension > rect {
+  g.table-row-dimension > rect,
+  g.table-row-measure > path.table-row {
     stroke: ${DIAGRAM_DIMENSION_COLOR};
     fill: ${DIAGRAM_DIMENSION_COLOR};
   }
 
-  g.table-row-measure > rect {
+  g.table-row-measure > rect,
+  g.table-row-measure > path.table-row {
     stroke: ${DIAGRAM_MEASURE_COLOR};
     fill: ${DIAGRAM_MEASURE_COLOR};
   }
@@ -101,7 +106,8 @@ const DiagramSpace = styled.svg`
 
   // Rows when hover, selected
 
-  g.table-row:hover > rect {
+  g.table-row:hover > rect,
+  g.table-row:hover > path.table-row {
     stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
     fill: ${DIAGRAM_HIGHLIGHT_COLOR};
   }
@@ -110,7 +116,7 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
-  g.table-row:hover > path {
+  g.table-row:hover > path.datatype-icon {
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
@@ -118,7 +124,8 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
-  g.table-row-selected > rect {
+  g.table-row-selected > rect,
+  g.table-row-selected > path.table-row {
     stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
     fill: ${DIAGRAM_HIGHLIGHT_COLOR};
   }
@@ -127,7 +134,7 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
-  g.table-row-selected > path {
+  g.table-row-selected > path.datatype-icon {
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 

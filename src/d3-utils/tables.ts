@@ -67,8 +67,8 @@ export let getPath = (d: any) => {
   return "M20 10V8h-4V4h-2v4h-4V4H8v4H4v2h4v4H4v2h4v4h2v-4h4v4h2v-4h4v-2h-4v-4h4zm-6 4h-4v-4h4v4z"
 }
 
-export function isFirst(index: number, tableLength: number) {
-  if (index === 0) {
+export function isRounded(index: number, tableLength: number) {
+  if (index === 0 || index === (tableLength - 1)) {
     return true
   }
   return false
@@ -112,18 +112,50 @@ export function createLookmlViewElement(
     return `translate(${header.diagramX}, ${header.diagramY + (i*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)))})`
   });
 
-  // Create table elements
+  let CAP_RADIUS = 7
+
+  // Create table elements, except first and last
   tableRow.append("rect")
   .attr("rx", (d: any, i: number) => {
-    return isFirst(i, tableData.length) ? 3 : 0
+    return isRounded(i, tableData.length) ? CAP_RADIUS : 0
   })
   .attr("ry", (d: any, i: number) => {
-    return isFirst(i, tableData.length) ? 3 : 0
+    return isRounded(i, tableData.length) ? CAP_RADIUS : 0
   })
   .attr("width", TABLE_WIDTH)
   .attr("height", (d: any, i: number) => {
-    return isFirst(i, tableData.length) ? TABLE_ROW_HEIGHT+5 : TABLE_ROW_HEIGHT
+    return isRounded(i, tableData.length) && tableData.length > 1 ? 0 : TABLE_ROW_HEIGHT
   });
+
+  let tableTopCap = () => tableRow.append("path")
+  .attr("d", (dd: any, i: number) => i === 0 && `M0,${TABLE_ROW_HEIGHT}
+    v-${TABLE_ROW_HEIGHT - CAP_RADIUS}
+    q0,-${CAP_RADIUS} ${CAP_RADIUS},-${CAP_RADIUS}
+    h${TABLE_WIDTH - (CAP_RADIUS * 2)}
+    q${CAP_RADIUS},0 ${CAP_RADIUS},${CAP_RADIUS}
+    v${TABLE_ROW_HEIGHT}
+    z
+  `)
+  .classed("table-row", true)
+  .classed("table-row-view", (d: any) => isTableRowView(d))
+  .classed("table-row-base-view", (d: any) => isTableRowBaseView(d))
+
+  let tableBottomCap = () => tableRow.append("path")
+  .attr("d", (dd: any, i: number) => i === (tableData.length - 1) && `M0,0
+    h${TABLE_WIDTH}
+    v${TABLE_ROW_HEIGHT - CAP_RADIUS}
+    q0,${CAP_RADIUS} -${CAP_RADIUS},${CAP_RADIUS}
+    h-${TABLE_WIDTH - (CAP_RADIUS * 2)}
+    q-${CAP_RADIUS},0 -${CAP_RADIUS},-${CAP_RADIUS}
+    z
+  `)
+  .classed("table-row", true)
+  .classed("table-row-dimension", (d: any) => isTableRowDimension(d))
+  .classed("table-row-measure", (d: any) => isTableRowMeasure(d))
+
+  tableData.length > 1 && tableTopCap()
+
+  tableData.length > 1 && tableBottomCap()
 
   // Add drag handler to each table
   // tableRow.call(drag);
@@ -131,6 +163,7 @@ export function createLookmlViewElement(
   // Add datatype icon
   tableRow.append("path")
   .attr("d", getPath)
+  .attr("class", "datatype-icon")
   .attr("transform", (d: any, i: number) => {
     return `translate(0,${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})scale(${DIAGRAM_ICON_SCALE})`
   })
@@ -146,7 +179,7 @@ export function createLookmlViewElement(
   // Label table elements
   tableRow.append("text")
   .attr("transform", (d: any, i: number) => {
-    return `translate(${isFirst(i, tableData.length) ? 5 : 25}, ${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})`
+    return `translate(${i === 0 ? 5 : 25}, ${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})`
   })
   .attr("dy", "0.8em")
   .text((d: any) => getLabel(d));
