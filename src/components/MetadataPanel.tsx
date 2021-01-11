@@ -25,12 +25,11 @@ import styled from "styled-components";
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { ExternalLink } from "./ExternalLink"
 import MetadataPanelTable from "./MetadataPanelTable"
-import { QueryChart } from "./QueryChart"
 import { METADATA_PANEL_PIXEL } from "../utils/constants"
 import { LookmlObjectMetadata } from "./interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields } from '../utils/diagrammer'
-import { canGetDistribution, canGetTopValues } from "../utils/queries"
+import { exploreFieldURL } from '../utils/urls'
 
 const MetadataInfoPanel = styled(Aside as any)`
   border-left: solid 1px ${(props) => props.theme.colors.ui2};
@@ -86,10 +85,11 @@ function getFieldCodeBlock(field: ILookmlModelExploreField) {
   let startLine = `${field.category}: ${field.name.split(".")[1].toLowerCase()} {\n`
   let keyLine = field.primary_key && `  primary_key: yes\n`
   let typeLine = field.type && `  type: ${field.type}\n`
+  let vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
   let sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
   let mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
   let endLine = `}`
-  return [startLine, keyLine, typeLine, sqlLine, mapLayerLine, endLine].filter(Boolean).join("")
+  return [startLine, keyLine, typeLine, vfLine, sqlLine, mapLayerLine, endLine].filter(Boolean).join("")
 }
 
 const MetadataPanel: React.FC<{
@@ -145,13 +145,14 @@ const MetadataPanel: React.FC<{
       fieldType: field.type.toUpperCase(),
       description: field.description,
       label: field.label,
-      labelShort: field.label_short,
+      // labelShort: field.label_short,
       fieldGroupLabel: field.field_group_label,
       valueFormat: field.value_format,
       userAttributeFilterTypes: field.user_attribute_filter_types,
       fieldSql: field.sql,
       primaryKey: field.primary_key,
       fieldCode: getFieldCodeBlock(field),
+      fieldCategory: field.category.toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "view") {
     // @ts-ignore
@@ -189,6 +190,12 @@ const MetadataPanel: React.FC<{
           {metadata.fieldType}</PillText>
           </JoinPill>
         </PillText>}
+        {metadata.fieldCategory && <FlexItem pr="small">
+          <JoinPill disabled>
+          <PillText>
+          {metadata.fieldCategory}</PillText>
+          </JoinPill>
+        </FlexItem>}
         {metadata.primaryKey && <FlexItem pr="small">
           <JoinPill disabled>
             <Icon name="Key"/>
@@ -215,38 +222,7 @@ const MetadataPanel: React.FC<{
         </TabList>
         <TabPanels pt={0}>
           <TabPanel>
-            <MetadataPanelTable metadata={metadata} />
-            <Flex mt="xxlarge" pb="xxxlarge" flexDirection="column">
-              <FlexItem>
-                <QueryChart
-                disabledText={
-                  "Distributions can only be shown for numeric dimensions on a view with a count measure."
-                }
-                enabled={canGetDistribution({ model, explore, field })}
-                type={{
-                  type: "Distribution",
-                  model,
-                  explore,
-                  field
-                }}
-                />
-              </FlexItem>
-              <FlexItem>
-                <QueryChart
-                disabledText={
-                  "Values can only be shown for dimensions on a view with a count measure."
-                }
-                enabled={canGetTopValues({ model, explore, field })}
-                type={{
-                  type: "Values",
-                  model,
-                  explore,
-                  field
-                }}
-                />
-              </FlexItem>
-            </Flex>
-            <Flex height={"60px"}></Flex>
+            <MetadataPanelTable metadata={metadata} model={model} explore={explore} field={field} />
           </TabPanel>
           <TabPanel>
             <LookmlCodeBlock>{metadata.fieldCode}</LookmlCodeBlock>
@@ -262,16 +238,28 @@ const MetadataPanel: React.FC<{
         pt="small"
         pb="small"
     >
-      <Flex alignItems="left">
-        <ExternalLink target="_blank" href={metadata.lookmlLink}>
+      <Flex alignItems="center" justifyContent="center" width="100%">
+        <FlexItem flexBasis="50%"><ExternalLink target="_blank" href={metadata.lookmlLink}>
           <ButtonTransparent
-            mr="small"
+            mr="xxxlarge"
             ml="small"
             iconBefore="LogoRings"
           >
             Go to LookML
           </ButtonTransparent>
-        </ExternalLink>
+        </ExternalLink></FlexItem>
+        <FlexItem flexBasis="50%">{field && <ExternalLink
+          target="_blank"
+          href={exploreFieldURL(explore, field)}
+        >
+          <ButtonTransparent
+            mr="small"
+            ml="xxxlarge"
+            iconBefore="Explore"
+          >
+            Explore with Field
+          </ButtonTransparent>
+        </ExternalLink>}</FlexItem>
       </Flex>
     </MetadataFooter>
   </MetadataInfoPanel>

@@ -108,6 +108,7 @@ export interface LookmlObjectMetadata {
   fieldCode?: string,
   fieldName?: string,
   mapLayer?: string,
+  fieldCategory?: string,
 
 }
 

@@ -121,18 +121,14 @@ export class QueryChart extends React.Component<
   render() {
     if (this.state.loading) {
       return (
-        <MetadataItem label={this.props.type.type} compact>
-          <SpinnerBlock size={20} />
-        </MetadataItem>
+        <SpinnerBlock size={20} />
       )
     } else if (this.state.response) {
       if (this.state.response.data.length === 0) {
         return (
-          <MetadataItem label={this.props.type.type} compact>
-            <Text fontSize="small">
-              No Data
-            </Text>
-          </MetadataItem>
+          <Text fontSize="small">
+            No Data
+          </Text>
         )
       } else {
         return (

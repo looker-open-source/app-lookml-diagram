@@ -75,7 +75,7 @@ import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { useCurrentModel, useSelectExplore } from "../utils/routes"
 import MetadataPanel from "./MetadataPanel"
 import Diagram from "./Diagram"
-import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT } from '../utils/constants'
+import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT, NONVIEWS } from '../utils/constants'
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -88,6 +88,13 @@ export const ExploreList = styled.ul`
   margin: 0;
 `
 export const ExploreListitem = styled.li`
+  border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+`
+
+export const ViewList = styled.ul`
+  margin: 0;
+`
+export const ViewListItem = styled.li`
   border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
 `
 
@@ -131,6 +138,25 @@ export const ExploreButton = styled.button`
       transform: translateX(4px);
     }
 
+  }
+
+  & > * {
+    pointer-events: none;
+  }
+
+
+`
+
+export const ViewButton = styled.button`
+  all: inherit;
+  font-size: ${(props) => props.theme.fontSizes.small};
+  cursor: pointer;
+  padding: 12px 12px;
+  width: 100%;
+  border: none;
+
+  :hover {
+    background-color: ${(props) => props.theme.colors.keySubtle};
   }
 
   & > * {
@@ -213,6 +239,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const [selectedExplore, setSelectedExplore] = React.useState(false)
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
   const [viewOptionsOpen, setViewOptionsOpen] = React.useState(false)
+  const [viewVisible, setViewVisible] = React.useState<any>({})
 
   metadata.explore && metaBuffer.push(metadata)
 
@@ -227,7 +254,6 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   let modelDetails = unfilteredModels && unfilteredModels.filter(d=>{ 
     return d.explores.length >= 1 && isExample(d.name)
   }).map(d=>{
-    let numExplores = d.explores.length
     return {
       value: d.name,
       label: d.label
@@ -254,7 +280,16 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     }
   })
 
+  let defaultViews: any = {}
+  Object.keys(viewVisible).length === 0 && currentExplore && currentDimensions && Object.keys(currentDimensions.diagramDict)
+  .map((lookmlViewName: string)=>{
+    if (NONVIEWS.includes(lookmlViewName)) { return }
+    defaultViews[lookmlViewName] = true
+  })
+  Object.keys(viewVisible).length === 0 && currentExplore && currentDimensions && setViewVisible(defaultViews)
+
   function showDiagram() {
+    setViewOptionsOpen(false)
     setShowSettings(false)
     setShowGit(false)
     return true
@@ -297,11 +332,18 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     return undefined
   }
 
+  function viewDisabled(disabled: boolean) {
+    if (!disabled) {
+      return theme.colors.text1
+    }
+    return undefined
+  }
+
   return (
     <ComponentsProvider>
       <Layout hasAside height="100%">
         <Rail width="50px">
-          <SpaceVertical alignItems="center" gap="xsmall">
+          <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall">
             <IconButton
               icon="Dashboard"
               label="Diagram"
@@ -309,9 +351,9 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               size="large"
               toggle={selectedExplore && !showSettings ? true : undefined}
               onClick={showDiagram}
-              style={{color: !showGit && !showSettings && theme.colors.key, 
-                backgroundColor: !showGit && !showSettings && theme.colors.keySubtle,
-                borderRadius: "25px"}}
+              style={{color: !viewOptionsOpen && !showGit && !showSettings && theme.colors.key, 
+                backgroundColor: !viewOptionsOpen && !showGit && !showSettings && theme.colors.keySubtle,
+                borderRadius: "10px"}}
             />
             <IconButton
               icon="GearOutline"
@@ -322,9 +364,20 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               toggle={showSettings}
               style={{color: showSettings && theme.colors.key, 
                 backgroundColor: showSettings && theme.colors.keySubtle,
-                borderRadius: "25px"}}
+                borderRadius: "10px"}}
             />
             <IconButton
+              icon="Tune"
+              label="View Options"
+              tooltipPlacement="right"
+              size="large"
+              onClick={() => showDiagram() && setViewOptionsOpen(!viewOptionsOpen)}
+              toggle={viewOptionsOpen}
+              style={{color: viewOptionsOpen && theme.colors.key, 
+                backgroundColor: viewOptionsOpen && theme.colors.keySubtle,
+                borderRadius: "10px"}}
+            />
+            {/* <IconButton
               icon="GitBranch"
               label="Git"
               tooltipPlacement="right"
@@ -333,8 +386,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               toggle={showGit}
               style={{color: showGit && theme.colors.key, 
                 backgroundColor: showGit && theme.colors.keySubtle,
-                borderRadius: "25px"}}
-            />
+                borderRadius: "10px"}}
+            /> */}
             {/* <IconButton
               icon="Api"
               label={`Save Log (${metaBuffer.length})`}
@@ -350,7 +403,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               <Heading fontSize="large">Diagram Settings</Heading>
               <FieldSelect
                 options={modelDetails}
-                label="Choose Model"
+                label="Choose a Model"
                 placeholder="Select a model"
                 value={currentModel && currentModel.name}
                 onChange={(selectedModel: string) =>
@@ -360,7 +413,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               {currentModel && (
                 <div>
                   <SpaceVertical size="xxsmall">
-                    <Label>Choose an Explore</Label>
+                    <Label>Select an Explore</Label>
                     <ExploreList>
                       {exploreList.map((item, index) => {
                         return (
@@ -368,6 +421,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                             <ExploreButton
                               onClick={(e: any) => {
                                 selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
+                                setViewVisible({})
                                 history.push(
                                   internalExploreURL({
                                     model: currentModel.name,
@@ -399,25 +453,105 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 // placeholder="Select a model"
                 value={"master"}
               />
-              <Button
-              onClick={(e: any) => {
-                let exploreName = currentExplore.name
-                let initialPersist = extensionLog.diagramPersist || {}
-                let diagramData = dimensions.filter((d:any,i:number)=>{
-                  return d.exploreName === exploreName
-                })[0]
-                let explorePersist = initialPersist[exploreName] || {}
-                explorePersist[exploreName] = {}
-                let diagramViews = Object.keys(diagramData.diagramDict)
-                diagramViews.map((d:any,i:number)=>{
-                  const nonViews = ["_joinData"]
-                  if (nonViews.includes(d)) { return }
-                  let elementSel = document.getElementsByClassName("table-"+d)[0].getBoundingClientRect()
-                  console.log(elementSel)
-                  explorePersist[exploreName][d] = {x: elementSel.left, y: elementSel.top}
-                })
-                extensionPersistDiagram({...extensionLog.diagramPersist, ...explorePersist})
-              }}>Save Layout</Button>
+            </SpaceVertical>
+          </SettingsPanel>
+        )}
+        {viewOptionsOpen && (
+          <SettingsPanel width="275px" px="medium" py="large">
+            <SpaceVertical>
+              <Heading fontSize="large">View Options</Heading>
+              <Flex width="250px" flexDirection="column">
+                <FlexItem pb="small">
+                  <Label>Fields to Display</Label>
+                  <RadioGroup 
+                    pt="small" 
+                    name="fieldScopeSelection" 
+                    value={displayFieldType}
+                    onChange={setDisplayFieldType}
+                    options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
+                </FlexItem>
+                <Divider />
+                <FlexItem py="small">
+                  <Flex>
+                    <FlexItem>
+                      <FieldToggleSwitch onChange={handleHiddenToggle} on={hiddenToggle} label="Hide hidden fields    " />
+                    </FlexItem>
+                    <FlexItem ml="xxxlarge">
+                      <Tooltip content="Enabled by default, this toggle hides fields from the diagram that contain 'hidden: yes'."><Icon size="xsmall" color="subdued" name="CircleInfoOutline"/></Tooltip>
+                    </FlexItem>
+                  </Flex>
+                </FlexItem>
+                <Divider />
+                <FlexItem pt="xsmall">
+                  <Flex flexDirection="column">
+                    <FlexItem>
+                      <Flex alignItems="baseline">
+                        <FlexItem flexBasis="25%">
+                          <Label>Views</Label>
+                        </FlexItem>
+                        <FlexItem  pl="xxxlarge" flexBasis="75%">
+                          <Flex>
+                            <FlexItem>
+                              <ButtonTransparent 
+                                size="small"
+                                onClick={(e: any) => {
+                                  let newViews: any = {}
+                                  Object.keys(viewVisible).map((d: any) => {
+                                    newViews[d] = false
+                                  })
+                                  setViewVisible(newViews)
+                                }}
+                              >Hide all</ButtonTransparent>
+                            </FlexItem>
+                            <FlexItem>
+                              <ButtonTransparent size="small"
+                                onClick={(e: any) => {
+                                  let newViews: any = {}
+                                  Object.keys(viewVisible).map((d: any) => {
+                                    newViews[d] = true
+                                  })
+                                  setViewVisible(newViews)
+                                }}
+                              >Show all</ButtonTransparent>
+                            </FlexItem>
+                          </Flex>
+                        </FlexItem>
+                      </Flex>
+                    </FlexItem>
+                    <FlexItem>
+                      <ViewList>
+                        {viewVisible && Object.keys(viewVisible).map((item: string, index) => {
+                          return (
+                            <ViewListItem key={`view-${index}`} style={{color: viewDisabled(viewVisible[item])}}>
+                              <ViewButton
+                                    onClick={(e: any) => {
+                                      let newViews: any = {}
+                                      Object.assign(newViews, viewVisible)
+                                      newViews[item] = !viewVisible[item]
+                                      setViewVisible(newViews)
+                                    }}
+                                    value={item}
+                                  >
+                              <Flex alignItems="center" justifyContent="space-between">
+                                <FlexItem>
+                                    {item}
+                                </FlexItem>
+                                <FlexItem>
+                                  <Icon 
+                                    size="xxsmall"
+                                    name={viewVisible[item] ? "VisibilityOutline" : "VisibilityOff"}
+                                    color={viewVisible[item] ? theme.colors.text : theme.colors.text1} />
+                                </FlexItem>
+                              </Flex>
+                              </ViewButton>
+                            </ViewListItem>
+                          )
+                        })}
+                      </ViewList>
+                    </FlexItem>
+                  </Flex>
+                </FlexItem>
+              </Flex>
             </SpaceVertical>
           </SettingsPanel>
         )}
@@ -432,51 +566,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 <Heading as="h1">{currentExplore && currentExplore.label}</Heading>
               </Space>
               <Space gap="xsmall" justifyContent="flex-end">
-                <Popover isOpen={viewOptionsOpen} setOpen={setViewOptionsOpen} placement="bottom-start" content={
-                  <Flex width="250px" flexDirection="column">
-                    <FlexItem p="small">
-                      <Text fontWeight="normal">Fields to display</Text>
-                      <RadioGroup 
-                        pt="small" 
-                        name="fieldScopeSelection" 
-                        value={displayFieldType}
-                        onChange={setDisplayFieldType}
-                        options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
-                    </FlexItem>
-                    <Divider />
-                    <FlexItem p="small">
-                      <Flex mb="small">
-                        <FlexItem>
-                          <FieldToggleSwitch onChange={handleHiddenToggle} on={hiddenToggle} label="Hide hidden fields    " />
-                        </FlexItem>
-                        <FlexItem ml="xxlarge">
-                          <Tooltip content="Enabled by default, this toggle hides fields from the diagram that contain 'hidden: yes'."><Icon size="xsmall" color="subdued" name="CircleInfoOutline"/></Tooltip>
-                        </FlexItem>
-                      </Flex>
-                    </FlexItem>
-                  </Flex>
-                }>
-                  <ButtonTransparent iconAfter="CaretDown" color="key" style={{color: viewOptionsOpen ? theme.colors.key : theme.colors.neutral}}>
-                    View Options
-                  </ButtonTransparent>
-                </Popover>
-                <Menu>
-                  <MenuDisclosure>
-                    <ButtonTransparent iconAfter="CaretDown" color="neutral">
-                      75%
-                    </ButtonTransparent>
-                  </MenuDisclosure>
-                  <MenuList placement="bottom-start">
-                    <MenuItem>
-                      <FieldCheckbox label="Hide hidden fields" />
-                    </MenuItem>
-                    <MenuItem>
-                      <FieldCheckbox label="Show only joined fields" />
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
                 <IconButton 
-                  label="" 
+                  label="Explore Info" 
                   icon="CircleInfoOutline" 
                   onClick={toggleExploreInfo}
                   style={{color: selectionInfo.lookmlElement === "explore" && theme.colors.key, 
@@ -484,7 +575,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                     borderRadius: "25px"}}
                   size="large" 
                 />
-                <IconButton label="" icon="Refresh" size="large" onClick={toggleReload} />
+                <IconButton label="Reload Diagram" icon="Refresh" size="large" onClick={() => location.reload()} />
               </Space>
             </Space>
           </DiagramHeader>
@@ -532,6 +623,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               setSelectionInfo={setSelectionInfo}
               hiddenToggle={hiddenToggle}
               displayFieldType={displayFieldType}
+              viewVisible={viewVisible}
             />
           )}
           </Stage>

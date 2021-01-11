@@ -2,7 +2,7 @@ import { DetailedModel } from "./fetchers";
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/sdk/4.0/models"
 import { exploreFieldURL } from "./urls";
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
-import { TABLE_WIDTH, TABLE_PADDING, TABLE_ROW_HEIGHT } from "./constants";
+import { TABLE_VERTICAL_PADDING, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "./constants";
 
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
   let fields = [...exploreFields.dimensions, ...exploreFields.measures]
@@ -32,6 +32,7 @@ export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILoo
 export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], diagramPersist: any, explore: ILookmlModelExplore, hiddenToggle: boolean, displayFieldType: string) {
   let fields = getFields(exploreFields)
   let views = getViews(exploreFields, joins)
+  let baseViewName: string
   // TODO: type diagramDict
   let diagramDict: any = {}
 
@@ -56,8 +57,11 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     let dimLen = filteredFields.filter((e, j) => {
       return e.view === viewName && e.category === "dimension"
     }).length
-    let initX = diagramPersist[viewName] ? diagramPersist[viewName].x : 500
-    let initY = diagramPersist[viewName] ? diagramPersist[viewName].y : 200
+    let initX = diagramPersist[viewName] ? diagramPersist[viewName].x : 0
+    let initY = diagramPersist[viewName] ? diagramPersist[viewName].y : 0
+
+    baseViewName = explore.name === viewName && viewName
+
     diagramDict[viewName] = [
       {category:"view", view: viewName, name: viewName, base: explore.name === viewName, diagramX: initX, diagramY: initY, fieldTypeIndex: 0},
       ...filteredFields.map((datum: any, i: number) => {
@@ -152,13 +156,18 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   let yOrder: any = {}
 
   function arrangeTables(table: string, degree: number) {
-    let joinX = diagramDict[table][0].diagramX
-    let joinY = diagramDict[table][0].diagramY
-    let calcX = getTableX(built.length, degree) + joinX
-    let step = diagramDict[table].length + 5
-    shift[calcX] ? shift[calcX] = shift[calcX] + step : shift[calcX] = step
-    yOrder[calcX] ? yOrder[calcX] = yOrder[calcX] + 1 : yOrder[calcX] = 1
-    let calcY = ((shift[calcX] - diagramDict[table].length)*TABLE_ROW_HEIGHT) + joinY + (Math.abs(degree) * -200)
+    let calcX = getTableX(built.length, degree)
+
+    shift[calcX] 
+    ? shift[calcX] = shift[calcX] + TABLE_VERTICAL_PADDING 
+    : shift[calcX] = (Math.abs(degree) * TABLE_DEGREE_STEP)
+
+    yOrder[calcX] 
+    ? yOrder[calcX] = yOrder[calcX] + 1 
+    : yOrder[calcX] = 1
+
+    let calcY = (shift[calcX] * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
+
     diagramDict[table] = diagramDict[table].map((field: any, i: number) => {
       return {
         ...field,
@@ -168,6 +177,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
         verticalIndex: yOrder[calcX],
       }
     })
+    shift[calcX] = shift[calcX] + diagramDict[table].length
     built.push(table)
     scaffold[table].forEach((t: string, i: number) => {
       if (!built.includes(t)) {
@@ -187,10 +197,16 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   }
 
   diagramDict._yOrderLookup = yOrder
-
+  
+  let seed = diagramDict[explore.name] ? explore.name : buildOrder[0]
   // TODO: build from base view or top of build order?
-  arrangeTables(buildOrder[0], 0)
-  // TODO: arrange remaining "stranded" tables until buildorder is complete
+  arrangeTables(seed, 0)
+  while (buildOrder.length !== built.length) {
+    let build = buildOrder.filter((tableName: string) => {
+      return !built.includes(tableName)
+    })
+    arrangeTables(build[0], 0)
+  }
 
   return diagramDict
 }

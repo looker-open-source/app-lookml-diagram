@@ -23,10 +23,14 @@ import { METADATA_PANEL_PIXEL } from "../utils/constants"
 import { LookmlObjectMetadata } from "./interfaces"
 import { ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields } from '../utils/diagrammer'
+import { canGetDistribution, canGetTopValues } from "../utils/queries"
+import { QueryChart } from "./QueryChart"
 
 const MetadataRow = styled(Flex as any)`
-  border-top: solid 1px ${(props) => props.theme.colors.ui2};
+  border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
   width: 100%;
+  padding-top: ${(props) => props.theme.sizes.xxsmall};
+  padding-bottom: ${(props) => props.theme.sizes.xxsmall};
 `
 const KeyText = styled(Text as any)`
   font-size: ${(props) => props.theme.fontSizes.small};
@@ -42,60 +46,18 @@ const ValueText = styled(Text as any)`
 
 const MetadataPanelTable: React.FC<{
   metadata: LookmlObjectMetadata,
+  model?: any,
+  explore?: any,
+  field?: any
 }> = ({
   metadata,
+  model,
+  explore,
+  field
 }) => {
 	return (
   <Flex flexDirection="column">
-    {metadata.label && <Flex pt="small" pb="small">
-      <FlexItem flexBasis="35%">
-        <KeyText>Label</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <ValueText>{metadata.label}</ValueText>
-      </FlexItem>
-    </Flex>}
-    {metadata.viewLabel && <MetadataRow pt="small" pb="small">
-      <FlexItem flexBasis="35%">
-        <KeyText>View Label</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <ValueText>{metadata.viewLabel}</ValueText>
-      </FlexItem>
-    </MetadataRow>}
-    {metadata.groupLabel && <MetadataRow pt="small" pb="small">
-      <FlexItem flexBasis="35%">
-        <KeyText>Group Label</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <ValueText>{metadata.groupLabel}</ValueText>
-      </FlexItem>
-    </MetadataRow>}
-    {metadata.fieldGroupLabel && <MetadataRow pt="small" pb="small">
-      <FlexItem flexBasis="35%">
-        <KeyText>Field Group Label</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <ValueText>{metadata.fieldGroupLabel}</ValueText>
-      </FlexItem>
-    </MetadataRow>}
-    {metadata.labelShort && <MetadataRow pt="small" pb="small">
-      <FlexItem flexBasis="35%">
-        <KeyText>Label Short</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <ValueText>{metadata.labelShort}</ValueText>
-      </FlexItem>
-    </MetadataRow>}
-    {metadata.valueFormat && <MetadataRow pt="small" pb="small">
-      <FlexItem flexBasis="35%">
-        <KeyText>Value Format</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <Code>{metadata.valueFormat}</Code>
-      </FlexItem>
-    </MetadataRow>}
-    {metadata.fieldName && <MetadataRow pt="small" pb="small" style={{borderBottom: `solid 1px ${theme.colors.ui2}`}}>
+    {metadata.fieldName && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Field Name</KeyText>
       </FlexItem>
@@ -103,7 +65,47 @@ const MetadataPanelTable: React.FC<{
         <CodeText>{metadata.fieldName}</CodeText>
       </FlexItem>
     </MetadataRow>}
-    {metadata.accessFilters && <MetadataRow pt="small" pb="small">
+    {metadata.label && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>Label</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <ValueText>{metadata.label}</ValueText>
+      </FlexItem>
+    </MetadataRow>}
+    {metadata.viewLabel && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>View Label</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <ValueText>{metadata.viewLabel}</ValueText>
+      </FlexItem>
+    </MetadataRow>}
+    {metadata.groupLabel && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>Group Label</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <ValueText>{metadata.groupLabel}</ValueText>
+      </FlexItem>
+    </MetadataRow>}
+    {metadata.fieldGroupLabel && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>Field Group Label</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <ValueText>{metadata.fieldGroupLabel}</ValueText>
+      </FlexItem>
+    </MetadataRow>}
+    {metadata.labelShort && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>Label Short</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <ValueText>{metadata.labelShort}</ValueText>
+      </FlexItem>
+    </MetadataRow>}
+    {metadata.accessFilters && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Access Filters</KeyText>
       </FlexItem>
@@ -124,7 +126,7 @@ const MetadataPanelTable: React.FC<{
       }) : <ValueText variant="subdued">None</ValueText>}
       </FlexItem>
     </MetadataRow>}
-    {metadata.projectName && <MetadataRow pt="small" pb="small">
+    {metadata.projectName && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Project Name</KeyText>
       </FlexItem>
@@ -132,7 +134,7 @@ const MetadataPanelTable: React.FC<{
         <ValueText>{metadata.projectName}</ValueText>
       </FlexItem>
     </MetadataRow>}
-    {metadata.connectionName && <MetadataRow pt="small" pb="small" style={{borderBottom: `solid 1px ${theme.colors.ui2}`}}>
+    {metadata.connectionName && <MetadataRow style={{borderBottom: `solid 1px ${theme.colors.ui2}`}}>
       <FlexItem flexBasis="35%">
         <KeyText>Connection Name</KeyText>
       </FlexItem>
@@ -140,6 +142,46 @@ const MetadataPanelTable: React.FC<{
         <ValueText>{metadata.connectionName}</ValueText>
       </FlexItem>
     </MetadataRow>}
+    {model && explore && field && <Flex pb="xxxlarge" mb="medium" flexDirection="column">
+      <MetadataRow>
+        <FlexItem flexBasis="35%">
+          <KeyText>Distribution</KeyText>
+        </FlexItem>
+        <FlexItem flexBasis="65%">
+          <QueryChart
+          disabledText={
+            "Distributions can only be shown for numeric dimensions on a view with a count measure."
+          }
+          enabled={canGetDistribution({ model, explore, field })}
+          type={{
+            type: "Distribution",
+            model,
+            explore,
+            field
+          }}
+          />
+        </FlexItem>
+      </MetadataRow>
+      <MetadataRow>
+        <FlexItem flexBasis="35%">
+          <KeyText>Values</KeyText>
+        </FlexItem>
+        <FlexItem flexBasis="65%">
+          <QueryChart
+          disabledText={
+            "Values can only be shown for dimensions on a view with a count measure."
+          }
+          enabled={canGetTopValues({ model, explore, field })}
+          type={{
+            type: "Values",
+            model,
+            explore,
+            field
+          }}
+          />
+        </FlexItem>
+      </MetadataRow>
+    </Flex>}
   </Flex>
   )
 }

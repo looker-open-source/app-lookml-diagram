@@ -5,6 +5,7 @@ import {
   JOIN_CONNECTOR_WIDTH, 
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
+  TABLE_PADDING
 } from '../utils/constants'
 import { onlyUnique } from '../utils/diagrammer'
 import { SelectionInfoPacket } from "../components/interfaces"
@@ -77,7 +78,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
   // TODO: refactor for readability, testability
   // Break up join between multiple tables into join-parts between two tables
   let joinParts = joinData.map((d: any) => { return d.viewName}).filter(onlyUnique).sort((a: any, b: any) => {
-    if (diagramDict[a][0].diagramX < diagramDict[b][0].diagramX) {
+    if (diagramDict[a][0].diagramDegree < diagramDict[b][0].diagramDegree) {
       return -1
     } else {
       return 1
@@ -99,7 +100,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
   // TODO: refactor for readability, testability
   // Calculate the x,y of every field in join and sort by view and by index
-  partArray.map((path: any) => {
+  partArray.map((path: any, partI: number) => {
     let joinPath: any[]
     let xLookup = path.map((d:any)=>{
       let joinedTableData = diagramDict[d.viewName]
@@ -140,6 +141,9 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       }
     })
 
+    console.log(joinPath)
+
+    // make join g element
     let join = svg
     .select(".diagram-area")
     .append("g")
@@ -156,9 +160,11 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let firstExt = diagramDict[joinPath[sourceLasttIndex].viewName][0]
     let nextExt = diagramDict[joinPath[targetFirstIndex].viewName][0]
     
-    let verticalIndex = Math.abs(firstExt.diagramDegree) > Math.abs(nextExt.diagramDegree) ? firstExt.verticalIndex : nextExt.verticalIndex
-    let verticalDestMax = Math.abs(firstExt.diagramDegree) > Math.abs(nextExt.diagramDegree) ? diagramDict._yOrderLookup[firstExt.diagramX] : diagramDict._yOrderLookup[nextExt.diagramX]
-    let extWidth = (1 - (verticalIndex / verticalDestMax)) * (TABLE_WIDTH)
+    let verticalIndex = firstExt.diagramDegree > nextExt.diagramDegree ? firstExt.verticalIndex : nextExt.verticalIndex
+    let verticalDestMax = firstExt.diagramDegree > nextExt.diagramDegree ? diagramDict._yOrderLookup[firstExt.diagramX] : diagramDict._yOrderLookup[nextExt.diagramX]
+    let extWidthL = (1 - (verticalIndex / verticalDestMax)) * (TABLE_PADDING/3)
+    let extWidthR = (verticalIndex / verticalDestMax) * (TABLE_PADDING/3)
+    let extWidth = firstExt.diagramDegree > nextExt.diagramDegree ? extWidthR : extWidthL
 
     let extension: any = {}
     extension = Object.assign(extension, joinPath[sourceLasttIndex])
@@ -168,7 +174,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
     // Draw join-part path
     join.append("path")
-    .datum(extendedjoinPath)
+    .datum(joinPath)
     .attr("class", "join-path")
     .attr("id", (d:any) => d.viewName)
     .attr("d", d3.line().curve(d3.curveStep)
@@ -179,7 +185,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     // TODO: extract to function
     // Draw hover element for join-part path
     let drawnJoinHover = join.append("path")
-    .datum(extendedjoinPath)
+    .datum(joinPath)
     .attr("class", "join-path-hover")
     .attr("id", (d:any) => d.viewName)
     .attr("d", d3.line().curve(d3.curveStep)
@@ -209,6 +215,8 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
         name: joinObj.name
       })
     })
+
+    // d3.curveBundle.beta(1)
 
     // TODO: refactor for readability, testability
     // Draw all join-path field connectors

@@ -24,7 +24,8 @@ import {
   DIAGRAM_DIMENSION_COLOR,
   DIAGRAM_MEASURE_COLOR,
   DIAGRAM_FIELD_STROKE_WIDTH,
-  DIAGRAM_TEXT_SIZE
+  DIAGRAM_TEXT_SIZE,
+  NONVIEWS,
 } from "../utils/constants"
 import styled from "styled-components"
 
@@ -42,25 +43,10 @@ const DiagramSpace = styled.svg`
     filter: url(#drop-shadow);
   }
 
+  // Basic table rows
+
   g.table-row {
     cursor: pointer;
-  }
-
-  g.table-row:hover > rect {
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
-    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
-  }
-
-  g.table-row:hover > text {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row:hover > path {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row:hover > path.pk-icon {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
   g.table-row > rect {
@@ -111,6 +97,25 @@ const DiagramSpace = styled.svg`
   g.table-row-base-view > text {
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
     font-weight: ${DIAGRAM_VIEW_WEIGHT};
+  }
+
+  // Rows when hover, selected
+
+  g.table-row:hover > rect {
+    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
+    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
+  }
+
+  g.table-row:hover > text {
+    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
+  }
+
+  g.table-row:hover > path {
+    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
+  }
+
+  g.table-row:hover > path.pk-icon {
+    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
   g.table-row-selected > rect {
@@ -169,8 +174,11 @@ export const Diagram: React.FC<{
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
   hiddenToggle: boolean,
   displayFieldType: string,
-}> = ({dimensions, explore, reload, selectionInfo, setSelectionInfo, hiddenToggle, displayFieldType}) => {
-  let diagramViews = Object.keys(dimensions.diagramDict)
+  viewVisible: any,
+}> = ({dimensions, explore, reload, selectionInfo, setSelectionInfo, hiddenToggle, displayFieldType, viewVisible}) => {
+  let diagramViews = Object.keys(viewVisible).filter((viewName: string) => {
+    return viewVisible[viewName]
+  })
 
   const ref = useD3(
     // useD3 callback,
@@ -197,19 +205,24 @@ export const Diagram: React.FC<{
 
       // Create all joins
       dimensions.diagramDict._joinData.map((join: any, index: number) => {
-        createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, selectionInfo, setSelectionInfo);
+        // but not to any disabled tables
+        let allVisible = true
+        join.map((joinPart: any) => {
+          if (!viewVisible[joinPart.viewName]) {
+            allVisible = false 
+          }
+        })
+        allVisible && createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, selectionInfo, setSelectionInfo);
       })
 
       // Create all tables
       diagramViews.map((lookmlViewName: string, index: number) => {
-        const nonViews = ["_joinData", "_yOrderLookup"]
-        if (nonViews.includes(lookmlViewName)) { return }
         let tableData = dimensions.diagramDict[lookmlViewName];
-        createLookmlViewElement(svg, tableData, selectionInfo, setSelectionInfo);
+        tableData && createLookmlViewElement(svg, tableData, selectionInfo, setSelectionInfo);
       })
 
       let tableRowTypes = ["dimension", "measure", "view"]
-      // Highlight anything selected
+      // Highlight anything selected on previous render
       if (tableRowTypes.includes(selectionInfo.lookmlElement)) {
         d3.select("#" + selectionInfo.name.replace(".","-"))
         .classed("table-row-selected", true)

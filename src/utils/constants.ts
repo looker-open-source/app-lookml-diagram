@@ -10,8 +10,11 @@ export const VIEW_OPTIONS_FIELDS_DEFAULT = "all"
 // Diagram tables, joins
 export const TABLE_WIDTH = 255
 export const TABLE_ROW_HEIGHT = 30
-export const TABLE_PADDING = TABLE_WIDTH * 2
+export const TABLE_PADDING = TABLE_WIDTH * 2.2
 export const JOIN_CONNECTOR_WIDTH = 40
+export const NONVIEWS = ["_joinData", "_yOrderLookup"]
+export const TABLE_VERTICAL_PADDING = 5
+export const TABLE_DEGREE_STEP = -8
 
 // Diagram styles
 export const DIAGRAM_BACKGROUND_COLOR = theme.colors.ui1
