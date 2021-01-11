@@ -11,14 +11,16 @@ import { SelectionInfoPacket } from "../components/interfaces"
 
 export function isTableRowDimension(row: any) {
   if (row.category === "dimension") {
-    return (row.fieldTypeIndex % 2) === 0 ? false : true
+    //return (row.fieldTypeIndex % 2) === 0 ? false : true
+    return true
   }
   return false
 }
 
 export function isTableRowMeasure(row: any) {
   if (row.category === "measure") {
-    return (row.fieldTypeIndex % 2) === 0 ? true : false
+    //return (row.fieldTypeIndex % 2) === 0 ? true : false
+    return true
   }
   return false
 }
@@ -73,6 +75,7 @@ export function isFirst(index: number, tableLength: number) {
   }
   return false
 }
+
 
 export function createLookmlViewElement(
   svg: d3.Selection<SVGElement, {}, HTMLElement, any>, 
@@ -132,8 +135,9 @@ export function createLookmlViewElement(
   tableRow.append("path")
   .attr("d", getPath)
   .attr("transform", (d: any, i: number) => {
-    return `translate(0,${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})scale(${DIAGRAM_ICON_SCALE})`
+    return `translate(4,${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})scale(${DIAGRAM_ICON_SCALE})`
   })
+  .attr('class', 'row-icon')
 
   // Add PK icon if needed
   tableRow.append("path")
@@ -146,10 +150,19 @@ export function createLookmlViewElement(
   // Label table elements
   tableRow.append("text")
   .attr("transform", (d: any, i: number) => {
-    return `translate(${isFirst(i, tableData.length) ? 5 : 25}, ${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})`
+    return `translate(${isFirst(i, tableData.length) ? 5 : 28}, ${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})`
   })
   .attr("dy", "0.8em")
   .text((d: any) => getLabel(d));
+
+  tableRow.append('line')
+  .attr('x1', 0)
+  .attr('y1', TABLE_ROW_HEIGHT + 3)
+  .attr('x2', TABLE_WIDTH)
+  .attr('y2', TABLE_ROW_HEIGHT + 3)
+  .attr('class', 'row-divider')
+
+
 
   // Add click event
   tableRow.on("click", (d: any, i: number) => {

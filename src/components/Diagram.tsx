@@ -29,53 +29,52 @@ import {
 import styled from "styled-components"
 
 const DiagramSpace = styled.svg`
-  background-color: ${DIAGRAM_BACKGROUND_COLOR};
+  background-color: ${props => props.theme.colors.ui1};
   cursor: move;
   width: 100%;
   height: 100%;
+  user-select: none;
 
   .clickable-background {
     fill: transparent;
   }
 
   rect.table-background {
-    filter: url(#drop-shadow);
+    //filter: url(#drop-shadow);
+    stroke: ${props => props.theme.colors.ui3};
+    stroke-width: 10;
   }
 
   g.table-row {
     cursor: pointer;
+
+    rect {
+      stroke-width: ${DIAGRAM_FIELD_STROKE_WIDTH}px;
+      stroke: #fff;
+      fill: #fff;
+    }
+    .row-icon {
+      fill: ${props => props.theme.colors.text1}
+    }
+    
+
+    path, path.pk-icon {
+      fill: ${DIAGRAM_FIELD_ICON_COLOR};
+    }
+    
+    .row-divider {
+      stroke: ${props => props.theme.colors.ui3};
+    }
+
+    &:hover  {
+      rect {
+        stroke: ${props => props.theme.colors.neutralAccent};
+        fill: ${props => props.theme.colors.neutralAccent};
+      }
+
+    }
   }
 
-  g.table-row:hover > rect {
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
-    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
-  }
-
-  g.table-row:hover > text {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row:hover > path {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row:hover > path.pk-icon {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row > rect {
-    stroke-width: ${DIAGRAM_FIELD_STROKE_WIDTH}px;
-    stroke: ${DIAGRAM_FIELD_COLOR};
-    fill: ${DIAGRAM_FIELD_COLOR};
-  }
-
-  g.table-row > path {
-    fill: ${DIAGRAM_FIELD_ICON_COLOR};
-  }
-
-  g.table-row > path.pk-icon {
-    fill: ${DIAGRAM_PK_ICON_COLOR};
-  }
 
   g.table-row-view > rect {
     stroke: ${DIAGRAM_VIEW_COLOR};
@@ -88,13 +87,16 @@ const DiagramSpace = styled.svg`
   }
 
   g.table-row-dimension > rect {
-    stroke: ${DIAGRAM_DIMENSION_COLOR};
-    fill: ${DIAGRAM_DIMENSION_COLOR};
+    stroke: #fff;
+    fill: #fff;
   }
 
-  g.table-row-measure > rect {
-    stroke: ${DIAGRAM_MEASURE_COLOR};
-    fill: ${DIAGRAM_MEASURE_COLOR};
+  g.table-row-measure {
+    rect {
+      stroke: ${props => props.theme.colors.warnAccent};
+      fill: ${props => props.theme.colors.warnAccent};
+    }
+
   }
 
   g.table-row > text {
@@ -113,22 +115,25 @@ const DiagramSpace = styled.svg`
     font-weight: ${DIAGRAM_VIEW_WEIGHT};
   }
 
-  g.table-row-selected > rect {
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
-    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
+  g.table-row-selected {
+  
+    rect, &:hover rect {
+      stroke: ${props => props.theme.colors.ui2};
+      fill: ${props => props.theme.colors.ui2};
+    }
   }
 
-  g.table-row-selected > text {
+  /* g.table-row-selected > text {
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
+  } */
 
-  g.table-row-selected > path {
+  /* g.table-row-selected > path {
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
   }
 
   g.table-row-selected > path.pk-icon {
     fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
+  } */
 
   // JOINS
 
