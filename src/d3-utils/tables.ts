@@ -2,7 +2,8 @@ import {
   TABLE_WIDTH, 
   TABLE_ROW_HEIGHT, 
   DIAGRAM_FIELD_STROKE_WIDTH,
-  DIAGRAM_ICON_SCALE
+  DIAGRAM_ICON_SCALE,
+  CAP_RADIUS
  } from '../utils/constants'
 import * as d3 from 'd3';
 // import { drag } from './drag'
@@ -11,14 +12,14 @@ import { SelectionInfoPacket } from "../components/interfaces"
 
 export function isTableRowDimension(row: any) {
   if (row.category === "dimension") {
-    return (row.fieldTypeIndex % 2) === 0 ? false : true
+    return false
   }
   return false
 }
 
 export function isTableRowMeasure(row: any) {
   if (row.category === "measure") {
-    return (row.fieldTypeIndex % 2) === 0 ? true : false
+    return true
   }
   return false
 }
@@ -92,8 +93,10 @@ export function createLookmlViewElement(
   .attr("class", "table-background table-background-"+header.view)
   .attr("x", header.diagramX)
   .attr("y", header.diagramY)
+  .attr("rx", CAP_RADIUS)
+  .attr("ry", CAP_RADIUS)
   .attr("width", TABLE_WIDTH)
-  .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)) - (tableData.length === 1 ? 5 : 7)))
+  .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))))
   
   let tableRow = table.selectAll(".table-row-"+header.view)
   .data(tableData)
@@ -112,8 +115,6 @@ export function createLookmlViewElement(
     return `translate(${header.diagramX}, ${header.diagramY + (i*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)))})`
   });
 
-  let CAP_RADIUS = 7
-
   // Create table elements, except first and last
   tableRow.append("rect")
   .attr("rx", (d: any, i: number) => {
@@ -124,7 +125,7 @@ export function createLookmlViewElement(
   })
   .attr("width", TABLE_WIDTH)
   .attr("height", (d: any, i: number) => {
-    return isRounded(i, tableData.length) && tableData.length > 1 ? 0 : TABLE_ROW_HEIGHT
+    return isRounded(i, tableData.length) && tableData.length > 1 ? 0 : TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)
   });
 
   let tableTopCap = () => tableRow.append("path")
@@ -143,7 +144,7 @@ export function createLookmlViewElement(
   let tableBottomCap = () => tableRow.append("path")
   .attr("d", (dd: any, i: number) => i === (tableData.length - 1) && `M0,0
     h${TABLE_WIDTH}
-    v${TABLE_ROW_HEIGHT - CAP_RADIUS}
+    v${TABLE_ROW_HEIGHT}
     q0,${CAP_RADIUS} -${CAP_RADIUS},${CAP_RADIUS}
     h-${TABLE_WIDTH - (CAP_RADIUS * 2)}
     q-${CAP_RADIUS},0 -${CAP_RADIUS},-${CAP_RADIUS}
@@ -183,6 +184,16 @@ export function createLookmlViewElement(
   })
   .attr("dy", "0.8em")
   .text((d: any) => getLabel(d));
+
+  // Add dividers
+  tableRow.append('line')
+  .attr('x1', 0)
+  .attr('y1', TABLE_ROW_HEIGHT + 3)
+  .attr('x2', TABLE_WIDTH)
+  .attr('y2', TABLE_ROW_HEIGHT + 3)
+  .attr('class', (d: any, i: number) => {
+    return (i === 0 || i === (tableData.length - 1)) || "row-divider"
+  })
 
   // Add click event
   tableRow.on("click", (d: any, i: number) => {

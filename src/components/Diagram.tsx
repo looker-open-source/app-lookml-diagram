@@ -10,9 +10,13 @@ import { addJoinArrowheads, createLookmlJoinElement } from '../d3-utils/joins'
 import { SelectionInfoPacket } from "./interfaces"
 import { 
   DIAGRAM_BACKGROUND_COLOR, 
-  DIAGRAM_HIGHLIGHT_COLOR, 
-  DIAGRAM_HIGHLIGHT_TEXT_COLOR,
+  DIAGRAM_HOVER_COLOR, 
+  DIAGRAM_HOVER_TEXT_COLOR,
+  DIAGRAM_BASE_TEXT_COLOR,
+  DIAGRAM_SELECT_COLOR, 
+  DIAGRAM_SELECT_TEXT_COLOR,
   DIAGRAM_TEXT_COLOR,
+  TABLE_BACKGROUND_COLOR,
   DIAGRAM_FIELD_ICON_COLOR,
   DIAGRAM_PK_ICON_COLOR,
   DIAGRAM_JOIN_COLOR,
@@ -26,6 +30,7 @@ import {
   DIAGRAM_FIELD_STROKE_WIDTH,
   DIAGRAM_TEXT_SIZE,
   NONVIEWS,
+  DIAGRAM_JOIN_SELECT_COLOR
 } from "../utils/constants"
 import styled from "styled-components"
 
@@ -34,19 +39,25 @@ const DiagramSpace = styled.svg`
   cursor: move;
   width: 100%;
   height: 100%;
+  user-select: none;
 
   .clickable-background {
     fill: transparent;
   }
 
   rect.table-background {
-    filter: url(#drop-shadow);
+    stroke: ${TABLE_BACKGROUND_COLOR};
+    stroke-width: 10;
   }
 
   // Basic table rows
 
   g.table-row {
     cursor: pointer;
+  }
+
+  .row-divider {
+    stroke: ${TABLE_BACKGROUND_COLOR};
   }
 
   g.table-row > rect,
@@ -100,46 +111,30 @@ const DiagramSpace = styled.svg`
   }
 
   g.table-row-base-view > text {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
+    fill: ${DIAGRAM_BASE_TEXT_COLOR};
     font-weight: ${DIAGRAM_VIEW_WEIGHT};
   }
 
   // Rows when hover, selected
 
-  g.table-row:hover > rect,
-  g.table-row:hover > path.table-row {
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
-    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
-  }
-
-  g.table-row:hover > text {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row:hover > path.datatype-icon {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
-  g.table-row:hover > path.pk-icon {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
-  }
-
   g.table-row-selected > rect,
   g.table-row-selected > path.table-row {
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
-    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
+    stroke: ${DIAGRAM_SELECT_COLOR};
+    fill: ${DIAGRAM_SELECT_COLOR};
   }
 
   g.table-row-selected > text {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
+    fill: ${DIAGRAM_SELECT_TEXT_COLOR};
   }
 
-  g.table-row-selected > path.datatype-icon {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
+  g.table-row:not(.table-row-selected):hover > rect,
+  g.table-row:not(.table-row-selected):hover > path.table-row {
+    stroke: ${DIAGRAM_HOVER_COLOR};
+    fill: ${DIAGRAM_HOVER_COLOR};
   }
 
-  g.table-row-selected > path.pk-icon {
-    fill: ${DIAGRAM_HIGHLIGHT_TEXT_COLOR};
+  g.table-row:not(.table-row-selected):hover > text {
+    fill: ${DIAGRAM_HOVER_TEXT_COLOR};
   }
 
   // JOINS
@@ -162,13 +157,13 @@ const DiagramSpace = styled.svg`
   }
 
   g.join-path-selected > path.join-path {
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
+    stroke: ${DIAGRAM_JOIN_SELECT_COLOR};
     stroke-width: 8px;
   }
   
   g.join-path-selected > marker > path {
-    fill: ${DIAGRAM_HIGHLIGHT_COLOR};
-    stroke: ${DIAGRAM_HIGHLIGHT_COLOR};
+    fill: ${DIAGRAM_JOIN_SELECT_COLOR};
+    stroke: ${DIAGRAM_JOIN_SELECT_COLOR};
     stroke-width: 2px;
   }
 `
