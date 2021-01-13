@@ -123,7 +123,9 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_SELECT_COLOR};
   }
 
-  g.table-row-selected > text {
+  g.table-row-selected > text,
+  g.table-row-selected > path.pk-icon,
+  g.table-row-selected > path.datatype-icon {
     fill: ${DIAGRAM_SELECT_TEXT_COLOR};
   }
 

@@ -57,17 +57,15 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     let dimLen = filteredFields.filter((e, j) => {
       return e.view === viewName && e.category === "dimension"
     }).length
-    let initX = diagramPersist[viewName] ? diagramPersist[viewName].x : 0
-    let initY = diagramPersist[viewName] ? diagramPersist[viewName].y : 0
 
     baseViewName = explore.name === viewName && viewName
 
     diagramDict[viewName] = [
-      {category:"view", view: viewName, name: viewName, base: explore.name === viewName, diagramX: initX, diagramY: initY, fieldTypeIndex: 0},
+      {category:"view", view: viewName, name: viewName, base: explore.name === viewName, diagramX: 0, diagramY: 0, fieldTypeIndex: 0},
       ...filteredFields.map((datum: any, i: number) => {
         let tableDatum = datum
-        tableDatum.diagramX = initX,
-        tableDatum.diagramY = initY,
+        tableDatum.diagramX = 0,
+        tableDatum.diagramY = 0,
         tableDatum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
         return tableDatum
       }),
@@ -125,10 +123,15 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       joinCount[tableName] ? joinCount[tableName] = joinCount[tableName] + 1 : joinCount[tableName] = 1
     })
   })
+
+  // console.log(diagramDict._joinData)
+
+  // General order tables would be arranged in, if no joins and no base view
   let buildOrder = views.sort((a: string, b: string)=>{
     return joinCount[a] > joinCount[b] ? -1 : 1;
   })
 
+  // For each table, get list of tables joined by way of it
   let scaffold: any = {}
   buildOrder.map((viewName: string)=>{
     let joined: any[] = []
@@ -142,7 +145,34 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       }
     })
     joined.sort((a: string, b: string) => {
-      return diagramDict[a] > diagramDict[b] ? 1 : -1
+      let aObj: any = {}
+      let aBaseObj: any = {}
+      let bObj: any = {}
+      let bBaseObj: any = {}
+      diagramDict._joinData.forEach((j: any) => {
+        j.forEach((jf: any) => {
+          if (jf.joinName === a && jf.viewName === a) {
+            Object.assign(aObj, jf)
+          } else if (jf.joinName === a && jf.viewName === viewName) {
+            Object.assign(aBaseObj, jf)
+          } else if (jf.joinName === b && jf.viewName === b) {
+            Object.assign(bObj, jf)
+          } else if (jf.joinName === b && jf.viewName === viewName) {
+            Object.assign(bBaseObj, jf)
+          }
+        })
+      })
+
+      let aIndex = aObj.fieldIndex + aBaseObj.fieldIndex
+
+      let bIndex = bObj.fieldIndex + bBaseObj.fieldIndex
+
+      if (aIndex < bIndex) {
+        return -1
+      } else if (aIndex === bIndex && diagramDict[a].length < diagramDict[b].length) {
+        return -1
+      }
+      return 1
     })
     scaffold[viewName] = joined
   })
@@ -158,15 +188,15 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   function arrangeTables(table: string, degree: number) {
     let calcX = getTableX(built.length, degree)
 
-    shift[calcX] 
-    ? shift[calcX] = shift[calcX] + TABLE_VERTICAL_PADDING 
-    : shift[calcX] = (Math.abs(degree) * TABLE_DEGREE_STEP)
+    shift[degree] = shift[degree] 
+    ? shift[degree] + TABLE_VERTICAL_PADDING + diagramDict[table].length
+    : 0 + (Math.abs(degree) * TABLE_DEGREE_STEP) + diagramDict[table].length + TABLE_VERTICAL_PADDING
 
-    yOrder[calcX] 
-    ? yOrder[calcX] = yOrder[calcX] + 1 
-    : yOrder[calcX] = 1
+    yOrder[degree] = yOrder[degree] 
+    ? yOrder[degree] + 1
+    : 1
 
-    let calcY = (shift[calcX] * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
+    let calcY = ((shift[degree] - diagramDict[table].length) * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
 
     diagramDict[table] = diagramDict[table].map((field: any, i: number) => {
       return {
@@ -174,10 +204,10 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
         diagramX: calcX,
         diagramY: calcY,
         diagramDegree: degree,
-        verticalIndex: yOrder[calcX],
+        verticalIndex: yOrder[degree],
       }
     })
-    shift[calcX] = shift[calcX] + diagramDict[table].length
+
     built.push(table)
     scaffold[table].forEach((t: string, i: number) => {
       if (!built.includes(t)) {
@@ -195,18 +225,19 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       }
     })
   }
-
-  diagramDict._yOrderLookup = yOrder
   
   let seed = diagramDict[explore.name] ? explore.name : buildOrder[0]
-  // TODO: build from base view or top of build order?
   arrangeTables(seed, 0)
+
+  // arrange any "stranded" views -- views not joined to the base view
   while (buildOrder.length !== built.length) {
     let build = buildOrder.filter((tableName: string) => {
       return !built.includes(tableName)
     })
     arrangeTables(build[0], 0)
   }
+
+  diagramDict._yOrderLookup = yOrder
 
   return diagramDict
 }

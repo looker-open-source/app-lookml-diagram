@@ -340,7 +340,6 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   }
 
   return (
-    <ComponentsProvider>
       <Layout hasAside height="100%">
         <Rail width="50px">
           <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall">
@@ -592,7 +591,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                   />
                 </div>
                 <IntroText>
-                  Select a model and click on one of the Explores to the left to begin visualizing your LookML model. You’ll see views, joins, SQL definitions, and more
+                  Select a model and click on one of the Explores to the left to begin visualizing your LookML model. You'll see views, joins, SQL definitions, and more
                   for each object.
                 </IntroText>
               </FullPage>
@@ -637,6 +636,5 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           </Layout>
         </Stage>
         </Layout>
-    </ComponentsProvider>
   )
 }

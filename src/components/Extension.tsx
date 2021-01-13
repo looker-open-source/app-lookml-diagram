@@ -25,14 +25,14 @@
  */
 
 import React from "react"
-import { theme } from "@looker/components"
+import { ComponentsProvider, theme } from "@looker/components"
 import { LookmlDiagram } from "./LookmlDiagram"
-import { ThemeProvider } from "styled-components"
 
 export const Extension: React.FC = () => {
   let metaBuffer: any[] = [];
   return (
-  <ThemeProvider theme={theme}>
+  <ComponentsProvider themeCustomizations={{
+  }}>
     <LookmlDiagram metaBuffer={metaBuffer}/>
-  </ThemeProvider>
+  </ComponentsProvider>
 )}

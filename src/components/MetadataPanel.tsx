@@ -15,6 +15,7 @@ import {
   Icon,
   Space,
   Tabs,
+  Tooltip,
   Tab,
   TabList,
   TabPanel,
@@ -103,7 +104,7 @@ const MetadataPanel: React.FC<{
 }) => {
   let metadata: LookmlObjectMetadata
   let field: ILookmlModelExploreField
-  console.log(explore, model)
+  // console.log(explore, model)
   if (selectionInfo.lookmlElement === "explore") {
     // @ts-ignore
     let lookmlLink = explore.lookml_link
@@ -198,7 +199,7 @@ const MetadataPanel: React.FC<{
         </FlexItem>}
         {metadata.primaryKey && <FlexItem pr="small">
           <JoinPill disabled>
-            <Icon name="Key"/>
+            <Tooltip content="Primary Key" placement="top-start"><Icon name="Key"/></Tooltip>
           </JoinPill>
         </FlexItem>}
       </Flex>
@@ -238,8 +239,8 @@ const MetadataPanel: React.FC<{
         pt="small"
         pb="small"
     >
-      <Flex alignItems="center" justifyContent="center" width="100%">
-        <FlexItem flexBasis="50%"><ExternalLink target="_blank" href={metadata.lookmlLink}>
+      <Flex width="100%">
+        <FlexItem flexBasis="60%"><ExternalLink target="_blank" href={metadata.lookmlLink}>
           <ButtonTransparent
             mr="xxxlarge"
             ml="small"
@@ -248,13 +249,13 @@ const MetadataPanel: React.FC<{
             Go to LookML
           </ButtonTransparent>
         </ExternalLink></FlexItem>
-        <FlexItem flexBasis="50%">{field && <ExternalLink
+        <FlexItem flexBasis="40%">{field && <ExternalLink
           target="_blank"
           href={exploreFieldURL(explore, field)}
         >
           <ButtonTransparent
-            mr="small"
             ml="xxxlarge"
+            mr="xsmall"
             iconBefore="Explore"
           >
             Explore with Field

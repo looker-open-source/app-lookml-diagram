@@ -1,7 +1,7 @@
 import { theme } from '@looker/components'
 
 // MetadataPanel
-export const METADATA_PANEL_PIXEL = 450
+export const METADATA_PANEL_PIXEL = 550
 
 // ViewOptions
 export const VIEW_OPTIONS_HIDDEN_DEFAULT = true
@@ -14,7 +14,7 @@ export const TABLE_PADDING = TABLE_WIDTH * 2.2
 export const JOIN_CONNECTOR_WIDTH = 40
 export const NONVIEWS = ["_joinData", "_yOrderLookup"]
 export const TABLE_VERTICAL_PADDING = 5
-export const TABLE_DEGREE_STEP = -8
+export const TABLE_DEGREE_STEP = -3
 
 // Diagram styles
 export const DIAGRAM_BACKGROUND_COLOR = theme.colors.ui1
@@ -27,12 +27,14 @@ export const DIAGRAM_DIMENSION_COLOR = "#FFF"
 export const DIAGRAM_MEASURE_COLOR = theme.colors.warnAccent
 export const DIAGRAM_BASE_TEXT_COLOR = theme.colors.keyText
 
-export const DIAGRAM_HOVER_COLOR = theme.colors.neutralAccent
+export const DIAGRAM_HOVER_COLOR = theme.colors.informAccent
 export const DIAGRAM_HOVER_TEXT_COLOR = theme.colors.text
-export const DIAGRAM_SELECT_COLOR = theme.colors.ui2
-export const DIAGRAM_SELECT_TEXT_COLOR = theme.colors.text
+export const DIAGRAM_SELECT_COLOR = "#1a73e8"
+export const DIAGRAM_SELECT_TEXT_COLOR = theme.colors.keyText
+export const DIAGRAM_SELECT_ICON_COLOR = theme.colors.keyText
 
-export const DIAGRAM_JOIN_SELECT_COLOR = theme.colors.key
+export const DIAGRAM_JOIN_HOVER_COLOR = "#1a73e8"
+export const DIAGRAM_JOIN_SELECT_COLOR = "#1a73e8"
 
 export const MAX_TEXT_LENGTH = 23
 export const DIAGRAM_TEXT_SIZE = theme.fontSizes.large

@@ -69,7 +69,7 @@ export let getPath = (d: any) => {
 }
 
 export function isRounded(index: number, tableLength: number) {
-  if (index === 0 || index === (tableLength - 1)) {
+  if (index === 0 || (tableLength - 1) === index) {
     return true
   }
   return false
@@ -96,7 +96,7 @@ export function createLookmlViewElement(
   .attr("rx", CAP_RADIUS)
   .attr("ry", CAP_RADIUS)
   .attr("width", TABLE_WIDTH)
-  .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))))
+  .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))-CAP_RADIUS))
   
   let tableRow = table.selectAll(".table-row-"+header.view)
   .data(tableData)
@@ -125,7 +125,7 @@ export function createLookmlViewElement(
   })
   .attr("width", TABLE_WIDTH)
   .attr("height", (d: any, i: number) => {
-    return isRounded(i, tableData.length) && tableData.length > 1 ? 0 : TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)
+    return isRounded(i, tableData.length) && tableData.length > 1 ? 0 : TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)-CAP_RADIUS
   });
 
   let tableTopCap = () => tableRow.append("path")
@@ -134,7 +134,7 @@ export function createLookmlViewElement(
     q0,-${CAP_RADIUS} ${CAP_RADIUS},-${CAP_RADIUS}
     h${TABLE_WIDTH - (CAP_RADIUS * 2)}
     q${CAP_RADIUS},0 ${CAP_RADIUS},${CAP_RADIUS}
-    v${TABLE_ROW_HEIGHT}
+    v${TABLE_ROW_HEIGHT - CAP_RADIUS}
     z
   `)
   .classed("table-row", true)
@@ -144,7 +144,7 @@ export function createLookmlViewElement(
   let tableBottomCap = () => tableRow.append("path")
   .attr("d", (dd: any, i: number) => i === (tableData.length - 1) && `M0,0
     h${TABLE_WIDTH}
-    v${TABLE_ROW_HEIGHT}
+    v${TABLE_ROW_HEIGHT - CAP_RADIUS}
     q0,${CAP_RADIUS} -${CAP_RADIUS},${CAP_RADIUS}
     h-${TABLE_WIDTH - (CAP_RADIUS * 2)}
     q-${CAP_RADIUS},0 -${CAP_RADIUS},-${CAP_RADIUS}
@@ -198,7 +198,6 @@ export function createLookmlViewElement(
   // Add click event
   tableRow.on("click", (d: any, i: number) => {
     let arr: any = d3.select(d.toElement).datum()
-    console.log(arr)
     setSelectionInfo({
       lookmlElement: arr.category,
       name: arr.name
