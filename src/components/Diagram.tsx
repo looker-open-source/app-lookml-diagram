@@ -168,6 +168,32 @@ const DiagramSpace = styled.svg`
     stroke: ${DIAGRAM_JOIN_SELECT_COLOR};
     stroke-width: 2px;
   }
+
+  g.join-path-selected > text.join-path-icon-label {
+    fill: ${DIAGRAM_TEXT_COLOR};
+    font-size: xx-small;
+    font-family: monospace;
+    text-anchor: middle;
+  }
+
+  g.join-path-selected > rect.join-path-icon-background {
+    fill: ${DIAGRAM_BACKGROUND_COLOR};
+  }
+
+  g.join-path-selected > path.join-path-icon-right,
+  g.join-path-selected > circle.join-path-icon-right {
+    fill: #6EA391;
+  }
+
+  g.join-path-selected > path.join-path-icon-left,
+  g.join-path-selected > circle.join-path-icon-left {
+    fill: #997CAD;
+  }
+
+  g.join-path-selected > path.join-path-icon-connector {
+    stroke: #939BA5;
+    stroke-width: 1.95833;
+  }
 `
 
 export const Diagram: React.FC<{
@@ -205,6 +231,7 @@ export const Diagram: React.FC<{
 
       // Add global svg defs
       let zoom = addZoom(svg);
+
       let filter = addFilter(svg);
 
       // Create all joins
