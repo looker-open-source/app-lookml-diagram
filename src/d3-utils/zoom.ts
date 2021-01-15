@@ -8,9 +8,9 @@ export function addZoom(svg: any) {
     .attr('transform', `translate(${event.transform.x}, ${event.transform.y}) scale(${event.transform.k})`);
   })
 
-  console.log(zoom)
+  // console.log(zoom)
 
-  svg.call(zoom.transform, d3.zoomIdentity.translate(600,100).scale(0.5))
+  // svg.call(zoom.transform, d3.zoomIdentity.translate(600,100).scale(0.5))
 
   return svg.call(zoom);
 }
