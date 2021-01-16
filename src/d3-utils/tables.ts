@@ -129,27 +129,27 @@ export function createLookmlViewElement(
   });
 
   let tableTopCap = () => tableRow.append("path")
-  .attr("d", (dd: any, i: number) => i === 0 && `M0,${TABLE_ROW_HEIGHT}
+  .attr("d", (dd: any, i: number) => i === 0 ? `M0,${TABLE_ROW_HEIGHT}
     v-${TABLE_ROW_HEIGHT - CAP_RADIUS}
     q0,-${CAP_RADIUS} ${CAP_RADIUS},-${CAP_RADIUS}
     h${TABLE_WIDTH - (CAP_RADIUS * 2)}
     q${CAP_RADIUS},0 ${CAP_RADIUS},${CAP_RADIUS}
     v${TABLE_ROW_HEIGHT - CAP_RADIUS}
     z
-  `)
+  ` : `M0,0`)
   .classed("table-row", true)
   .classed("table-row-view", (d: any) => isTableRowView(d))
   .classed("table-row-base-view", (d: any) => isTableRowBaseView(d))
 
   let tableBottomCap = () => tableRow.append("path")
-  .attr("d", (dd: any, i: number) => i === (tableData.length - 1) && `M0,0
+  .attr("d", (dd: any, i: number) => i === (tableData.length - 1) ? `M0,0
     h${TABLE_WIDTH}
     v${TABLE_ROW_HEIGHT - CAP_RADIUS}
     q0,${CAP_RADIUS} -${CAP_RADIUS},${CAP_RADIUS}
     h-${TABLE_WIDTH - (CAP_RADIUS * 2)}
     q-${CAP_RADIUS},0 -${CAP_RADIUS},-${CAP_RADIUS}
     z
-  `)
+  ` : `M0,0`)
   .classed("table-row", true)
   .classed("table-row-dimension", (d: any) => isTableRowDimension(d))
   .classed("table-row-measure", (d: any) => isTableRowMeasure(d))

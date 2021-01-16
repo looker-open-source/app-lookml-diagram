@@ -109,6 +109,6 @@ export interface LookmlObjectMetadata {
   fieldName?: string,
   mapLayer?: string,
   fieldCategory?: string,
-
+  timeframes?: string[],
 }
 

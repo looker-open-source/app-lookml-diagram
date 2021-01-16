@@ -170,7 +170,10 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let goLeft = joinedNode.x < baseNode.x ? -1 : 1
     let goUp = joinedNode.y < baseNode.y ? -1 : 1
 
-    let aX = baseNode.x
+    let isBaseView = Math.abs(diagramDict[baseTable][0].diagramDegree) === Math.min(...joinDegrees) ? true : false
+    let push = isBaseView ? (JOIN_CONNECTOR_WIDTH * 0.7) / 4 : 0
+
+    let aX = baseNode.x + (push * goLeft * -1)
     let aY = baseNode.y + (TABLE_ROW_HEIGHT/2)
 
     let fX = joinedNode.x
@@ -398,9 +401,13 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     joinPath.forEach((joinField: any, i: number) => {
       let connectorSize = (JOIN_CONNECTOR_WIDTH * 0.7)
       let rightmost = terminalAlign.indexOf(joinField.viewName)
+      let connectorAlign = rightmost ? connectorSize : connectorSize * -1
       let connectorPath: any[] = []
+      let isBaseView = Math.abs(diagramDict[joinField.viewName][0].diagramDegree) === Math.min(...joinDegrees) ? true : false
 
-      if (Math.abs(diagramDict[joinField.viewName][0].diagramDegree) === Math.min(...joinDegrees)) {
+      joinField.joinX = isBaseView ? joinField.joinX + (connectorAlign / 4) : joinField.joinX
+
+      if (isBaseView) {
         let manyKinds = ["many_to_one", "many_to_many"]
         manyKinds.includes(joinField.joinObj.relationship) 
         ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
@@ -418,7 +425,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
         join.append("path")
         .datum(connector)
         .attr("class", "join-path")
-        .attr("marker-end", (d:any) => "url(#arrows-" + joinData[0].joinName + ")")
+        .attr("marker-end", (d:any) => isBaseView || "url(#arrows-" + joinData[0].joinName + ")")
         .attr("id", (d:any) => d.viewName)
         .attr("d", d3.line().curve(d3.curveLinear)
           .x((d: any) => d.x)
@@ -427,7 +434,6 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       })
 
       let tableJoins = joinPath.filter((row: any)=>row.viewName === joinField.viewName)
-      console.log(tableJoins)
       let joinNode = tableJoins[0]
       let joinBracketPath: any[] = []
       joinBracketPath.push({x: joinNode.joinX, y: joinNode.joinY + (TABLE_ROW_HEIGHT/2), viewName: joinNode.viewName})

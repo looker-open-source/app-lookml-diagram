@@ -30,7 +30,7 @@ import {
   DIAGRAM_FIELD_STROKE_WIDTH,
   DIAGRAM_TEXT_SIZE,
   NONVIEWS,
-  DIAGRAM_JOIN_SELECT_COLOR
+  DIAGRAM_JOIN_SELECT_COLOR,
 } from "../utils/constants"
 import styled from "styled-components"
 
@@ -205,7 +205,24 @@ export const Diagram: React.FC<{
   hiddenToggle: boolean,
   displayFieldType: string,
   viewVisible: any,
-}> = ({dimensions, explore, reload, selectionInfo, setSelectionInfo, hiddenToggle, displayFieldType, viewVisible}) => {
+  zoomFactor: number,
+  setZoomFactor: (zoomFactor: number) => void,
+  viewPosition: any,
+  setViewPosition: (positionPacket: any) => void,
+}> = ({
+  dimensions, 
+  explore, 
+  reload, 
+  selectionInfo, 
+  setSelectionInfo, 
+  hiddenToggle, 
+  displayFieldType, 
+  viewVisible, 
+  zoomFactor, 
+  setZoomFactor,
+  viewPosition,
+  setViewPosition,
+}) => {
   let diagramViews = Object.keys(viewVisible).filter((viewName: string) => {
     return viewVisible[viewName]
   })
@@ -230,7 +247,7 @@ export const Diagram: React.FC<{
       })
 
       // Add global svg defs
-      let zoom = addZoom(svg);
+      let zoom = addZoom(svg, zoomFactor, setZoomFactor, viewPosition, setViewPosition);
 
       let filter = addFilter(svg);
 
@@ -271,7 +288,8 @@ export const Diagram: React.FC<{
       reload,
       selectionInfo,
       hiddenToggle,
-      displayFieldType
+      displayFieldType,
+      zoomFactor
     ]
   );
   return (

@@ -54,7 +54,27 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
         return field.view === viewName
       }
     })
-    let dimLen = filteredFields.filter((e, j) => {
+    let groupedFields = filteredFields.filter((e: any, j) => {
+      return e.dimension_group
+    })
+    let groupLabels = groupedFields.map((f: any) => {
+      return f.dimension_group
+    }).filter(onlyUnique)
+    let grouplessFilteredFields: any[] = []
+    filteredFields.forEach((f: any) => {
+      if (!f.dimension_group) {
+        grouplessFilteredFields.push(f)
+      } else {
+        let flatYet = grouplessFilteredFields.filter((ff: any) => {
+          return ff.name === f.dimension_group
+        })
+        if (flatYet.length === 0) {
+          grouplessFilteredFields.push({...f, name: f.dimension_group})
+        }
+      }
+    })
+    
+    let dimLen = grouplessFilteredFields.filter((e, j) => {
       return e.view === viewName && e.category === "dimension"
     }).length
 
@@ -62,12 +82,11 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
 
     diagramDict[viewName] = [
       {category:"view", view: viewName, name: viewName, base: explore.name === viewName, diagramX: 0, diagramY: 0, fieldTypeIndex: 0},
-      ...filteredFields.map((datum: any, i: number) => {
-        let tableDatum = datum
-        tableDatum.diagramX = 0,
-        tableDatum.diagramY = 0,
-        tableDatum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
-        return tableDatum
+      ...grouplessFilteredFields.map((datum: any, i: number) => {
+        datum.diagramX = 0,
+        datum.diagramY = 0,
+        datum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
+        return datum
       }),
     ]
   })
@@ -78,7 +97,9 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       join.dependent_fields.forEach((field: string, depFieldIndex: number) => {
         let joinFieldArr = field.split(".")
         let tableRef = diagramDict[joinFieldArr[0]]
-        let fieldIndex = tableRef && tableRef.findIndex((x: ILookmlModelExploreField) => x.name === field)
+        let fieldIndex = tableRef && tableRef.findIndex((x: any) => {
+          return x.name === field || (x.name.includes(".") && field.includes(x.name))
+        })
         if (fieldIndex === -1) {
           // If the field doesn't exist in the diagram view fieldset, 
           // point to the diagram view header.
@@ -124,8 +145,6 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     })
   })
 
-  // console.log(diagramDict._joinData)
-
   // General order tables would be arranged in, if no joins and no base view
   let buildOrder = views.sort((a: string, b: string)=>{
     return joinCount[a] > joinCount[b] ? -1 : 1;
@@ -163,9 +182,9 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
         })
       })
 
-      let aIndex = aObj.fieldIndex + aBaseObj.fieldIndex
+      let aIndex = aBaseObj.fieldIndex
 
-      let bIndex = bObj.fieldIndex + bBaseObj.fieldIndex
+      let bIndex = bBaseObj.fieldIndex
 
       if (aIndex < bIndex) {
         return -1
@@ -177,7 +196,8 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     scaffold[viewName] = joined
   })
 
-  function getTableX(index: number, degree: number) {
+  // A function for X based on degree
+  function getTableX(degree: number) {
     return TABLE_PADDING * degree
   }
 
@@ -185,8 +205,9 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   let shift: any = {}
   let yOrder: any = {}
 
+  // A recursive function for arranging the diagram tables
   function arrangeTables(table: string, degree: number) {
-    let calcX = getTableX(built.length, degree)
+    let calcX = getTableX(degree)
 
     shift[degree] = shift[degree] 
     ? shift[degree] + TABLE_VERTICAL_PADDING + diagramDict[table].length
@@ -210,6 +231,9 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
 
     built.push(table)
     scaffold[table].forEach((t: string, i: number) => {
+      // Assign the next degree for each table joined to the current
+      // If current degree = 0, flip tables L and R
+      // If degree -1 or 1, join any tables in the same direction
       if (!built.includes(t)) {
         let nextDegree = 0
         if (degree === 0 && ((i % 2) === 0)) {

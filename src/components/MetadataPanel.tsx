@@ -134,18 +134,23 @@ const MetadataPanel: React.FC<{
       joinRelationship: joinObj.relationship && joinObj.relationship.replace(/_/g, " ").toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "dimension" || selectionInfo.lookmlElement === "measure") {
-    field = getFields(explore.fields).filter((field: ILookmlModelExploreJoins) => {
-      return field.name === selectionInfo.name
-    })[0]
+    let fields = getFields(explore.fields).filter((field: any) => {
+      return field.name === selectionInfo.name || field.dimension_group === selectionInfo.name
+    })
+    let timeframes = fields.map((f: any) => {
+      return f.type.includes("date_") && f.type.replace("date_", "")
+    })
+    field = fields[0]
     // @ts-ignore
     let lookmlLink = field.lookml_link
     metadata = {
       name: field.name.split(".")[1],
-      fieldName: field.name,
+      fieldName: field.name.split(".")[0],
       lookmlLink: lookmlLink,
       fieldType: field.type.toUpperCase(),
       description: field.description,
       label: field.label,
+      timeframes: !timeframes.includes(false) ? timeframes : [],
       // labelShort: field.label_short,
       fieldGroupLabel: field.field_group_label,
       valueFormat: field.value_format,

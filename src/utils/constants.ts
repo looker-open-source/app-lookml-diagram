@@ -7,6 +7,14 @@ export const METADATA_PANEL_PIXEL = 550
 export const VIEW_OPTIONS_HIDDEN_DEFAULT = true
 export const VIEW_OPTIONS_FIELDS_DEFAULT = "all"
 
+// Diagram zoom
+export const ZOOM_INIT = 0.5
+export const ZOOM_STEP = 0.1
+export const ZOOM_MAX = 2
+export const ZOOM_MIN = 0.2
+export const X_INIT = 600
+export const Y_INIT = 100
+
 // Diagram tables, joins
 export const TABLE_WIDTH = 255
 export const TABLE_ROW_HEIGHT = 30

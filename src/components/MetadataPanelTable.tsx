@@ -59,7 +59,7 @@ const MetadataPanelTable: React.FC<{
   <Flex flexDirection="column">
     {metadata.fieldName && <MetadataRow>
       <FlexItem flexBasis="35%">
-        <KeyText>Field Name</KeyText>
+        <KeyText>View Name</KeyText>
       </FlexItem>
       <FlexItem flexBasis="65%">
         <CodeText>{metadata.fieldName}</CodeText>
@@ -97,6 +97,14 @@ const MetadataPanelTable: React.FC<{
         <ValueText>{metadata.fieldGroupLabel}</ValueText>
       </FlexItem>
     </MetadataRow>}
+    {metadata.timeframes && metadata.timeframes.length > 0 && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>Timeframes</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <ValueText>{metadata.timeframes.join(", ")}</ValueText>
+      </FlexItem>
+    </MetadataRow>}
     {metadata.labelShort && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Label Short</KeyText>
@@ -105,12 +113,12 @@ const MetadataPanelTable: React.FC<{
         <ValueText>{metadata.labelShort}</ValueText>
       </FlexItem>
     </MetadataRow>}
-    {metadata.accessFilters && <MetadataRow>
+    {metadata.accessFilters && metadata.accessFilters.length > 0 && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Access Filters</KeyText>
       </FlexItem>
       <FlexItem flexBasis="65%">
-      {metadata.accessFilters.length > 0 ? metadata.accessFilters.map((d,i) => {
+      {metadata.accessFilters.map((d,i) => {
         let spaceBelow = metadata.accessFilters.length > i+1
         return (
         <>
@@ -123,7 +131,7 @@ const MetadataPanelTable: React.FC<{
             <ValueText>{d.user_attribute}</ValueText>
           </FlexItem>
         </>)
-      }) : <ValueText variant="subdued">None</ValueText>}
+      })}
       </FlexItem>
     </MetadataRow>}
     {metadata.projectName && <MetadataRow>

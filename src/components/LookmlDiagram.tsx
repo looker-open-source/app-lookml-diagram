@@ -27,6 +27,7 @@
 import React, { useState, SyntheticEvent } from "react"
 import {
   Chip,
+  Card,
   Flex,
   FlexItem,
   Heading,
@@ -60,6 +61,7 @@ import {
   RadioGroup,
   ButtonToggle,
   Tooltip,
+  Truncate,
   ButtonItem,
   theme,
   FieldRadioGroup,
@@ -75,7 +77,12 @@ import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { useCurrentModel, useSelectExplore } from "../utils/routes"
 import MetadataPanel from "./MetadataPanel"
 import Diagram from "./Diagram"
-import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT, NONVIEWS } from '../utils/constants'
+import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT, NONVIEWS,  ZOOM_INIT,
+  ZOOM_MAX,
+  ZOOM_MIN,
+  ZOOM_STEP,
+  X_INIT,
+  Y_INIT } from '../utils/constants'
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -190,7 +197,14 @@ export const DiagramHeader = styled(Header as any)`
     transform: translateY(0);
   }
 `
-
+const Toolbar = styled(Card as any)`
+  min-width: 40px;
+  width: 40px;
+  height: auto;
+  left: 20px;
+  top: 20px;
+  position: absolute;
+`
 
 const Rail = styled(Aside as any)`
   border-right: solid 1px ${(props) => props.theme.colors.ui2};
@@ -240,6 +254,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
   const [viewOptionsOpen, setViewOptionsOpen] = React.useState(false)
   const [viewVisible, setViewVisible] = React.useState<any>({})
+  const [zoomFactor, setZoomFactor] = React.useState(ZOOM_INIT)
+  const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
 
   metadata.explore && metaBuffer.push(metadata)
 
@@ -251,14 +267,14 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     // return allowed.includes(modelName)
   }
 
-  let modelDetails = unfilteredModels && unfilteredModels.filter(d=>{ 
+  let modelDetails = unfilteredModels ? unfilteredModels.filter(d=>{ 
     return d.explores.length >= 1 && isExample(d.name)
   }).map(d=>{
     return {
       value: d.name,
       label: d.label
     }
-  })
+  }) : []
 
   let modelData = unfilteredModels && unfilteredModels.filter(d=>{
     let modelMatch = currentModel && currentModel.name
@@ -305,11 +321,6 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     setDisplayFieldType(VIEW_OPTIONS_FIELDS_DEFAULT)
     if (currentExplore && currentModel) {
       setReload(!reload)
-      let exploreName = currentExplore.name
-      let initialPersist = extensionLog.diagramPersist || {}
-      let explorePersist = initialPersist[exploreName] || {}
-      explorePersist[exploreName] = {}
-      extensionPersistDiagram({...extensionLog.diagramPersist, ...explorePersist})
     }
   }
   function toggleExploreInfo() {
@@ -408,6 +419,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 onChange={(selectedModel: string) =>
                   history.push(internalModelURL({ model: selectedModel }))
                 }
+                listLayout={{ maxHeight: 300 }}
+                isLoading={modelDetails.length === 0 ? true : false}
               />
               {currentModel && (
                 <div>
@@ -421,6 +434,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                               onClick={(e: any) => {
                                 selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
                                 setViewVisible({})
+                                setZoomFactor(ZOOM_INIT)
+                                setViewPosition({x: X_INIT, y: Y_INIT})
                                 history.push(
                                   internalExploreURL({
                                     model: currentModel.name,
@@ -533,7 +548,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                                   >
                               <Flex alignItems="center" justifyContent="space-between">
                                 <FlexItem>
-                                    {item}
+                                    <Truncate>{item}</Truncate>
                                 </FlexItem>
                                 <FlexItem>
                                   <Icon 
@@ -614,6 +629,22 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           )}
           {currentModel && currentExplore && (
             // <JsonViewer data={currentExplore}/>
+            <>
+            <Toolbar raised>
+              <Flex flexDirection="column" alignItems="center">
+                <FlexItem  pt="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{(Math.round(zoomFactor * 10) * 10).toString() + "%"}</FlexItem>
+                <FlexItem width="40px"><Divider/></FlexItem>
+                <FlexItem><IconButton icon="Plus" label="Zoom In" tooltipPlacement="right" 
+                  onClick={()=>setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)} /></FlexItem>
+                <FlexItem><IconButton icon="Minus" label="Zoom Out" tooltipPlacement="right" 
+                  onClick={()=>setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)}  /></FlexItem>
+                <FlexItem width="40px"><Divider/></FlexItem>
+                <FlexItem><IconButton icon="Home" label="Return to Start" tooltipPlacement="right"
+                  onClick={()=>{setViewPosition({x: X_INIT, y: Y_INIT});setZoomFactor(ZOOM_INIT);setReload(!reload)}} /></FlexItem>
+                <FlexItem width="40px"><Divider/></FlexItem>
+                <FlexItem pb="xsmall"><IconButton icon="ChartMap" label="Toggle Minimap (COMING SOON)" tooltipPlacement="right" /></FlexItem>
+              </Flex>
+            </Toolbar>
             <Diagram 
               dimensions={currentDimensions} 
               explore={currentExplore} 
@@ -623,7 +654,12 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               hiddenToggle={hiddenToggle}
               displayFieldType={displayFieldType}
               viewVisible={viewVisible}
+              zoomFactor={zoomFactor}
+              setZoomFactor={setZoomFactor}
+              viewPosition={viewPosition}
+              setViewPosition={setViewPosition}
             />
+            </>
           )}
           </Stage>
           {currentExplore && Object.keys(selectionInfo).length > 0 && (
