@@ -1,7 +1,7 @@
-project_name: "app-lookml-diagram-df"
+project_name: "app-lookml-diagram"
 
 application: lookml-diagram-df {
-  label: "LookML Diagram (Dogfood)"
+  label: "LookML Diagram"
   url: "https://marketplace-api.looker.com/staging/app-assets/lookml_diagram_df.js"
   entitlements: {
     local_storage: yes
