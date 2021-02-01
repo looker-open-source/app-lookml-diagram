@@ -1,6 +1,6 @@
 project_name: "app-lookml-diagram"
 
-application: lookml-diagram-df {
+application: lookml-diagram {
   label: "LookML Diagram"
   url: "https://marketplace-api.looker.com/staging/app-assets/lookml_diagram_df.js"
   entitlements: {
