@@ -25,12 +25,15 @@
  */
 
 import React from "react"
-import { theme } from "@looker/components"
-import { DataDictionary } from "./DataDictionary"
-import { ThemeProvider } from "styled-components"
+import { ComponentsProvider, theme } from "@looker/components"
+import { LookmlDiagram } from "./LookmlDiagram"
 
-export const Extension: React.FC = () => (
-  <ThemeProvider theme={theme}>
-    <DataDictionary />
-  </ThemeProvider>
-)
+export const Extension: React.FC = () => {
+  let metaBuffer: any[] = [];
+  return (
+  <ComponentsProvider themeCustomizations={{
+    colors: { key: "rgb(45, 126, 234)" },
+  }}>
+    <LookmlDiagram metaBuffer={metaBuffer}/>
+  </ComponentsProvider>
+)}

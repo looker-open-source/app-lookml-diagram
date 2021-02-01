@@ -78,3 +78,38 @@ export interface CommentPermissions {
   writer?: boolean
   manager?: boolean
 }
+
+export interface SelectionInfoPacket {
+  lookmlElement?: string
+  name?: string
+}
+
+export interface LookmlObjectMetadata {
+  name: string
+  lookmlLink: string
+  description?: string
+  joinCode?: string
+  connectionName?: string,
+  label?: string,
+  groupLabel?: string,
+  projectName?: string,
+  accessFilters?: any[],
+  joinType?: string,
+  joinRelationship?: string,
+  joinIconType?: string,
+  fieldType?: string,
+  labelShort?: string,
+  fieldGroupLabel?: string,
+  viewLabel?: string,
+  valueFormat?: string,
+  userAttributeFilterTypes?: string[],
+  fieldSql?: string,
+  primaryKey?: boolean,
+  fieldCode?: string,
+  fieldName?: string,
+  mapLayer?: string,
+  fieldCategory?: string,
+  timeframes?: string[],
+  sqlTableName?: string
+}
+

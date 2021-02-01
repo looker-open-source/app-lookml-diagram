@@ -40,12 +40,12 @@ export const MetadataItem = ({
 }) => {
   if (compact) {
     return (
-      <Flex my="large">
-        <FlexItem flex="0 0 auto">
-          <Text fontSize="small" fontWeight="bold">
+      <Flex>
+        {/* <FlexItem flex="0 0 auto" pb="small">
+          <Text fontSize="medium" fontWeight="medium">
             {label}
           </Text>
-        </FlexItem>
+        </FlexItem> */}
         <FlexItem textAlign="right" flex="1 1 auto">
           <Text fontSize="small">{children}</Text>
         </FlexItem>
@@ -53,17 +53,17 @@ export const MetadataItem = ({
     )
   } else {
     return (
-      <Box my="large">
+      <Box>
         <Box>
-          <Flex my="large">
-            <FlexItem flex="0 0 auto">
-              <Text fontSize="small" fontWeight="bold">
+          <Flex>
+            {/* <FlexItem flex="0 0 auto" pb="small">
+              <Text fontSize="medium" fontWeight="medium">
                 {label}
               </Text>
-            </FlexItem>
+            </FlexItem> */}
             {aux && (
               <FlexItem textAlign="right" flex="1 1 auto">
-                <Text fontSize="small" variant="subdued">
+                <Text fontSize="small">
                   {aux}
                 </Text>
               </FlexItem>

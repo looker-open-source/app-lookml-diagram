@@ -1,6 +1,6 @@
 ### :sparkles: Changes
 
-- **Thank you for your contribution to the Data Dictionary!**
+- **Thank you for your contribution to the LookML Diagram!**
 - To ensure a successful review, please double check our checklist of requirements below. 
 - Also including a short description of changes and relevant screenshots will help us more quickly understand the ultimate goal of your work (🗑 replace this introduction with your summary of changes). 
 

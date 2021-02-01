@@ -53,7 +53,7 @@ export function countFieldForField({
   field: ILookmlModelExploreField
 }): ILookmlModelExploreField | undefined {
   return explore.fields.measures.filter(
-    f => f.label_short === "Count" && f.view_label === field.view_label
+    f => f.type.includes("count") && f.view_label === field.view_label
   )[0]
 }
 

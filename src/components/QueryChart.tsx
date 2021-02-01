@@ -41,7 +41,7 @@ import { BarChart, Bar } from "recharts"
 import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExternalLink } from "./ExternalLink"
 import { getCached } from "../utils/fetchers"
-import { MetadataItem } from "../components-generalized/MetadataList"
+import { MetadataItem } from "./MetadataList"
 import { QueryChartButton } from "./QueryChartButton"
 
 interface QueryChartState {
@@ -121,18 +121,14 @@ export class QueryChart extends React.Component<
   render() {
     if (this.state.loading) {
       return (
-        <MetadataItem label={this.props.type.type} compact>
-          <SpinnerBlock size={20} />
-        </MetadataItem>
+        <SpinnerBlock size={20} />
       )
     } else if (this.state.response) {
       if (this.state.response.data.length === 0) {
         return (
-          <MetadataItem label={this.props.type.type} compact>
-            <Text fontSize="small" variant="subdued">
-              No Data
-            </Text>
-          </MetadataItem>
+          <Text fontSize="small">
+            No Data
+          </Text>
         )
       } else {
         return (
@@ -141,7 +137,7 @@ export class QueryChart extends React.Component<
             aux={this.state.response.aux}
           >
             {this.state.response.histogram && (
-              <Box my="medium">
+              <Box>
                 <BarChart
                   width={259}
                   height={40}
@@ -152,7 +148,7 @@ export class QueryChart extends React.Component<
                 </BarChart>
               </Box>
             )}
-            <Box my="medium">
+            <Box>
               <Table>
                 <TableBody>
                   {this.state.response.data.map((row, i) => (

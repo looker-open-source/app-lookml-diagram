@@ -1,8 +1,8 @@
-project_name: "app-data-dictionary"
+project_name: "app-lookml-diagram-df"
 
-application: data-dictionary {
-  label: "Looker Data Dictionary"
-  file: "dist/bundle.js"
+application: lookml-diagram-df {
+  label: "LookML Diagram (Dogfood)"
+  url: "https://marketplace-api.looker.com/staging/app-assets/lookml_diagram_df.js"
   entitlements: {
     local_storage: yes
     navigation: yes

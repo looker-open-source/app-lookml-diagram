@@ -1,0 +1,284 @@
+import { DetailedModel } from "./fetchers";
+import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/sdk/4.0/models"
+import { exploreFieldURL } from "./urls";
+import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
+import { TABLE_VERTICAL_PADDING, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "./constants";
+
+export function getFields(exploreFields: ILookmlModelExploreFieldset) {
+  let fields = [...exploreFields.dimensions, ...exploreFields.measures]
+  return fields
+}
+
+export function onlyUnique(value: any, index: any, self: any) {
+  return self.indexOf(value) === index;
+}
+
+export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], exploreName?: string) {
+  let fields = getFields(exploreFields)
+  let views = fields.map((field: ILookmlModelExploreField)=>{return field.view})
+  joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
+    join.dependent_fields.map((field: string, depFieldIndex: number) => {
+      let joinFieldArr = field.split(".")
+      let tableRef = views.includes(joinFieldArr[0])
+      if (!tableRef) {
+        views.push(joinFieldArr[0])
+      }
+    })
+  })
+  !views.includes(exploreName) && views.push(exploreName)
+  return views.filter(onlyUnique)
+}
+
+// TODO: refactor and decompose for readility, testability
+export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], diagramPersist: any, explore: ILookmlModelExplore, hiddenToggle: boolean, displayFieldType: string) {
+  let fields = getFields(exploreFields)
+  let views = getViews(exploreFields, joins, explore.name)
+
+  // TODO: type diagramDict
+  let diagramDict: any = {}
+
+  let joinSql = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
+    return join.sql_on
+  })
+
+  // Add table data to DiagramDict for each view
+  views.map((viewName: string, viewIndex: number) => {
+    let filteredFields = fields.filter((field: ILookmlModelExploreField) => {
+      if (hiddenToggle && field.hidden) {
+        return false
+      }
+      if (displayFieldType === "joined") {
+        return field.view === viewName && joinSql.map((d: any, i: number) => {
+          return d && d.includes("${"+field.name+"}")
+        }).includes(true)
+      } else if (displayFieldType === "all") {
+        return field.view === viewName
+      }
+    })
+    let groupedFields = filteredFields.filter((e: any, j) => {
+      return e.dimension_group
+    })
+    let groupLabels = groupedFields.map((f: any) => {
+      return f.dimension_group
+    }).filter(onlyUnique)
+    let grouplessFilteredFields: any[] = []
+    filteredFields.forEach((f: any) => {
+      if (!f.dimension_group) {
+        grouplessFilteredFields.push(f)
+      } else {
+        let flatYet = grouplessFilteredFields.filter((ff: any) => {
+          return ff.name === f.dimension_group
+        })
+        if (flatYet.length === 0) {
+          grouplessFilteredFields.push({...f, name: f.dimension_group})
+        }
+      }
+    })
+    
+    let dimLen = grouplessFilteredFields.filter((e, j) => {
+      return e.view === viewName && e.category === "dimension"
+    }).length
+
+    diagramDict[viewName] = [
+      {category:"view", view: viewName, name: viewName, base: explore.name === viewName || explore.view_name === viewName, diagramX: 0, diagramY: 0, fieldTypeIndex: 0},
+      ...grouplessFilteredFields.map((datum: any, i: number) => {
+        datum.diagramX = 0,
+        datum.diagramY = 0,
+        datum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
+        return datum
+      }),
+    ]
+  })
+  // Add join data to DiagramDict
+  diagramDict._joinData = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
+    let joinPath: any[] = []
+    if (join.dependent_fields.length > 0) {
+      join.dependent_fields.forEach((field: string, depFieldIndex: number) => {
+        let joinFieldArr = field.split(".")
+        let tableRef = diagramDict[joinFieldArr[0]]
+        let fieldIndex = tableRef && tableRef.findIndex((x: any) => {
+          return x.name === field || (x.name.includes(".") && field.includes(x.name))
+        })
+        if (fieldIndex === -1) {
+          // If the field doesn't exist in the diagram view fieldset, 
+          // point to the diagram view header.
+          fieldIndex = 0
+        }
+        join.sql_on && join.sql_on.includes("${"+field+"}") && joinPath.push({
+          viewName: joinFieldArr[0], 
+          fieldIndex: fieldIndex,
+          selector: field.replace(".","-"),
+          type: "core",
+          joinName: join.name,
+          joinObj: join,
+        })
+        
+      })
+    } else {
+      joinPath.push({
+        viewName: join.name, 
+        fieldIndex: 0,
+        selector: join.name.replace(".","-"),
+        type: "core",
+        joinName: join.name,
+        joinObj: join,
+      })
+      joinPath.push({
+        viewName: explore.name, 
+        fieldIndex: 0,
+        selector: join.name.replace(".","-"),
+        type: "core",
+        joinName: join.name,
+        joinObj: join,
+      })
+    }
+    return joinPath
+  })
+  let joinCount: any = {}
+  diagramDict._joinData.sort(function (a: any, b: any) {
+    return a.viewName > b.viewName || a.fieldIndex > b.fieldIndex;
+  }).map((join: any) => {
+    let joinTables = join.map((joinField: any)=>{return joinField.viewName}).filter(onlyUnique)
+    joinTables.forEach((tableName: string) => {
+      joinCount[tableName] ? joinCount[tableName] = joinCount[tableName] + 1 : joinCount[tableName] = 1
+    })
+  })
+
+  // General order tables would be arranged in, if no joins and no base view
+  let buildOrder = views.sort((a: string, b: string)=>{
+    return joinCount[a] > joinCount[b] ? -1 : 1;
+  })
+
+  // For each table, get list of tables joined by way of it
+  let scaffold: any = {}
+  buildOrder.map((viewName: string)=>{
+    let joined: any[] = []
+    diagramDict._joinData.map((join: any)=>{
+      let shouldBuild = join.map((joinElement: any) => {
+        if (joinElement.viewName === viewName) {return true}
+        return false
+      })
+      if (shouldBuild.includes(true)) {
+        joined.push(...join.map((joinField: any)=>{return joinField.viewName}).filter(onlyUnique).filter((joinView:string)=>{return joinView !== viewName}))
+      }
+    })
+    joined.sort((a: string, b: string) => {
+      let aObj: any = {}
+      let aBaseObj: any = {}
+      let bObj: any = {}
+      let bBaseObj: any = {}
+      diagramDict._joinData.forEach((j: any) => {
+        j.forEach((jf: any) => {
+          if (jf.joinName === a && jf.viewName === a) {
+            Object.assign(aObj, jf)
+          } else if (jf.joinName === a && jf.viewName === viewName) {
+            Object.assign(aBaseObj, jf)
+          } else if (jf.joinName === b && jf.viewName === b) {
+            Object.assign(bObj, jf)
+          } else if (jf.joinName === b && jf.viewName === viewName) {
+            Object.assign(bBaseObj, jf)
+          }
+        })
+      })
+
+      let aIndex = aBaseObj.fieldIndex
+
+      let bIndex = bBaseObj.fieldIndex
+
+      let aName = diagramDict[a] ? a : explore.name
+      let bName = diagramDict[b] ? b : explore.name
+
+      if (aIndex < bIndex) {
+        return -1
+      } else if (aIndex === bIndex && diagramDict[aName].length < diagramDict[bName].length) {
+        return -1
+      }
+      return 1
+    })
+    scaffold[viewName] = joined
+  })
+
+  // A function for X based on degree
+  function getTableX(degree: number) {
+    return TABLE_PADDING * degree
+  }
+
+  let built: string[] = []
+  let shift: any = {}
+  let yOrder: any = {}
+
+  // A recursive function for arranging the diagram tables
+  function arrangeTables(table: string, degree: number) {
+    let calcX = getTableX(degree)
+    let tableLen = diagramDict[table] ? diagramDict[table].length : 1
+
+    shift[degree] = typeof(shift[degree]) !== 'undefined'
+    ? shift[degree] + TABLE_VERTICAL_PADDING + tableLen
+    : 0 + (Math.abs(degree) * TABLE_DEGREE_STEP) + tableLen + TABLE_VERTICAL_PADDING
+
+    yOrder[degree] = yOrder[degree] 
+    ? [...yOrder[degree], table]
+    : [table]
+
+    let calcY = ((shift[degree] - tableLen) * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
+
+    diagramDict[table] = diagramDict[table] && diagramDict[table].map((field: any, i: number) => {
+      return {
+        ...field,
+        diagramX: calcX,
+        diagramY: calcY,
+        diagramDegree: degree,
+        verticalIndex: yOrder[degree].length,
+      }
+    })
+
+    diagramDict[table] && built.push(table)
+    scaffold[table] && scaffold[table].forEach((t: string, i: number) => {
+      // Assign the next degree for each table joined to the current
+      // If current degree = 0, flip tables L and R
+      // If degree -1 or 1, join any tables in the same direction
+      if (!built.includes(t)) {
+        let nextDegree = 0
+        if (degree === 0 && ((i % 2) === 0)) {
+          nextDegree = 1
+        } else if (degree === 0 && ((i % 2) !== 0)) {
+          nextDegree = -1
+        } else if (degree > 0) {
+          nextDegree = degree + 1
+        } else if (degree < 0) {
+          nextDegree = degree - 1
+        }
+        t && arrangeTables(t, nextDegree)
+      }
+    })
+  }
+  
+  let seed = diagramDict[explore.name] ? explore.name : buildOrder[0]
+  seed && arrangeTables(seed, 0)
+
+  // arrange any "stranded" views -- views not joined to the base view
+  while (buildOrder.length !== built.length) {
+    let build = buildOrder.filter((tableName: string) => {
+      return !built.includes(tableName)
+    })
+    build[0] && arrangeTables(build[0], 0)
+  }
+
+  diagramDict._yOrderLookup = yOrder
+
+  return diagramDict
+}
+
+export function getDiagramDimensions(details: DetailedModel, diagramPersist: any, hiddenToggle: boolean, displayFieldType: string) {
+  let modifiedDetails: any[] = []
+  details && details.explores.map((d,i) => {
+    // TODO: type modifiedDetail
+    let modifiedDetail = {
+      exploreName: d.name,
+      modelName: d.model_name,
+      diagramDict: getDiagramDict(d.fields, d.joins, diagramPersist[d.name] || {}, d, hiddenToggle, displayFieldType),
+    }
+    modifiedDetails.push(modifiedDetail)
+  })
+  return modifiedDetails
+}
