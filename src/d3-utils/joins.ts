@@ -63,7 +63,7 @@ export function getOnePath(connectorSize: number, rightmost: number, joinField: 
   return [path]
 }
 
-export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void) {
+export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
   let partArray: any[] = []
   let r_shift = TABLE_WIDTH + JOIN_CONNECTOR_WIDTH
   let l_shift = JOIN_CONNECTOR_WIDTH * -1
@@ -136,7 +136,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
     // make join g element
     let join = svg
-    .select(".diagram-area")
+    .select(`.${type}-area`)
     .append("g")
     .attr("class", "join-"+joinData[0].joinName)
 
@@ -182,9 +182,10 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let disabled = Math.abs(aY - fY) < 50 ? true : false
 
     let joinedDegree = diagramDict[joinedTable][0].diagramDegree
-    let stepPro = aY < fY && diagramDict._yOrderLookup[joinedDegree] > 2
-    ? (1 - (diagramDict[joinedTable][0].verticalIndex / diagramDict._yOrderLookup[joinedDegree]))
-    : (diagramDict[joinedTable][0].verticalIndex / diagramDict._yOrderLookup[joinedDegree])
+    let degreeMembers = diagramDict._yOrderLookup[joinedDegree].length
+    let stepPro = aY < fY && degreeMembers > 2
+    ? (1 - (diagramDict[joinedTable][0].verticalIndex / degreeMembers))
+    : (diagramDict[joinedTable][0].verticalIndex / degreeMembers)
     let firstStep = stepPro * (TABLE_PADDING - JOIN_CONNECTOR_WIDTH - (TABLE_WIDTH*1.5))
 
     // A
@@ -217,7 +218,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     // E
     let eX = dX + (2 * goLeft)
     let eY = fY
-    disabled || tableJoinPath.push({
+    tableJoinPath.push({
       joinX: eX,
       joinY: eY, 
     })
@@ -230,7 +231,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     .datum(tableJoinPath)
     .attr("class", "join-path")
     .attr("id", (d:any) => d.viewName)
-    .attr("d", d3.line().curve(d3.curveBundle.beta(1))
+    .attr("d", d3.line().curve(d3.curveBundle.beta(0.95))
       .x((d: any) => d.joinX)
       .y((d: any) => d.joinY)
     )
@@ -256,9 +257,20 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     join.append("rect")
     .attr("fill", "none")
     .attr("class", "join-path-icon-background")
-    .attr("width", iconOffset * 2)
-    .attr("height", 50)
-    .attr("transform", `translate(${lX}, ${lY + 5})`)
+    .style("rx", 10)
+    .style("ry", 10)
+    .attr("width", (iconOffset * 2) - 5)
+    .attr("height", (iconOffset * 2))
+    .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
+
+    join.append("rect")
+    .attr("fill", "none")
+    .attr("class", "join-path-icon-background")
+    .style("rx", 10)
+    .style("ry", 10)
+    .attr("width", (iconOffset * 2) + 15)
+    .attr("height", 18)
+    .attr("transform", `translate(${lX - 7.5}, ${lY + 35})`)
 
     isCross || join.append("path")
     .attr("d", "M23.6468 14.9375C17.7708 16.8958 14.834 26.6875 23.6468 32.5625C32.46 25.7083 28.5434 16.8958 23.6468 14.9375Z")
@@ -369,26 +381,28 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let drawnJoinHover = join.append("path")
     .datum(tableJoinPath)
     .attr("class", "join-path-hover")
+    .classed("minimap-join-path-hover", type === "minimap" ? true : false)
     .attr("id", (d:any) => d.viewName)
     .attr("d", d3.line().curve(d3.curveBundle.beta(1))
       .x((d: any) => d.joinX)
       .y((d: any) => d.joinY)
     )
-    .on("mouseenter", (d: any, i: number) => {
-      d3.selectAll("g.join-"+joinData[0].joinName)
+
+    let hoverMouseEnter = type === "display" && drawnJoinHover.on("mouseenter", (d: any, i: number) => {
+      d3.selectAll(`.${type}-area > g.join-`+joinData[0].joinName)
       .classed("join-path-selected", true)
       .raise()
     })
-    .on("mouseleave", (d: any, i: number) => {
+    let hoverMouseLeave = type === "display" && hoverMouseEnter.on("mouseleave", (d: any, i: number) => {
       if (JSON.stringify(selectionInfo) !== JSON.stringify({
         lookmlElement: "join",
         name: joinData[0].joinName
       })) {
-        d3.selectAll("g.join-"+joinData[0].joinName)
+        d3.selectAll(`.${type}-area > g.join-`+joinData[0].joinName)
         .classed("join-path-selected", false)
       }
     })
-    .on("click", (d: any, i: number) => {
+    let hoverMouseClick = type === "display" && hoverMouseLeave.on("click", (d: any, i: number) => {
       let arr: any = d3.select(d.toElement).datum()
       setSelectionInfo({
         lookmlElement: "join",

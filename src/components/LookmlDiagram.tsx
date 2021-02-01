@@ -24,7 +24,7 @@
 
  */
 
-import React, { useState, SyntheticEvent } from "react"
+import React, { useState, SyntheticEvent, memo } from "react"
 import {
   Chip,
   Card,
@@ -55,12 +55,12 @@ import {
   Menu,
   MenuItem,
   MenuList,
-  MenuDisclosure,
   Layout,
   FieldCheckbox,
   RadioGroup,
   ButtonToggle,
   Tooltip,
+  Status,
   Truncate,
   ButtonItem,
   theme,
@@ -82,7 +82,16 @@ import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT, NONVIEWS,  ZO
   ZOOM_MIN,
   ZOOM_STEP,
   X_INIT,
-  Y_INIT } from '../utils/constants'
+  Y_INIT,
+  TABLE_PADDING,
+TABLE_WIDTH,
+TABLE_ROW_HEIGHT,
+DIAGRAM_FIELD_STROKE_WIDTH, 
+TABLE_VERTICAL_PADDING,
+TABLE_DEGREE_STEP,
+DIAGRAM_HEADER_HEIGHT,
+OVERRIDE_KEY,
+OVERRIDE_KEY_SUBTLE} from '../utils/constants'
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -139,7 +148,7 @@ export const ExploreButton = styled.button`
   } 
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.keySubtle};
+    background-color: ${OVERRIDE_KEY_SUBTLE};
     
     ${Icon} {
       transform: translateX(4px);
@@ -163,7 +172,7 @@ export const ViewButton = styled.button`
   border: none;
 
   :hover {
-    background-color: ${(props) => props.theme.colors.keySubtle};
+    background-color: ${OVERRIDE_KEY_SUBTLE};
   }
 
   & > * {
@@ -190,7 +199,7 @@ export const DiagramHeader = styled(Header as any)`
 
 
   &.no-explore {
-    transform: translateY(-90px);
+    transform: translateY(-${DIAGRAM_HEADER_HEIGHT}px);
   }
 
   &.has-explore {
@@ -202,6 +211,15 @@ const Toolbar = styled(Card as any)`
   width: 40px;
   height: auto;
   left: 20px;
+  bottom: 80px;
+  position: absolute;
+`
+
+const Minimap = styled(Card as any)`
+  min-width: 300px;
+  width: 300px;
+  height: auto;
+  right: 20px;
   top: 20px;
   position: absolute;
 `
@@ -238,14 +256,14 @@ const InlineSelect = styled(Space as any)`
   cursor: pointer;
 `
 
-export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
+export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = memo(({metaBuffer}) => {
   const history = useHistory()
   const { extensionLog, extensionLogger, extensionPersistDiagram } = getExtLog()
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
-  const { details, exploreName, metadata, dimensions } = useSelectExplore(extensionLog.diagramPersist || {}, hiddenToggle, displayFieldType)
+  const { modelDetail, exploreName, metadata, dimensions, modelError, setModelError } = useSelectExplore(extensionLog.diagramPersist || {}, hiddenToggle, displayFieldType)
   const [showSettings, setShowSettings] = React.useState(true)
   const [reload, setReload] = React.useState(false)
   const [showGit, setShowGit] = React.useState(false)
@@ -256,6 +274,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
   const [viewVisible, setViewVisible] = React.useState<any>({})
   const [zoomFactor, setZoomFactor] = React.useState(ZOOM_INIT)
   const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
+  const [minimapEnabled, setMinimapEnabled] = React.useState(false)
+  const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
 
   metadata.explore && metaBuffer.push(metadata)
 
@@ -274,14 +294,14 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
       value: d.name,
       label: d.label
     }
-  }) : []
+  }).sort((a: any, b: any) => a.value < b.value ? -1 : 1) : []
 
   let modelData = unfilteredModels && unfilteredModels.filter(d=>{
     let modelMatch = currentModel && currentModel.name
     return d.name === modelMatch
   })
 
-  let currentExplore = details && details.explores.filter(d=>{
+  let currentExplore = modelDetail && modelDetail.explores.filter(d=>{
     return d.name === exploreName
   })[0]
 
@@ -294,7 +314,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
       value: d.name,
       label: d.label
     }
-  })
+  }).sort((a: any, b: any) => a.label < b.label ? -1 : 1)
 
   let defaultViews: any = {}
   Object.keys(viewVisible).length === 0 && currentExplore && currentDimensions && Object.keys(currentDimensions.diagramDict)
@@ -335,10 +355,10 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
 
   function buttonShade(exploreNameSel: string) {
     if (currentExplore && currentExplore.name === exploreNameSel) {
-      return theme.colors.keySubtle
+      return OVERRIDE_KEY_SUBTLE
     }
     if (exploreName === exploreNameSel) {
-      return theme.colors.keySubtle
+      return OVERRIDE_KEY_SUBTLE
     }
     return undefined
   }
@@ -349,6 +369,49 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
     }
     return undefined
   }
+
+  let median: number
+  let minDegree: number
+  let maxDegree: number
+
+  let maxLength = 0
+
+  if (!modelError && currentDimensions) {
+    let currentDegrees = currentDimensions && Object.keys(currentDimensions.diagramDict._yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
+    minDegree = currentDimensions && Math.min(...currentDegrees)
+    maxDegree = currentDimensions && Math.max(...currentDegrees)
+  
+    let len = currentDegrees && currentDegrees.length
+  
+    let mid = currentDegrees && Math.ceil(len / 2);
+  
+    median = ((len % 2) == 0) ? (currentDegrees[mid] + currentDegrees[mid - 1]) / 2 : currentDegrees[mid - 1];
+
+    Object.keys(currentDimensions.diagramDict._yOrderLookup).forEach((d: string) => {
+      let degreeTablesLength = currentDimensions.diagramDict._yOrderLookup[d].map((tableName: string) => {
+        let undefModel = typeof(currentDimensions.diagramDict[tableName]) === "undefined"
+        undefModel && setModelError(true)
+        return undefModel || currentDimensions.diagramDict[tableName].length + TABLE_VERTICAL_PADDING
+      }).reduce((a: number, b: number) => a + b, 0)
+      if (degreeTablesLength > maxLength) {
+        maxLength = degreeTablesLength
+      }
+    })
+  }
+  let verticalCheck = 150 / (maxLength * (TABLE_ROW_HEIGHT + DIAGRAM_FIELD_STROKE_WIDTH))
+  let horizontalCheck = 300 / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
+  let minimapScale = Math.min(verticalCheck, horizontalCheck)
+
+  let medianCorrection = median > 0 ? -1 * median * (TABLE_PADDING) : Math.abs(median) * (TABLE_PADDING)
+
+  let minimapX = 150 - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
+  let minimapY = (Math.max(Math.abs(minDegree), Math.abs(maxDegree)) + 1) * (TABLE_DEGREE_STEP * -1)
+
+  let defaultMinimap = Math.max(Math.abs(minDegree), Math.abs(maxDegree)) > 2 || maxLength > 40 ? true : false
+
+  let svgElement = document.querySelector(`svg#display-diagram-svg`)
+
+  console.log(currentDimensions)
 
   return (
       <Layout hasAside height="100%">
@@ -361,8 +424,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               size="large"
               toggle={selectedExplore && !showSettings ? true : undefined}
               onClick={showDiagram}
-              style={{color: !viewOptionsOpen && !showGit && !showSettings && theme.colors.key, 
-                backgroundColor: !viewOptionsOpen && !showGit && !showSettings && theme.colors.keySubtle,
+              style={{color: !viewOptionsOpen && !showGit && !showSettings && OVERRIDE_KEY, 
+                backgroundColor: !viewOptionsOpen && !showGit && !showSettings && OVERRIDE_KEY_SUBTLE,
                 borderRadius: "10px"}}
             />
             <IconButton
@@ -372,8 +435,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               size="large"
               onClick={() => showDiagram() && setShowSettings(!showSettings)}
               toggle={showSettings}
-              style={{color: showSettings && theme.colors.key, 
-                backgroundColor: showSettings && theme.colors.keySubtle,
+              style={{color: showSettings && OVERRIDE_KEY, 
+                backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
                 borderRadius: "10px"}}
             />
             <IconButton
@@ -383,8 +446,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               size="large"
               onClick={() => showDiagram() && setViewOptionsOpen(!viewOptionsOpen)}
               toggle={viewOptionsOpen}
-              style={{color: viewOptionsOpen && theme.colors.key, 
-                backgroundColor: viewOptionsOpen && theme.colors.keySubtle,
+              style={{color: viewOptionsOpen && OVERRIDE_KEY, 
+                backgroundColor: viewOptionsOpen && OVERRIDE_KEY_SUBTLE,
                 borderRadius: "10px"}}
             />
             {/* <IconButton
@@ -416,8 +479,10 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 label="Choose a Model"
                 placeholder="Select a model"
                 value={currentModel && currentModel.name}
-                onChange={(selectedModel: string) =>
+                onChange={(selectedModel: string) => {
+                  setModelError(false)
                   history.push(internalModelURL({ model: selectedModel }))
+                }
                 }
                 listLayout={{ maxHeight: 300 }}
                 isLoading={modelDetails.length === 0 ? true : false}
@@ -436,6 +501,9 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                                 setViewVisible({})
                                 setZoomFactor(ZOOM_INIT)
                                 setViewPosition({x: X_INIT, y: Y_INIT})
+                                setMinimapUntoggled(true)
+                                setMinimapEnabled(false)
+                                setModelError(false)
                                 history.push(
                                   internalExploreURL({
                                     model: currentModel.name,
@@ -584,8 +652,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                   label="Explore Info" 
                   icon="CircleInfoOutline" 
                   onClick={toggleExploreInfo}
-                  style={{color: selectionInfo.lookmlElement === "explore" && theme.colors.key, 
-                    backgroundColor: selectionInfo.lookmlElement === "explore" && theme.colors.keySubtle,
+                  style={{color: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY, 
+                    backgroundColor: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY_SUBTLE,
                     borderRadius: "25px"}}
                   size="large" 
                 />
@@ -595,6 +663,14 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
           </DiagramHeader>
           <Layout hasAside height="100%" id="DiagramStage">
           <Stage>
+          {modelError && (
+            <PageLoading>
+              <Status intent="warn" />
+              <Heading mt="large">
+                Uh oh! Could not generate diagram.
+              </Heading>
+            </PageLoading>
+          )}
           {!currentExplore && !exploreName && (
               <FullPage>
                 <div style={{ width: "30%" }}>
@@ -627,7 +703,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               </Heading>
             </PageLoading>
           )}
-          {currentModel && currentExplore && (
+          {!modelError && currentModel && currentExplore && (
             // <JsonViewer data={currentExplore}/>
             <>
             <Toolbar raised>
@@ -642,10 +718,29 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
                 <FlexItem><IconButton icon="Home" label="Return to Start" tooltipPlacement="right"
                   onClick={()=>{setViewPosition({x: X_INIT, y: Y_INIT});setZoomFactor(ZOOM_INIT);setReload(!reload)}} /></FlexItem>
                 <FlexItem width="40px"><Divider/></FlexItem>
-                <FlexItem pb="xsmall"><IconButton icon="ChartMap" label="Toggle Minimap (COMING SOON)" tooltipPlacement="right" /></FlexItem>
+                <FlexItem pb="xsmall">
+                  <IconButton 
+                    icon="ChartMap" 
+                    label="Toggle Minimap" 
+                    tooltipPlacement="right"
+                    onClick={()=>{
+                      if (defaultMinimap && minimapUntoggled) {
+                        setMinimapEnabled(false)
+                        setMinimapUntoggled(false)
+                      } else {
+                        setMinimapEnabled(!minimapEnabled)
+                        setMinimapUntoggled(false)
+                      }
+                    }}
+                    style={{color: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY, 
+                      backgroundColor: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY_SUBTLE,
+                      borderRadius: "10px"}}
+                  />
+                </FlexItem>
               </Flex>
             </Toolbar>
-            <Diagram 
+            <Diagram
+              type={"display"}
               dimensions={currentDimensions} 
               explore={currentExplore} 
               reload={reload} 
@@ -659,6 +754,30 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
               viewPosition={viewPosition}
               setViewPosition={setViewPosition}
             />
+            {(minimapEnabled || (minimapUntoggled && defaultMinimap)) && <Minimap raised>
+              <Diagram 
+                type={"minimap"}
+                dimensions={currentDimensions} 
+                explore={currentExplore} 
+                reload={reload} 
+                selectionInfo={selectionInfo} 
+                setSelectionInfo={setSelectionInfo}
+                hiddenToggle={hiddenToggle}
+                displayFieldType={displayFieldType}
+                viewVisible={viewVisible}
+                zoomFactor={minimapScale}
+                setZoomFactor={()=>{}}
+                viewPosition={{
+                  x: minimapX,
+                  y: minimapY,
+                  displayX: (viewPosition.x) / zoomFactor,
+                  displayY: (viewPosition.y) / zoomFactor,
+                  clientWidth: svgElement && svgElement.clientWidth / zoomFactor,
+                  clientHeight: svgElement && (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
+                }}
+                setViewPosition={()=>{}}
+              />
+            </Minimap>}
             </>
           )}
           </Stage>
@@ -673,4 +792,4 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = ({metaBuffer}) => {
         </Stage>
         </Layout>
   )
-}
+})

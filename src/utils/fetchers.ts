@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { ExtensionContext, ExtensionContextData } from "@looker/extension-sdk-react"
 import { Looker31SDK as LookerSDK, Looker31SDK } from '@looker/sdk/lib/sdk/3.1/methods'
-import { ILookmlModel, ILookmlModelExplore, IUser, IGroup } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore, IUser, IGroup, IError } from "@looker/sdk/lib/sdk/4.0/models"
 import { FieldComments, CommentPermissions } from "../../src/components/interfaces";
 import { delay } from "lodash";
 
@@ -72,6 +72,24 @@ export function useExplore(modelName?: string, exploreName?: string) {
   return { loadingExplore, currentExplore }
 }
 
+export function useViewExplore(modelName?: string, exploreName?: string) {
+  const { coreSDK } = useContext(ExtensionContext)
+  const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
+  const [loadingExplore, loadingExploreSetter] = useState(exploreName)
+  useEffect(() => {
+    async function fetcher() {
+      if (modelName && exploreName) {
+        loadingExploreSetter(exploreName)
+        exploreSetter(await loadCachedExplore(coreSDK, modelName, exploreName))
+        loadingExploreSetter(null)
+      }
+    }
+    fetcher()
+    .catch(console.error)
+  }, [coreSDK, modelName, exploreName])
+  return { currentExplore }
+}
+
 export const loadModel = async (sdk: LookerSDK, modelName: string) => {
   return (await loadAllModels(sdk)).find(m => m.name === modelName)
 }
@@ -92,18 +110,27 @@ export async function loadModelDetail(
   }
 }
 
+export async function wait(ms: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
 export function useModelDetail(modelName?: string) {
   const { coreSDK } = useContext(ExtensionContext)
   const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
+  const [modelError, setModelError] = useState<boolean>(false)
   useEffect(() => {
     async function fetcher() {
       if (modelName) {
         setModelDetail(await loadModelDetail(coreSDK, modelName))
       }
     }
-    fetcher()
+    fetcher().catch(()=>{
+      setModelError(true)
+    })
   }, [coreSDK, modelName])
-  return modelDetail
+  return { modelDetail, modelError, setModelError }
 }
 
 export interface DetailedModel {

@@ -32,6 +32,7 @@ export const Extension: React.FC = () => {
   let metaBuffer: any[] = [];
   return (
   <ComponentsProvider themeCustomizations={{
+    colors: { key: "rgb(45, 126, 234)" },
   }}>
     <LookmlDiagram metaBuffer={metaBuffer}/>
   </ComponentsProvider>

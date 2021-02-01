@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import * as d3 from 'd3';
 import { useD3 } from '../d3-utils/useD3'
 import { theme } from '@looker/components'
@@ -36,7 +36,9 @@ import styled from "styled-components"
 
 const DiagramSpace = styled.svg`
   background-color: ${DIAGRAM_BACKGROUND_COLOR};
-  cursor: move;
+  .display-area {
+    cursor: move;
+  }
   width: 100%;
   height: 100%;
   user-select: none;
@@ -52,7 +54,7 @@ const DiagramSpace = styled.svg`
 
   // Basic table rows
 
-  g.table-row {
+  g.table-row:not(.minimap-table-row) {
     cursor: pointer;
   }
 
@@ -129,13 +131,13 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_SELECT_TEXT_COLOR};
   }
 
-  g.table-row:not(.table-row-selected):hover > rect,
-  g.table-row:not(.table-row-selected):hover > path.table-row {
+  g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > rect,
+  g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > path.table-row {
     stroke: ${DIAGRAM_HOVER_COLOR};
     fill: ${DIAGRAM_HOVER_COLOR};
   }
 
-  g.table-row:not(.table-row-selected):hover > text {
+  g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > text {
     fill: ${DIAGRAM_HOVER_TEXT_COLOR};
   }
 
@@ -151,6 +153,9 @@ const DiagramSpace = styled.svg`
     fill: none;
     stroke: transparent;
     stroke-width: 100px;
+  }
+  
+  g > path.join-path-hover:not(.minimap-join-path-hover) {
     cursor: pointer;
   }
 
@@ -197,6 +202,7 @@ const DiagramSpace = styled.svg`
 `
 
 export const Diagram: React.FC<{
+  type: string,
   dimensions: any, 
   explore: ILookmlModelExplore,
   reload: boolean,
@@ -209,7 +215,8 @@ export const Diagram: React.FC<{
   setZoomFactor: (zoomFactor: number) => void,
   viewPosition: any,
   setViewPosition: (positionPacket: any) => void,
-}> = ({
+}> = memo(({
+  type,
   dimensions, 
   explore, 
   reload, 
@@ -232,10 +239,10 @@ export const Diagram: React.FC<{
     // This function will be called for each d3 render
     (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
       // Clean up the previous d3 render
-      d3.selectAll(".diagram-area > *").remove();
+      d3.selectAll(`.${type}-area > *`).remove();
 
       // Add clickable background 
-      d3.select("g.diagram-area")
+      d3.selectAll(`g.${type}-area`)
       .append("rect")
       .attr("class", "clickable-background")
       .attr("width", "10000")
@@ -247,7 +254,7 @@ export const Diagram: React.FC<{
       })
 
       // Add global svg defs
-      let zoom = addZoom(svg, zoomFactor, setZoomFactor, viewPosition, setViewPosition);
+      let zoom = addZoom(svg, zoomFactor, setZoomFactor, viewPosition, setViewPosition, type);
 
       let filter = addFilter(svg);
 
@@ -260,25 +267,35 @@ export const Diagram: React.FC<{
             allVisible = false 
           }
         })
-        allVisible && createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, selectionInfo, setSelectionInfo);
+        allVisible && createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, selectionInfo, setSelectionInfo, type);
       })
 
       // Create all tables
       diagramViews.map((lookmlViewName: string, index: number) => {
         let tableData = dimensions.diagramDict[lookmlViewName];
-        tableData && createLookmlViewElement(svg, tableData, selectionInfo, setSelectionInfo);
+        tableData && createLookmlViewElement(svg, tableData, selectionInfo, setSelectionInfo, type);
       })
 
       let tableRowTypes = ["dimension", "measure", "view"]
       // Highlight anything selected on previous render
       if (tableRowTypes.includes(selectionInfo.lookmlElement)) {
-        d3.select("#" + selectionInfo.name.replace(".","-"))
+        d3.selectAll("#" + selectionInfo.name.replace(".","-"))
         .classed("table-row-selected", true)
       } else if (selectionInfo.lookmlElement === "join") {
         d3.selectAll("g.join-"+selectionInfo.name)
         .classed("join-path-selected", true)
         .raise()
       }
+
+      // Add minimap viewport indicator
+      type === "minimap" && d3.selectAll(`g.${type}-area`)
+      .append("rect")
+      .attr("fill", "#282828")
+      .attr("fill-opacity", "0.1")
+      .attr("width", viewPosition.clientWidth)
+      .attr("height", viewPosition.clientHeight)
+      .attr("x", (viewPosition.displayX) * -1)
+      .attr("y", (viewPosition.displayY) * -1)
     },
     // useD3 dependencies array,
     // Diagram will be redrawn any time these variables change
@@ -289,17 +306,20 @@ export const Diagram: React.FC<{
       selectionInfo,
       hiddenToggle,
       displayFieldType,
-      zoomFactor
+      zoomFactor,
+      viewPosition.displayX,
+      viewPosition.displayY,
+      viewPosition.clientWidth,
     ]
   );
   return (
     <DiagramSpace
       ref={ref}
-      id={"diagram-svg"}
+      id={`${type}-diagram-svg`}
     >
-      <g className="diagram-area" />
+      <g className={`${type}-area`} />
     </DiagramSpace>
   );
-}
+})
 
 export default Diagram;

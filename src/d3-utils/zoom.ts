@@ -12,17 +12,25 @@ export function addZoom(
   zoomFactor: number, 
   setZoomFactor: (zoomFactor: number) => void, 
   viewPosition: any, 
-  setViewPosition: (positionPacket: any) => void
+  setViewPosition: (positionPacket: any) => void,
+  type: string
   ) {
   var zoom = d3.zoom()
   .scaleExtent([ZOOM_MIN, ZOOM_MAX])
   .on('zoom', function(event) {
-    d3.selectAll('.diagram-area')
-    .attr('transform', `translate(${event.transform.x}, ${event.transform.y}) scale(${event.transform.k})`);
+    if (type === "display") {
+      d3.selectAll(`.${type}-area`)
+      .attr('transform', `translate(${event.transform.x}, ${event.transform.y}) scale(${event.transform.k})`);
+    } else {
+      d3.selectAll(`.${type}-area`)
+      .attr('transform', `translate(${viewPosition.x}, ${viewPosition.y}) scale(${zoomFactor})`);
+    }
   })
   .on('end', function(event) {
-    setViewPosition({x: event.transform.x, y: event.transform.y})
-    setZoomFactor(event.transform.k)
+    if (type === "display") {
+      setViewPosition({x: event.transform.x, y: event.transform.y})
+      setZoomFactor(event.transform.k)
+    }
   })
 
   svg.call(zoom.transform, d3.zoomIdentity.translate(viewPosition.x, viewPosition.y).scale(zoomFactor))

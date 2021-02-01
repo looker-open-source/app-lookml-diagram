@@ -80,12 +80,13 @@ export function createLookmlViewElement(
   tableData: any[],
   selectionInfo: SelectionInfoPacket,
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
+  type: string,
   ) {
   
   let header = tableData[0]
 
   let table = svg
-  .select(".diagram-area")
+  .select(`.${type}-area`)
   .append("g")
   .attr("class", "table-"+header.view)
 
@@ -104,6 +105,7 @@ export function createLookmlViewElement(
   .append("g")
   .attr("class", "table-row-"+header.view)
   .classed("table-row", true)
+  .classed("minimap-table-row", type === "minimap" ? true : false)
   .classed("table-row-dimension", (d: any) => isTableRowDimension(d))
   .classed("table-row-measure", (d: any) => isTableRowMeasure(d))
   .classed("table-row-view", (d: any) => isTableRowView(d))
@@ -196,7 +198,7 @@ export function createLookmlViewElement(
   })
 
   // Add click event
-  tableRow.on("click", (d: any, i: number) => {
+  type === "display" && tableRow.on("click", (d: any, i: number) => {
     let arr: any = d3.select(d.toElement).datum()
     setSelectionInfo({
       lookmlElement: arr.category,

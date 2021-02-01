@@ -5,6 +5,9 @@ import {
  } from '../utils/constants'
 
 export function truncateLabel(text: string) {
+  if (!text) {
+    text = ""
+  }
   if (text.length > MAX_TEXT_LENGTH) {
     return text.substring(0, MAX_TEXT_LENGTH)+"..."
   }

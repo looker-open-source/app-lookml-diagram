@@ -31,6 +31,7 @@ import { LookmlObjectMetadata } from "./interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields } from '../utils/diagrammer'
 import { exploreFieldURL } from '../utils/urls'
+import { useViewExplore } from '../utils/fetchers'
 
 const MetadataInfoPanel = styled(Aside as any)`
   border-left: solid 1px ${(props) => props.theme.colors.ui2};
@@ -82,15 +83,16 @@ function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   return [startLine, typeLine, relationLine, sqlLine, endLine].filter(Boolean).join("")
 }
 
-function getFieldCodeBlock(field: ILookmlModelExploreField) {
+function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any) {
   let startLine = `${field.category}: ${field.name.split(".")[1].toLowerCase()} {\n`
   let keyLine = field.primary_key && `  primary_key: yes\n`
   let typeLine = field.type && `  type: ${field.type}\n`
   let vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
+  let tfLine = field.type.includes("date") && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
   let sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
   let mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
   let endLine = `}`
-  return [startLine, keyLine, typeLine, vfLine, sqlLine, mapLayerLine, endLine].filter(Boolean).join("")
+  return [startLine, keyLine, typeLine, vfLine, tfLine, sqlLine, mapLayerLine, endLine].filter(Boolean).join("")
 }
 
 const MetadataPanel: React.FC<{
@@ -143,6 +145,7 @@ const MetadataPanel: React.FC<{
     field = fields[0]
     // @ts-ignore
     let lookmlLink = field.lookml_link
+    let tf = !timeframes.includes(false) ? timeframes : []
     metadata = {
       name: field.name.split(".")[1],
       fieldName: field.name.split(".")[0],
@@ -157,15 +160,17 @@ const MetadataPanel: React.FC<{
       userAttributeFilterTypes: field.user_attribute_filter_types,
       fieldSql: field.sql,
       primaryKey: field.primary_key,
-      fieldCode: getFieldCodeBlock(field),
+      fieldCode: getFieldCodeBlock(field, tf),
       fieldCategory: field.category.toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "view") {
+    let viewResponse = useViewExplore(explore.model_name, selectionInfo.name)
     // @ts-ignore
     let lookmlLink = explore.lookml_link
     metadata = {
       name: selectionInfo.name,
       lookmlLink: lookmlLink,
+      sqlTableName: viewResponse.currentExplore && viewResponse.currentExplore.name === selectionInfo.name ? viewResponse.currentExplore.sql_table_name : "unknown"
     }
   }
 	return (

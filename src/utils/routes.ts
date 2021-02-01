@@ -80,12 +80,12 @@ export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, dis
   var start = performance.now()
   const { modelName, exploreName } = usePathNames()
   // get model and all explore info
-  let details = useModelDetail(modelName)
+  let {modelDetail, modelError, setModelError} = useModelDetail(modelName)
   // calculate diagram dimensions
-  let dimensions = getDiagramDimensions(details, diagramPersist, hiddenToggle, displayFieldType)
+  let dimensions = getDiagramDimensions(modelDetail, diagramPersist, hiddenToggle, displayFieldType)
   var end = performance.now()
   var time = end - start;
-  let explore = details && details.explores.filter(d=>{
+  let explore = modelDetail && modelDetail.explores.filter(d=>{
     return d.name === exploreName
   })[0]
   let metadata = {
@@ -97,7 +97,7 @@ export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, dis
     joins: explore && explore.joins.length,
     fields: explore && (explore.fields.dimensions.length + explore.fields.measures.length),
   };
-  return {details, exploreName, metadata, dimensions}
+  return {modelDetail, exploreName, metadata, dimensions, modelError, setModelError}
 }
 
 export function useCurrentModel() {

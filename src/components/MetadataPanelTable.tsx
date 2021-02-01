@@ -65,6 +65,14 @@ const MetadataPanelTable: React.FC<{
         <CodeText>{metadata.fieldName}</CodeText>
       </FlexItem>
     </MetadataRow>}
+    {metadata.sqlTableName && <MetadataRow>
+      <FlexItem flexBasis="35%">
+        <KeyText>SQL Table Name</KeyText>
+      </FlexItem>
+      <FlexItem flexBasis="65%">
+        <CodeText>{metadata.sqlTableName}</CodeText>
+      </FlexItem>
+    </MetadataRow>}
     {metadata.label && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Label</KeyText>
@@ -97,14 +105,14 @@ const MetadataPanelTable: React.FC<{
         <ValueText>{metadata.fieldGroupLabel}</ValueText>
       </FlexItem>
     </MetadataRow>}
-    {metadata.timeframes && metadata.timeframes.length > 0 && <MetadataRow>
+    {/* {metadata.timeframes && metadata.timeframes.length > 0 && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Timeframes</KeyText>
       </FlexItem>
       <FlexItem flexBasis="65%">
         <ValueText>{metadata.timeframes.join(", ")}</ValueText>
       </FlexItem>
-    </MetadataRow>}
+    </MetadataRow>} */}
     {metadata.labelShort && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Label Short</KeyText>
