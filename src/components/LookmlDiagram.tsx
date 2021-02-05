@@ -69,7 +69,7 @@ import {
 } from "@looker/components"
 import styled, { ThemeProvider } from "styled-components"
 import { SelectionInfoPacket } from "./interfaces"
-import { useAllModels, getExtLog } from "../utils/fetchers"
+import { useAllModels, getExtLog, getActiveGitBranch, getAvailGitBranches, setGitBranch } from "../utils/fetchers"
 import JsonViewer from "./JsonViewer"
 import "./styles.css"
 import { useHistory } from "react-router"
@@ -161,6 +161,13 @@ export const ExploreButton = styled.button`
   }
 
 
+`
+
+const DisabledText = styled.div`
+  font-style: italic;
+  font-size: ${theme.fontSizes.small};
+  color: ${theme.colors.ui4};
+  margin-top: 0.2em;
 `
 
 export const ViewButton = styled.button`
@@ -263,6 +270,8 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = memo(({metaBuffer}) 
   const currentModel = useCurrentModel()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
+  const [selectedBranch, setSelectedBranch] = React.useState("")
+  const [targetBranch, setTargetBranch] = React.useState<any>(undefined)
   const { modelDetail, exploreName, metadata, dimensions, modelError, setModelError } = useSelectExplore(extensionLog.diagramPersist || {}, hiddenToggle, displayFieldType)
   const [showSettings, setShowSettings] = React.useState(true)
   const [reload, setReload] = React.useState(false)
@@ -304,6 +313,16 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = memo(({metaBuffer}) 
   let currentExplore = modelDetail && modelDetail.explores.filter(d=>{
     return d.name === exploreName
   })[0]
+
+  let projectId = currentExplore ? currentExplore.project_name : ""
+  setGitBranch(projectId, targetBranch && targetBranch.name, targetBranch && targetBranch.ref)
+  
+  const gitBranch = getActiveGitBranch(projectId)
+  const gitBranches = getAvailGitBranches(projectId)
+
+  let branchOpts = gitBranches && gitBranches.map((branch: any) => {
+    return {value: branch.name, label: branch.name}
+  })
 
   let currentDimensions = dimensions && dimensions.filter((d: any)=>{
     return d.exploreName === exploreName
@@ -411,7 +430,7 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = memo(({metaBuffer}) 
 
   let svgElement = document.querySelector(`svg#display-diagram-svg`)
 
-  console.log(currentDimensions)
+  console.log(gitBranch)
 
   return (
       <Layout hasAside height="100%">
@@ -450,17 +469,17 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = memo(({metaBuffer}) 
                 backgroundColor: viewOptionsOpen && OVERRIDE_KEY_SUBTLE,
                 borderRadius: "10px"}}
             />
-            {/* <IconButton
+            <IconButton
               icon="GitBranch"
-              label="Git"
+              label="Git Actions"
               tooltipPlacement="right"
               size="large"
               onClick={() => showDiagram() && setShowGit(!showGit)}
               toggle={showGit}
-              style={{color: showGit && theme.colors.key, 
-                backgroundColor: showGit && theme.colors.keySubtle,
+              style={{color: showGit && OVERRIDE_KEY, 
+                backgroundColor: showGit && OVERRIDE_KEY_SUBTLE,
                 borderRadius: "10px"}}
-            /> */}
+            />
             {/* <IconButton
               icon="Api"
               label={`Save Log (${metaBuffer.length})`}
@@ -530,11 +549,25 @@ export const LookmlDiagram: React.FC<{metaBuffer: any[]}> = memo(({metaBuffer}) 
             <SpaceVertical>
               <Heading fontSize="large">Git Actions</Heading>
               <FieldSelect
-                options={[{value:"master",label:"master"}]}
+                options={branchOpts ? branchOpts : []}
+                placeholder="Loading Git Branches..."
                 label="Current Branch"
-                // placeholder="Select a model"
-                value={"master"}
+                value={selectedBranch === "" ? gitBranch && gitBranch.name : selectedBranch}
+                onChange={(value: string) => {
+                  setSelectedBranch(value)
+                }}
+                disabled={gitBranch ? gitBranch.is_production : true}
               />
+              <Button
+                onClick={()=>{
+                  let targetBranch = gitBranches.filter((branch: any) => {
+                    return branch.name === selectedBranch
+                  })[0]
+                  setTargetBranch(targetBranch)
+                }}
+                disabled={gitBranch ? gitBranch.is_production : true}
+              >Switch to Branch</Button>
+              {gitBranch && gitBranch.is_production && <DisabledText>The current Git Branch can only be changed in Development Mode.</DisabledText>}
             </SpaceVertical>
           </SettingsPanel>
         )}
