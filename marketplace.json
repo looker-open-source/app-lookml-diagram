@@ -2,9 +2,10 @@
   "label": "LookML Diagram",
   "category_label": "Applications",
   "branding": {
-    "image_uri": "https://marketplace-api.looker.com/app-icons/data_dictionary_icon.svg",
+    "image_uri": "https://marketplace-api.looker.com/app-icons/ERD.svg",
     "tagline": "Visualize your LookML models.",
-    "brand_color": "#fe007d"
+    "brand_color": "#4c8bf5",
+    "badge": "Beta"
   },
   "constants": {
     "CONNECTION_NAME": {
