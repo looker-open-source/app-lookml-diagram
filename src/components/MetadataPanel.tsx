@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import {
+  Badge,
   Box,
   ButtonTransparent,
   CodeBlock,
@@ -20,7 +21,8 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  theme
+  theme,
+  Heading
 } from "@looker/components"
 import styled from "styled-components";
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
@@ -31,6 +33,7 @@ import { LookmlObjectMetadata } from "./interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields } from '../utils/diagrammer'
 import { exploreFieldURL } from '../utils/urls'
+import { verticalAlign } from 'styled-system';
 
 const MetadataInfoPanel = styled(Aside as any)`
   border-left: solid 1px ${(props) => props.theme.colors.ui2};
@@ -69,9 +72,9 @@ const JoinPill = styled(Chip as any)`
   border-radius: 20px;
 `
 
-const PillText = styled(FlexItem as any)`
-  font-family: monospace;
-`
+const PillText:React.FC = ({children}) => {
+  return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>
+}
 
 function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   let startLine = `join: ${join.name.toLowerCase()} {\n`
@@ -170,48 +173,53 @@ const MetadataPanel: React.FC<{
   }
 	return (
   <MetadataInfoPanel width={`${METADATA_PANEL_PIXEL}px`} px="medium" py="large">
-    <SpaceVertical>
+    <SpaceVertical gap="xlarge">
       {/* NAME */}
-      <Text fontSize="xxlarge" style={{fontWeight: 600}}>{metadata.name}</Text>
+      <Heading fontSize="xlarge" style={{fontWeight: 600}}>{metadata.name}</Heading>
 
       {/* PILLS */}
-      <Flex>
-        {metadata.joinType && <FlexItem pr="small">
-        <JoinPill disabled>
+      <Space gap="xsmall">
+        {metadata.joinType && 
+        <Badge intent="neutral" size="medium">
           <Flex alignItems="center">
-          <FlexItem><img
+          <img
             src={
               `https://marketplace-api.looker.com/staging/app-assets/join-${metadata.joinIconType}.svg`
             }
-            alt={metadata.joinType + " Icon"}
-            height={"35px"}
-            style={{height: "35px"}}
-          /></FlexItem>
+            aria-hidden="true"
+            style={{height: "24px"}}
+          />
           <PillText>{metadata.joinType}</PillText>
           </Flex>
-        </JoinPill></FlexItem>}
-        {metadata.joinRelationship && <FlexItem><JoinPill disabled><PillText>{metadata.joinRelationship}</PillText></JoinPill></FlexItem>}
-        {metadata.fieldType && <PillText pr="small">
-          <JoinPill disabled><PillText>
-          {metadata.fieldType}</PillText>
-          </JoinPill>
-        </PillText>}
-        {metadata.fieldCategory && <FlexItem pr="small">
-          <JoinPill disabled>
-          <PillText>
-          {metadata.fieldCategory}</PillText>
-          </JoinPill>
-        </FlexItem>}
-        {metadata.primaryKey && <FlexItem pr="small">
-          <JoinPill disabled>
-            <Tooltip content="Primary Key" placement="top-start"><Icon name="Key"/></Tooltip>
-          </JoinPill>
-        </FlexItem>}
-      </Flex>
+        </Badge>}
+        {metadata.joinRelationship && <Badge intent="neutral" size="medium"><PillText>{metadata.joinRelationship}</PillText></Badge>}
+        {metadata.fieldType && 
+          <Badge intent="neutral" size="medium">
+            <PillText>
+              {metadata.fieldType}
+            </PillText>
+          </Badge>
+        }
+        {metadata.fieldCategory && 
+          <Badge intent="neutral" size="medium">
+            <PillText>
+              {metadata.fieldCategory}
+            </PillText>
+          </Badge>
+       }
+        {metadata.primaryKey && 
+          <Badge intent="neutral" size="medium">
+            <Space gap="xsmall">
+            <Icon name="Key" size="xsmall" />
+            <PillText>Primary Key</PillText>
+            </Space>
+          </Badge>
+        }
+      </Space>
 
       {/* DESCRIPTION */}
       {metadata.description && (
-        <Paragraph>{metadata.description}</Paragraph>
+        <Paragraph fontSize="small" color="text4">{metadata.description}</Paragraph>
       )}
 
       {/* JOIN CODE BLOCK */}

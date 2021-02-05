@@ -31,6 +31,8 @@ import {
   DIAGRAM_TEXT_SIZE,
   NONVIEWS,
   DIAGRAM_JOIN_SELECT_COLOR,
+  DIAGRAM_MEASURE_HOVER_COLOR,
+  DIAGRAM_MEASURE_ICON_COLOR
 } from "../utils/constants"
 import styled from "styled-components"
 
@@ -69,6 +71,10 @@ const DiagramSpace = styled.svg`
 
   g.table-row > path.datatype-icon {
     fill: ${DIAGRAM_FIELD_ICON_COLOR};
+  }
+
+  g.table-row.table-row-measure > path.datatype-icon {
+    fill: ${DIAGRAM_MEASURE_ICON_COLOR};
   }
 
   g.table-row > path.pk-icon {
@@ -125,7 +131,8 @@ const DiagramSpace = styled.svg`
 
   g.table-row-selected > text,
   g.table-row-selected > path.pk-icon,
-  g.table-row-selected > path.datatype-icon {
+  g.table-row-selected > path.datatype-icon,
+  g.table-row-measure.table-row-selected > path.datatype-icon  {
     fill: ${DIAGRAM_SELECT_TEXT_COLOR};
   }
 
@@ -139,13 +146,22 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_HOVER_TEXT_COLOR};
   }
 
+  g.table-row.table-row-measure:not(.table-row-selected):hover rect {
+    fill: ${DIAGRAM_MEASURE_HOVER_COLOR};
+    stroke: ${DIAGRAM_MEASURE_HOVER_COLOR};
+  }
+
+
   // JOINS
 
   g > path.join-path {
     fill: none;
     stroke: ${DIAGRAM_JOIN_COLOR};
     stroke-width: 3px;
+    transition: stroke 350ms ease, stroke-width 350ms ease;
   }
+
+  
 
   g > path.join-path-hover {
     fill: none;
@@ -160,7 +176,7 @@ const DiagramSpace = styled.svg`
 
   g.join-path-selected > path.join-path {
     stroke: ${DIAGRAM_JOIN_SELECT_COLOR};
-    stroke-width: 8px;
+    stroke-width: 6px;
   }
   
   g.join-path-selected > marker > path {
