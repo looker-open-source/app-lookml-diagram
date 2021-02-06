@@ -31,6 +31,8 @@ import {
   DIAGRAM_TEXT_SIZE,
   NONVIEWS,
   DIAGRAM_JOIN_SELECT_COLOR,
+  DIAGRAM_MEASURE_HOVER_COLOR,
+  DIAGRAM_MEASURE_ICON_COLOR
 } from "../utils/constants"
 import styled from "styled-components"
 
@@ -71,6 +73,10 @@ const DiagramSpace = styled.svg`
 
   g.table-row > path.datatype-icon {
     fill: ${DIAGRAM_FIELD_ICON_COLOR};
+  }
+
+  g.table-row.table-row-measure > path.datatype-icon {
+    fill: ${DIAGRAM_MEASURE_ICON_COLOR};
   }
 
   g.table-row > path.pk-icon {
@@ -127,7 +133,9 @@ const DiagramSpace = styled.svg`
 
   g.table-row-selected > text,
   g.table-row-selected > path.pk-icon,
-  g.table-row-selected > path.datatype-icon {
+  g.table-row-selected > path.datatype-icon,
+  g.table-row-selected > path.datatype-icon,
+  g.table-row-measure.table-row-selected > path.datatype-icon {
     fill: ${DIAGRAM_SELECT_TEXT_COLOR};
   }
 
@@ -135,6 +143,11 @@ const DiagramSpace = styled.svg`
   g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > path.table-row {
     stroke: ${DIAGRAM_HOVER_COLOR};
     fill: ${DIAGRAM_HOVER_COLOR};
+  }
+
+  g.table-row.table-row-measure:not(.table-row-selected):hover rect {
+    fill: ${DIAGRAM_MEASURE_HOVER_COLOR};
+    stroke: ${DIAGRAM_MEASURE_HOVER_COLOR};
   }
 
   g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > text {
