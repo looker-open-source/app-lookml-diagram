@@ -5,13 +5,13 @@
   "scripts": {
     "start": "webpack-dev-server --no-inline --no-hot --mode=development",
     "test": "jest",
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=development",
     "lint": "eslint 'src/components/*.ts{,x}'",
     "lint-fix": "eslint 'src/components/*.ts{,x}' --fix"
   },
   "license": "MIT",
   "dependencies": {
-    "@looker/components": "^0.9.22",
+    "@looker/components": "^0.11.0",
     "@looker/components-test-utils": "^0.9.17",
     "@looker/design-tokens": "^0.7.2",
     "@looker/extension-sdk": "^0.11.0",
@@ -37,6 +37,7 @@
     "d3": "^6.3.0",
     "enzyme": "^3.11.0",
     "humanize-string": "^2.1.0",
+    "core-js": "^3.8.1",
     "jest-styled-components": "^7.0.3",
     "lodash": "^4.17.15",
     "react": "^16.9.0",

@@ -145,7 +145,8 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_HOVER_COLOR};
   }
 
-  g.table-row.table-row-measure:not(.table-row-selected):hover rect {
+  g.table-row.table-row-measure:not(.table-row-selected):hover > rect,
+  g.table-row.table-row-measure:not(.table-row-selected):hover > path.table-row {
     fill: ${DIAGRAM_MEASURE_HOVER_COLOR};
     stroke: ${DIAGRAM_MEASURE_HOVER_COLOR};
   }

@@ -46,7 +46,7 @@ export let getPkPath = (d: any) => {
   return "M7 14a2 2 0 01-2-2 2 2 0 012-2 2 2 0 012 2 2 2 0 01-2 2m5.65-4A5.99 5.99 0 007 6a6 6 0 00-6 6 6 6 0 006 6 5.99 5.99 0 005.65-4H17v4h4v-4h2v-4H12.65z"
 }
 
-export let getPath = (d: any) => {
+export let getDatatypePath = (d: any) => {
   if (!d.type) {
     return ""
   }
@@ -165,7 +165,7 @@ export function createLookmlViewElement(
 
   // Add datatype icon
   tableRow.append("path")
-  .attr("d", getPath)
+  .attr("d", getDatatypePath)
   .attr("class", "datatype-icon")
   .attr("transform", (d: any, i: number) => {
     return `translate(0,${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})scale(${DIAGRAM_ICON_SCALE})`

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { ExtensionContext, ExtensionContextData } from "@looker/extension-sdk-react"
-import { Looker31SDK as LookerSDK, Looker31SDK } from '@looker/sdk/lib/sdk/3.1/methods'
+import { Looker31SDK as LookerSDK, Looker31SDK,  } from '@looker/sdk/lib/sdk/3.1/methods'
 import { ILookmlModel, ILookmlModelExplore, IUser, IGroup, IError, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { FieldComments, CommentPermissions } from "../../src/components/interfaces";
 import { delay } from "lodash";
@@ -100,6 +100,7 @@ export function setGitBranch(projectId: string, gitName: string, gitRef: string)
   const [newBranch, setNewBranch] = useState<any>(undefined)
   useEffect(() => {
     async function fetcher() {
+      console.log(projectId, gitName, gitRef)
       setNewBranch(await changeBranch(coreSDK, projectId, gitName, gitRef))
     }
     projectId && gitName && gitRef && fetcher()
@@ -168,7 +169,7 @@ export async function wait(ms: number) {
   });
 }
 
-export function useModelDetail(modelName?: string) {
+export function useModelDetail(modelName?: string, selectedBranch?: string) {
   const { coreSDK } = useContext(ExtensionContext)
   const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
   const [modelError, setModelError] = useState<boolean>(false)
@@ -181,7 +182,7 @@ export function useModelDetail(modelName?: string) {
     fetcher().catch(()=>{
       setModelError(true)
     })
-  }, [coreSDK, modelName])
+  }, [coreSDK, modelName, selectedBranch])
   return { modelDetail, modelError, setModelError }
 }
 
@@ -190,43 +191,3 @@ export interface DetailedModel {
   explores: ILookmlModelExplore[]
 }
 
-export function getExtLog() {
-  const extensionContext = useContext<ExtensionContextData>(ExtensionContext)
-  const { extensionSDK, initializeError } = extensionContext
-  const [extensionLog, extensionLoggerState] = useState<{diagramLog:any,diagramPersist:any}>({diagramLog: [], diagramPersist: {}})
-
-  const extensionLogger = async (newMetadata: any): Promise<void> => {
-    try {
-      // let staging = extensionLog.push(newMetadata)
-      let staging = extensionLog
-      staging.diagramLog.push(...newMetadata)
-      await extensionSDK.saveContextData(staging)
-      extensionLoggerState(staging)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const extensionPersistDiagram = async (newMetadata: any): Promise<void> => {
-    try {
-      // let staging = extensionLog.push(newMetadata)
-      let staging = extensionLog
-      staging.diagramPersist = newMetadata
-      await extensionSDK.saveContextData(staging)
-      extensionLoggerState(staging)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    const initialize = async () => {
-      let context
-      context = await extensionSDK.getContextData() || extensionLog
-      extensionLoggerState(context)
-    }
-    initialize()
-  }, [])
-
-  return { extensionLog, extensionLogger, extensionPersistDiagram }
-}

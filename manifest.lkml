@@ -7,7 +7,7 @@ application: lookml-diagram {
     local_storage: yes
     navigation: yes
     new_window: yes
-    core_api_methods: ["run_inline_query", "lookml_model_explore", "all_lookml_models", "all_users", "me", "search_groups"]
+    core_api_methods: ["run_inline_query", "lookml_model_explore", "all_lookml_models", "all_users", "me", "search_groups", "git_branch", "all_git_branches", "update_git_branch"]
   }
 }
 

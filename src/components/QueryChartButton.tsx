@@ -44,9 +44,6 @@ export const QueryChartButton: React.FC<{
   return (
     <FlexItem pb="medium">
       <FlexItem mb="medium">
-        {/* <Text fontSize="medium" fontWeight={"medium"}>
-          {title}
-        </Text> */}
       </FlexItem>
       <ButtonOutline
         iconBefore="CacheRefresh"

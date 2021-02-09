@@ -76,28 +76,16 @@ export function useCurrentExplore() {
   return useExplore(modelName, exploreName)
 }
 
-export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, displayFieldType: string) {
-  var start = performance.now()
+export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, displayFieldType: string, selectedBranch: string) {
   const { modelName, exploreName } = usePathNames()
   // get model and all explore info
-  let {modelDetail, modelError, setModelError} = useModelDetail(modelName)
+  let {modelDetail, modelError, setModelError} = useModelDetail(modelName, selectedBranch)
   // calculate diagram dimensions
   let dimensions = getDiagramDimensions(modelDetail, diagramPersist, hiddenToggle, displayFieldType)
-  var end = performance.now()
-  var time = end - start;
   let explore = modelDetail && modelDetail.explores.filter(d=>{
     return d.name === exploreName
   })[0]
-  let metadata = {
-    source: "useSelectExplore",
-    date: new Date().toISOString(),
-    duration: time, 
-    model: modelName,
-    explore: exploreName,
-    joins: explore && explore.joins.length,
-    fields: explore && (explore.fields.dimensions.length + explore.fields.measures.length),
-  };
-  return {modelDetail, exploreName, metadata, dimensions, modelError, setModelError}
+  return {modelDetail, exploreName, dimensions, modelError, setModelError}
 }
 
 export function useCurrentModel() {

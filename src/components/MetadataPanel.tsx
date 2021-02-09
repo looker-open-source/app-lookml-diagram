@@ -27,6 +27,7 @@ import {
 import styled from "styled-components";
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { ExternalLink } from "./ExternalLink"
+import JoinIcon from "./JoinIcon"
 import MetadataPanelTable from "./MetadataPanelTable"
 import { METADATA_PANEL_PIXEL } from "../utils/constants"
 import { LookmlObjectMetadata } from "./interfaces"
@@ -190,14 +191,8 @@ const MetadataPanel: React.FC<{
         {metadata.joinType && 
         <Badge intent="neutral" size="medium">
           <Flex alignItems="center">
-          <img
-            src={
-              `https://marketplace-api.looker.com/staging/app-assets/join-${metadata.joinIconType}.svg`
-            }
-            aria-hidden="true"
-            style={{height: "24px"}}
-          />
-          <PillText>{metadata.joinType}</PillText>
+            <JoinIcon type={metadata.joinIconType}/>
+            <PillText>{metadata.joinType}</PillText>
           </Flex>
         </Badge>}
         {metadata.joinRelationship && <Badge intent="neutral" size="medium"><PillText>{metadata.joinRelationship}</PillText></Badge>}

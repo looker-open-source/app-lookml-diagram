@@ -140,8 +140,6 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     .append("g")
     .attr("class", "join-"+joinData[0].joinName)
 
-    // TODO: refactor for readability, testability
-    // Add an untangling "extension" to join-part
     let joinTables = joinPath.map((d: any) => { return d.viewName})
     let terminalAlign = joinTables.filter(onlyUnique)
     let degreeAligned = [...terminalAlign]
@@ -374,9 +372,6 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     .text(joinTypeLabel)
     .attr("transform", `translate(${cX}, ${lY + 48})`);
 
-    // d3.curveBundle.beta(1)
-
-    // TODO: extract to function
     // Draw hover element for join-part path
     let drawnJoinHover = join.append("path")
     .datum(tableJoinPath)
@@ -410,7 +405,6 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       })
     })
 
-    // TODO: refactor for readability, testability
     // Draw all join-path field connectors
     joinPath.forEach((joinField: any, i: number) => {
       let connectorSize = (JOIN_CONNECTOR_WIDTH * 0.7)
