@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --no-inline --no-hot --mode=development",
     "test": "jest",
-    "build": "webpack --mode=development",
+    "build": "webpack --mode=production",
     "lint": "eslint 'src/components/*.ts{,x}'",
     "lint-fix": "eslint 'src/components/*.ts{,x}' --fix"
   },

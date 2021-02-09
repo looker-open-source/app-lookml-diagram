@@ -2,7 +2,7 @@ project_name: "app-lookml-diagram"
 
 application: lookml-diagram {
   label: "LookML Diagram"
-  url: "https://marketplace-api.looker.com/staging/app-assets/lookml_diagram_df.js"
+  url: "https://marketplace-api.looker.com/app-assets/lookml_diagram.js"
   entitlements: {
     local_storage: yes
     navigation: yes
