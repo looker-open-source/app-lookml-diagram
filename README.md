@@ -10,7 +10,7 @@
   ```
   application: lookml-diagram-dev {
     label: "LookML Diagram (dev)"
-    uri: "https://localhost:8080/bundle.js"
+    url: "https://localhost:8080/bundle.js"
   }
   ```
   

@@ -41,11 +41,6 @@ export const MetadataItem = ({
   if (compact) {
     return (
       <Flex>
-        {/* <FlexItem flex="0 0 auto" pb="small">
-          <Text fontSize="medium" fontWeight="medium">
-            {label}
-          </Text>
-        </FlexItem> */}
         <FlexItem textAlign="right" flex="1 1 auto">
           <Text fontSize="small">{children}</Text>
         </FlexItem>
@@ -56,11 +51,6 @@ export const MetadataItem = ({
       <Box>
         <Box>
           <Flex>
-            {/* <FlexItem flex="0 0 auto" pb="small">
-              <Text fontSize="medium" fontWeight="medium">
-                {label}
-              </Text>
-            </FlexItem> */}
             {aux && (
               <FlexItem textAlign="right" flex="1 1 auto">
                 <Text fontSize="small">

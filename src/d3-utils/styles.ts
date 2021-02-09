@@ -13,6 +13,7 @@ export function truncateLabel(text: string) {
   }
   return text
 }
+
 export function getLabel(field: any) {
   if (field.category === "view") {
     return truncateLabel(field.view)

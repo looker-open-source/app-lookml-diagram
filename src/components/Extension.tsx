@@ -26,14 +26,13 @@
 
 import React from "react"
 import { ComponentsProvider, theme } from "@looker/components"
-import { LookmlDiagram } from "./LookmlDiagram"
+import { DiagramFrame } from "./DiagramFrame"
 
 export const Extension: React.FC = () => {
-  let metaBuffer: any[] = [];
   return (
   <ComponentsProvider themeCustomizations={{
     colors: { key: "rgb(45, 126, 234)" },
   }}>
-    <LookmlDiagram metaBuffer={metaBuffer}/>
+    <DiagramFrame />
   </ComponentsProvider>
 )}

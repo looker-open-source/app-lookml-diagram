@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import {
   Box,
+  Badge,
   ButtonTransparent,
   CodeBlock,
   Code,
   Chip,
   Flex,
   FlexItem,
+  Heading,
   Text,
   SpaceVertical,
   Paragraph,
@@ -25,6 +27,7 @@ import {
 import styled from "styled-components";
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { ExternalLink } from "./ExternalLink"
+import JoinIcon from "./JoinIcon"
 import MetadataPanelTable from "./MetadataPanelTable"
 import { METADATA_PANEL_PIXEL } from "../utils/constants"
 import { LookmlObjectMetadata } from "./interfaces"
@@ -70,9 +73,13 @@ const JoinPill = styled(Chip as any)`
   border-radius: 20px;
 `
 
-const PillText = styled(FlexItem as any)`
-  font-family: monospace;
-`
+// const PillText = styled(FlexItem as any)`
+//   font-family: monospace;
+// `
+
+const PillText:React.FC = ({children}) => {
+  return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>
+}
 
 function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   let startLine = `join: ${join.name.toLowerCase()} {\n`
@@ -175,44 +182,42 @@ const MetadataPanel: React.FC<{
   }
 	return (
   <MetadataInfoPanel width={`${METADATA_PANEL_PIXEL}px`} px="medium" py="large">
-    <SpaceVertical>
+    <SpaceVertical gap="xlarge">
       {/* NAME */}
-      <Text fontSize="xxlarge" style={{fontWeight: 600}}>{metadata.name}</Text>
+      <Heading fontSize="xlarge" style={{fontWeight: 600}}>{metadata.name}</Heading>
 
       {/* PILLS */}
-      <Flex>
-        {metadata.joinType && <FlexItem pr="small">
-        <JoinPill disabled>
+      <Space gap="xsmall">
+        {metadata.joinType && 
+        <Badge intent="neutral" size="medium">
           <Flex alignItems="center">
-          <FlexItem><img
-            src={
-              `https://marketplace-api.looker.com/staging/app-assets/join-${metadata.joinIconType}.svg`
-            }
-            alt={metadata.joinType + " Icon"}
-            height={"35px"}
-            style={{height: "35px"}}
-          /></FlexItem>
-          <PillText>{metadata.joinType}</PillText>
+            <JoinIcon type={metadata.joinIconType}/>
+            <PillText>{metadata.joinType}</PillText>
           </Flex>
-        </JoinPill></FlexItem>}
-        {metadata.joinRelationship && <FlexItem><JoinPill disabled><PillText>{metadata.joinRelationship}</PillText></JoinPill></FlexItem>}
-        {metadata.fieldType && <PillText pr="small">
-          <JoinPill disabled><PillText>
-          {metadata.fieldType}</PillText>
-          </JoinPill>
-        </PillText>}
-        {metadata.fieldCategory && <FlexItem pr="small">
-          <JoinPill disabled>
-          <PillText>
-          {metadata.fieldCategory}</PillText>
-          </JoinPill>
-        </FlexItem>}
-        {metadata.primaryKey && <FlexItem pr="small">
-          <JoinPill disabled>
-            <Tooltip content="Primary Key" placement="top-start"><Icon name="Key"/></Tooltip>
-          </JoinPill>
-        </FlexItem>}
-      </Flex>
+        </Badge>}
+        {metadata.joinRelationship && <Badge intent="neutral" size="medium"><PillText>{metadata.joinRelationship}</PillText></Badge>}
+        {metadata.fieldType && 
+          <Badge intent="neutral" size="medium">
+            <PillText>
+              {metadata.fieldType}
+            </PillText>
+          </Badge>
+        }
+        {metadata.fieldCategory && 
+          <Badge intent="neutral" size="medium">
+            <PillText>
+              {metadata.fieldCategory}
+            </PillText>
+          </Badge>
+        }
+        {metadata.primaryKey && 
+          <Badge intent="neutral" size="medium">
+            <Space gap="xsmall">
+              <Icon name="Key" size="xsmall" />
+              <PillText>Primary Key</PillText>
+            </Space>
+          </Badge>}
+      </Space>
 
       {/* DESCRIPTION */}
       {metadata.description && (

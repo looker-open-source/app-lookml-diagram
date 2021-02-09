@@ -2,7 +2,7 @@ import { DetailedModel } from "./fetchers";
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/sdk/4.0/models"
 import { exploreFieldURL } from "./urls";
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
-import { TABLE_VERTICAL_PADDING, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "./constants";
+import { TABLE_VERTICAL_PADDING, TABLE_WIDTH, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "./constants";
 
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
   let fields = [...exploreFields.dimensions, ...exploreFields.measures]
@@ -281,4 +281,51 @@ export function getDiagramDimensions(details: DetailedModel, diagramPersist: any
     modifiedDetails.push(modifiedDetail)
   })
   return modifiedDetails
+}
+
+export function getMinimapDimensions(setModelError: (toggle: boolean) => void, modelError: boolean, currentDimensions: any) {
+  let median: number
+  let minDegree: number
+  let maxDegree: number
+
+  let maxLength = 0
+
+  if (!modelError && currentDimensions) {
+    let currentDegrees = currentDimensions && Object.keys(currentDimensions.diagramDict._yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
+    minDegree = currentDimensions && Math.min(...currentDegrees)
+    maxDegree = currentDimensions && Math.max(...currentDegrees)
+  
+    let len = currentDegrees && currentDegrees.length
+  
+    let mid = currentDegrees && Math.ceil(len / 2);
+  
+    median = ((len % 2) == 0) ? (currentDegrees[mid] + currentDegrees[mid - 1]) / 2 : currentDegrees[mid - 1];
+
+    Object.keys(currentDimensions.diagramDict._yOrderLookup).forEach((d: string) => {
+      let degreeTablesLength = currentDimensions.diagramDict._yOrderLookup[d].map((tableName: string) => {
+        let undefModel = typeof(currentDimensions.diagramDict[tableName]) === "undefined"
+        undefModel && setModelError(true)
+        return undefModel || currentDimensions.diagramDict[tableName].length + TABLE_VERTICAL_PADDING
+      }).reduce((a: number, b: number) => a + b, 0)
+      if (degreeTablesLength > maxLength) {
+        maxLength = degreeTablesLength
+      }
+    })
+  }
+  let verticalCheck = 150 / (maxLength * (TABLE_ROW_HEIGHT + DIAGRAM_FIELD_STROKE_WIDTH))
+  let horizontalCheck = 300 / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
+  let minimapScale = Math.min(verticalCheck, horizontalCheck)
+
+  let medianCorrection = median > 0 
+  ? -1 * median * TABLE_PADDING
+  : Math.abs(median) * TABLE_PADDING
+
+  let minimapX = 150 - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
+  let minimapY = (Math.max(Math.abs(minDegree), Math.abs(maxDegree)) + 1) * (TABLE_DEGREE_STEP * -1)
+
+  let defaultMinimap = Math.max(Math.abs(minDegree), Math.abs(maxDegree)) > 2 || maxLength > 40 ? true : false
+
+  return {
+    minimapScale, minimapX, minimapY, defaultMinimap
+  }
 }
