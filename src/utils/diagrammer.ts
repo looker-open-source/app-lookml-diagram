@@ -1,8 +1,35 @@
-import { DetailedModel } from "./fetchers";
+import { DetailedModel, DiagramError } from "./fetchers";
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/sdk/4.0/models"
 import { exploreFieldURL } from "./urls";
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
 import { TABLE_VERTICAL_PADDING, TABLE_WIDTH, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "./constants";
+
+export interface DiagramField extends ILookmlModelExploreField {
+  diagramX: number
+  diagramY: number
+  fieldTypeIndex: number
+  diagramDegree: number
+  verticalIndex: number
+}
+
+export interface DiagramJoin {
+  viewName: string 
+  fieldIndex: number
+  selector: string
+  type: string
+  joinName: string
+  joinObj: ILookmlModelExploreJoins
+}
+
+type DiagramTables = {
+  [key: string]: DiagramField[]
+}
+
+export interface DiagramMetadata {
+  joinData: DiagramJoin[][]
+  yOrderLookup: any
+  tableData: DiagramTables
+}
 
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
   let fields = [...exploreFields.dimensions, ...exploreFields.measures]
@@ -34,8 +61,11 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   let fields = getFields(exploreFields)
   let views = getViews(exploreFields, joins, explore.name)
 
-  // TODO: type diagramDict
-  let diagramDict: any = {}
+  let diagramDict: DiagramMetadata = {
+    joinData: [],
+    yOrderLookup: {},
+    tableData: {}
+  }
 
   let joinSql = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
     return join.sql_on
@@ -61,13 +91,13 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     let groupLabels = groupedFields.map((f: any) => {
       return f.dimension_group
     }).filter(onlyUnique)
-    let grouplessFilteredFields: any[] = []
+    let grouplessFilteredFields: DiagramField[] = []
     filteredFields.forEach((f: any) => {
       if (!f.dimension_group) {
         grouplessFilteredFields.push(f)
       } else {
         let flatYet = grouplessFilteredFields.filter((ff: any) => {
-          return ff.name === f.dimension_group
+          return ff.name === f.dimension_group && ff.dimension_group === f.dimension_group
         })
         if (flatYet.length === 0) {
           grouplessFilteredFields.push({...f, name: f.dimension_group})
@@ -79,7 +109,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       return e.view === viewName && e.category === "dimension"
     }).length
 
-    diagramDict[viewName] = [
+    diagramDict.tableData[viewName] = [
       {category:"view", view: viewName, name: viewName, base: explore.name === viewName || explore.view_name === viewName, diagramX: 0, diagramY: 0, fieldTypeIndex: 0},
       ...grouplessFilteredFields.map((datum: any, i: number) => {
         datum.diagramX = 0,
@@ -90,14 +120,52 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     ]
   })
   // Add join data to DiagramDict
-  diagramDict._joinData = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
-    let joinPath: any[] = []
-    if (join.dependent_fields.length > 0) {
+  diagramDict.joinData = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
+    let joinPath: DiagramJoin[] = []
+    if (join.foreign_key) {
+      let baseTableRef = join.foreign_key.includes(".") ? join.foreign_key.split(".")[0] : explore.name
+      let baseTableLookup = join.foreign_key.includes(".") ? join.foreign_key : (explore.name + "." + join.foreign_key)
+      let tableRef = diagramDict.tableData[baseTableRef]
+      let fieldIndex = tableRef && tableRef.findIndex((x: any) => {
+        return x.name === baseTableLookup
+      })
+      if (fieldIndex === -1) {
+        // If the field doesn't exist in the diagram view fieldset, 
+        // point to the diagram view header.
+        fieldIndex = 0
+      }
+      let pkRef = diagramDict.tableData[join.name]
+      let pkFieldIndex = pkRef && pkRef.findIndex((x: any) => {
+        return x.primary_key === true
+      })
+      if (pkFieldIndex === -1) {
+        // If the field doesn't exist in the diagram view fieldset, 
+        // point to the diagram view header.
+        pkFieldIndex = 0
+      }
+      joinPath.push({
+        viewName: join.name, 
+        fieldIndex: pkFieldIndex,
+        selector: pkRef[pkFieldIndex].name.replace(".","-"),
+        type: "core",
+        joinName: join.name,
+        joinObj: join,
+      })
+      joinPath.push({
+        viewName: baseTableRef, 
+        fieldIndex: fieldIndex,
+        selector: tableRef[fieldIndex].name.replace(".","-"),
+        type: "core",
+        joinName: join.name,
+        joinObj: join,
+      })
+    }
+    else if (join.dependent_fields.length > 0) {
       join.dependent_fields.forEach((field: string, depFieldIndex: number) => {
         let joinFieldArr = field.split(".")
-        let tableRef = diagramDict[joinFieldArr[0]]
+        let tableRef = diagramDict.tableData[joinFieldArr[0]]
         let fieldIndex = tableRef && tableRef.findIndex((x: any) => {
-          return x.name === field || (x.name.includes(".") && field.includes(x.name))
+          return x.name === field || (x.name.includes(".") && field === x.name) || (x.name.includes(".") && x.dimension_group && field.includes(x.dimension_group))
         })
         if (fieldIndex === -1) {
           // If the field doesn't exist in the diagram view fieldset, 
@@ -108,6 +176,23 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
           viewName: joinFieldArr[0], 
           fieldIndex: fieldIndex,
           selector: field.replace(".","-"),
+          type: "core",
+          joinName: join.name,
+          joinObj: join,
+        })
+
+        !join.sql_on && joinPath.push({
+          viewName: joinFieldArr[0], 
+          fieldIndex: fieldIndex,
+          selector: field.replace(".","-"),
+          type: "core",
+          joinName: join.name,
+          joinObj: join,
+        })
+        !join.sql_on && joinPath.push({
+          viewName: join.name, 
+          fieldIndex: 0,
+          selector: join.name.replace(".","-"),
           type: "core",
           joinName: join.name,
           joinObj: join,
@@ -135,9 +220,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     return joinPath
   })
   let joinCount: any = {}
-  diagramDict._joinData.sort(function (a: any, b: any) {
-    return a.viewName > b.viewName || a.fieldIndex > b.fieldIndex;
-  }).map((join: any) => {
+  diagramDict.joinData.map((join: any) => {
     let joinTables = join.map((joinField: any)=>{return joinField.viewName}).filter(onlyUnique)
     joinTables.forEach((tableName: string) => {
       joinCount[tableName] ? joinCount[tableName] = joinCount[tableName] + 1 : joinCount[tableName] = 1
@@ -153,7 +236,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   let scaffold: any = {}
   buildOrder.map((viewName: string)=>{
     let joined: any[] = []
-    diagramDict._joinData.map((join: any)=>{
+    diagramDict.joinData.map((join: any)=>{
       let shouldBuild = join.map((joinElement: any) => {
         if (joinElement.viewName === viewName) {return true}
         return false
@@ -167,7 +250,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       let aBaseObj: any = {}
       let bObj: any = {}
       let bBaseObj: any = {}
-      diagramDict._joinData.forEach((j: any) => {
+      diagramDict.joinData.forEach((j: any) => {
         j.forEach((jf: any) => {
           if (jf.joinName === a && jf.viewName === a) {
             Object.assign(aObj, jf)
@@ -185,12 +268,12 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
 
       let bIndex = bBaseObj.fieldIndex
 
-      let aName = diagramDict[a] ? a : explore.name
-      let bName = diagramDict[b] ? b : explore.name
+      let aName = diagramDict.tableData[a] ? a : explore.name
+      let bName = diagramDict.tableData[b] ? b : explore.name
 
       if (aIndex < bIndex) {
         return -1
-      } else if (aIndex === bIndex && diagramDict[aName].length < diagramDict[bName].length) {
+      } else if (aIndex === bIndex && diagramDict.tableData[aName].length < diagramDict.tableData[bName].length) {
         return -1
       }
       return 1
@@ -210,7 +293,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   // A recursive function for arranging the diagram tables
   function arrangeTables(table: string, degree: number) {
     let calcX = getTableX(degree)
-    let tableLen = diagramDict[table] ? diagramDict[table].length : 1
+    let tableLen = diagramDict.tableData[table] ? diagramDict.tableData[table].length : 1
 
     shift[degree] = typeof(shift[degree]) !== 'undefined'
     ? shift[degree] + TABLE_VERTICAL_PADDING + tableLen
@@ -222,7 +305,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
 
     let calcY = ((shift[degree] - tableLen) * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
 
-    diagramDict[table] = diagramDict[table] && diagramDict[table].map((field: any, i: number) => {
+    diagramDict.tableData[table] = diagramDict.tableData[table] && diagramDict.tableData[table].map((field: any, i: number) => {
       return {
         ...field,
         diagramX: calcX,
@@ -232,7 +315,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       }
     })
 
-    diagramDict[table] && built.push(table)
+    diagramDict.tableData[table] && built.push(table)
     scaffold[table] && scaffold[table].forEach((t: string, i: number) => {
       // Assign the next degree for each table joined to the current
       // If current degree = 0, flip tables L and R
@@ -253,7 +336,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     })
   }
   
-  let seed = diagramDict[explore.name] ? explore.name : buildOrder[0]
+  let seed = diagramDict.tableData[explore.name] ? explore.name : buildOrder[0]
   seed && arrangeTables(seed, 0)
 
   // arrange any "stranded" views -- views not joined to the base view
@@ -264,7 +347,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     build[0] && arrangeTables(build[0], 0)
   }
 
-  diagramDict._yOrderLookup = yOrder
+  diagramDict.yOrderLookup = yOrder
 
   return diagramDict
 }
@@ -283,7 +366,7 @@ export function getDiagramDimensions(details: DetailedModel, diagramPersist: any
   return modifiedDetails
 }
 
-export function getMinimapDimensions(setModelError: (toggle: boolean) => void, modelError: boolean, currentDimensions: any) {
+export function getMinimapDimensions(setModelError: (err: DiagramError) => void, modelError: DiagramError, currentDimensions: DiagramMetadata) {
   let median: number
   let minDegree: number
   let maxDegree: number
@@ -291,7 +374,7 @@ export function getMinimapDimensions(setModelError: (toggle: boolean) => void, m
   let maxLength = 0
 
   if (!modelError && currentDimensions) {
-    let currentDegrees = currentDimensions && Object.keys(currentDimensions.diagramDict._yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
+    let currentDegrees = currentDimensions && Object.keys(currentDimensions.yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
     minDegree = currentDimensions && Math.min(...currentDegrees)
     maxDegree = currentDimensions && Math.max(...currentDegrees)
   
@@ -301,11 +384,11 @@ export function getMinimapDimensions(setModelError: (toggle: boolean) => void, m
   
     median = ((len % 2) == 0) ? (currentDegrees[mid] + currentDegrees[mid - 1]) / 2 : currentDegrees[mid - 1];
 
-    Object.keys(currentDimensions.diagramDict._yOrderLookup).forEach((d: string) => {
-      let degreeTablesLength = currentDimensions.diagramDict._yOrderLookup[d].map((tableName: string) => {
-        let undefModel = typeof(currentDimensions.diagramDict[tableName]) === "undefined"
-        undefModel && setModelError(true)
-        return undefModel || currentDimensions.diagramDict[tableName].length + TABLE_VERTICAL_PADDING
+    Object.keys(currentDimensions.yOrderLookup).forEach((d: string) => {
+      let degreeTablesLength = currentDimensions.yOrderLookup[d].map((tableName: string) => {
+        let undefModel = typeof(currentDimensions.tableData[tableName]) === "undefined"
+        undefModel && setModelError({kind: "general"})
+        return undefModel || currentDimensions.tableData[tableName].length + TABLE_VERTICAL_PADDING
       }).reduce((a: number, b: number) => a + b, 0)
       if (degreeTablesLength > maxLength) {
         maxLength = degreeTablesLength

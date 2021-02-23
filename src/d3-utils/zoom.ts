@@ -15,6 +15,7 @@ export function addZoom(
   setViewPosition: (positionPacket: any) => void,
   type: string
   ) {
+  // canvas zoom handler function
   var zoom = d3.zoom()
   .scaleExtent([ZOOM_MIN, ZOOM_MAX])
   .on('zoom', function(event) {
@@ -33,7 +34,9 @@ export function addZoom(
     }
   })
 
+  // Init handler to last render's position, or initial position
   svg.call(zoom.transform, d3.zoomIdentity.translate(viewPosition.x, viewPosition.y).scale(zoomFactor))
 
+  // Invoke handler on svg
   svg.call(zoom);
 }

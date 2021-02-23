@@ -1,28 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  Box,
-  ButtonTransparent,
-  CodeBlock,
-  Code,
-  Chip,
   Flex,
   FlexItem,
   Text,
-  SpaceVertical,
-  Paragraph,
-  Aside,
-  Footer,
-  Icon,
-  Space,
   theme
 } from "@looker/components"
 import styled from "styled-components";
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
-import { ExternalLink } from "./ExternalLink"
-import { METADATA_PANEL_PIXEL } from "../utils/constants"
 import { LookmlObjectMetadata } from "./interfaces"
-import { ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
-import { getFields } from '../utils/diagrammer'
 import { canGetDistribution, canGetTopValues } from "../utils/queries"
 import { QueryChart } from "./QueryChart"
 

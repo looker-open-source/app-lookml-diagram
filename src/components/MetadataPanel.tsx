@@ -34,7 +34,7 @@ import { LookmlObjectMetadata } from "./interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields } from '../utils/diagrammer'
 import { exploreFieldURL } from '../utils/urls'
-import { useViewExplore } from '../utils/fetchers'
+import { useExplore } from '../utils/fetchers'
 
 const MetadataInfoPanel = styled(Aside as any)`
   border-left: solid 1px ${(props) => props.theme.colors.ui2};
@@ -86,20 +86,52 @@ function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   let typeLine = join.type && `  type: ${join.type}\n`
   let relationLine = join.relationship && `  relationship: ${join.relationship}\n`
   let sqlLine = join.sql_on && `  sql_on: ${join.sql_on} ;;\n`
+  let fkLine = join.foreign_key && `  foreign_key: ${join.foreign_key} \n`
   let endLine = `}`
-  return [startLine, typeLine, relationLine, sqlLine, endLine].filter(Boolean).join("")
+  return [startLine, typeLine, relationLine, sqlLine, fkLine, endLine].filter(Boolean).join("")
+}
+
+let dateOrDuration = (type: string) => (type.includes("date_") || type.includes("duration_"))
+
+let getSqlType = (type: string) => {
+  if (type.includes("date_")) {
+    return "time"
+  } else if (type.includes("duration_")) {
+    return "duration"
+  }
+  return type
 }
 
 function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any) {
-  let startLine = `${field.category}: ${field.name.split(".")[1].toLowerCase()} {\n`
+  let blobStart = dateOrDuration(field.type) ? "dimension_group" : field.category
+  let startLine = `${blobStart}: ${getFieldName(field.name, field.type)} {\n`
   let keyLine = field.primary_key && `  primary_key: yes\n`
-  let typeLine = field.type && `  type: ${field.type}\n`
+  let typeLine = field.type && `  type: ${getSqlType(field.type)}\n`
   let vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
-  let tfLine = field.type.includes("date") && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
+  let tfLine = dateOrDuration(field.type) && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
   let sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
   let mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
   let endLine = `}`
   return [startLine, keyLine, typeLine, vfLine, tfLine, sqlLine, mapLayerLine, endLine].filter(Boolean).join("")
+}
+
+function getFieldType(type: string) {
+  if (type.includes("_DATE")) {
+    return "DATE"
+  } else if (type.includes("DURATION_")) {
+    return "DURATION"
+  }
+  return type
+}
+
+function getFieldName(name: string, type: string) {
+  name = name.split(".")[1].toLowerCase()
+  if (type.includes("duration_")) {
+    return name.split("_")[1]
+  } else if (name.includes("_date") && type.includes("_date")) {
+    return name.split("_date")[0]
+  }
+  return name
 }
 
 const MetadataPanel: React.FC<{
@@ -143,21 +175,22 @@ const MetadataPanel: React.FC<{
       joinRelationship: joinObj.relationship && joinObj.relationship.replace(/_/g, " ").toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "dimension" || selectionInfo.lookmlElement === "measure") {
+    let nameRegex = new RegExp(selectionInfo.name.replace(".",".*"))
     let fields = getFields(explore.fields).filter((field: any) => {
-      return field.name === selectionInfo.name || field.dimension_group === selectionInfo.name
+      return (field.name === selectionInfo.name || field.name.includes(selectionInfo.name) || nameRegex.test(field.name)) && field.dimension_group === selectionInfo.grouped
     })
     let timeframes = fields.map((f: any) => {
-      return f.type.includes("date_") && f.type.replace("date_", "")
+      return f.type.includes("date_") && f.type.replace("date_", "") || f.type.includes("duration_") && f.type.replace("duration_", "")
     })
     field = fields[0]
     // @ts-ignore
     let lookmlLink = field.lookml_link
     let tf = !timeframes.includes(false) ? timeframes : []
     metadata = {
-      name: field.name.split(".")[1],
+      name: getFieldName(field.name, field.type),
       fieldName: field.name.split(".")[0],
       lookmlLink: lookmlLink,
-      fieldType: field.type.toUpperCase(),
+      fieldType: getFieldType(field.type.toUpperCase()),
       description: field.description,
       label: field.label,
       timeframes: !timeframes.includes(false) ? timeframes : [],
@@ -171,7 +204,7 @@ const MetadataPanel: React.FC<{
       fieldCategory: field.category.toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "view") {
-    let viewResponse = useViewExplore(explore.model_name, selectionInfo.name)
+    let viewResponse = useExplore(explore.model_name, selectionInfo.name)
     // @ts-ignore
     let lookmlLink = explore.lookml_link
     metadata = {

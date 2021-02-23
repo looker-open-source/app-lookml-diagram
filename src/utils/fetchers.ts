@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
-import { ExtensionContext, ExtensionContextData } from "@looker/extension-sdk-react"
-import { Looker31SDK as LookerSDK, Looker31SDK,  } from '@looker/sdk/lib/sdk/3.1/methods'
-import { ILookmlModel, ILookmlModelExplore, IUser, IGroup, IError, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
-import { FieldComments, CommentPermissions } from "../../src/components/interfaces";
-import { delay } from "lodash";
+import { ExtensionContext } from "@looker/extension-sdk-react"
+import { Looker31SDK as LookerSDK  } from '@looker/sdk/lib/sdk/3.1/methods'
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 
 const globalCache: any = {}
 
@@ -25,6 +23,77 @@ export async function loadCached<T>(
   }
 }
 
+export interface DetailedModel {
+  model: ILookmlModel
+  explores: ILookmlModelExplore[]
+}
+
+export interface DiagramError {
+  kind: string
+}
+
+// user fetchers
+
+export const getMyUser = async (sdk: LookerSDK) => {
+  return sdk.ok(sdk.me())
+}
+
+// lookml model explore fetchers
+
+export const loadAllModels = async (sdk: LookerSDK) => {
+  return loadCached("all_lookml_models", () => sdk.ok(sdk.all_lookml_models()))
+}
+
+export function useAllModels() {
+  const { coreSDK } = useContext(ExtensionContext)
+  const [allModels, allModelsSetter] = useState<ILookmlModel[] | undefined>(undefined)
+  useEffect(() => {
+    async function fetcher() {
+      allModelsSetter(await loadAllModels(coreSDK))
+    }
+    fetcher()
+  }, [coreSDK])
+  return allModels
+}
+
+export const loadModel = async (sdk: LookerSDK, modelName: string) => {
+  return (await loadAllModels(sdk)).find(m => m.name === modelName)
+}
+
+export async function loadModelDetail(
+  sdk: LookerSDK,
+  modelName: string,
+  setModelError: (err: DiagramError) => void
+): Promise<DetailedModel> {
+  const model = await loadModel(sdk, modelName)
+  const explores = await Promise.all(
+    model.explores.map(explore => {
+      return loadCachedExplore(sdk, model.name, explore.name)
+    })
+  ).catch(()=>setModelError({kind: "notFound"})) || []
+  return {
+    model,
+    explores
+  }
+}
+
+export function useModelDetail(modelName?: string, selectedBranch?: string) {
+  const { coreSDK } = useContext(ExtensionContext)
+  const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
+  const [modelError, setModelError] = useState<DiagramError | undefined>(undefined)
+  useEffect(() => {
+    async function fetcher() {
+      if (modelName) {
+        setModelDetail(await loadModelDetail(coreSDK, modelName, setModelError))
+      }
+    }
+    fetcher().catch(()=>{
+      setModelError({kind: "general"})
+    })
+  }, [coreSDK, modelName, selectedBranch])
+  return { modelDetail, modelError, setModelError }
+}
+
 export const loadCachedExplore = async (
   sdk: LookerSDK,
   modelName: string,
@@ -35,9 +104,24 @@ export const loadCachedExplore = async (
   )
 }
 
-export const loadAllModels = async (sdk: LookerSDK) => {
-  return loadCached("all_lookml_models", () => sdk.ok(sdk.all_lookml_models()))
+export function useExplore(modelName?: string, exploreName?: string) {
+  const { coreSDK } = useContext(ExtensionContext)
+  const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
+  const [loadingExplore, loadingExploreSetter] = useState(exploreName)
+  useEffect(() => {
+    async function fetcher() {
+      if (modelName && exploreName) {
+        loadingExploreSetter(exploreName)
+        exploreSetter(await loadCachedExplore(coreSDK, modelName, exploreName))
+        loadingExploreSetter(null)
+      }
+    }
+    fetcher()
+  }, [coreSDK, modelName, exploreName])
+  return { loadingExplore, currentExplore }
 }
+
+// git fetchers
 
 export const getActiveBranch = async (sdk: LookerSDK, projectId: string) => {
   return sdk.ok(sdk.git_branch(projectId))
@@ -53,22 +137,6 @@ export const changeBranch = async (sdk: LookerSDK, projectId: string, gitName: s
       name: gitName,
       ref: gitRef
     }))
-}
-
-export const getMyUser = async (sdk: LookerSDK) => {
-  return sdk.ok(sdk.me())
-}
-
-export function useAllModels() {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [allModels, allModelsSetter] = useState<ILookmlModel[] | undefined>(undefined)
-  useEffect(() => {
-    async function fetcher() {
-      allModelsSetter(await loadAllModels(coreSDK))
-    }
-    fetcher()
-  }, [coreSDK])
-  return allModels
 }
 
 export function getActiveGitBranch(projectId: string) {
@@ -107,87 +175,3 @@ export function setGitBranch(projectId: string, gitName: string, gitRef: string)
   }, [coreSDK, projectId, gitName, gitRef])
   return newBranch
 }
-
-export function useExplore(modelName?: string, exploreName?: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
-  const [loadingExplore, loadingExploreSetter] = useState(exploreName)
-  useEffect(() => {
-    async function fetcher() {
-      if (modelName && exploreName) {
-        loadingExploreSetter(exploreName)
-        exploreSetter(await loadCachedExplore(coreSDK, modelName, exploreName))
-        loadingExploreSetter(null)
-      }
-    }
-    fetcher()
-  }, [coreSDK, modelName, exploreName])
-  return { loadingExplore, currentExplore }
-}
-
-export function useViewExplore(modelName?: string, exploreName?: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
-  const [loadingExplore, loadingExploreSetter] = useState(exploreName)
-  useEffect(() => {
-    async function fetcher() {
-      if (modelName && exploreName) {
-        loadingExploreSetter(exploreName)
-        exploreSetter(await loadCachedExplore(coreSDK, modelName, exploreName))
-        loadingExploreSetter(null)
-      }
-    }
-    fetcher()
-    .catch(console.error)
-  }, [coreSDK, modelName, exploreName])
-  return { currentExplore }
-}
-
-export const loadModel = async (sdk: LookerSDK, modelName: string) => {
-  return (await loadAllModels(sdk)).find(m => m.name === modelName)
-}
-
-export async function loadModelDetail(
-  sdk: LookerSDK,
-  modelName: string
-): Promise<DetailedModel> {
-  const model = await loadModel(sdk, modelName)
-  const explores = await Promise.all(
-    model.explores.map(explore => {
-      return loadCachedExplore(sdk, model.name, explore.name)
-    })
-  )
-  return {
-    model,
-    explores
-  }
-}
-
-export async function wait(ms: number) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms);
-  });
-}
-
-export function useModelDetail(modelName?: string, selectedBranch?: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
-  const [modelError, setModelError] = useState<boolean>(false)
-  useEffect(() => {
-    async function fetcher() {
-      if (modelName) {
-        setModelDetail(await loadModelDetail(coreSDK, modelName))
-      }
-    }
-    fetcher().catch(()=>{
-      setModelError(true)
-    })
-  }, [coreSDK, modelName, selectedBranch])
-  return { modelDetail, modelError, setModelError }
-}
-
-export interface DetailedModel {
-  model: ILookmlModel
-  explores: ILookmlModelExplore[]
-}
-

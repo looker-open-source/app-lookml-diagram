@@ -8,7 +8,7 @@ import {
   TABLE_PADDING,
   DIAGRAM_BACKGROUND_COLOR
 } from '../utils/constants'
-import { onlyUnique } from '../utils/diagrammer'
+import { onlyUnique, DiagramMetadata } from '../utils/diagrammer'
 import { SelectionInfoPacket } from "../components/interfaces"
 
 export let addJoinArrowheads = (join: any, joinName: string) => {
@@ -63,7 +63,7 @@ export function getOnePath(connectorSize: number, rightmost: number, joinField: 
   return [path]
 }
 
-export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: any, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
+export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: DiagramMetadata, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
   let partArray: any[] = []
   let r_shift = TABLE_WIDTH + JOIN_CONNECTOR_WIDTH
   let l_shift = JOIN_CONNECTOR_WIDTH * -1
@@ -71,7 +71,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
   // TODO: refactor for readability, testability
   // Break up join between multiple tables into join-parts between two tables
   let joinParts = joinData.map((d: any) => { return d.viewName}).filter(onlyUnique).sort((a: any, b: any) => {
-    if (diagramDict[a][0].diagramDegree < diagramDict[b][0].diagramDegree) {
+    if (diagramDict.tableData[a][0].diagramDegree < diagramDict.tableData[b][0].diagramDegree) {
       return -1
     } else {
       return 1
@@ -88,7 +88,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
   // Establish degrees in join
   let joinDegrees = joinData.map((d: any, i: number) => {
-    return Math.abs(diagramDict[d.viewName][0].diagramDegree)
+    return Math.abs(diagramDict.tableData[d.viewName][0].diagramDegree)
   })
 
   // TODO: refactor for readability, testability
@@ -96,7 +96,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
   partArray.map((path: any, partI: number) => {
     let joinPath: any[]
     let xLookup = path.map((d:any)=>{
-      let joinedTableData = diagramDict[d.viewName]
+      let joinedTableData = diagramDict.tableData[d.viewName]
       return joinedTableData[d.fieldIndex].diagramX
     })
     joinPath = path.map((d: any, i: number)=>{
@@ -113,16 +113,16 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       if (nextBase > TABLE_WIDTH || lastBase > TABLE_WIDTH) {
         return {
           ...d,
-          toX: diagramDict[d.viewName][0].diagramX,
-          joinX: diagramDict[d.viewName][0].diagramX + r_shift,
-          joinY: diagramDict[d.viewName][0].diagramY + (d.fieldIndex*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))),
+          toX: diagramDict.tableData[d.viewName][0].diagramX,
+          joinX: diagramDict.tableData[d.viewName][0].diagramX + r_shift,
+          joinY: diagramDict.tableData[d.viewName][0].diagramY + (d.fieldIndex*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))),
         }
       }
       return {
         ...d,
-        toX: diagramDict[d.viewName][0].diagramX,
-        joinX: diagramDict[d.viewName][0].diagramX + l_shift,
-        joinY: diagramDict[d.viewName][0].diagramY + (d.fieldIndex*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))),
+        toX: diagramDict.tableData[d.viewName][0].diagramX,
+        joinX: diagramDict.tableData[d.viewName][0].diagramX + l_shift,
+        joinY: diagramDict.tableData[d.viewName][0].diagramY + (d.fieldIndex*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))),
       }
     }).sort((a: any, b: any) => {
       if (a.toX < b.toX) {
@@ -144,7 +144,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let terminalAlign = joinTables.filter(onlyUnique)
     let degreeAligned = [...terminalAlign]
     degreeAligned = degreeAligned.sort((a: any, b: any) => {
-      if (Math.abs(diagramDict[a][0].diagramDegree) < Math.abs(diagramDict[b][0].diagramDegree)) {
+      if (Math.abs(diagramDict.tableData[a][0].diagramDegree) < Math.abs(diagramDict.tableData[b][0].diagramDegree)) {
         return -1
       } else {
         return 1
@@ -168,7 +168,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
     let goLeft = joinedNode.x < baseNode.x ? -1 : 1
     let goUp = joinedNode.y < baseNode.y ? -1 : 1
 
-    let isBaseView = Math.abs(diagramDict[baseTable][0].diagramDegree) === Math.min(...joinDegrees) ? true : false
+    let isBaseView = Math.abs(diagramDict.tableData[baseTable][0].diagramDegree) === Math.min(...joinDegrees) ? true : false
     let push = isBaseView ? (JOIN_CONNECTOR_WIDTH * 0.7) / 4 : 0
 
     let aX = baseNode.x + (push * goLeft * -1)
@@ -179,11 +179,11 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
 
     let disabled = Math.abs(aY - fY) < 50 ? true : false
 
-    let joinedDegree = diagramDict[joinedTable][0].diagramDegree
-    let degreeMembers = diagramDict._yOrderLookup[joinedDegree].length
+    let joinedDegree = diagramDict.tableData[joinedTable][0].diagramDegree
+    let degreeMembers = diagramDict.yOrderLookup[joinedDegree].length
     let stepPro = aY < fY && degreeMembers > 2
-    ? (1 - (diagramDict[joinedTable][0].verticalIndex / degreeMembers))
-    : (diagramDict[joinedTable][0].verticalIndex / degreeMembers)
+    ? (1 - (diagramDict.tableData[joinedTable][0].verticalIndex / degreeMembers))
+    : (diagramDict.tableData[joinedTable][0].verticalIndex / degreeMembers)
     let firstStep = stepPro * (TABLE_PADDING - JOIN_CONNECTOR_WIDTH - (TABLE_WIDTH*1.5))
 
     // A
@@ -398,10 +398,9 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       }
     })
     let hoverMouseClick = type === "display" && hoverMouseLeave.on("click", (d: any, i: number) => {
-      let arr: any = d3.select(d.toElement).datum()
       setSelectionInfo({
         lookmlElement: "join",
-        name: arr[0].name
+        name: joinData[0].joinName
       })
     })
 
@@ -411,7 +410,7 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: an
       let rightmost = terminalAlign.indexOf(joinField.viewName)
       let connectorAlign = rightmost ? connectorSize : connectorSize * -1
       let connectorPath: any[] = []
-      let isBaseView = Math.abs(diagramDict[joinField.viewName][0].diagramDegree) === Math.min(...joinDegrees) ? true : false
+      let isBaseView = Math.abs(diagramDict.tableData[joinField.viewName][0].diagramDegree) === Math.min(...joinDegrees) ? true : false
 
       joinField.joinX = isBaseView ? joinField.joinX + (connectorAlign / 4) : joinField.joinX
 
