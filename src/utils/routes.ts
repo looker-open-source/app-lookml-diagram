@@ -82,9 +82,6 @@ export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, dis
   let {modelDetail, modelError, setModelError} = useModelDetail(modelName, selectedBranch)
   // calculate diagram dimensions
   let dimensions = getDiagramDimensions(modelDetail, diagramPersist, hiddenToggle, displayFieldType)
-  let explore = modelDetail && modelDetail.explores.filter(d=>{
-    return d.name === exploreName
-  })[0]
   return {modelDetail, exploreName, dimensions, modelError, setModelError}
 }
 
