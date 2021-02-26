@@ -34,7 +34,7 @@ import {
   theme
 } from "@looker/components"
 import styled from "styled-components"
-import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../utils/constants'
+import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
 
 const Toolbar = styled(Card as any)`
   min-width: 40px;
@@ -69,10 +69,12 @@ export const DiagramToolbar: React.FC<{
   setMinimapEnabled,
  }) => {
 
+  const formatZoom = (zoomFactor: number) => (Math.round(zoomFactor * 10) * 10).toString() + "%";
+
   return (
     <Toolbar raised>
       <Flex flexDirection="column" alignItems="center">
-        <FlexItem  pt="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{(Math.round(zoomFactor * 10) * 10).toString() + "%"}</FlexItem>
+        <FlexItem  pt="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{formatZoom(zoomFactor)}</FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
         <FlexItem><IconButton icon="Plus" label="Zoom In" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)} /></FlexItem>

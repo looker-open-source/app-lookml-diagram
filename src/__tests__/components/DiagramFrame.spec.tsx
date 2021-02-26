@@ -35,7 +35,7 @@ import {
   mockPathNames,
   mockMinimapDimensions } from "../../test_data";
 import 'jest-styled-components'
-import { DiagramFrame } from '../../components/DiagramFrame'
+import { DiagramFrame } from '../../components/DiagramFrame/DiagramFrame'
 import { shallow } from 'enzyme';
 
 jest.mock('../../utils/fetchers', () => {
@@ -74,31 +74,31 @@ jest.mock('../../utils/diagrammer', () => {
   }
 })
 
-jest.mock("../../components/MetadataPanel", () => ({
+jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataPanel", () => ({
   MetadataPanel: () => "MetadataPanel"
 }))
 
-jest.mock("../../components/DiagramSettings", () => ({
+jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
   DiagramSettings: () => "DiagramSettings"
 }))
 
-jest.mock("../../components/HelpPanel", () => ({
+jest.mock("../../components/DiagramFrame/HelpPanel", () => ({
   HelpPanel: () => "HelpPanel"
 }))
 
-jest.mock("../../components/ViewOptions", () => ({
+jest.mock("../../components/DiagramFrame/ViewOptions", () => ({
   ViewOptions: () => "ViewOptions"
 }))
 
-jest.mock("../../components/Diagram", () => ({
+jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
   Diagram: () => "Diagram"
 }))
 
-jest.mock("../../components/DiagramHeader", () => ({
+jest.mock("../../components/DiagramFrame/DiagramHeader", () => ({
   DiagramHeader: () => "DiagramHeader"
 }))
 
-jest.mock("../../components/DiagramToolbar", () => ({
+jest.mock("../../components/DiagramFrame/DiagramCanvas/DiagramToolbar", () => ({
   DiagramToolbar: () => "DiagramToolbar"
 }))
 

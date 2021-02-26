@@ -34,12 +34,12 @@ import {
 } from "@looker/components"
 import styled from "styled-components"
 import { SettingsPanel } from "./SettingsPanel"
-import { ExternalLink } from "./ExternalLink"
-import {view_explore} from "../test_data/order_items_explore"
-import {view_dimensions} from "../test_data/order_items_dimensions"
-import {join_dimensions} from "../test_data/polling_dimensions"
-import {join_explore} from "../test_data/polling_explore"
-import {Diagram} from "./Diagram"
+import { ExternalLink } from "../ExternalLink"
+import {view_explore} from "../../test_data/order_items_explore"
+import {view_dimensions} from "../../test_data/order_items_dimensions"
+import {join_dimensions} from "../../test_data/polling_dimensions"
+import {join_explore} from "../../test_data/polling_explore"
+import {Diagram} from "./DiagramCanvas/Diagram"
 
 const Italics = styled.span`
   font-style: italic;
@@ -76,14 +76,13 @@ export const HelpPanel: React.FC<{
           setViewPosition={()=>{}}
         />
         <Paragraph fontSize="small">
-        Base views are represented with a dark-blue header.
-        The background of dimension table rows is white, and light orange for measures.
+        The base view is indicated by a dark blue header. In each view table, dimension rows are white; measure rows are light orange.
         </Paragraph>
         <Paragraph fontSize="small">
-        Each field has an icon representing its type, and primary keys are represented with an additional key icon.
+        To the left of each field is an icon representing its type. If the field is a primary key, a key icon appears to the right of the field name.
         </Paragraph>
         <Paragraph fontSize="small">
-        Click on a table row for its metadata.
+        Click on a table row to see its metadata.
         </Paragraph>
         <Divider/>
         <Label>Joins</Label>
@@ -113,13 +112,13 @@ export const HelpPanel: React.FC<{
           setViewPosition={()=>{}}
         />
         <Paragraph fontSize="small">
-        Joins are represented by a directed line. Joined views are represented by a light-blue header. 
+        Joins are represented by a directed line that connects two views. Joined views are indicated by a light blue header. 
         </Paragraph>
         <Paragraph fontSize="small">
         The shape of the line, where it attaches to the view or field, conveys the cardinality of the relationship between the two objects; a forked line indicates a “many” cardinality, and a single line indicates a “one” cardinality. You would read the relationship as <Italics>from</Italics> the base view <Italics>to</Italics> the joined view.
         </Paragraph>
         <Paragraph fontSize="small">
-        Click on a join for its metadata.
+        Hover over a join to see its join relationship type. Click on a join line to see its metadata.
         </Paragraph>
         <ExternalLink fontSize="small" target="_blank" href="https://docs.looker.com/data-modeling/extension-framework/lookml-diagram">Full documentation.</ExternalLink>
       </SpaceVertical>

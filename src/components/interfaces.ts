@@ -68,6 +68,11 @@ export interface UserData {
   color?: string
 }
 
+export interface ExploreDropdown {
+  value: string;
+  label: string;
+}
+
 export interface AllComments {
   [explore_name: string]: ExploreComments
 }

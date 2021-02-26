@@ -42,9 +42,9 @@ import {
   theme
 } from "@looker/components"
 import styled from "styled-components"
-import { ColumnDescriptor } from "./interfaces"
+import { ColumnDescriptor } from "../interfaces"
 import { SettingsPanel } from "./SettingsPanel"
-import { OVERRIDE_KEY_SUBTLE } from '../utils/constants'
+import { OVERRIDE_KEY_SUBTLE } from '../../utils/constants'
 
 
 export const ViewList = styled.ul`

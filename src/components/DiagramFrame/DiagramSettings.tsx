@@ -24,7 +24,7 @@
 
  */
 
-import React, { useContext } from "react"
+import React, { useContext, SyntheticEvent } from "react"
 import {
   SpaceVertical,
   Heading,
@@ -34,14 +34,14 @@ import {
   SelectOptionProps,
   Icon,
 } from "@looker/components"
-import { ColumnDescriptor, SelectionInfoPacket, VisibleViewLookup } from "./interfaces"
+import { ColumnDescriptor, SelectionInfoPacket, VisibleViewLookup, ExploreDropdown } from "../interfaces"
 import styled from "styled-components"
-import { OVERRIDE_KEY_SUBTLE, X_INIT, Y_INIT, ZOOM_INIT } from '../utils/constants'
-import { internalModelURL, internalExploreURL } from "../utils/routes"
+import { OVERRIDE_KEY_SUBTLE, X_INIT, Y_INIT, ZOOM_INIT } from '../../utils/constants'
+import { internalModelURL, internalExploreURL } from "../../utils/routes"
 import { SettingsPanel } from "./SettingsPanel"
 import { useHistory } from "react-router"
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { changeBranch, DiagramError } from "../utils/fetchers"
+import { changeBranch, DiagramError } from "../../utils/fetchers"
 import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 
 export const ExploreList = styled.ul`
@@ -91,7 +91,7 @@ export const DiagramSettings: React.FC<{
   branchOpts: SelectOptionProps[],
   gitBranch: IGitBranch,
   gitBranches: IGitBranch[],
-  exploreList: ILookmlModelExplore[],
+  exploreList: ExploreDropdown[],
   selectionInfo: SelectionInfoPacket,
   projectId: string,
   currentExplore: ILookmlModelExplore,
@@ -174,17 +174,17 @@ export const DiagramSettings: React.FC<{
                 options={branchOpts ? branchOpts : []}
                 placeholder="Loading Git Branches..."
                 label="Current Branch"
-                value={selectedBranch !== "" ? selectedBranch : (gitBranch && gitBranch.name)}
+                value={gitBranch && gitBranch.name}
                 onChange={changeGitBranch}
-                disabled={gitBranch && gitBranch.is_production}
+                disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
               />
               <Label>Select an Explore</Label>
               <ExploreList>
-                {exploreList.map((item: any, index: number) => {
+                {exploreList.map((explore: ExploreDropdown, index: number) => {
                   return (
-                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(item.value)}}>
+                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(explore.value)}}>
                       <ExploreButton
-                        onClick={(e: any) => {
+                        onClick={() => {
                           selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
                           setViewVisible({})
                           setZoomFactor(ZOOM_INIT)
@@ -194,13 +194,13 @@ export const DiagramSettings: React.FC<{
                           history.push(
                             internalExploreURL({
                               model: currentModel.name,
-                              explore: item.value
+                              explore: explore.value
                             })
                           )
                         }}
-                        value={item.value}
+                        value={explore.value}
                       >
-                        {item.label}
+                        {explore.label}
                       </ExploreButton>
                     </ExploreListitem>
                   )

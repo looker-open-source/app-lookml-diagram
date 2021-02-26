@@ -25,7 +25,7 @@
  */
 
 import React from 'react';
-import { DiagramToolbar } from '../../components/DiagramToolbar'
+import { DiagramToolbar } from '../../components/DiagramFrame/DiagramCanvas/DiagramToolbar'
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
 

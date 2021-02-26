@@ -28,11 +28,13 @@ import React from "react"
 import {
   Aside,
 } from "@looker/components"
-import { ColumnDescriptor } from "./interfaces"
+import { ColumnDescriptor } from "../../interfaces"
 import styled from "styled-components"
 
-export const SettingsPanel = styled(Aside as any)`
-  border-right: solid 1px ${(props) => props.theme.colors.ui2};
+export const MetadataInfoPanel = styled(Aside as any)`
+  border-left: solid 1px ${(props) => props.theme.colors.ui2};
   overflow-y: auto;
-  z-index: 1;
+  background-color: ${(props) => props.theme.colors.background};
+  box-shadow: -10px 0px 20px 0px ${(props) => props.theme.colors.ui2};
+  z-index: 0;
 `

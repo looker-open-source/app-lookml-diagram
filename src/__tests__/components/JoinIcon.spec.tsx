@@ -25,7 +25,7 @@
  */
 
 import React from 'react';
-import JoinIcon from '../../components/JoinIcon'
+import JoinIcon from '../../components/DiagramFrame/MetadataPanel/JoinIcon'
 import { shallow } from 'enzyme';
 
 describe('left outer <JoinIcon />', () => {

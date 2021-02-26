@@ -26,13 +26,13 @@
 
 import React, { memo } from 'react';
 import * as d3 from 'd3';
-import { useD3 } from '../d3-utils/useD3'
+import { useD3 } from '../../../d3-utils/useD3'
 import { ILookmlModelExplore } from '@looker/sdk/lib/sdk/3.1/models';
-import { addFilter } from '../d3-utils/styles'
-import { addZoom } from '../d3-utils/zoom'
-import { createLookmlViewElement } from '../d3-utils/tables'
-import { createLookmlJoinElement } from '../d3-utils/joins'
-import { SelectionInfoPacket, VisibleViewLookup } from "./interfaces"
+import { addFilter } from '../../../d3-utils/styles'
+import { addZoom } from '../../../d3-utils/zoom'
+import { createLookmlViewElement } from '../../../d3-utils/tables'
+import { createLookmlJoinElement } from '../../../d3-utils/joins'
+import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
 import { 
   DIAGRAM_BACKGROUND_COLOR, 
   DIAGRAM_HOVER_COLOR, 
@@ -58,13 +58,13 @@ import {
   DIAGRAM_JOIN_SELECT_COLOR,
   DIAGRAM_MEASURE_HOVER_COLOR,
   DIAGRAM_MEASURE_ICON_COLOR
-} from "../utils/constants"
+} from "../../../utils/constants"
 import {
   theme,
 } from "@looker/components"
 import { 
   DiagramMetadata
-} from "../utils/diagrammer"
+} from "../../../utils/diagrammer"
 import styled from "styled-components"
 
 export const DiagramSpace = styled.svg`

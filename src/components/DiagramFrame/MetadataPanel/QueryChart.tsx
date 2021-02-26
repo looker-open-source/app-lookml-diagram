@@ -35,12 +35,12 @@ import {
   Text,
   ButtonTransparent
 } from "@looker/components"
-import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
+import { QueryChartType, runChartQuery, SimpleResult } from "../../../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar, Tooltip } from "recharts"
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { ExternalLink } from "./ExternalLink"
-import { getCached } from "../utils/fetchers"
+import { ExternalLink } from "../../ExternalLink"
+import { getCached } from "../../../utils/fetchers"
 import { MetadataItem } from "./MetadataList"
 import { QueryChartButton } from "./QueryChartButton"
 

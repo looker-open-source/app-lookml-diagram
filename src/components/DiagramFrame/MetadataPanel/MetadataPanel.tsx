@@ -48,18 +48,18 @@ import {
 } from "@looker/components"
 import styled from "styled-components";
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
-import { ExternalLink } from "./ExternalLink"
+import { ExternalLink } from "../../ExternalLink"
 import JoinIcon from "./JoinIcon"
 import MetadataPanelTable from "./MetadataPanelTable"
 import {MetadataInfoPanel} from "./MetadataInfoPanel"
 import {MetadataFooter} from "./MetadataFooter"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
-import { METADATA_PANEL_PIXEL } from "../utils/constants"
-import { LookmlObjectMetadata, SelectionInfoPacket } from "./interfaces"
+import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
+import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
-import { getFields } from '../utils/diagrammer'
-import { exploreFieldURL } from '../utils/urls'
-import { useExplore } from '../utils/fetchers'
+import { getFields } from '../../../utils/diagrammer'
+import { exploreFieldURL } from '../../../utils/urls'
+import { useExplore } from '../../../utils/fetchers'
 
 export const PillText:React.FC = ({children}) => {
   return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>

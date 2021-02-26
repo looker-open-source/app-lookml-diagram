@@ -32,8 +32,8 @@ import {
   theme
 } from "@looker/components"
 import styled from "styled-components";
-import { LookmlObjectMetadata } from "./interfaces"
-import { canGetDistribution, canGetTopValues } from "../utils/queries"
+import { LookmlObjectMetadata } from "../../interfaces"
+import { canGetDistribution, canGetTopValues } from "../../../utils/queries"
 import { QueryChart } from "./QueryChart"
 
 const MetadataRow = styled(Flex as any)`

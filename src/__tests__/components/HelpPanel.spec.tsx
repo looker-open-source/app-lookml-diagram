@@ -25,7 +25,7 @@
  */
 
 import React from 'react';
-import { HelpPanel } from '../../components/HelpPanel'
+import { HelpPanel } from '../../components/DiagramFrame/HelpPanel'
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
 
@@ -38,7 +38,7 @@ jest.mock("@looker/components", () => ({
   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
 }))
 
-jest.mock("../../components/SettingsPanel", () => ({
+jest.mock("../../components/DiagramFrame/SettingsPanel", () => ({
   SettingsPanel: () => "SettingsPanel"
 }))
 
@@ -46,7 +46,7 @@ jest.mock("../../components/ExternalLink", () => ({
   ExternalLink: () => "ExternalLink"
 }))
 
-jest.mock("../../components/Diagram", () => ({
+jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
   Diagram: () => "Diagram"
 }))
 

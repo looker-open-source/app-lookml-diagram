@@ -28,7 +28,7 @@ import React from 'react';
 import { 
   view_explore,
 } from "../../test_data";
-import { DiagramHeader } from '../../components/DiagramHeader'
+import { DiagramHeader } from '../../components/DiagramFrame/DiagramHeader'
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
 

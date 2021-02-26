@@ -26,12 +26,17 @@
 
 import React from "react"
 import {
-  CodeBlock,
+  Footer,
 } from "@looker/components"
-import { ColumnDescriptor } from "./interfaces"
+import { ColumnDescriptor } from "../../interfaces"
 import styled from "styled-components"
+import {METADATA_PANEL_PIXEL} from "../../../utils/constants"
 
-export const LookmlCodeBlock = styled(CodeBlock as any)`
-  background-color: ${(props) => props.theme.colors.neutralSubtle};
-  color: ${(props) => props.theme.colors.keyInteractive};
+export const MetadataFooter = styled(Footer as any)`
+  width: ${METADATA_PANEL_PIXEL}px;
+  right: -1px;
+  position: absolute;
+  bottom: 0px;
+  box-shadow: 0px 1px 15px ${(props) => props.theme.colors.ui2};
+  background-color: ${(props) => props.theme.colors.background};
 `

@@ -26,7 +26,7 @@
 
 import React from 'react';
 import {ComponentsProvider} from "@looker/components"
-import { DiagramSettings, ExploreList, ExploreButton, ExploreListitem } from '../../components/DiagramSettings'
+import { DiagramSettings, ExploreList, ExploreButton, ExploreListitem } from '../../components/DiagramFrame/DiagramSettings'
 import { shallow, mount, render } from 'enzyme';
 import { 
   mockModels, 
@@ -56,7 +56,7 @@ jest.mock('react', () => {
   }
 })
 
-jest.mock("../../components/SettingsPanel", () => ({
+jest.mock("../../components/DiagramFrame/SettingsPanel", () => ({
   SettingsPanel: () => "SettingsPanel"
 }))
 

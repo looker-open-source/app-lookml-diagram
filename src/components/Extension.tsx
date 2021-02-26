@@ -26,7 +26,7 @@
 
 import React from "react"
 import { ComponentsProvider, theme } from "@looker/components"
-import { DiagramFrame } from "./DiagramFrame"
+import { DiagramFrame } from "./DiagramFrame/DiagramFrame"
 import { useCurrentModel, useSelectExplore, usePathNames } from "../utils/routes"
 import { useAllModels } from "../utils/fetchers"
 import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
@@ -35,7 +35,7 @@ import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
 export const Extension: React.FC = () => {
   const unfilteredModels = useAllModels()
   const currentModel = useCurrentModel()
-  const { modelName, exploreName } = usePathNames()
+  const { modelName, exploreName, fullPage } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
   const [selectedBranch, setSelectedBranch] = React.useState("")
@@ -63,6 +63,6 @@ export const Extension: React.FC = () => {
       setDisplayFieldType={setDisplayFieldType}
       selectedBranch={selectedBranch}
       setSelectedBranch={setSelectedBranch}
-       />
+    />
   </ComponentsProvider>
 )}

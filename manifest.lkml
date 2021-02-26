@@ -2,7 +2,7 @@ project_name: "app-lookml-diagram"
 
 application: lookml-diagram {
   label: "LookML Diagram"
-  url: "https://marketplace-api.looker.com/app-assets/lookml_diagram.js"
+  url: "@{BUNDLE_URL}"
   new_window_external_urls: ["https://docs.looker.com/data-modeling/extension-framework/lookml-diagram"]
   entitlements: {
     local_storage: yes
@@ -15,4 +15,9 @@ application: lookml-diagram {
 constant: CONNECTION_NAME {
   value: "choose-connection"
   export: override_required
+}
+
+constant: BUNDLE_URL {
+  value: "https://marketplace-api.looker.com/app-assets/lookml_diagram.js"
+  export: override_optional
 }

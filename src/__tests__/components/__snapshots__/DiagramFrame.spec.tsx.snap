@@ -14,15 +14,7 @@ exports[`<DiagramFrame /> default loading 1`] = `
   <Styled(Section)>
     <DiagramHeader currentExplore={[undefined]} selectionInfo={{...}} toggleExploreInfo={[Function: toggleExploreInfo]} />
     <Layout hasAside={true} height=\\"100%\\" id=\\"DiagramStage\\">
-      <Styled(Section)>
-        <styled.div>
-          <Spinner />
-           
-          <Heading mt=\\"large\\">
-            Generating Diagram
-          </Heading>
-        </styled.div>
-      </Styled(Section)>
+      <DiagramCanvas unfilteredModels={{...}} modelError={[undefined]} pathModelName=\\"test\\" pathExploreName=\\"test_explore\\" currentDimensions={[undefined]} zoomFactor={0.5} reload={false} defaultMinimap={true} minimapUntoggled={true} minimapEnabled={false} setZoomFactor={[Function: bound _dispatchAction]} setViewPosition={[Function: bound _dispatchAction]} setReload={[Function: bound _dispatchAction]} setMinimapUntoggled={[Function: bound _dispatchAction]} setMinimapEnabled={[Function: bound _dispatchAction]} dimensions={[undefined]} explore={[undefined]} selectionInfo={{...}} setSelectionInfo={[Function: bound _dispatchAction]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} viewPosition={{...}} minimapX={0} minimapY={0} minimapScale={1} />
     </Layout>
   </Styled(Section)>
 </Layout>"
@@ -42,15 +34,7 @@ exports[`<DiagramFrame /> should help section 1`] = `
   <Styled(Section)>
     <DiagramHeader currentExplore={[undefined]} selectionInfo={{...}} toggleExploreInfo={[Function: toggleExploreInfo]} />
     <Layout hasAside={true} height=\\"100%\\" id=\\"DiagramStage\\">
-      <Styled(Section)>
-        <styled.div>
-          <Spinner />
-           
-          <Heading mt=\\"large\\">
-            Generating Diagram
-          </Heading>
-        </styled.div>
-      </Styled(Section)>
+      <DiagramCanvas unfilteredModels={{...}} modelError={[undefined]} pathModelName=\\"test\\" pathExploreName=\\"test_explore\\" currentDimensions={[undefined]} zoomFactor={0.5} reload={false} defaultMinimap={true} minimapUntoggled={true} minimapEnabled={false} setZoomFactor={[Function: bound _dispatchAction]} setViewPosition={[Function: bound _dispatchAction]} setReload={[Function: bound _dispatchAction]} setMinimapUntoggled={[Function: bound _dispatchAction]} setMinimapEnabled={[Function: bound _dispatchAction]} dimensions={[undefined]} explore={[undefined]} selectionInfo={{...}} setSelectionInfo={[Function: bound _dispatchAction]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} viewPosition={{...}} minimapX={0} minimapY={0} minimapScale={1} />
     </Layout>
   </Styled(Section)>
 </Layout>"
@@ -69,15 +53,7 @@ exports[`<DiagramFrame /> should settings section 1`] = `
   <Styled(Section)>
     <DiagramHeader currentExplore={[undefined]} selectionInfo={{...}} toggleExploreInfo={[Function: toggleExploreInfo]} />
     <Layout hasAside={true} height=\\"100%\\" id=\\"DiagramStage\\">
-      <Styled(Section)>
-        <styled.div>
-          <Spinner />
-           
-          <Heading mt=\\"large\\">
-            Generating Diagram
-          </Heading>
-        </styled.div>
-      </Styled(Section)>
+      <DiagramCanvas unfilteredModels={{...}} modelError={[undefined]} pathModelName=\\"test\\" pathExploreName=\\"test_explore\\" currentDimensions={[undefined]} zoomFactor={0.5} reload={false} defaultMinimap={true} minimapUntoggled={true} minimapEnabled={false} setZoomFactor={[Function: bound _dispatchAction]} setViewPosition={[Function: bound _dispatchAction]} setReload={[Function: bound _dispatchAction]} setMinimapUntoggled={[Function: bound _dispatchAction]} setMinimapEnabled={[Function: bound _dispatchAction]} dimensions={[undefined]} explore={[undefined]} selectionInfo={{...}} setSelectionInfo={[Function: bound _dispatchAction]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} viewPosition={{...}} minimapX={0} minimapY={0} minimapScale={1} />
     </Layout>
   </Styled(Section)>
 </Layout>"

@@ -32,7 +32,7 @@ import {
   IconButton
 } from "@looker/components"
 import styled from "styled-components"
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT, OVERRIDE_KEY } from '../utils/constants'
+import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT, OVERRIDE_KEY } from '../../utils/constants'
 
 export const DiagramHeaderWrapper = styled(Header as any)`
   background-color: ${(props) => props.theme.colors.background};

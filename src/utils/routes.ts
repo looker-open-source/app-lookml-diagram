@@ -38,7 +38,7 @@ export function usePathNames(): {
   exploreName?: string
   fieldName?: string
   detailPane?: string
-  isRelationships: boolean
+  fullPage: any
 } {
   const match =
     useRouteMatch<{ model: string }>({
@@ -57,8 +57,8 @@ export function usePathNames(): {
       path: "/models/:model/explores/:explore/field/:field/pane/:tab",
     }) || undefined
   
-  const relMatch = useRouteMatch({
-    path: "/models/:model/relationships",
+  const renderMatch = useRouteMatch({
+    path: "/models/:model/explores/:explore/render",
     sensitive: true
   })
 
@@ -67,7 +67,7 @@ export function usePathNames(): {
     exploreName: match2 && match2.params.explore,
     fieldName: match3 && match3.params.field,
     detailPane: match3 && match3.params.tab,
-    isRelationships: !!relMatch,
+    fullPage: renderMatch
   }
 }
 

@@ -25,7 +25,7 @@
  */
 
 import React from 'react';
-import {MetadataPanel} from '../../components/MetadataPanel'
+import {MetadataPanel} from '../../components/DiagramFrame/MetadataPanel/MetadataPanel'
 import { shallow, mount, render } from 'enzyme';
 import { 
   mockCurrentModel,
@@ -104,23 +104,23 @@ jest.mock("../../components/ExternalLink", () => ({
   ExternalLink: () => "ExternalLink"
 }))
 
-jest.mock("../../components/JoinIcon", () => ({
+jest.mock("../../components/DiagramFrame/MetadataPanel/JoinIcon", () => ({
   JoinIcon: () => "JoinIcon"
 }))
 
-jest.mock("../../components/MetadataPanelTable", () => ({
+jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataPanelTable", () => ({
   MetadataPanelTable: () => "MetadataPanelTable"
 }))
 
-jest.mock("../../components/MetadataInfoPanel", () => ({
+jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataInfoPanel", () => ({
   MetadataInfoPanel: () => "MetadataInfoPanel"
 }))
 
-jest.mock("../../components/MetadataFooter", () => ({
+jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataFooter", () => ({
   MetadataInfoPanel: () => "MetadataFooter"
 }))
 
-jest.mock("../../components/LookmlCodeBlock", () => ({
+jest.mock("../../components/DiagramFrame/MetadataPanel/LookmlCodeBlock", () => ({
   LookmlCodeBlock: () => "LookmlCodeBlock"
 }))
 

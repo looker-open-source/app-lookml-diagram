@@ -11,13 +11,13 @@ exports[`<HelpPanel /> should match the basic 1`] = `
     </Label>
     <Diagram type=\\"help-view\\" dimensions={{...}} explore={{...}} reload={false} selectionInfo={{...}} setSelectionInfo={[undefined]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} zoomFactor={0.479} setZoomFactor={[Function: setZoomFactor]} viewPosition={{...}} setViewPosition={[Function: setViewPosition]} />
     <Paragraph fontSize=\\"small\\">
-      Base views are represented with a dark-blue header. The background of dimension table rows is white, and light orange for measures.
+      The base view is indicated by a dark blue header. In each view table, dimension rows are white; measure rows are light orange.
     </Paragraph>
     <Paragraph fontSize=\\"small\\">
-      Each field has an icon representing its type, and primary keys are represented with an additional key icon.
+      To the left of each field is an icon representing its type. If the field is a primary key, a key icon appears to the right of the field name.
     </Paragraph>
     <Paragraph fontSize=\\"small\\">
-      Click on a table row for its metadata.
+      Click on a table row to see its metadata.
     </Paragraph>
     <Divider />
     <Label>
@@ -25,7 +25,7 @@ exports[`<HelpPanel /> should match the basic 1`] = `
     </Label>
     <Diagram type=\\"help-join\\" dimensions={{...}} explore={{...}} reload={false} selectionInfo={{...}} setSelectionInfo={[undefined]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} zoomFactor={0.249} setZoomFactor={[Function: setZoomFactor]} viewPosition={{...}} setViewPosition={[Function: setViewPosition]} />
     <Paragraph fontSize=\\"small\\">
-      Joins are represented by a directed line. Joined views are represented by a light-blue header.
+      Joins are represented by a directed line that connects two views. Joined views are indicated by a light blue header.
     </Paragraph>
     <Paragraph fontSize=\\"small\\">
       The shape of the line, where it attaches to the view or field, conveys the cardinality of the relationship between the two objects; a forked line indicates a “many” cardinality, and a single line indicates a “one” cardinality. You would read the relationship as 
@@ -39,7 +39,7 @@ exports[`<HelpPanel /> should match the basic 1`] = `
        the joined view.
     </Paragraph>
     <Paragraph fontSize=\\"small\\">
-      Click on a join for its metadata.
+      Hover over a join to see its join relationship type. Click on a join line to see its metadata.
     </Paragraph>
     <ExternalLink fontSize=\\"small\\" target=\\"_blank\\" href=\\"https://docs.looker.com/data-modeling/extension-framework/lookml-diagram\\">
       Full documentation.
