@@ -11,6 +11,9 @@
     "CONNECTION_NAME": {
       "label": "Connection Name",
       "value_constraint": "connection"
+    },
+    "BUNDLE_URL": {
+      "label": "Bundle URL"
     }
   },
   "models": [
