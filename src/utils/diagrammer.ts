@@ -31,6 +31,12 @@ export interface DiagramMetadata {
   tableData: DiagramTables
 }
 
+export interface DiagrammedModel {
+  diagramDict: DiagramMetadata
+  modelName: string
+  exploreName: string
+}
+
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
   let fields = [...exploreFields.dimensions, ...exploreFields.measures]
   return fields
@@ -57,7 +63,7 @@ export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILoo
 }
 
 // TODO: refactor and decompose for readility, testability
-export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], diagramPersist: any, explore: ILookmlModelExplore, hiddenToggle: boolean, displayFieldType: string) {
+export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], explore: ILookmlModelExplore, hiddenToggle: boolean, displayFieldType: string) {
   let fields = getFields(exploreFields)
   let views = getViews(exploreFields, joins, explore.name)
 
@@ -352,14 +358,13 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   return diagramDict
 }
 
-export function getDiagramDimensions(details: DetailedModel, diagramPersist: any, hiddenToggle: boolean, displayFieldType: string) {
-  let modifiedDetails: any[] = []
+export function getDiagramDimensions(details: DetailedModel, hiddenToggle: boolean, displayFieldType: string) {
+  let modifiedDetails: DiagrammedModel[] = []
   details && details.explores.map((d,i) => {
-    // TODO: type modifiedDetail
     let modifiedDetail = {
       exploreName: d.name,
       modelName: d.model_name,
-      diagramDict: getDiagramDict(d.fields, d.joins, diagramPersist[d.name] || {}, d, hiddenToggle, displayFieldType),
+      diagramDict: getDiagramDict(d.fields, d.joins, d, hiddenToggle, displayFieldType),
     }
     modifiedDetails.push(modifiedDetail)
   })

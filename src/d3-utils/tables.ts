@@ -52,7 +52,7 @@ export let getDatatypePath = (d: any) => {
   }
   if (d.type === "number") {
     return "M20 10V8h-4V4h-2v4h-4V4H8v4H4v2h4v4H4v2h4v4h2v-4h4v4h2v-4h4v-2h-4v-4h4zm-6 4h-4v-4h4v4z"
-  } else if (d.type === "location") {
+  } else if (d.type === "location" || d.type === "zipcode") {
     return "M5 9c0-3.87 3.13-7 7-7s7 3.13 7 7c0 5.25-7 13-7 13S5 14.25 5 9zm7-5C9.24 4 7 6.24 7 9c0 2.85 2.92 7.21 5 9.88 2.12-2.69 5-7 5-9.88 0-2.76-2.24-5-5-5zm2.5 5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
   } else if (d.type === "string") {
     return "M10.612 4.248h2.75L19.324 20h-2.662l-1.452-4.048H8.786L7.334 20H4.672l5.94-15.752zm3.806 9.46l-1.76-4.818-.594-1.804h-.132l-.594 1.804-1.76 4.818h4.84z"
@@ -108,6 +108,7 @@ export function createLookmlViewElement(
   .attr("height", TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1)-CAP_RADIUS)
   .classed("table-row", true)
   .classed("minimap-table-row", type === "minimap" ? true : false)
+  .classed("help-table-row", type === "help-view" ||type === "help-join" ? true : false)
   .classed("table-row-dimension", (d: any) => isTableRowDimension(d))
   .classed("table-row-measure", (d: any) => isTableRowMeasure(d))
   .classed("table-row-grouped", (d: any) => d.dimension_group)
@@ -209,7 +210,8 @@ export function createLookmlViewElement(
     setSelectionInfo({
       lookmlElement: arr.category,
       name: arr.name,
-      grouped: arr.dimension_group
+      grouped: arr.dimension_group,
+      link: arr.lookml_link
     })
   });
 }

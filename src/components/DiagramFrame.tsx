@@ -37,17 +37,17 @@ import {
   Section,
   Layout,
   Status,
+  SelectOptionProps,
   theme,
 } from "@looker/components"
 import styled from "styled-components"
-import { SelectionInfoPacket } from "./interfaces"
-import { useAllModels, getActiveGitBranch, getAvailGitBranches } from "../utils/fetchers"
-import JsonViewer from "./JsonViewer"
+import { SelectionInfoPacket, VisibleViewLookup } from "./interfaces"
+import { getActiveGitBranch, getAvailGitBranches, DiagramError } from "../utils/fetchers"
+import { DiagrammedModel } from "../utils/diagrammer"
 import "./styles.css"
-import { useCurrentModel, useSelectExplore } from "../utils/routes"
-import MetadataPanel from "./MetadataPanel"
+import {MetadataPanel} from "./MetadataPanel"
 import { DiagramSettings } from "./DiagramSettings"
-import { SettingsPanel } from "./SettingsPanel"
+import { HelpPanel } from "./HelpPanel"
 import { ViewOptions } from "./ViewOptions"
 import Diagram from "./Diagram"
 import { DiagramHeader } from "./DiagramHeader"
@@ -59,7 +59,7 @@ import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT, NONVIEWS,  ZO
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
 } from '../utils/constants'
-import { getMinimapDimensions } from "../utils/diagrammer"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 
 export const DontShrink = styled(SpaceVertical as any)`
 
@@ -68,7 +68,7 @@ export const DontShrink = styled(SpaceVertical as any)`
   ${props => props.alignCenter ? 'align-items: center': undefined};
 `
 
-const FullPage = styled(Box as any)`
+export const FullPage = styled(Box as any)`
   position: relative;
   display: flex;
   align-items: stretch;
@@ -79,7 +79,7 @@ const FullPage = styled(Box as any)`
   flex-direction: column;
 `
 
-const IntroText = styled(Paragraph as any)`
+export const IntroText = styled(Paragraph as any)`
   text-align: center;
   margin-top: 5em;
   max-width: 40%;
@@ -94,7 +94,7 @@ export const PageLoading = styled.div`
   height: 100%;
 `
 
-const Minimap = styled(Card as any)`
+export const Minimap = styled(Card as any)`
   min-width: 300px;
   width: 300px;
   height: auto;
@@ -103,32 +103,63 @@ const Minimap = styled(Card as any)`
   position: absolute;
 `
 
-const Rail = styled(Aside as any)`
+export const Stage = styled(Section as any)`
+  background: ${(props) => props.theme.colors.ui1};
+  overflow: hidden;
+  position: relative;
+`
+export const Rail = styled(Aside as any)`
   border-right: solid 1px ${(props) => props.theme.colors.ui2};
   align-items: center;
   z-index: 1;
 `
 
-const Stage = styled(Section as any)`
-  background: ${(props) => props.theme.colors.ui1};
-  overflow: hidden;
-  position: relative;
-`
-
-export const DiagramFrame: React.FC<{}> = memo(() => {
-  const unfilteredModels = useAllModels()
-  const currentModel = useCurrentModel()
-  const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
-  const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
-  const [selectedBranch, setSelectedBranch] = React.useState("")
-  const { modelDetail, exploreName, dimensions, modelError, setModelError } = useSelectExplore({}, hiddenToggle, displayFieldType, selectedBranch)
+export const DiagramFrame: React.FC<{
+  unfilteredModels: ILookmlModel[]
+  currentModel: ILookmlModel
+  pathModelName: string
+  pathExploreName: string
+  modelDetail: any
+  dimensions: DiagrammedModel[]
+  modelError: DiagramError
+  setModelError: (e: DiagramError)=>void
+  minimapScale: number
+  minimapX: number
+  minimapY: number
+  defaultMinimap: boolean,
+  hiddenToggle: boolean,
+  setHiddenToggle: (t: boolean)=>void
+  displayFieldType: string,
+  setDisplayFieldType: (s: string)=>void,
+  selectedBranch: string,
+  setSelectedBranch: (b: string)=>void,
+ }> = ({
+  unfilteredModels,
+  currentModel,
+  pathModelName,
+  pathExploreName,
+  modelDetail,
+  dimensions,
+  modelError,
+  setModelError,
+  minimapScale,
+  minimapX,
+  minimapY,
+  defaultMinimap,
+  hiddenToggle,
+  setHiddenToggle,
+  displayFieldType,
+  setDisplayFieldType,
+  selectedBranch,
+  setSelectedBranch,
+  }) => {
+  const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
   const [showHelp, setShowHelp] = React.useState(false)
   const [showViewOptions, setShowViewOptions] = React.useState(false)
   const [showNoAside, setShowNoAside] = React.useState(false)
   const [reload, setReload] = React.useState(false)
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
-  const [viewVisible, setViewVisible] = React.useState<any>({})
   const [zoomFactor, setZoomFactor] = React.useState(ZOOM_INIT)
   const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
@@ -156,17 +187,17 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
     }
   }
 
-  let modelDetails = unfilteredModels ? unfilteredModels.filter(d=>{ 
+  let modelDetails = unfilteredModels ? unfilteredModels.filter((d: ILookmlModel)=>{ 
     return d.explores.length >= 1
-  }).map(d=>{
+  }).map((d: ILookmlModel)=>{
     return {
       value: d.name,
       label: d.label
     }
   }).sort((a: any, b: any) => a.value < b.value ? -1 : 1) : []
 
-  let currentExplore = modelDetail && modelDetail.explores.filter(d=>{
-    return d.name === exploreName
+  let currentExplore = modelDetail && modelDetail.explores.filter((d: ILookmlModelExplore)=>{
+    return d.name === pathExploreName
   })[0]
 
   let projectId = currentExplore && currentExplore.project_name
@@ -174,7 +205,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
   const gitBranch = getActiveGitBranch(projectId)
   const gitBranches = getAvailGitBranches(projectId)
 
-  let branchOpts = gitBranches && gitBranches.map((branch: any) => {
+  let branchOpts = gitBranches && gitBranches.map((branch: IGitBranch) => {
     let opt = {}
     if (gitBranch.name === branch.name) {
       opt = {
@@ -191,22 +222,20 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
     return opt
   })
 
-  let currentDimensions = dimensions && dimensions.filter((d: any)=>{
-    return d.exploreName === exploreName
+  let currentDimensions = dimensions && dimensions.filter((d: DiagrammedModel)=>{
+    return d.exploreName === pathExploreName
   })[0]
 
   let currentDiagramMetadata = currentDimensions && currentDimensions.diagramDict
 
-  const {minimapScale, minimapX, minimapY, defaultMinimap} = getMinimapDimensions(setModelError, modelError, currentDiagramMetadata)
-
-  let exploreList = currentModel && currentModel.explores.map((d)=>{
+  let exploreList = currentModel && currentModel.explores.map((d: ILookmlModelExplore)=>{
     return {
       value: d.name,
       label: d.label
     }
-  }).sort((a: any, b: any) => a.label < b.label ? -1 : 1)
+  }).sort((a: ILookmlModelExplore, b: ILookmlModelExplore) => a.label < b.label ? -1 : 1)
 
-  let defaultViews: any = {}
+  let defaultViews: VisibleViewLookup = {}
   Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && Object.keys(currentDiagramMetadata.tableData)
   .map((lookmlViewName: string)=>{
     defaultViews[lookmlViewName] = true
@@ -250,18 +279,18 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
               backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
               borderRadius: "10px"}}
           />
-          {/* // Will add back in before GA */}
-          {/* <IconButton
+          <IconButton
             icon="Help"
             label="Diagram Help"
             tooltipPlacement="right"
+            id="diagram-help-btn"
             size="large"
             onClick={() => showDiagram() && setShowHelp(!showHelp)}
             toggle={showHelp}
             style={{color: showHelp && OVERRIDE_KEY, 
               backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
               borderRadius: "10px", position: "absolute", bottom: "0px"}}
-          /> */}
+          />
         </SpaceVertical>
       </Rail>
       {showSettings && (
@@ -278,7 +307,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
           selectionInfo={selectionInfo}
           projectId={projectId}
           currentExplore={currentExplore}
-          diagramExplore={exploreName}
+          diagramExplore={pathExploreName}
           setSelectionInfo={setSelectionInfo}
           setViewVisible={setViewVisible}
           setZoomFactor={setZoomFactor}
@@ -297,11 +326,10 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
           setDisplayFieldType={setDisplayFieldType}
         />
       )}
-      {/* // Will add back in before GA */}
-      {/* {showHelp && (
-        <SettingsPanel width="275px"
+      {showHelp && (
+        <HelpPanel
         />
-      )} */}
+      )}
       <Stage>
         <DiagramHeader
           currentExplore={currentExplore}
@@ -310,6 +338,14 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
         />
         <Layout hasAside height="100%" id="DiagramStage">
         <Stage>
+        {!unfilteredModels && (
+          <PageLoading>
+            <Spinner/>{' '}
+            <Heading mt="large">
+              Loading Extension
+            </Heading>
+          </PageLoading>
+        )}
         {modelError && modelError.kind === "general" && (
           <PageLoading>
             <Status intent="warn" />
@@ -326,7 +362,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
             </Heading>
           </PageLoading>
         )}
-        {!currentExplore && !exploreName && (
+        {unfilteredModels && !pathExploreName && !currentDimensions && (
             <FullPage>
               <div style={{ width: "30%" }}>
                 <img
@@ -342,7 +378,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
               </IntroText>
             </FullPage>
         )}
-        {currentModel && !currentExplore && exploreName && (
+        {!modelError && pathModelName && pathExploreName && !currentDimensions && (
           <PageLoading>
             <Spinner/>{' '}
             <Heading mt="large">
@@ -350,15 +386,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
             </Heading>
           </PageLoading>
         )}
-        {!currentModel && !currentExplore && (
-          <PageLoading>
-            <Spinner/>{' '}
-            <Heading mt="large">
-              Loading Extension
-            </Heading>
-          </PageLoading>
-        )}
-        {!modelError && currentModel && currentExplore && (
+        {!modelError && pathModelName && pathExploreName && currentDimensions && (
           <>
           <DiagramToolbar
             zoomFactor={zoomFactor}
@@ -425,4 +453,4 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
       </Stage>
       </Layout>
   )
-})
+}

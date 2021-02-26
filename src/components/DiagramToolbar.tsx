@@ -45,7 +45,6 @@ const Toolbar = styled(Card as any)`
   position: absolute;
 `
 
-
 export const DiagramToolbar: React.FC<{
   zoomFactor: number,
   reload: boolean,

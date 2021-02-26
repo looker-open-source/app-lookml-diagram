@@ -1,15 +1,38 @@
-import React, { useEffect } from 'react';
+/*
+
+ MIT License
+
+ Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+ */
+
+import React from 'react';
 import {
-  Box,
   Badge,
   ButtonTransparent,
   CodeBlock,
   Code,
-  Chip,
   Flex,
   FlexItem,
   Heading,
-  Text,
   SpaceVertical,
   Paragraph,
   Aside,
@@ -17,7 +40,6 @@ import {
   Icon,
   Space,
   Tabs,
-  Tooltip,
   Tab,
   TabList,
   TabPanel,
@@ -29,55 +51,17 @@ import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { ExternalLink } from "./ExternalLink"
 import JoinIcon from "./JoinIcon"
 import MetadataPanelTable from "./MetadataPanelTable"
+import {MetadataInfoPanel} from "./MetadataInfoPanel"
+import {MetadataFooter} from "./MetadataFooter"
+import {LookmlCodeBlock} from "./LookmlCodeBlock"
 import { METADATA_PANEL_PIXEL } from "../utils/constants"
-import { LookmlObjectMetadata } from "./interfaces"
+import { LookmlObjectMetadata, SelectionInfoPacket } from "./interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields } from '../utils/diagrammer'
 import { exploreFieldURL } from '../utils/urls'
 import { useExplore } from '../utils/fetchers'
 
-const MetadataInfoPanel = styled(Aside as any)`
-  border-left: solid 1px ${(props) => props.theme.colors.ui2};
-  overflow-y: auto;
-  background-color: ${(props) => props.theme.colors.background};
-  box-shadow: -10px 0px 20px 0px ${(props) => props.theme.colors.ui2};
-  z-index: 0;
-`
-const MetadataRow = styled(Flex as any)`
-  border-top: solid 1px ${(props) => props.theme.colors.ui2};
-  width: 100%;
-`
-const KeyText = styled(Text as any)`
-  font-size: ${(props) => props.theme.fontSizes.small};
-  font-weight: 500;
-`
-const ValueText = styled(Text as any)`
-  font-weight: 400;
-`
-const MetadataFooter = styled(Footer as any)`
-  width: ${METADATA_PANEL_PIXEL}px;
-  right: -1px;
-  position: absolute;
-  bottom: 0px;
-  box-shadow: 0px 1px 15px ${(props) => props.theme.colors.ui2};
-  background-color: ${(props) => props.theme.colors.background};
-`
-
-const LookmlCodeBlock = styled(CodeBlock as any)`
-  background-color: ${(props) => props.theme.colors.neutralSubtle};
-  color: ${(props) => props.theme.colors.keyInteractive};
-`
-
-const JoinPill = styled(Chip as any)`
-  font-family: monospace; 
-  border-radius: 20px;
-`
-
-// const PillText = styled(FlexItem as any)`
-//   font-family: monospace;
-// `
-
-const PillText:React.FC = ({children}) => {
+export const PillText:React.FC = ({children}) => {
   return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>
 }
 
@@ -102,9 +86,9 @@ let getSqlType = (type: string) => {
   return type
 }
 
-function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any) {
+function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any, selectionInfo: SelectionInfoPacket) {
   let blobStart = dateOrDuration(field.type) ? "dimension_group" : field.category
-  let startLine = `${blobStart}: ${getFieldName(field.name, field.type)} {\n`
+  let startLine = `${blobStart}: ${getFieldName(field.name, field.type, selectionInfo.grouped)} {\n`
   let keyLine = field.primary_key && `  primary_key: yes\n`
   let typeLine = field.type && `  type: ${getSqlType(field.type)}\n`
   let vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
@@ -116,7 +100,7 @@ function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any) {
 }
 
 function getFieldType(type: string) {
-  if (type.includes("_DATE")) {
+  if (type.includes("DATE_")) {
     return "DATE"
   } else if (type.includes("DURATION_")) {
     return "DURATION"
@@ -124,20 +108,17 @@ function getFieldType(type: string) {
   return type
 }
 
-function getFieldName(name: string, type: string) {
-  name = name.split(".")[1].toLowerCase()
-  if (type.includes("duration_")) {
-    return name.split("_")[1]
-  } else if (name.includes("_date") && type.includes("_date")) {
-    return name.split("_date")[0]
+function getFieldName(name: string, type: string, dimensionGroup: string) {
+  if ((type.includes("duration") || type.includes("date")) && dimensionGroup) {
+    return dimensionGroup.split(".")[1].toLowerCase()
   }
-  return name
+  return name.split(".")[1].toLowerCase()
 }
 
-const MetadataPanel: React.FC<{
+export const MetadataPanel: React.FC<{
   explore: ILookmlModelExplore,
-  selectionInfo: any,
-  model: any,
+  selectionInfo: SelectionInfoPacket,
+  model: ILookmlModel,
 }> = ({
   explore,
   selectionInfo,
@@ -145,7 +126,6 @@ const MetadataPanel: React.FC<{
 }) => {
   let metadata: LookmlObjectMetadata
   let field: ILookmlModelExploreField
-  // console.log(explore, model)
   if (selectionInfo.lookmlElement === "explore") {
     // @ts-ignore
     let lookmlLink = explore.lookml_link
@@ -175,9 +155,8 @@ const MetadataPanel: React.FC<{
       joinRelationship: joinObj.relationship && joinObj.relationship.replace(/_/g, " ").toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "dimension" || selectionInfo.lookmlElement === "measure") {
-    let nameRegex = new RegExp(selectionInfo.name.replace(".",".*"))
     let fields = getFields(explore.fields).filter((field: any) => {
-      return (field.name === selectionInfo.name || field.name.includes(selectionInfo.name) || nameRegex.test(field.name)) && field.dimension_group === selectionInfo.grouped
+      return field.lookml_link === selectionInfo.link && (field.name === selectionInfo.name || (field.dimension_group === selectionInfo.grouped && field.name.includes(selectionInfo.name)))
     })
     let timeframes = fields.map((f: any) => {
       return f.type.includes("date_") && f.type.replace("date_", "") || f.type.includes("duration_") && f.type.replace("duration_", "")
@@ -187,20 +166,19 @@ const MetadataPanel: React.FC<{
     let lookmlLink = field.lookml_link
     let tf = !timeframes.includes(false) ? timeframes : []
     metadata = {
-      name: getFieldName(field.name, field.type),
+      name: getFieldName(field.name, field.type, selectionInfo.grouped),
       fieldName: field.name.split(".")[0],
       lookmlLink: lookmlLink,
       fieldType: getFieldType(field.type.toUpperCase()),
       description: field.description,
       label: field.label,
       timeframes: !timeframes.includes(false) ? timeframes : [],
-      // labelShort: field.label_short,
       fieldGroupLabel: field.field_group_label,
       valueFormat: field.value_format,
       userAttributeFilterTypes: field.user_attribute_filter_types,
       fieldSql: field.sql,
       primaryKey: field.primary_key,
-      fieldCode: getFieldCodeBlock(field, tf),
+      fieldCode: getFieldCodeBlock(field, tf, selectionInfo),
       fieldCategory: field.category.toUpperCase(),
     }
   } else if (selectionInfo.lookmlElement === "view") {
@@ -315,4 +293,3 @@ const MetadataPanel: React.FC<{
   )
 }
 
-export default MetadataPanel

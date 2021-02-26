@@ -27,12 +27,42 @@
 import React from "react"
 import { ComponentsProvider, theme } from "@looker/components"
 import { DiagramFrame } from "./DiagramFrame"
+import { useCurrentModel, useSelectExplore, usePathNames } from "../utils/routes"
+import { useAllModels } from "../utils/fetchers"
+import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
+} from '../utils/constants'
 
 export const Extension: React.FC = () => {
+  const unfilteredModels = useAllModels()
+  const currentModel = useCurrentModel()
+  const { modelName, exploreName } = usePathNames()
+  const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
+  const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
+  const [selectedBranch, setSelectedBranch] = React.useState("")
+  const { modelDetail, dimensions, modelError, setModelError, minimapScale, minimapX, minimapY, defaultMinimap } = useSelectExplore(hiddenToggle, displayFieldType, selectedBranch)
   return (
   <ComponentsProvider themeCustomizations={{
     colors: { key: "rgb(45, 126, 234)" },
   }}>
-    <DiagramFrame />
+    <DiagramFrame
+      unfilteredModels={unfilteredModels}
+      currentModel={currentModel}
+      pathModelName={modelName}
+      pathExploreName={exploreName}
+      modelDetail={modelDetail}
+      dimensions={dimensions}
+      modelError={modelError}
+      setModelError={setModelError}
+      minimapScale={minimapScale}
+      minimapX={minimapX}
+      minimapY={minimapY}
+      defaultMinimap={defaultMinimap}
+      hiddenToggle={hiddenToggle}
+      setHiddenToggle={setHiddenToggle}
+      displayFieldType={displayFieldType}
+      setDisplayFieldType={setDisplayFieldType}
+      selectedBranch={selectedBranch}
+      setSelectedBranch={setSelectedBranch}
+       />
   </ComponentsProvider>
 )}

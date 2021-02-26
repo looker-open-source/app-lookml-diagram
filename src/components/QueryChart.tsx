@@ -37,7 +37,7 @@ import {
 } from "@looker/components"
 import { QueryChartType, runChartQuery, SimpleResult } from "../utils/queries"
 import styled from "styled-components"
-import { BarChart, Bar } from "recharts"
+import { BarChart, Bar, Tooltip } from "recharts"
 import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExternalLink } from "./ExternalLink"
 import { getCached } from "../utils/fetchers"
@@ -76,6 +76,26 @@ const PaddedCell = styled(TableDataCell as any)`
   padding: 4px;
 `
 
+const BarTooltip = styled.div`
+  padding: 4px;
+  border-radius: 5px;
+  color: #FFF;
+  opacity: 0.9;
+  background: #282828;
+`
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <BarTooltip>
+        <p className="label">{`Range: [${Math.round(payload[0].payload.min)},${Math.round(payload[0].payload.max)}] Count: ${payload[0].value}`}</p>
+      </BarTooltip>
+    );
+  }
+
+  return null;
+};
+
 export class QueryChart extends React.Component<
   QueryChartProps,
   QueryChartState
@@ -105,7 +125,7 @@ export class QueryChart extends React.Component<
       console.error(e)
       this.setState({
         loading: false,
-        response: undefined
+        response: {data:[], align:[], max:[]}
       })
     }
   }
@@ -144,6 +164,7 @@ export class QueryChart extends React.Component<
                   data={this.state.response.histogram.data}
                   margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
                 >
+                  <Tooltip content={<CustomTooltip />} />
                   <Bar dataKey="value" fill="#0087e1" />
                 </BarChart>
               </Box>

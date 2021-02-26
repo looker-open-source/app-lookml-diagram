@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DiagramHeader /> should match the basic diagram header 1`] = `
+"<Styled(Header) py=\\"xsmall\\" px=\\"large\\" className=\\"has-explore\\">
+  <Space between={true}>
+    <Space gap=\\"xsmall\\">
+      <Heading as=\\"h1\\">
+        Order Items
+      </Heading>
+    </Space>
+    <Space gap=\\"xsmall\\" justifyContent=\\"flex-end\\">
+      <IconButton label=\\"Explore Info\\" icon=\\"CircleInfoOutline\\" onClick={[undefined]} style={{...}} size=\\"large\\" />
+      <IconButton label=\\"Reload Diagram\\" icon=\\"Refresh\\" size=\\"large\\" onClick={[Function: onClick]} />
+    </Space>
+  </Space>
+</Styled(Header)>"
+`;

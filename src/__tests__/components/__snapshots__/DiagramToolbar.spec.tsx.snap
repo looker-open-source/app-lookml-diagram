@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DiagramToolbar /> should match the basic 1`] = `
+"<Styled(Card) raised={true}>
+  <Flex flexDirection=\\"column\\" alignItems=\\"center\\">
+    <FlexItem pt=\\"xsmall\\" fontSize=\\"xsmall\\" style={{...}}>
+      100%
+    </FlexItem>
+    <FlexItem width=\\"40px\\">
+      <Divider />
+    </FlexItem>
+    <FlexItem>
+      <IconButton icon=\\"Plus\\" label=\\"Zoom In\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} />
+    </FlexItem>
+    <FlexItem>
+      <IconButton icon=\\"Minus\\" label=\\"Zoom Out\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} />
+    </FlexItem>
+    <FlexItem width=\\"40px\\">
+      <Divider />
+    </FlexItem>
+    <FlexItem>
+      <IconButton icon=\\"CenterFocus\\" label=\\"Return to Start\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} />
+    </FlexItem>
+    <FlexItem width=\\"40px\\">
+      <Divider />
+    </FlexItem>
+    <FlexItem pb=\\"xsmall\\">
+      <IconButton icon=\\"ChartMap\\" label=\\"Toggle Minimap\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} style={{...}} />
+    </FlexItem>
+  </Flex>
+</Styled(Card)>"
+`;

@@ -31,9 +31,10 @@ import {
   FieldSelect,
   Label,
   Aside,
+  SelectOptionProps,
   Icon,
 } from "@looker/components"
-import { ColumnDescriptor } from "./interfaces"
+import { ColumnDescriptor, SelectionInfoPacket, VisibleViewLookup } from "./interfaces"
 import styled from "styled-components"
 import { OVERRIDE_KEY_SUBTLE, X_INIT, Y_INIT, ZOOM_INIT } from '../utils/constants'
 import { internalModelURL, internalExploreURL } from "../utils/routes"
@@ -41,6 +42,7 @@ import { SettingsPanel } from "./SettingsPanel"
 import { useHistory } from "react-router"
 import { ExtensionContext } from "@looker/extension-sdk-react"
 import { changeBranch, DiagramError } from "../utils/fetchers"
+import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 
 export const ExploreList = styled.ul`
   margin: 0;
@@ -81,22 +83,22 @@ export const ExploreButton = styled.button`
 `
 
 export const DiagramSettings: React.FC<{
-  modelDetails: any,
-  currentModel: any,
+  modelDetails: SelectOptionProps[],
+  currentModel: ILookmlModel,
   setModelError: (error: DiagramError) => void,
   selectedBranch: string,
   setSelectedBranch: (branchName: string) => void,
-  branchOpts: any,
-  gitBranch: any,
-  gitBranches: any,
-  exploreList: any,
-  selectionInfo: any,
-  projectId: any,
-  currentExplore: any,
-  diagramExplore: any,
-  setSelectionInfo: (info: any) => void,
-  setViewVisible: (visible: any) => void,
-  setZoomFactor: (zoom: any) => void,
+  branchOpts: SelectOptionProps[],
+  gitBranch: IGitBranch,
+  gitBranches: IGitBranch[],
+  exploreList: ILookmlModelExplore[],
+  selectionInfo: SelectionInfoPacket,
+  projectId: string,
+  currentExplore: ILookmlModelExplore,
+  diagramExplore: string,
+  setSelectionInfo: (info: SelectionInfoPacket) => void,
+  setViewVisible: (visible: VisibleViewLookup) => void,
+  setZoomFactor: (zoom: number) => void,
   setViewPosition: (info: any) => void,
   setMinimapUntoggled: (toggle: boolean) => void,
   setMinimapEnabled: (toggle: boolean) => void,
@@ -126,11 +128,11 @@ export const DiagramSettings: React.FC<{
 
   async function changeGitBranch(branch: string) {
     setSelectedBranch(branch)
-    let targetBranch = gitBranches.filter((br: any) => {
+    let targetBranch = gitBranches.filter((br: IGitBranch) => {
       return br.name === branch
     })[0]
     try {
-      const response = await changeBranch(coreSDK, projectId, branch, targetBranch.gitRef)
+      const response = await changeBranch(coreSDK, projectId, branch, targetBranch.ref)
       location.reload()
     } catch (e) {
       setSelectedBranch(gitBranch.name)

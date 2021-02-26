@@ -168,7 +168,6 @@ export function setGitBranch(projectId: string, gitName: string, gitRef: string)
   const [newBranch, setNewBranch] = useState<any>(undefined)
   useEffect(() => {
     async function fetcher() {
-      console.log(projectId, gitName, gitRef)
       setNewBranch(await changeBranch(coreSDK, projectId, gitName, gitRef))
     }
     projectId && gitName && gitRef && fetcher()

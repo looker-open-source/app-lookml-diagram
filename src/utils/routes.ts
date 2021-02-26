@@ -1,6 +1,6 @@
 import { useRouteMatch } from "react-router-dom"
 import { useAllModels, useExplore, useModelDetail } from "./fetchers"
-import { getDiagramDimensions } from "./diagrammer"
+import { getDiagramDimensions, getMinimapDimensions, DiagrammedModel } from "./diagrammer"
 
 export function internalExploreURL({
   model,
@@ -76,13 +76,15 @@ export function useCurrentExplore() {
   return useExplore(modelName, exploreName)
 }
 
-export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, displayFieldType: string, selectedBranch: string) {
+export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string, selectedBranch: string) {
   const { modelName, exploreName } = usePathNames()
-  // get model and all explore info
   let {modelDetail, modelError, setModelError} = useModelDetail(modelName, selectedBranch)
-  // calculate diagram dimensions
-  let dimensions = getDiagramDimensions(modelDetail, diagramPersist, hiddenToggle, displayFieldType)
-  return {modelDetail, exploreName, dimensions, modelError, setModelError}
+  let dimensions: DiagrammedModel[] = getDiagramDimensions(modelDetail, hiddenToggle, displayFieldType)
+  let selectDimension = dimensions.filter((d: any)=>{
+    return d.exploreName === exploreName
+  })[0]
+  const {minimapScale, minimapX, minimapY, defaultMinimap} = getMinimapDimensions(setModelError, modelError, selectDimension && selectDimension.diagramDict)
+  return {modelDetail, dimensions, modelError, setModelError, minimapScale, minimapX, minimapY, defaultMinimap}
 }
 
 export function useCurrentModel() {

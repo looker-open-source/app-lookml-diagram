@@ -83,6 +83,11 @@ export interface SelectionInfoPacket {
   lookmlElement?: string
   name?: string
   grouped?: string
+  link?: string
+}
+
+export interface VisibleViewLookup {
+  [view_name: string]: boolean
 }
 
 export interface LookmlObjectMetadata {

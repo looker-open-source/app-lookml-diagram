@@ -1,3 +1,29 @@
+/*
+
+ MIT License
+
+ Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+ */
+
 import React, { memo } from 'react';
 import * as d3 from 'd3';
 import { useD3 } from '../d3-utils/useD3'
@@ -6,7 +32,7 @@ import { addFilter } from '../d3-utils/styles'
 import { addZoom } from '../d3-utils/zoom'
 import { createLookmlViewElement } from '../d3-utils/tables'
 import { createLookmlJoinElement } from '../d3-utils/joins'
-import { SelectionInfoPacket } from "./interfaces"
+import { SelectionInfoPacket, VisibleViewLookup } from "./interfaces"
 import { 
   DIAGRAM_BACKGROUND_COLOR, 
   DIAGRAM_HOVER_COLOR, 
@@ -33,13 +59,16 @@ import {
   DIAGRAM_MEASURE_HOVER_COLOR,
   DIAGRAM_MEASURE_ICON_COLOR
 } from "../utils/constants"
+import {
+  theme,
+} from "@looker/components"
 import { 
   DiagramMetadata
 } from "../utils/diagrammer"
 import styled from "styled-components"
 
-const DiagramSpace = styled.svg`
-  background-color: ${DIAGRAM_BACKGROUND_COLOR};
+export const DiagramSpace = styled.svg`
+  background-color: ${(props: any)=>props.type === "help-view" || props.type === "help-join" ? theme.colors.background : DIAGRAM_BACKGROUND_COLOR};
   .display-area {
     cursor: move;
   }
@@ -127,8 +156,8 @@ const DiagramSpace = styled.svg`
 
   // Rows when hover, selected
 
-  g.table-row-selected > rect,
-  g.table-row-selected > path.table-row {
+  g.table-row-selected:not(.help-table-row) > rect,
+  g.table-row-selected:not(.help-table-row) > path.table-row {
     stroke: ${DIAGRAM_SELECT_COLOR};
     fill: ${DIAGRAM_SELECT_COLOR};
   }
@@ -141,19 +170,19 @@ const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_SELECT_TEXT_COLOR};
   }
 
-  g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > rect,
-  g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > path.table-row {
+  g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > rect,
+  g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > path.table-row {
     stroke: ${DIAGRAM_HOVER_COLOR};
     fill: ${DIAGRAM_HOVER_COLOR};
   }
 
-  g.table-row.table-row-measure:not(.table-row-selected):hover > rect,
-  g.table-row.table-row-measure:not(.table-row-selected):hover > path.table-row {
+  g.table-row.table-row-measure:not(.table-row-selected):not(.help-table-row):hover > rect,
+  g.table-row.table-row-measure:not(.table-row-selected):not(.help-table-row):hover > path.table-row {
     fill: ${DIAGRAM_MEASURE_HOVER_COLOR};
     stroke: ${DIAGRAM_MEASURE_HOVER_COLOR};
   }
 
-  g.table-row:not(.table-row-selected):not(.minimap-table-row):hover > text {
+  g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > text {
     fill: ${DIAGRAM_HOVER_TEXT_COLOR};
   }
 
@@ -226,7 +255,7 @@ export const Diagram: React.FC<{
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
   hiddenToggle: boolean,
   displayFieldType: string,
-  viewVisible: any,
+  viewVisible: VisibleViewLookup,
   zoomFactor: number,
   setZoomFactor: (zoomFactor: number) => void,
   viewPosition: any,
@@ -336,6 +365,8 @@ export const Diagram: React.FC<{
     <DiagramSpace
       ref={ref}
       id={`${type}-diagram-svg`}
+      type={type}
+      height={type.includes("help") ? viewPosition.clientHeight : undefined}
     >
       <g className={`${type}-area`} />
     </DiagramSpace>

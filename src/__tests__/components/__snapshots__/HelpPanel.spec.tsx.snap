@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpPanel /> should match the basic 1`] = `
+"<SettingsPanel width=\\"275px\\" px=\\"medium\\" py=\\"large\\">
+  <SpaceVertical>
+    <Heading fontSize=\\"large\\">
+      Diagram Help
+    </Heading>
+    <Label>
+      Views
+    </Label>
+    <Diagram type=\\"help-view\\" dimensions={{...}} explore={{...}} reload={false} selectionInfo={{...}} setSelectionInfo={[undefined]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} zoomFactor={0.479} setZoomFactor={[Function: setZoomFactor]} viewPosition={{...}} setViewPosition={[Function: setViewPosition]} />
+    <Paragraph fontSize=\\"small\\">
+      Base views are represented with a dark-blue header. The background of dimension table rows is white, and light orange for measures.
+    </Paragraph>
+    <Paragraph fontSize=\\"small\\">
+      Each field has an icon representing its type, and primary keys are represented with an additional key icon.
+    </Paragraph>
+    <Paragraph fontSize=\\"small\\">
+      Click on a table row for its metadata.
+    </Paragraph>
+    <Divider />
+    <Label>
+      Joins
+    </Label>
+    <Diagram type=\\"help-join\\" dimensions={{...}} explore={{...}} reload={false} selectionInfo={{...}} setSelectionInfo={[undefined]} hiddenToggle={true} displayFieldType=\\"all\\" viewVisible={{...}} zoomFactor={0.249} setZoomFactor={[Function: setZoomFactor]} viewPosition={{...}} setViewPosition={[Function: setViewPosition]} />
+    <Paragraph fontSize=\\"small\\">
+      Joins are represented by a directed line. Joined views are represented by a light-blue header.
+    </Paragraph>
+    <Paragraph fontSize=\\"small\\">
+      The shape of the line, where it attaches to the view or field, conveys the cardinality of the relationship between the two objects; a forked line indicates a “many” cardinality, and a single line indicates a “one” cardinality. You would read the relationship as 
+      <styled.span>
+        from
+      </styled.span>
+       the base view 
+      <styled.span>
+        to
+      </styled.span>
+       the joined view.
+    </Paragraph>
+    <Paragraph fontSize=\\"small\\">
+      Click on a join for its metadata.
+    </Paragraph>
+    <ExternalLink fontSize=\\"small\\" target=\\"_blank\\" href=\\"https://docs.looker.com/data-modeling/extension-framework/lookml-diagram\\">
+      Full documentation.
+    </ExternalLink>
+  </SpaceVertical>
+</SettingsPanel>"
+`;
