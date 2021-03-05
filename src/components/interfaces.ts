@@ -82,6 +82,7 @@ export interface CommentPermissions {
 export interface SelectionInfoPacket {
   lookmlElement?: string
   name?: string
+  grouped?: string
 }
 
 export interface LookmlObjectMetadata {

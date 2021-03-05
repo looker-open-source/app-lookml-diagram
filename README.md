@@ -99,6 +99,39 @@ The process above requires your local development server to be running to load t
       file: "bundle.js"
     }
     ```
+
+## Styling the Lookml Diagram
+The diagram is found in `./components/Diagram.tsx`. CSS classes are styled onto the surrounding SVG. These classes are defined as composable effects, added to individual elements by d3 on creation or during an event. Because the styles are applied using CSS classes, the number of d3 renders is cut down, and we can centralize the code describing them. 
+
+The CSS styles make use of the diagram element structure to apply as intended. Generally, this structure is:
+```
+svg#diagram-svg
+  g.diagram-area
+    rect.clickable-background
+    g.join-[join_name]
+      path.join-path
+      path.join-path-hover
+      marker
+        path
+    g.table-[table_name]
+      rect.table-background
+      g.table-row-[field-name]
+        path
+        rect
+        path.pk-icon
+        text
+      g.table-row-view
+      g.table-row-base-view
+      g.table-row-dimension
+      g.table-row-measure
+      g.table-row-selected
+```
+Learning this structure (and maintaining it during development) by using the Chrome DevTools "Element Inspector" on the Diagram is highly recommended. The styles applied by these classes have been further reduced to a set of hyperparameters found in `./utils/constants.ts`. These constants affect things like color, text decoration, padding, and spacing; values applied by CSS attributes, or used as starting values for diagram generation. Changing some make require modification to other variables in response: for example when changing TABLE_WIDTH, MAX_TEXT_LENGTH should be considered. 
+
+Not everything that could be considered a "style" falls under the CSS sphere of influence. The join path logic can be found in `./d3-utils/joins.ts`, this file includes logic like line interpolation, tangle management, and arrowheads. The table logic can be found in `./d3-utils/tables.ts` and contains icon paths as well as functions which identify varies kinds of `table-row`. These functions should be modified for behavior such as selective row styling.
+
+
+      
 ## Notes
 
 - Webpack's hot reloading is not currently supported.

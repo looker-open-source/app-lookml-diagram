@@ -24,78 +24,41 @@
 
  */
 
-import React, { useState, SyntheticEvent, memo, useContext } from "react"
+import React, { memo } from "react"
 import {
-  Chip,
   Card,
-  Flex,
-  FlexItem,
   Heading,
   Spinner,
-  Divider,
-  Select,
-  Text,
-  Button,
   SpaceVertical,
-  FieldSelect,
-  Space,
   IconButton,
-  ComponentsProvider,
-  Page,
-  Label,
-  Grid,
-  ButtonTransparent,
-  Icon,
   Box,
-  Popover,
   Paragraph,
   Aside,
   Section,
-  Header,
-  Menu,
-  MenuItem,
-  MenuList,
   Layout,
-  FieldCheckbox,
-  RadioGroup,
-  ButtonToggle,
-  Tooltip,
   Status,
-  Truncate,
-  ButtonItem,
   theme,
-  FieldRadioGroup,
-  FieldToggleSwitch
 } from "@looker/components"
-import styled, { ThemeProvider } from "styled-components"
+import styled from "styled-components"
 import { SelectionInfoPacket } from "./interfaces"
-import { useAllModels, getActiveGitBranch, getAvailGitBranches, changeBranch } from "../utils/fetchers"
+import { useAllModels, getActiveGitBranch, getAvailGitBranches } from "../utils/fetchers"
 import JsonViewer from "./JsonViewer"
 import "./styles.css"
-import { useHistory } from "react-router"
-import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { useCurrentModel, useSelectExplore } from "../utils/routes"
 import MetadataPanel from "./MetadataPanel"
 import { DiagramSettings } from "./DiagramSettings"
+import { SettingsPanel } from "./SettingsPanel"
 import { ViewOptions } from "./ViewOptions"
 import Diagram from "./Diagram"
 import { DiagramHeader } from "./DiagramHeader"
 import { DiagramToolbar } from "./DiagramToolbar"
 import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT, NONVIEWS,  ZOOM_INIT,
-  ZOOM_MAX,
-  ZOOM_MIN,
-  ZOOM_STEP,
   X_INIT,
   Y_INIT,
-  TABLE_PADDING,
-TABLE_WIDTH,
-TABLE_ROW_HEIGHT,
-DIAGRAM_FIELD_STROKE_WIDTH, 
-TABLE_VERTICAL_PADDING,
-TABLE_DEGREE_STEP,
-DIAGRAM_HEADER_HEIGHT,
-OVERRIDE_KEY,
-OVERRIDE_KEY_SUBTLE} from '../utils/constants'
+  DIAGRAM_HEADER_HEIGHT,
+  OVERRIDE_KEY,
+  OVERRIDE_KEY_SUBTLE
+} from '../utils/constants'
 import { getMinimapDimensions } from "../utils/diagrammer"
 
 export const DontShrink = styled(SpaceVertical as any)`
@@ -160,6 +123,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
   const [selectedBranch, setSelectedBranch] = React.useState("")
   const { modelDetail, exploreName, dimensions, modelError, setModelError } = useSelectExplore({}, hiddenToggle, displayFieldType, selectedBranch)
   const [showSettings, setShowSettings] = React.useState(true)
+  const [showHelp, setShowHelp] = React.useState(false)
   const [showViewOptions, setShowViewOptions] = React.useState(false)
   const [showNoAside, setShowNoAside] = React.useState(false)
   const [reload, setReload] = React.useState(false)
@@ -175,6 +139,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
   const handleHiddenToggle = (event: any) => setHiddenToggle(event.target.checked)
 
   function showDiagram() {
+    setShowHelp(false)
     setShowViewOptions(false)
     setShowSettings(false)
     setShowNoAside(true)
@@ -230,7 +195,9 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
     return d.exploreName === exploreName
   })[0]
 
-  const {minimapScale, minimapX, minimapY, defaultMinimap} = getMinimapDimensions(setModelError, modelError, currentDimensions)
+  let currentDiagramMetadata = currentDimensions && currentDimensions.diagramDict
+
+  const {minimapScale, minimapX, minimapY, defaultMinimap} = getMinimapDimensions(setModelError, modelError, currentDiagramMetadata)
 
   let exploreList = currentModel && currentModel.explores.map((d)=>{
     return {
@@ -240,12 +207,11 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
   }).sort((a: any, b: any) => a.label < b.label ? -1 : 1)
 
   let defaultViews: any = {}
-  Object.keys(viewVisible).length === 0 && currentExplore && currentDimensions && Object.keys(currentDimensions.diagramDict)
+  Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && Object.keys(currentDiagramMetadata.tableData)
   .map((lookmlViewName: string)=>{
-    if (NONVIEWS.includes(lookmlViewName)) { return }
     defaultViews[lookmlViewName] = true
   })
-  Object.keys(viewVisible).length === 0 && currentExplore && currentDimensions && setViewVisible(defaultViews)
+  Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && setViewVisible(defaultViews)
 
   return (
     <Layout hasAside height="100%">
@@ -256,10 +222,10 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
             label="Diagram"
             tooltipPlacement="right"
             size="large"
-            toggle={showNoAside && !showViewOptions && !showSettings ? true : undefined}
+            toggle={showNoAside && !showViewOptions && !showSettings && !showHelp ? true : undefined}
             onClick={showDiagram}
-            style={{color: showNoAside && !showViewOptions && !showSettings && OVERRIDE_KEY, 
-              backgroundColor: showNoAside && !showViewOptions && !showSettings && OVERRIDE_KEY_SUBTLE,
+            style={{color: showNoAside && !showViewOptions && !showSettings && !showHelp && OVERRIDE_KEY, 
+              backgroundColor: showNoAside && !showViewOptions && !showSettings && !showHelp && OVERRIDE_KEY_SUBTLE,
               borderRadius: "10px"}}
           />
           <IconButton
@@ -284,6 +250,18 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
               backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
               borderRadius: "10px"}}
           />
+          {/* // Will add back in before GA */}
+          {/* <IconButton
+            icon="Help"
+            label="Diagram Help"
+            tooltipPlacement="right"
+            size="large"
+            onClick={() => showDiagram() && setShowHelp(!showHelp)}
+            toggle={showHelp}
+            style={{color: showHelp && OVERRIDE_KEY, 
+              backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
+              borderRadius: "10px", position: "absolute", bottom: "0px"}}
+          /> */}
         </SpaceVertical>
       </Rail>
       {showSettings && (
@@ -319,6 +297,11 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
           setDisplayFieldType={setDisplayFieldType}
         />
       )}
+      {/* // Will add back in before GA */}
+      {/* {showHelp && (
+        <SettingsPanel width="275px"
+        />
+      )} */}
       <Stage>
         <DiagramHeader
           currentExplore={currentExplore}
@@ -327,11 +310,19 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
         />
         <Layout hasAside height="100%" id="DiagramStage">
         <Stage>
-        {modelError && (
+        {modelError && modelError.kind === "general" && (
           <PageLoading>
             <Status intent="warn" />
             <Heading mt="large">
               Uh oh! Could not generate a diagram for this model.
+            </Heading>
+          </PageLoading>
+        )}
+        {modelError && modelError.kind === "notFound" && (
+          <PageLoading>
+            <Status intent="critical" />
+            <Heading mt="large">
+              Uh oh! Could not locate this model.
             </Heading>
           </PageLoading>
         )}
@@ -383,7 +374,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
           />
           <Diagram
             type={"display"}
-            dimensions={currentDimensions} 
+            dimensions={currentDiagramMetadata} 
             explore={currentExplore} 
             reload={reload} 
             selectionInfo={selectionInfo} 
@@ -399,7 +390,7 @@ export const DiagramFrame: React.FC<{}> = memo(() => {
           {(minimapEnabled || (minimapUntoggled && defaultMinimap)) && <Minimap raised>
             <Diagram 
               type={"minimap"}
-              dimensions={currentDimensions} 
+              dimensions={currentDiagramMetadata} 
               explore={currentExplore} 
               reload={reload} 
               selectionInfo={selectionInfo} 

@@ -1,12 +1,11 @@
 import React, { memo } from 'react';
 import * as d3 from 'd3';
 import { useD3 } from '../d3-utils/useD3'
-import { theme } from '@looker/components'
 import { ILookmlModelExplore } from '@looker/sdk/lib/sdk/3.1/models';
 import { addFilter } from '../d3-utils/styles'
 import { addZoom } from '../d3-utils/zoom'
 import { createLookmlViewElement } from '../d3-utils/tables'
-import { addJoinArrowheads, createLookmlJoinElement } from '../d3-utils/joins'
+import { createLookmlJoinElement } from '../d3-utils/joins'
 import { SelectionInfoPacket } from "./interfaces"
 import { 
   DIAGRAM_BACKGROUND_COLOR, 
@@ -34,6 +33,9 @@ import {
   DIAGRAM_MEASURE_HOVER_COLOR,
   DIAGRAM_MEASURE_ICON_COLOR
 } from "../utils/constants"
+import { 
+  DiagramMetadata
+} from "../utils/diagrammer"
 import styled from "styled-components"
 
 const DiagramSpace = styled.svg`
@@ -217,7 +219,7 @@ const DiagramSpace = styled.svg`
 
 export const Diagram: React.FC<{
   type: string,
-  dimensions: any, 
+  dimensions: DiagramMetadata, 
   explore: ILookmlModelExplore,
   reload: boolean,
   selectionInfo: SelectionInfoPacket,
@@ -273,7 +275,7 @@ export const Diagram: React.FC<{
       let filter = addFilter(svg);
 
       // Create all joins
-      dimensions.diagramDict._joinData.map((join: any, index: number) => {
+      dimensions.joinData.map((join: any, index: number) => {
         // but not to any disabled tables
         let allVisible = true
         join.map((joinPart: any) => {
@@ -281,19 +283,23 @@ export const Diagram: React.FC<{
             allVisible = false 
           }
         })
-        allVisible && createLookmlJoinElement(svg, join, dimensions.diagramDict, explore, selectionInfo, setSelectionInfo, type);
+        allVisible && createLookmlJoinElement(svg, join, dimensions, explore, selectionInfo, setSelectionInfo, type);
       })
 
       // Create all tables
       diagramViews.map((lookmlViewName: string, index: number) => {
-        let tableData = dimensions.diagramDict[lookmlViewName];
+        let tableData = dimensions.tableData[lookmlViewName];
         tableData && createLookmlViewElement(svg, tableData, selectionInfo, setSelectionInfo, type);
       })
 
       let tableRowTypes = ["dimension", "measure", "view"]
       // Highlight anything selected on previous render
-      if (tableRowTypes.includes(selectionInfo.lookmlElement)) {
-        d3.selectAll("#" + selectionInfo.name.replace(".","-"))
+      if (selectionInfo.grouped) {
+        d3.selectAll("#" + selectionInfo.name.replace(".","-")+".table-row-grouped")
+        .classed("table-row-selected", true)
+      }
+      else if (tableRowTypes.includes(selectionInfo.lookmlElement)) {
+        d3.selectAll("#" + selectionInfo.name.replace(".","-")+":not(.table-row-grouped)")
         .classed("table-row-selected", true)
       } else if (selectionInfo.lookmlElement === "join") {
         d3.selectAll("g.join-"+selectionInfo.name)

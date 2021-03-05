@@ -24,26 +24,16 @@
 
  */
 
-import React, { useContext } from "react"
+import React from "react"
 import {
-  SpaceVertical,
-  Heading,
   Divider,
-  RadioGroup,
-  FieldToggleSwitch,
-  Label,
-  Aside,
   Flex,
   FlexItem,
-  Truncate,
   Card,
-  Space,
   IconButton,
   theme
 } from "@looker/components"
 import styled from "styled-components"
-import { ColumnDescriptor } from "./interfaces"
-import { SettingsPanel } from "./SettingsPanel"
 import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../utils/constants'
 
 const Toolbar = styled(Card as any)`

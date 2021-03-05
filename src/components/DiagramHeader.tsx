@@ -24,26 +24,14 @@
 
  */
 
-import React, { useContext } from "react"
+import React from "react"
 import {
-  SpaceVertical,
   Heading,
-  Divider,
-  RadioGroup,
-  FieldToggleSwitch,
-  Label,
-  Aside,
-  Flex,
-  FlexItem,
-  Truncate,
   Header,
   Space,
-  IconButton,
-  theme
+  IconButton
 } from "@looker/components"
 import styled from "styled-components"
-import { ColumnDescriptor } from "./interfaces"
-import { SettingsPanel } from "./SettingsPanel"
 import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT, OVERRIDE_KEY } from '../utils/constants'
 
 export const DiagramHeaderWrapper = styled(Header as any)`

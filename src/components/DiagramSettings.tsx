@@ -40,7 +40,7 @@ import { internalModelURL, internalExploreURL } from "../utils/routes"
 import { SettingsPanel } from "./SettingsPanel"
 import { useHistory } from "react-router"
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { changeBranch } from "../utils/fetchers"
+import { changeBranch, DiagramError } from "../utils/fetchers"
 
 export const ExploreList = styled.ul`
   margin: 0;
@@ -83,7 +83,7 @@ export const ExploreButton = styled.button`
 export const DiagramSettings: React.FC<{
   modelDetails: any,
   currentModel: any,
-  setModelError: (error: boolean) => void,
+  setModelError: (error: DiagramError) => void,
   selectedBranch: string,
   setSelectedBranch: (branchName: string) => void,
   branchOpts: any,
@@ -157,7 +157,7 @@ export const DiagramSettings: React.FC<{
           placeholder="Select a model"
           value={currentModel && currentModel.name}
           onChange={(selectedModel: string) => {
-            setModelError(false)
+            setModelError(undefined)
             setSelectedBranch("")
             history.push(internalModelURL({ model: selectedModel }))
           }
@@ -189,7 +189,6 @@ export const DiagramSettings: React.FC<{
                           setViewPosition({x: X_INIT, y: Y_INIT})
                           setMinimapUntoggled(true)
                           setMinimapEnabled(false)
-                          setModelError(false)
                           history.push(
                             internalExploreURL({
                               model: currentModel.name,
