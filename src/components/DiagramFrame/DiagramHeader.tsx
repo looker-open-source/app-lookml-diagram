@@ -27,36 +27,13 @@
 import React from "react"
 import {
   Heading,
-  Header,
   Space,
   IconButton
 } from "@looker/components"
-import styled from "styled-components"
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT, OVERRIDE_KEY } from '../../utils/constants'
+import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
+import {DiagramHeaderProps, DiagramHeaderWrapper} from "./types"
 
-export const DiagramHeaderWrapper = styled(Header as any)`
-  background-color: ${(props) => props.theme.colors.background};
-  border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
-  transition: transform 500ms ease-out;
-  position: relative;
-  z-index: 1;
-
-
-  &.no-explore {
-    transform: translateY(-${DIAGRAM_HEADER_HEIGHT}px);
-  }
-
-  &.has-explore {
-    transform: translateY(0);
-  }
-`
-
-
-export const DiagramHeader: React.FC<{
-  currentExplore: any,
-  selectionInfo: any,
-  toggleExploreInfo: ()=>void,
-}> = ({ 
+export const DiagramHeader: React.FC<DiagramHeaderProps> = ({ 
   currentExplore,
   selectionInfo,
   toggleExploreInfo,

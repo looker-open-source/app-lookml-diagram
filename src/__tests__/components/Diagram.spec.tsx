@@ -46,6 +46,7 @@ describe('<Diagram />', () => {
     viewVisible={{order_items: true}}
     zoomFactor={0.479}
     setZoomFactor={()=>{}}
+    selectedBranch={""}
     viewPosition={{
       x: 58.98,
       y: -84.96,
@@ -71,6 +72,7 @@ describe('<Diagram />', () => {
       displayFieldType={"all"}
       viewVisible={{order_items: true}}
       zoomFactor={0.479}
+      selectedBranch={""}
       setZoomFactor={()=>{}}
       viewPosition={{
         x: 58.98,

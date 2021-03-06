@@ -26,91 +26,16 @@
 
 import React from "react"
 import {
-  Section,
-  Box,
-  Paragraph,
   Spinner,
   Heading,
-  Card,
   Status,
-  theme
 } from "@looker/components"
-import styled from "styled-components"
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
-import { ILookModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
-import { DiagrammedModel, DiagramMetadata } from "../../../utils/diagrammer"
-import { DiagramError } from "../../../utils/fetchers"
 import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
+import {DiagramCanvasProps, DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText} from "./types"
 
-export const DiagramCanvasWrapper = styled(Section as any)`
-  background: ${(props) => props.theme.colors.ui1};
-  overflow: hidden;
-  position: relative;
-`
-export const FullPage = styled(Box as any)`
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 93vh;
-  flex-direction: column;
-`
-
-export const IntroText = styled(Paragraph as any)`
-  text-align: center;
-  margin-top: 5em;
-  max-width: 40%;
-  color: ${theme.colors.text1};
-`
-
-export const PageLoading = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-`
-export const Minimap = styled(Card as any)`
-  min-width: 300px;
-  width: 300px;
-  height: auto;
-  right: 20px;
-  top: 20px;
-  position: absolute;
-`
-
-export const DiagramCanvas: React.FC<{
-  unfilteredModels: ILookModel[],
-  modelError: DiagramError,
-  pathModelName: string,
-  pathExploreName: string,
-  currentDimensions: DiagrammedModel
-  zoomFactor: number
-  reload: boolean
-  defaultMinimap: boolean
-  minimapUntoggled: boolean
-  minimapEnabled: boolean
-  setZoomFactor: (k: number)=>void
-  setViewPosition: (posPacket: any)=>void
-  setReload: (r: boolean)=>void
-  setMinimapUntoggled: (ut: boolean)=>void
-  setMinimapEnabled: (e: boolean)=>void
-  dimensions: DiagramMetadata
-  explore: ILookmlModelExplore
-  selectionInfo: SelectionInfoPacket
-  setSelectionInfo: (packet: SelectionInfoPacket) => void
-  hiddenToggle: boolean
-  displayFieldType: string
-  viewVisible: VisibleViewLookup
-  viewPosition: any
-  minimapX: number
-  minimapY: number
-  minimapScale: number
-}> = ({ 
+export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ 
   unfilteredModels,
   modelError,
   pathModelName,
@@ -118,7 +43,6 @@ export const DiagramCanvas: React.FC<{
   currentDimensions,
   zoomFactor,
   reload,
-  defaultMinimap,
   minimapUntoggled,
   minimapEnabled,
   setZoomFactor,
@@ -134,15 +58,13 @@ export const DiagramCanvas: React.FC<{
   displayFieldType,
   viewVisible,
   viewPosition,
-  minimapX,
-  minimapY,
-  minimapScale,
+  selectedBranch
  }) => {
   let svgElement = document.querySelector(`svg#display-diagram-svg`)
 
   return (
     <DiagramCanvasWrapper>
-    {!unfilteredModels && (
+    {!unfilteredModels && !modelError && (
       <PageLoading>
         <Spinner/>{' '}
         <Heading mt="large">
@@ -167,20 +89,20 @@ export const DiagramCanvas: React.FC<{
       </PageLoading>
     )}
     {unfilteredModels && !pathExploreName && !currentDimensions && (
-        <FullPage>
-          <div style={{ width: "30%" }}>
-            <img
-              src={
-                "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
-              }
-              alt="Empty Image"
-            />
-          </div>
-          <IntroText>
-            Select a model and click on one of the Explores to the left to begin visualizing your LookML model. You'll see views, joins, SQL definitions, and more
-            for each object.
-          </IntroText>
-        </FullPage>
+      <FullPage>
+        <div style={{ width: "30%" }}>
+          <img
+            src={
+              "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
+            }
+            alt="Empty Image"
+          />
+        </div>
+        <IntroText>
+          Select a model and click on one of the Explores to the left to begin visualizing your LookML model. You'll see views, joins, SQL definitions, and more
+          for each object.
+        </IntroText>
+      </FullPage>
     )}
     {!modelError && pathModelName && pathExploreName && !currentDimensions && (
       <PageLoading>
@@ -195,7 +117,7 @@ export const DiagramCanvas: React.FC<{
       <DiagramToolbar
         zoomFactor={zoomFactor}
         reload={reload}
-        defaultMinimap={defaultMinimap}
+        defaultMinimap={currentDimensions.minimapDefault}
         minimapUntoggled={minimapUntoggled}
         minimapEnabled={minimapEnabled}
         setZoomFactor={setZoomFactor}
@@ -218,8 +140,9 @@ export const DiagramCanvas: React.FC<{
         setZoomFactor={setZoomFactor}
         viewPosition={viewPosition}
         setViewPosition={setViewPosition}
+        selectedBranch={selectedBranch}
       />
-      {(minimapEnabled || (minimapUntoggled && defaultMinimap)) && <Minimap raised>
+      {(minimapEnabled || (minimapUntoggled && currentDimensions.minimapDefault)) && <Minimap raised>
         <Diagram 
           type={"minimap"}
           dimensions={dimensions} 
@@ -230,17 +153,18 @@ export const DiagramCanvas: React.FC<{
           hiddenToggle={hiddenToggle}
           displayFieldType={displayFieldType}
           viewVisible={viewVisible}
-          zoomFactor={minimapScale}
+          zoomFactor={currentDimensions.minimapScale}
           setZoomFactor={()=>{}}
           viewPosition={{
-            x: minimapX,
-            y: minimapY,
+            x: currentDimensions.minimapX,
+            y: currentDimensions.minimapY,
             displayX: (viewPosition.x) / zoomFactor,
             displayY: (viewPosition.y) / zoomFactor,
             clientWidth: svgElement && svgElement.clientWidth / zoomFactor,
             clientHeight: svgElement && (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
           }}
           setViewPosition={()=>{}}
+          selectedBranch={selectedBranch}
         />
       </Minimap>}
     </>

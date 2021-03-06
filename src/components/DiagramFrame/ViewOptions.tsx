@@ -24,7 +24,7 @@
 
  */
 
-import React, { useContext } from "react"
+import React from "react"
 import {
   SpaceVertical,
   Heading,
@@ -32,7 +32,6 @@ import {
   RadioGroup,
   FieldToggleSwitch,
   Label,
-  Aside,
   Flex,
   FlexItem,
   Truncate,
@@ -41,47 +40,10 @@ import {
   Icon,
   theme
 } from "@looker/components"
-import styled from "styled-components"
-import { ColumnDescriptor } from "../interfaces"
-import { SettingsPanel } from "./SettingsPanel"
-import { OVERRIDE_KEY_SUBTLE } from '../../utils/constants'
+import {ViewOptionsProps, ViewList, ViewListItem, ViewButton, SettingsPanel} from "./types"
+import {viewDisabled} from "./utils"
 
-
-export const ViewList = styled.ul`
-  margin: 0;
-`
-export const ViewListItem = styled.li`
-  border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
-`
-
-export const ViewButton = styled.button`
-  all: inherit;
-  font-size: ${(props) => props.theme.fontSizes.small};
-  cursor: pointer;
-  padding: 12px 12px;
-  width: 100%;
-  border: none;
-
-  :hover {
-    background-color: ${OVERRIDE_KEY_SUBTLE};
-  }
-
-  & > * {
-    pointer-events: none;
-  }
-
-
-`
-
-
-export const ViewOptions: React.FC<{
-  displayFieldType: any,
-  hiddenToggle: any,
-  viewVisible: any,
-  setViewVisible: (visible: any) => void,
-  handleHiddenToggle: (toggle: React.FormEvent<HTMLInputElement>) => void,
-  setDisplayFieldType: (types: any) => void,
-}> = ({ 
+export const ViewOptions: React.FC<ViewOptionsProps> = ({ 
   displayFieldType,
   hiddenToggle,
   viewVisible,
@@ -89,14 +51,6 @@ export const ViewOptions: React.FC<{
   handleHiddenToggle,
   setDisplayFieldType,
  }) => {
-
-
-  function viewDisabled(disabled: boolean) {
-    if (!disabled) {
-      return theme.colors.text1
-    }
-    return undefined
-  }
 
   return (
     <SettingsPanel width="275px" px="medium" py="large">

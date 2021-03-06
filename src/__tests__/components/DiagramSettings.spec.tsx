@@ -26,7 +26,7 @@
 
 import React from 'react';
 import {ComponentsProvider} from "@looker/components"
-import { DiagramSettings, ExploreList, ExploreButton, ExploreListitem } from '../../components/DiagramFrame/DiagramSettings'
+import { DiagramSettings } from '../../components/DiagramFrame/DiagramSettings'
 import { shallow, mount, render } from 'enzyme';
 import { 
   mockModels, 
@@ -56,7 +56,7 @@ jest.mock('react', () => {
   }
 })
 
-jest.mock("../../components/DiagramFrame/SettingsPanel", () => ({
+jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
   SettingsPanel: () => "SettingsPanel"
 }))
 
@@ -123,6 +123,7 @@ describe('<DiagramSettings />', () => {
       <DiagramSettings
       modelDetails={[{value:"modelname", label: "Model Name"}]}
       currentModel={mockCurrentModel}
+      modelName={""}
       setModelError={undefined}
       selectedBranch={"main"}
       setSelectedBranch={undefined}
@@ -131,7 +132,6 @@ describe('<DiagramSettings />', () => {
       gitBranches={[{name: "gitBranch"}]}
       exploreList={[view_explore]}
       selectionInfo={{}}
-      projectId={"projectId"}
       currentExplore={view_explore}
       diagramExplore={"explorename"}
       setSelectionInfo={undefined}

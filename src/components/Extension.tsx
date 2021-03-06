@@ -24,39 +24,35 @@
 
  */
 
-import React from "react"
-import { ComponentsProvider, theme } from "@looker/components"
+import React, { useState } from "react"
+import { ComponentsProvider, MessageBar } from "@looker/components"
 import { DiagramFrame } from "./DiagramFrame/DiagramFrame"
-import { useCurrentModel, useSelectExplore, usePathNames } from "../utils/routes"
-import { useAllModels } from "../utils/fetchers"
+import { useSelectExplore, usePathNames } from "../utils/routes"
+import { DiagramError } from "../utils/fetchers"
 import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
 } from '../utils/constants'
 
 export const Extension: React.FC = () => {
-  const unfilteredModels = useAllModels()
-  const currentModel = useCurrentModel()
+  const [diagramError, setDiagramError] = useState<DiagramError | undefined>(undefined)
+  const [selectedBranch, setSelectedBranch] = React.useState("")
   const { modelName, exploreName, fullPage } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
-  const [selectedBranch, setSelectedBranch] = React.useState("")
-  const { modelDetail, dimensions, modelError, setModelError, minimapScale, minimapX, minimapY, defaultMinimap } = useSelectExplore(hiddenToggle, displayFieldType, selectedBranch)
+  const { unfilteredModels, modelDetail, dimensions } = useSelectExplore(hiddenToggle, displayFieldType, selectedBranch, diagramError, setDiagramError)
   return (
   <ComponentsProvider themeCustomizations={{
     colors: { key: "rgb(45, 126, 234)" },
   }}>
+    {/* Check out ./src/component_structure.png for a diagram of the app structure */}
+    {diagramError && diagramError.kind === "git" && <MessageBar intent="critical">{diagramError.message}</MessageBar>}
     <DiagramFrame
       unfilteredModels={unfilteredModels}
-      currentModel={currentModel}
       pathModelName={modelName}
       pathExploreName={exploreName}
       modelDetail={modelDetail}
       dimensions={dimensions}
-      modelError={modelError}
-      setModelError={setModelError}
-      minimapScale={minimapScale}
-      minimapX={minimapX}
-      minimapY={minimapY}
-      defaultMinimap={defaultMinimap}
+      modelError={diagramError}
+      setModelError={setDiagramError}
       hiddenToggle={hiddenToggle}
       setHiddenToggle={setHiddenToggle}
       displayFieldType={displayFieldType}

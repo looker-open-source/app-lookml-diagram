@@ -24,11 +24,9 @@
 
  */
 
-import React from "react"
 import {
   CodeBlock,
 } from "@looker/components"
-import { ColumnDescriptor } from "../../interfaces"
 import styled from "styled-components"
 
 export const LookmlCodeBlock = styled(CodeBlock as any)`

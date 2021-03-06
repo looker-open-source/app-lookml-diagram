@@ -24,11 +24,9 @@
 
  */
 
-import React from "react"
 import {
   Footer,
 } from "@looker/components"
-import { ColumnDescriptor } from "../../interfaces"
 import styled from "styled-components"
 import {METADATA_PANEL_PIXEL} from "../../../utils/constants"
 

@@ -38,7 +38,7 @@ jest.mock("@looker/components", () => ({
   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
 }))
 
-jest.mock("../../components/DiagramFrame/SettingsPanel", () => ({
+jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
   SettingsPanel: () => "SettingsPanel"
 }))
 

@@ -40,6 +40,14 @@ jest.mock("@looker/components", () => ({
   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
 }))
 
+jest.mock("styled-components", () => ({
+  DiagramHeaderWrapper: () => "DiagramHeaderWrapper",
+  SettingsPanel: () => "SettingsPanel",
+  Italics: () => "Italics",
+  span: () => "span",
+  styled: () => "styled"
+}))
+
 describe('<DiagramHeader />', () => {
   const basic = shallow(
   <DiagramHeader

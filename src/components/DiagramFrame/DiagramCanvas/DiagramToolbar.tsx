@@ -29,34 +29,14 @@ import {
   Divider,
   Flex,
   FlexItem,
-  Card,
   IconButton,
   theme
 } from "@looker/components"
-import styled from "styled-components"
 import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
+import {DiagramToolbarProps, Toolbar} from "./types"
+import {formatZoom} from "./utils"
 
-const Toolbar = styled(Card as any)`
-  min-width: 40px;
-  width: 40px;
-  height: auto;
-  left: 20px;
-  bottom: 80px;
-  position: absolute;
-`
-
-export const DiagramToolbar: React.FC<{
-  zoomFactor: number,
-  reload: boolean,
-  defaultMinimap: boolean,
-  minimapUntoggled: boolean,
-  minimapEnabled: boolean,
-  setZoomFactor: (k: number)=>void,
-  setViewPosition: (posPacket: any)=>void,
-  setReload: (r: boolean)=>void,
-  setMinimapUntoggled: (ut: boolean)=>void,
-  setMinimapEnabled: (e: boolean)=>void,
-}> = ({ 
+export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({ 
   zoomFactor,
   reload,
   defaultMinimap,
@@ -68,8 +48,6 @@ export const DiagramToolbar: React.FC<{
   setMinimapUntoggled,
   setMinimapEnabled,
  }) => {
-
-  const formatZoom = (zoomFactor: number) => (Math.round(zoomFactor * 10) * 10).toString() + "%";
 
   return (
     <Toolbar raised>

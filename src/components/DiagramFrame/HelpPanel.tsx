@@ -32,18 +32,13 @@ import {
   Label,
   Paragraph,
 } from "@looker/components"
-import styled from "styled-components"
-import { SettingsPanel } from "./SettingsPanel"
 import { ExternalLink } from "../ExternalLink"
 import {view_explore} from "../../test_data/order_items_explore"
 import {view_dimensions} from "../../test_data/order_items_dimensions"
 import {join_dimensions} from "../../test_data/polling_dimensions"
 import {join_explore} from "../../test_data/polling_explore"
 import {Diagram} from "./DiagramCanvas/Diagram"
-
-const Italics = styled.span`
-  font-style: italic;
-`
+import {Italics, SettingsPanel} from "./types"
 
 export const HelpPanel: React.FC<{
 }> = ({ 
@@ -58,6 +53,7 @@ export const HelpPanel: React.FC<{
           dimensions={view_dimensions.diagramDict} 
           explore={view_explore} 
           reload={false} 
+          selectedBranch={""}
           selectionInfo={{}} 
           setSelectionInfo={undefined}
           hiddenToggle={true}
@@ -96,6 +92,7 @@ export const HelpPanel: React.FC<{
             name: "forecast"
           }} 
           setSelectionInfo={undefined}
+          selectedBranch={""}
           hiddenToggle={true}
           displayFieldType={"all"}
           viewVisible={{polling: true, forecast: true}}

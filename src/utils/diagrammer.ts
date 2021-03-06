@@ -1,15 +1,17 @@
 import { DetailedModel, DiagramError } from "./fetchers";
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/sdk/4.0/models"
 import { exploreFieldURL } from "./urls";
-import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models";
 import { TABLE_VERTICAL_PADDING, TABLE_WIDTH, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "./constants";
 
 export interface DiagramField extends ILookmlModelExploreField {
   diagramX: number
   diagramY: number
   fieldTypeIndex: number
-  diagramDegree: number
-  verticalIndex: number
+  diagramDegree?: number
+  verticalIndex?: number
+  base: boolean
+  dimension_group?: string
 }
 
 export interface DiagramJoin {
@@ -35,6 +37,10 @@ export interface DiagrammedModel {
   diagramDict: DiagramMetadata
   modelName: string
   exploreName: string
+  minimapX?: number
+  minimapY?: number
+  minimapScale?: number
+  minimapDefault?: boolean
 }
 
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
@@ -44,6 +50,10 @@ export function getFields(exploreFields: ILookmlModelExploreFieldset) {
 
 export function onlyUnique(value: any, index: any, self: any) {
   return self.indexOf(value) === index;
+}
+
+export function onlyStrings(value: any, index: any, self: any) {
+  return typeof(value) === "string";
 }
 
 export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], exploreName?: string) {
@@ -59,10 +69,9 @@ export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILoo
     })
   })
   !views.includes(exploreName) && views.push(exploreName)
-  return views.filter(onlyUnique)
+  return views.filter(onlyUnique).filter(onlyStrings)
 }
 
-// TODO: refactor and decompose for readility, testability
 export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], explore: ILookmlModelExplore, hiddenToggle: boolean, displayFieldType: string) {
   let fields = getFields(exploreFields)
   let views = getViews(exploreFields, joins, explore.name)
@@ -80,9 +89,11 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
   // Add table data to DiagramDict for each view
   views.map((viewName: string, viewIndex: number) => {
     let filteredFields = fields.filter((field: ILookmlModelExploreField) => {
+      // filter out hidden fields according to setting
       if (hiddenToggle && field.hidden) {
         return false
       }
+      // filter joined fields according to setting
       if (displayFieldType === "joined") {
         return field.view === viewName && joinSql.map((d: any, i: number) => {
           return d && d.includes("${"+field.name+"}")
@@ -91,13 +102,8 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
         return field.view === viewName
       }
     })
-    let groupedFields = filteredFields.filter((e: any, j) => {
-      return e.dimension_group
-    })
-    let groupLabels = groupedFields.map((f: any) => {
-      return f.dimension_group
-    }).filter(onlyUnique)
     let grouplessFilteredFields: DiagramField[] = []
+    // flatten the filtered table to exclude dimension grouped fields
     filteredFields.forEach((f: any) => {
       if (!f.dimension_group) {
         grouplessFilteredFields.push(f)
@@ -115,15 +121,17 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
       return e.view === viewName && e.category === "dimension"
     }).length
 
-    diagramDict.tableData[viewName] = [
-      {category:"view", view: viewName, name: viewName, base: explore.name === viewName || explore.view_name === viewName, diagramX: 0, diagramY: 0, fieldTypeIndex: 0},
+    // add initial table data to the diagram dict
+    diagramDict.tableData[viewName] = []
+    diagramDict.tableData[viewName].push(
+      {category:"view", view: viewName, name: viewName, base: (explore.name === viewName || explore.view_name === viewName), diagramX: 0, diagramY: 0, fieldTypeIndex: 0},
       ...grouplessFilteredFields.map((datum: any, i: number) => {
         datum.diagramX = 0,
         datum.diagramY = 0,
         datum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
         return datum
       }),
-    ]
+    )
   })
   // Add join data to DiagramDict
   diagramDict.joinData = joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
@@ -287,7 +295,7 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     scaffold[viewName] = joined
   })
 
-  // A function for X based on degree
+  // A function for X position based on degree
   function getTableX(degree: number) {
     return TABLE_PADDING * degree
   }
@@ -353,32 +361,41 @@ export function getDiagramDict(exploreFields: ILookmlModelExploreFieldset, joins
     build[0] && arrangeTables(build[0], 0)
   }
 
-  diagramDict.yOrderLookup = yOrder
+  // Drop any tables that were collected but
+  // lack fields and joins 
+  Object.keys(diagramDict.tableData).forEach(key => diagramDict.tableData[key] === undefined && delete diagramDict.tableData[key])
 
+  diagramDict.yOrderLookup = yOrder
   return diagramDict
 }
 
 export function getDiagramDimensions(details: DetailedModel, hiddenToggle: boolean, displayFieldType: string) {
   let modifiedDetails: DiagrammedModel[] = []
-  details && details.explores.map((d,i) => {
-    let modifiedDetail = {
+  details && details.explores.map((d: ILookmlModelExplore) => {
+    let modifiedDetail: DiagrammedModel = {
       exploreName: d.name,
       modelName: d.model_name,
       diagramDict: getDiagramDict(d.fields, d.joins, d, hiddenToggle, displayFieldType),
     }
+    let minimapDimensions = getMinimapDimensions(modifiedDetail.diagramDict)
+    modifiedDetail.minimapX = minimapDimensions.x
+    modifiedDetail.minimapY = minimapDimensions.y
+    modifiedDetail.minimapScale = minimapDimensions.scale
+    modifiedDetail.minimapDefault = minimapDimensions.default
     modifiedDetails.push(modifiedDetail)
   })
   return modifiedDetails
 }
 
-export function getMinimapDimensions(setModelError: (err: DiagramError) => void, modelError: DiagramError, currentDimensions: DiagramMetadata) {
+export function getMinimapDimensions(currentDimensions: DiagramMetadata) {
   let median: number
   let minDegree: number
   let maxDegree: number
 
   let maxLength = 0
 
-  if (!modelError && currentDimensions) {
+  if (currentDimensions) {
+    // figure out the horizontal breadth of diagram
     let currentDegrees = currentDimensions && Object.keys(currentDimensions.yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
     minDegree = currentDimensions && Math.min(...currentDegrees)
     maxDegree = currentDimensions && Math.max(...currentDegrees)
@@ -386,13 +403,13 @@ export function getMinimapDimensions(setModelError: (err: DiagramError) => void,
     let len = currentDegrees && currentDegrees.length
   
     let mid = currentDegrees && Math.ceil(len / 2);
-  
+    
+    // figure out which degree is the middle
     median = ((len % 2) == 0) ? (currentDegrees[mid] + currentDegrees[mid - 1]) / 2 : currentDegrees[mid - 1];
 
     Object.keys(currentDimensions.yOrderLookup).forEach((d: string) => {
       let degreeTablesLength = currentDimensions.yOrderLookup[d].map((tableName: string) => {
         let undefModel = typeof(currentDimensions.tableData[tableName]) === "undefined"
-        undefModel && setModelError({kind: "general"})
         return undefModel || currentDimensions.tableData[tableName].length + TABLE_VERTICAL_PADDING
       }).reduce((a: number, b: number) => a + b, 0)
       if (degreeTablesLength > maxLength) {
@@ -404,6 +421,7 @@ export function getMinimapDimensions(setModelError: (err: DiagramError) => void,
   let horizontalCheck = 300 / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
   let minimapScale = Math.min(verticalCheck, horizontalCheck)
 
+  // shift to put the median degree in the middle
   let medianCorrection = median > 0 
   ? -1 * median * TABLE_PADDING
   : Math.abs(median) * TABLE_PADDING
@@ -411,9 +429,10 @@ export function getMinimapDimensions(setModelError: (err: DiagramError) => void,
   let minimapX = 150 - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
   let minimapY = (Math.max(Math.abs(minDegree), Math.abs(maxDegree)) + 1) * (TABLE_DEGREE_STEP * -1)
 
+  // show minimap by default if degree > 2 or more than 40 rows
   let defaultMinimap = Math.max(Math.abs(minDegree), Math.abs(maxDegree)) > 2 || maxLength > 40 ? true : false
 
   return {
-    minimapScale, minimapX, minimapY, defaultMinimap
+    scale: minimapScale, x: minimapX, y: minimapY, default: defaultMinimap
   }
 }

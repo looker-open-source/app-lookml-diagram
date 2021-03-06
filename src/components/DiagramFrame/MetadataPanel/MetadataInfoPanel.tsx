@@ -24,11 +24,9 @@
 
  */
 
-import React from "react"
 import {
   Aside,
 } from "@looker/components"
-import { ColumnDescriptor } from "../../interfaces"
 import styled from "styled-components"
 
 export const MetadataInfoPanel = styled(Aside as any)`

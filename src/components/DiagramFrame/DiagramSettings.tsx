@@ -24,96 +24,34 @@
 
  */
 
-import React, { useContext, SyntheticEvent } from "react"
+import React, { useContext } from "react"
 import {
   SpaceVertical,
   Heading,
   FieldSelect,
   Label,
-  Aside,
-  SelectOptionProps,
-  Icon,
+  Spinner,
 } from "@looker/components"
-import { ColumnDescriptor, SelectionInfoPacket, VisibleViewLookup, ExploreDropdown } from "../interfaces"
-import styled from "styled-components"
-import { OVERRIDE_KEY_SUBTLE, X_INIT, Y_INIT, ZOOM_INIT } from '../../utils/constants'
+import { X_INIT, Y_INIT, ZOOM_INIT } from '../../utils/constants'
 import { internalModelURL, internalExploreURL } from "../../utils/routes"
-import { SettingsPanel } from "./SettingsPanel"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { useHistory } from "react-router"
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { changeBranch, DiagramError } from "../../utils/fetchers"
-import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ExploreDropdown, DiagramSettingsProps, ExploreList, ExploreListitem, ExploreButton, SettingsPanel } from "./types"
+import { buttonShade } from "./utils"
 
-export const ExploreList = styled.ul`
-  margin: 0;
-`
-
-export const ExploreListitem = styled.li`
-  border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
-`
-
-export const ExploreButton = styled.button`
-  all: inherit;
-  font-size: ${(props) => props.theme.fontSizes.small};
-  cursor: pointer;
-  padding: 12px 12px;
-  width: 100%;
-  border: none;
-
- 
-  ${Icon} {
-    transform: translateX(0px);
-    transition: all 500ms ease-out;
-  } 
-
-  &:hover {
-    background-color: ${OVERRIDE_KEY_SUBTLE};
-    
-    ${Icon} {
-      transform: translateX(4px);
-    }
-
-  }
-
-  & > * {
-    pointer-events: none;
-  }
-
-
-`
-
-export const DiagramSettings: React.FC<{
-  modelDetails: SelectOptionProps[],
-  currentModel: ILookmlModel,
-  setModelError: (error: DiagramError) => void,
-  selectedBranch: string,
-  setSelectedBranch: (branchName: string) => void,
-  branchOpts: SelectOptionProps[],
-  gitBranch: IGitBranch,
-  gitBranches: IGitBranch[],
-  exploreList: ExploreDropdown[],
-  selectionInfo: SelectionInfoPacket,
-  projectId: string,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
-  setSelectionInfo: (info: SelectionInfoPacket) => void,
-  setViewVisible: (visible: VisibleViewLookup) => void,
-  setZoomFactor: (zoom: number) => void,
-  setViewPosition: (info: any) => void,
-  setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
-}> = ({ 
+export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
   modelDetails,
   currentModel,
+  modelName,
   setModelError,
   selectedBranch,
   setSelectedBranch,
   branchOpts,
   gitBranch,
   gitBranches,
-  exploreList,
   selectionInfo,
-  projectId,
+  exploreList,
   currentExplore,
   diagramExplore,
   setSelectionInfo,
@@ -123,32 +61,7 @@ export const DiagramSettings: React.FC<{
   setMinimapUntoggled,
   setMinimapEnabled,
  }) => {
-  const { coreSDK } = useContext(ExtensionContext)
   const history = useHistory()
-
-  async function changeGitBranch(branch: string) {
-    setSelectedBranch(branch)
-    let targetBranch = gitBranches.filter((br: IGitBranch) => {
-      return br.name === branch
-    })[0]
-    try {
-      const response = await changeBranch(coreSDK, projectId, branch, targetBranch.ref)
-      location.reload()
-    } catch (e) {
-      setSelectedBranch(gitBranch.name)
-    }
-  }
-
-  function buttonShade(exploreNameSel: string) {
-    if (currentExplore && currentExplore.name === exploreNameSel) {
-      return OVERRIDE_KEY_SUBTLE
-    }
-    if (diagramExplore === exploreNameSel) {
-      return OVERRIDE_KEY_SUBTLE
-    }
-    return undefined
-  }
-
   return (
     <SettingsPanel width="275px" px="medium" py="large">
       <SpaceVertical>
@@ -157,7 +70,7 @@ export const DiagramSettings: React.FC<{
           options={modelDetails}
           label="Choose a Model"
           placeholder="Select a model"
-          value={currentModel && currentModel.name}
+          value={modelName}
           onChange={(selectedModel: string) => {
             setModelError(undefined)
             setSelectedBranch("")
@@ -167,7 +80,7 @@ export const DiagramSettings: React.FC<{
           listLayout={{ maxHeight: 300 }}
           isLoading={modelDetails.length === 0 ? true : false}
         />
-        {currentModel && (
+        {modelName && (
           <div>
             <SpaceVertical size="xxsmall">
               <FieldSelect
@@ -175,14 +88,14 @@ export const DiagramSettings: React.FC<{
                 placeholder="Loading Git Branches..."
                 label="Current Branch"
                 value={gitBranch && gitBranch.name}
-                onChange={changeGitBranch}
+                onChange={(value)=>{setSelectedBranch(value)}}
                 disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
               />
               <Label>Select an Explore</Label>
               <ExploreList>
-                {exploreList.map((explore: ExploreDropdown, index: number) => {
+                {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
                   return (
-                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(explore.value)}}>
+                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(explore.value, currentExplore, diagramExplore)}}>
                       <ExploreButton
                         onClick={() => {
                           selectionInfo.lookmlElement === "explore" || setSelectionInfo({})

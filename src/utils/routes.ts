@@ -1,5 +1,6 @@
 import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useExplore, useModelDetail } from "./fetchers"
+import React, { useState, useEffect, useContext } from "react"
+import { useAllModels, useModelDetail, DiagramError, getActiveGitBranch, getAvailGitBranches } from "./fetchers"
 import { getDiagramDimensions, getMinimapDimensions, DiagrammedModel } from "./diagrammer"
 
 export function internalExploreURL({
@@ -71,24 +72,24 @@ export function usePathNames(): {
   }
 }
 
-export function useCurrentExplore() {
+export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string, selectedBranch: string, diagramError: DiagramError, setDiagramError: (err: DiagramError) => void) {
   const { modelName, exploreName } = usePathNames()
-  return useExplore(modelName, exploreName)
-}
-
-export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string, selectedBranch: string) {
-  const { modelName, exploreName } = usePathNames()
-  let {modelDetail, modelError, setModelError} = useModelDetail(modelName, selectedBranch)
+  const unfilteredModels = useAllModels(selectedBranch, diagramError)
+  const currentModel = useCurrentModel(selectedBranch, diagramError)
+  let {modelDetail} = useModelDetail(modelName, selectedBranch, diagramError, setDiagramError)
   let dimensions: DiagrammedModel[] = getDiagramDimensions(modelDetail, hiddenToggle, displayFieldType)
-  let selectDimension = dimensions.filter((d: any)=>{
-    return d.exploreName === exploreName
-  })[0]
-  const {minimapScale, minimapX, minimapY, defaultMinimap} = getMinimapDimensions(setModelError, modelError, selectDimension && selectDimension.diagramDict)
-  return {modelDetail, dimensions, modelError, setModelError, minimapScale, minimapX, minimapY, defaultMinimap}
+  return {
+    unfilteredModels,
+    currentModel, 
+    modelDetail, 
+    dimensions, 
+  }
 }
 
-export function useCurrentModel() {
+export function useCurrentModel(selectedBranch: string, diagramError: DiagramError) {
   const { modelName } = usePathNames()
-  const modelData = useAllModels()
-  return modelData && modelData.find(m => m.name === modelName)
+  const modelData = useAllModels(selectedBranch, diagramError)
+  let currentModel = modelData && modelData.find(m => m.name === modelName)
+  return currentModel
+
 }

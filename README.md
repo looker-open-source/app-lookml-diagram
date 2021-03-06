@@ -130,6 +130,9 @@ Learning this structure (and maintaining it during development) by using the Chr
 
 Not everything that could be considered a "style" falls under the CSS sphere of influence. The join path logic can be found in `./d3-utils/joins.ts`, this file includes logic like line interpolation, tangle management, and arrowheads. The table logic can be found in `./d3-utils/tables.ts` and contains icon paths as well as functions which identify varies kinds of `table-row`. These functions should be modified for behavior such as selective row styling.
 
+## Component Structure
+![Please refer to `/docs/component_structure.png`](http://url/to/img.png)
+
 
       
 ## Notes

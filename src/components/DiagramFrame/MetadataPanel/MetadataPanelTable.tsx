@@ -115,14 +115,6 @@ const MetadataPanelTable: React.FC<{
         <ValueText>{metadata.fieldGroupLabel}</ValueText>
       </FlexItem>
     </MetadataRow>}
-    {/* {metadata.timeframes && metadata.timeframes.length > 0 && <MetadataRow>
-      <FlexItem flexBasis="35%">
-        <KeyText>Timeframes</KeyText>
-      </FlexItem>
-      <FlexItem flexBasis="65%">
-        <ValueText>{metadata.timeframes.join(", ")}</ValueText>
-      </FlexItem>
-    </MetadataRow>} */}
     {metadata.labelShort && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Label Short</KeyText>

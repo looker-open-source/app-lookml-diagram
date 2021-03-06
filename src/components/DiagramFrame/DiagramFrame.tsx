@@ -28,14 +28,12 @@ import React, { memo } from "react"
 import {
   SpaceVertical,
   IconButton,
-  Aside,
-  Section,
   Layout,
+  SelectOptionProps,
 } from "@looker/components"
-import styled from "styled-components"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { getActiveGitBranch, getAvailGitBranches, DiagramError } from "../../utils/fetchers"
-import { DiagrammedModel } from "../../utils/diagrammer"
+import { useCurrentModel } from "../../utils/routes"
+import { DiagrammedModel, DiagramMetadata } from "../../utils/diagrammer"
 import "./styles.css"
 import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
 import { DiagramSettings } from "./DiagramSettings"
@@ -51,50 +49,17 @@ import {
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
+import {DiagramFrameProps, ExploreDropdown, Rail, Stage} from "./types"
+import {getBranchOptions} from "./utils"
 
-
-export const Stage = styled(Section as any)`
-  background: ${(props) => props.theme.colors.ui1};
-  overflow: hidden;
-  position: relative;
-`
-export const Rail = styled(Aside as any)`
-  border-right: solid 1px ${(props) => props.theme.colors.ui2};
-  align-items: center;
-`
-
-export const DiagramFrame: React.FC<{
-  unfilteredModels: ILookmlModel[]
-  currentModel: ILookmlModel
-  pathModelName: string
-  pathExploreName: string
-  modelDetail: any
-  dimensions: DiagrammedModel[]
-  modelError: DiagramError
-  setModelError: (e: DiagramError)=>void
-  minimapScale: number
-  minimapX: number
-  minimapY: number
-  defaultMinimap: boolean,
-  hiddenToggle: boolean,
-  setHiddenToggle: (t: boolean)=>void
-  displayFieldType: string,
-  setDisplayFieldType: (s: string)=>void,
-  selectedBranch: string,
-  setSelectedBranch: (b: string)=>void,
- }> = ({
+export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
-  currentModel,
   pathModelName,
   pathExploreName,
   modelDetail,
   dimensions,
   modelError,
   setModelError,
-  minimapScale,
-  minimapX,
-  minimapY,
-  defaultMinimap,
   hiddenToggle,
   setHiddenToggle,
   displayFieldType,
@@ -113,6 +78,7 @@ export const DiagramFrame: React.FC<{
   const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
+  const currentModel = useCurrentModel(selectedBranch, modelError)
 
   const handleHiddenToggle = (event: any) => setHiddenToggle(event.target.checked)
 
@@ -125,7 +91,7 @@ export const DiagramFrame: React.FC<{
   }
 
   function toggleExploreInfo() {
-    if (currentExplore && currentModel) {
+    if (currentExplore && modelDetail) {
       Object.keys(selectionInfo).length === 0 || selectionInfo.lookmlElement !== "explore"
       ? setSelectionInfo({
         lookmlElement: "explore"
@@ -141,46 +107,24 @@ export const DiagramFrame: React.FC<{
       value: d.name,
       label: d.label
     }
-  }).sort((a: any, b: any) => a.value < b.value ? -1 : 1) : []
+  }).sort((a: SelectOptionProps, b: SelectOptionProps) => a.label < b.label ? -1 : 1) : []
 
-  let currentExplore = modelDetail && modelDetail.explores.filter((d: ILookmlModelExplore)=>{
+  let currentExplore: ILookmlModelExplore = modelDetail && modelDetail.explores.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
 
-  let projectId = currentExplore && currentExplore.project_name
-
-  const gitBranch = getActiveGitBranch(projectId)
-  const gitBranches = getAvailGitBranches(projectId)
-
-  let branchOpts = gitBranches && gitBranches.map((branch: IGitBranch) => {
-    let opt = {}
-    if (gitBranch.name === branch.name) {
-      opt = {
-        value: branch.name, 
-        label: branch.name, 
-        icon: "GitBranch"
-      }
-    } else {
-      opt = {
-        value: branch.name, 
-        label: branch.name, 
-      }
-    }
-    return opt
-  })
-
-  let currentDimensions = dimensions && dimensions.filter((d: DiagrammedModel)=>{
-    return d.exploreName === pathExploreName
-  })[0]
-
-  let currentDiagramMetadata = currentDimensions && currentDimensions.diagramDict
-
-  let exploreList = currentModel && currentModel.explores.map((d: ILookmlModelExplore)=>{
+  let exploreList: ExploreDropdown[] = currentModel && currentModel.explores.map((d: ILookmlModelExplore)=>{
     return {
       value: d.name,
       label: d.label
     }
-  }).sort((a: ILookmlModelExplore, b: ILookmlModelExplore) => a.label < b.label ? -1 : 1)
+  }).sort((a: ExploreDropdown, b: ExploreDropdown) => a.label < b.label ? -1 : 1)
+
+  let currentDimensions: DiagrammedModel = dimensions && dimensions.filter((d: DiagrammedModel)=>{
+    return d.exploreName === pathExploreName
+  })[0]
+
+  let currentDiagramMetadata: DiagramMetadata = currentDimensions && currentDimensions.diagramDict
 
   let defaultViews: VisibleViewLookup = {}
   Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && Object.keys(currentDiagramMetadata.tableData)
@@ -243,16 +187,16 @@ export const DiagramFrame: React.FC<{
       {showSettings && (
         <DiagramSettings
           modelDetails={modelDetails}
+          modelName={pathModelName}
+          exploreList={exploreList}
           currentModel={currentModel}
           setModelError={setModelError}
           selectedBranch={selectedBranch}
           setSelectedBranch={setSelectedBranch}
-          branchOpts={branchOpts}
-          gitBranch={gitBranch}
-          gitBranches={gitBranches}
-          exploreList={exploreList}
+          branchOpts={modelDetail && getBranchOptions(modelDetail.gitBranch, modelDetail.gitBranches)}
+          gitBranch={modelDetail && modelDetail.gitBranch}
+          gitBranches={modelDetail && modelDetail.gitBranches}
           selectionInfo={selectionInfo}
-          projectId={projectId}
           currentExplore={currentExplore}
           diagramExplore={pathExploreName}
           setSelectionInfo={setSelectionInfo}
@@ -292,7 +236,6 @@ export const DiagramFrame: React.FC<{
           currentDimensions={currentDimensions}
           zoomFactor={zoomFactor}
           reload={reload}
-          defaultMinimap={defaultMinimap}
           minimapUntoggled={minimapUntoggled}
           minimapEnabled={minimapEnabled}
           setZoomFactor={setZoomFactor}
@@ -308,15 +251,13 @@ export const DiagramFrame: React.FC<{
           displayFieldType={displayFieldType}
           viewVisible={viewVisible}
           viewPosition={viewPosition}
-          minimapX={minimapX}
-          minimapY={minimapY}
-          minimapScale={minimapScale}
+          selectedBranch={selectedBranch}
         />
         {currentExplore && Object.keys(selectionInfo).length > 0 && (
           <MetadataPanel
             explore={currentExplore}
             selectionInfo={selectionInfo}
-            model={currentModel}
+            model={modelDetail.model}
           />
         )}
         </Layout>
