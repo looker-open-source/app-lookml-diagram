@@ -19,6 +19,7 @@
     "@looker/sdk": "^0.3.0-beta.1",
     "@testing-library/react": "^11.1.0",
     "@types/d3": "^6.2.0",
+    "@types/enzyme": "^3.10.8",
     "@types/humanize-string": "^2.0.2",
     "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.139",
@@ -37,6 +38,7 @@
     "core-js": "^3.8.1",
     "d3": "^6.3.0",
     "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "humanize-string": "^2.1.0",
     "jest-styled-components": "^7.0.3",
     "lodash": "^4.17.15",
@@ -80,7 +82,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.2.4",
     "prettier": "^1.19.1",
-    "react-test-renderer": "^16.13.1",
+    "react-test-renderer": "^17.0.1",
     "style-loader": "^1.1.3",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3"
@@ -123,6 +125,9 @@
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/src/__tests__/MockData"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/__tests__/test_setup.js"
     ]
   }
 }

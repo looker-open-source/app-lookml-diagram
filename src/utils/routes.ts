@@ -1,6 +1,7 @@
 import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useExplore, useModelDetail } from "./fetchers"
-import { getDiagramDimensions } from "./diagrammer"
+import React, { useState, useEffect, useContext } from "react"
+import { useAllModels, useModelDetail, DiagramError, getActiveGitBranch, getAvailGitBranches } from "./fetchers"
+import { getDiagramDimensions, getMinimapDimensions, DiagrammedModel } from "./diagrammer"
 
 export function internalExploreURL({
   model,
@@ -38,7 +39,7 @@ export function usePathNames(): {
   exploreName?: string
   fieldName?: string
   detailPane?: string
-  isRelationships: boolean
+  fullPage: any
 } {
   const match =
     useRouteMatch<{ model: string }>({
@@ -57,8 +58,8 @@ export function usePathNames(): {
       path: "/models/:model/explores/:explore/field/:field/pane/:tab",
     }) || undefined
   
-  const relMatch = useRouteMatch({
-    path: "/models/:model/relationships",
+  const renderMatch = useRouteMatch({
+    path: "/models/:model/explores/:explore/render",
     sensitive: true
   })
 
@@ -67,26 +68,28 @@ export function usePathNames(): {
     exploreName: match2 && match2.params.explore,
     fieldName: match3 && match3.params.field,
     detailPane: match3 && match3.params.tab,
-    isRelationships: !!relMatch,
+    fullPage: renderMatch
   }
 }
 
-export function useCurrentExplore() {
+export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string, selectedBranch: string, diagramError: DiagramError, setDiagramError: (err: DiagramError) => void) {
   const { modelName, exploreName } = usePathNames()
-  return useExplore(modelName, exploreName)
+  const unfilteredModels = useAllModels(selectedBranch, diagramError)
+  const currentModel = useCurrentModel(selectedBranch, diagramError)
+  let {modelDetail} = useModelDetail(modelName, selectedBranch, diagramError, setDiagramError)
+  let dimensions: DiagrammedModel[] = getDiagramDimensions(modelDetail, hiddenToggle, displayFieldType)
+  return {
+    unfilteredModels,
+    currentModel, 
+    modelDetail, 
+    dimensions, 
+  }
 }
 
-export function useSelectExplore(diagramPersist: any, hiddenToggle: boolean, displayFieldType: string, selectedBranch: string) {
-  const { modelName, exploreName } = usePathNames()
-  // get model and all explore info
-  let {modelDetail, modelError, setModelError} = useModelDetail(modelName, selectedBranch)
-  // calculate diagram dimensions
-  let dimensions = getDiagramDimensions(modelDetail, diagramPersist, hiddenToggle, displayFieldType)
-  return {modelDetail, exploreName, dimensions, modelError, setModelError}
-}
-
-export function useCurrentModel() {
+export function useCurrentModel(selectedBranch: string, diagramError: DiagramError) {
   const { modelName } = usePathNames()
-  const modelData = useAllModels()
-  return modelData && modelData.find(m => m.name === modelName)
+  const modelData = useAllModels(selectedBranch, diagramError)
+  let currentModel = modelData && modelData.find(m => m.name === modelName)
+  return currentModel
+
 }

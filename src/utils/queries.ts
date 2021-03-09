@@ -54,7 +54,7 @@ export function countFieldForField({
 }): ILookmlModelExploreField | undefined {
   return explore.fields.measures.filter(
     f => f.type.includes("count") && f.view_label === field.view_label
-  )[0]
+  )[0] || {name: "provided_count"}
 }
 
 export function canGetTopValues({
@@ -66,7 +66,7 @@ export function canGetTopValues({
   field: ILookmlModelExploreField
 }) {
   return (
-    field.category === "dimension" && !!countFieldForField({ explore, field })
+    field.category === "dimension"
   )
 }
 
@@ -96,7 +96,7 @@ export async function getTopValues({
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }): Promise<SimpleResult> {
-  const countField = countFieldForField({ explore, field })!
+  const countField = countFieldForField({ explore, field })
   const qr: any = await sdk.ok(
     sdk.run_inline_query({
       result_format: "json_detail",
@@ -106,6 +106,13 @@ export async function getTopValues({
         model: model.name,
         view: explore.name,
         fields: [field.name, countField.name],
+        dynamic_fields: JSON.stringify([
+          {
+            measure: "provided_count",
+            type: "count",
+            based_on: field.name
+          }
+        ]),
         sorts: [`${countField.name} desc`]
       }
     })
@@ -137,7 +144,29 @@ export async function getDistribution({
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }): Promise<SimpleResult> {
-  const countField = countFieldForField({ explore, field })!
+  const countField = countFieldForField({ explore, field })
+  let histDynFields = [
+    {
+      measure: "provided_min",
+      type: "min",
+      based_on: field.name
+    },
+    {
+      measure: "provided_max",
+      type: "max",
+      based_on: field.name
+    },
+    {
+      measure: "provided_average",
+      type: "average",
+      based_on: field.name
+    },
+    {
+      measure: "provided_count",
+      type: "count",
+      based_on: field.name
+    }
+  ]
   const qr: any = await sdk.ok(
     sdk.run_inline_query({
       result_format: "json_detail",
@@ -146,36 +175,15 @@ export async function getDistribution({
       body: {
         model: model.name,
         view: explore.name,
-        fields: ["min", "max", "average", "count"],
-        dynamic_fields: JSON.stringify([
-          {
-            measure: "min",
-            type: "min",
-            based_on: field.name
-          },
-          {
-            measure: "max",
-            type: "max",
-            based_on: field.name
-          },
-          {
-            measure: "average",
-            type: "average",
-            based_on: field.name
-          },
-          {
-            measure: "count",
-            type: "count",
-            based_on: field.name
-          }
-        ])
+        fields: ["provided_min", "provided_max", "provided_average", "provided_count"],
+        dynamic_fields: JSON.stringify(histDynFields)
       }
     })
   )
-  const min = qr.data[0].min
-  const max = qr.data[0].max
-  const average = qr.data[0].average
-  const count = qr.data[0].count
+  const min = qr.data[0].provided_min
+  const max = qr.data[0].provided_max
+  const average = qr.data[0].provided_average
+  const count = qr.data[0].provided_count
 
   const binCount = 20
   const range = Math.abs(max.value - min.value)
@@ -186,13 +194,20 @@ export async function getDistribution({
   }
 
   let histogram
-  if (min.value) {
+  if (typeof(min.value) === "number") {
     const ref = "${" + field.name + "}"
     const binClauses = bins
       .map(([min, max], i) => `if(${ref} <= ${max}, ${i}, null)`)
       .join(",\n")
     const binExpression = `coalesce(${binClauses})`
-
+    let binDynFields: any = [
+      { dimension: "bin", expression: binExpression },
+      {
+        measure: "provided_count",
+        type: "count",
+        based_on: field.name
+      }
+    ]
     const histogramQR: any = await sdk.ok(
       sdk.run_inline_query({
         result_format: "json_detail",
@@ -202,9 +217,7 @@ export async function getDistribution({
           model: model.name,
           view: explore.name,
           fields: ["bin", countField.name],
-          dynamic_fields: JSON.stringify([
-            { dimension: "bin", expression: binExpression }
-          ])
+          dynamic_fields: JSON.stringify(binDynFields)
         }
       })
     )
@@ -225,13 +238,13 @@ export async function getDistribution({
     align: ["left", "right"],
     histogram,
     data: [
-      [{ v: "Min" }, { v: (min.value && min.value.toLocaleString()) || "–" }],
-      [{ v: "Max" }, { v: (max.value && max.value.toLocaleString()) || "–" }],
+      [{ v: "Min" }, { v: (typeof(min.value) === "number" && min.value.toLocaleString()) || "No Data" }],
+      [{ v: "Max" }, { v: (typeof(max.value) === "number" && max.value.toLocaleString()) || "No Data" }],
       [
         { v: "Average" },
-        { v: (average.value && average.value.toLocaleString()) || "–" }
+        { v: (typeof(average.value) === "number" && average.value.toLocaleString()) || "No Data" }
       ],
-      [{ v: "Count" }, { v: (count.value && count.value.toLocaleString()) || "–" }],
+      [{ v: "Count" }, { v: (typeof(count.value) === "number" && count.value.toLocaleString()) || "No Data" }],
     ],
     max: [undefined, undefined]
   }
