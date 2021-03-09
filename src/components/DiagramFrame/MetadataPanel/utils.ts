@@ -65,6 +65,8 @@ export function getJoinMetadata(joinObj: ILookmlModelExploreJoins, lookmlLink: s
 
 export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionInfo: SelectionInfoPacket) {
   let field = fields[0]
+  // 'lookml_link' only exists on api response if user has "see_lookml"
+  // permission. This is a requirement for using the extension. 
   // @ts-ignore
   let lookmlLink = field.lookml_link
   let timeframes = fields.map((f: any) => {

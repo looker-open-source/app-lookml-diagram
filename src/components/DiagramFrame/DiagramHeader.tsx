@@ -31,7 +31,8 @@ import {
   IconButton
 } from "@looker/components"
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
-import {DiagramHeaderProps, DiagramHeaderWrapper} from "./types"
+import {DiagramHeaderProps} from "./types"
+import {DiagramHeaderWrapper} from "./components"
 
 export const DiagramHeader: React.FC<DiagramHeaderProps> = ({ 
   currentExplore,

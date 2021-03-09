@@ -24,7 +24,7 @@
 
  */
 
-import React, { memo } from "react"
+import React, { useCallback } from "react"
 import {
   SpaceVertical,
   IconButton,
@@ -49,7 +49,8 @@ import {
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
-import {DiagramFrameProps, ExploreDropdown, Rail, Stage} from "./types"
+import {DiagramFrameProps, ExploreDropdown} from "./types"
+import {Rail, Stage} from "./components"
 import {getBranchOptions} from "./utils"
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
@@ -80,25 +81,28 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
   const currentModel = useCurrentModel(selectedBranch, modelError)
 
-  const handleHiddenToggle = (event: any) => setHiddenToggle(event.target.checked)
+  const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
 
-  function showDiagram() {
+  function showDiagramFullPage() {
     setShowHelp(false)
     setShowViewOptions(false)
     setShowSettings(false)
     setShowNoAside(true)
+  }
+
+  function isDiagramFullPage() {
+    showDiagramFullPage()
     return true
   }
 
   function toggleExploreInfo() {
     if (currentExplore && modelDetail) {
-      Object.keys(selectionInfo).length === 0 || selectionInfo.lookmlElement !== "explore"
-      ? setSelectionInfo({
-        lookmlElement: "explore"
-      })
-      : setSelectionInfo({})
+      let selectInfo = selectionInfo.lookmlElement !== "explore" ? {lookmlElement: "explore"} : {}
+      setSelectionInfo(selectInfo)
     }
   }
+
+  const onlyDiagramSelected = () => { return showNoAside && !showViewOptions && !showSettings && !showHelp ? true : undefined }
 
   let modelDetails = unfilteredModels ? unfilteredModels.filter((d: ILookmlModel)=>{ 
     return d.explores.length >= 1
@@ -109,22 +113,22 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
     }
   }).sort((a: SelectOptionProps, b: SelectOptionProps) => a.label < b.label ? -1 : 1) : []
 
-  let currentExplore: ILookmlModelExplore = modelDetail && modelDetail.explores.filter((d: ILookmlModelExplore)=>{
+  let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
 
-  let exploreList: ExploreDropdown[] = currentModel && currentModel.explores.map((d: ILookmlModelExplore)=>{
+  let exploreList: ExploreDropdown[] = currentModel?.explores.map((d: ILookmlModelExplore)=>{
     return {
       value: d.name,
       label: d.label
     }
   }).sort((a: ExploreDropdown, b: ExploreDropdown) => a.label < b.label ? -1 : 1)
 
-  let currentDimensions: DiagrammedModel = dimensions && dimensions.filter((d: DiagrammedModel)=>{
+  let currentDimensions: DiagrammedModel = dimensions?.filter((d: DiagrammedModel)=>{
     return d.exploreName === pathExploreName
   })[0]
 
-  let currentDiagramMetadata: DiagramMetadata = currentDimensions && currentDimensions.diagramDict
+  let currentDiagramMetadata: DiagramMetadata = currentDimensions?.diagramDict
 
   let defaultViews: VisibleViewLookup = {}
   Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && Object.keys(currentDiagramMetadata.tableData)
@@ -142,10 +146,10 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             label="Diagram"
             tooltipPlacement="right"
             size="large"
-            toggle={showNoAside && !showViewOptions && !showSettings && !showHelp ? true : undefined}
-            onClick={showDiagram}
-            style={{color: showNoAside && !showViewOptions && !showSettings && !showHelp && OVERRIDE_KEY, 
-              backgroundColor: showNoAside && !showViewOptions && !showSettings && !showHelp && OVERRIDE_KEY_SUBTLE,
+            toggle={onlyDiagramSelected()}
+            onClick={showDiagramFullPage}
+            style={{color: onlyDiagramSelected() && OVERRIDE_KEY, 
+              backgroundColor: onlyDiagramSelected() && OVERRIDE_KEY_SUBTLE,
               borderRadius: "10px"}}
           />
           <IconButton
@@ -153,7 +157,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             label="Settings"
             tooltipPlacement="right"
             size="large"
-            onClick={() => showDiagram() && setShowSettings(!showSettings)}
+            onClick={() => isDiagramFullPage() && setShowSettings(!showSettings)}
             toggle={showSettings}
             style={{color: showSettings && OVERRIDE_KEY, 
               backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
@@ -164,7 +168,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             label="View Options"
             tooltipPlacement="right"
             size="large"
-            onClick={() => showDiagram() && setShowViewOptions(!showViewOptions)}
+            onClick={() => isDiagramFullPage() && setShowViewOptions(!showViewOptions)}
             toggle={showViewOptions}
             style={{color: showViewOptions && OVERRIDE_KEY, 
               backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
@@ -176,7 +180,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             tooltipPlacement="right"
             id="diagram-help-btn"
             size="large"
-            onClick={() => showDiagram() && setShowHelp(!showHelp)}
+            onClick={() => isDiagramFullPage() && setShowHelp(!showHelp)}
             toggle={showHelp}
             style={{color: showHelp && OVERRIDE_KEY, 
               backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
@@ -194,8 +198,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           selectedBranch={selectedBranch}
           setSelectedBranch={setSelectedBranch}
           branchOpts={modelDetail && getBranchOptions(modelDetail.gitBranch, modelDetail.gitBranches)}
-          gitBranch={modelDetail && modelDetail.gitBranch}
-          gitBranches={modelDetail && modelDetail.gitBranches}
+          gitBranch={modelDetail?.gitBranch}
+          gitBranches={modelDetail?.gitBranches}
           selectionInfo={selectionInfo}
           currentExplore={currentExplore}
           diagramExplore={pathExploreName}

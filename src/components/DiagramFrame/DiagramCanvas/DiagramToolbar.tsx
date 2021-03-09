@@ -33,7 +33,8 @@ import {
   theme
 } from "@looker/components"
 import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
-import {DiagramToolbarProps, Toolbar} from "./types"
+import {DiagramToolbarProps} from "./types"
+import {Toolbar} from "./components/Layout"
 import {formatZoom} from "./utils"
 
 export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({ 
@@ -60,7 +61,11 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
           onClick={()=>setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)}  /></FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
         <FlexItem><IconButton icon="CenterFocus" label="Return to Start" tooltipPlacement="right"
-          onClick={()=>{setViewPosition({x: X_INIT, y: Y_INIT});setZoomFactor(ZOOM_INIT);setReload(!reload)}} /></FlexItem>
+          onClick={()=>{
+            setViewPosition({x: X_INIT, y: Y_INIT});
+            setZoomFactor(ZOOM_INIT);
+            setReload(!reload)}}
+          /></FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
         <FlexItem pb="xsmall">
           <IconButton 

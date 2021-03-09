@@ -33,7 +33,8 @@ import {
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
 import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
-import {DiagramCanvasProps, DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText} from "./types"
+import {DiagramCanvasProps} from "./types"
+import {DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText} from "./components/Layout"
 
 export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ 
   unfilteredModels,
@@ -72,7 +73,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </Heading>
       </PageLoading>
     )}
-    {modelError && modelError.kind === "general" && (
+    {modelError?.kind === "general" && (
       <PageLoading>
         <Status intent="warn" />
         <Heading mt="large">
@@ -80,7 +81,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </Heading>
       </PageLoading>
     )}
-    {modelError && modelError.kind === "notFound" && (
+    {modelError?.kind === "notFound" && (
       <PageLoading>
         <Status intent="critical" />
         <Heading mt="large">

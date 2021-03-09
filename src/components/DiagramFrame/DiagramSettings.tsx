@@ -37,7 +37,8 @@ import { internalModelURL, internalExploreURL } from "../../utils/routes"
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { useHistory } from "react-router"
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { ExploreDropdown, DiagramSettingsProps, ExploreList, ExploreListitem, ExploreButton, SettingsPanel } from "./types"
+import { ExploreDropdown, DiagramSettingsProps } from "./types"
+import {ExploreList, ExploreListitem, ExploreButton, SettingsPanel} from "./components"
 import { buttonShade } from "./utils"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 

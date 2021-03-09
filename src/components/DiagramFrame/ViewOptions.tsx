@@ -40,7 +40,8 @@ import {
   Icon,
   theme
 } from "@looker/components"
-import {ViewOptionsProps, ViewList, ViewListItem, ViewButton, SettingsPanel} from "./types"
+import {ViewOptionsProps} from "./types"
+import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./components"
 import {viewDisabled} from "./utils"
 
 export const ViewOptions: React.FC<ViewOptionsProps> = ({ 

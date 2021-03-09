@@ -44,7 +44,7 @@ export const Extension: React.FC = () => {
     colors: { key: "rgb(45, 126, 234)" },
   }}>
     {/* Check out ./src/component_structure.png for a diagram of the app structure */}
-    {diagramError && diagramError.kind === "git" && <MessageBar intent="critical">{diagramError.message}</MessageBar>}
+    {diagramError?.kind === "git" && <MessageBar intent="critical">{diagramError.message}</MessageBar>}
     <DiagramFrame
       unfilteredModels={unfilteredModels}
       pathModelName={modelName}

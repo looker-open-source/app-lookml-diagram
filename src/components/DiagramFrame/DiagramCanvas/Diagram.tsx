@@ -31,7 +31,8 @@ import { addFilter } from '../../../d3-utils/styles'
 import { addZoom } from '../../../d3-utils/zoom'
 import { createLookmlViewElement } from '../../../d3-utils/tables'
 import { createLookmlJoinElement } from '../../../d3-utils/joins'
-import {DiagramProps, DiagramSpace} from "./types"
+import {DiagramProps} from "./types"
+import {DiagramSpace} from "./components/DiagramSpace"
 
 export const Diagram: React.FC<DiagramProps> = memo(({
   type,

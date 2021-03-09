@@ -53,7 +53,7 @@ import {LookmlCodeBlock} from "./LookmlCodeBlock"
 import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
 import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
-import { getFields } from '../../../utils/diagrammer'
+import { getFields, DiagramField } from '../../../utils/diagrammer'
 import { exploreFieldURL } from '../../../utils/urls'
 import { useExplore } from '../../../utils/fetchers'
 import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata} from "./utils"
@@ -73,6 +73,8 @@ export const MetadataPanel: React.FC<{
 }) => {
   let metadata: LookmlObjectMetadata
   let field: ILookmlModelExploreField
+  // 'lookml_link' only exists on api response if user has "see_lookml"
+  // permission. This is a requirement for using the extension. 
   // @ts-ignore
   let exploreLookmlLink = explore.lookml_link
   if (selectionInfo.lookmlElement === "explore") {
