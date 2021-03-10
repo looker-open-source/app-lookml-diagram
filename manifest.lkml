@@ -3,8 +3,8 @@ project_name: "app-lookml-diagram"
 application: lookml-diagram {
   label: "LookML Diagram"
   file: "dist/bundle.js"
-  new_window_external_urls: ["https://docs.looker.com/data-modeling/extension-framework/lookml-diagram"]
   entitlements: {
+    new_window_external_urls: ["https://docs.looker.com/data-modeling/extension-framework/lookml-diagram"]
     local_storage: yes
     navigation: yes
     new_window: yes
