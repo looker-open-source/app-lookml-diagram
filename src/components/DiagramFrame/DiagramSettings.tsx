@@ -39,7 +39,7 @@ import { useHistory } from "react-router"
 import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExploreDropdown, DiagramSettingsProps } from "./types"
 import {ExploreList, ExploreListitem, ExploreButton, SettingsPanel} from "./components"
-import { buttonShade } from "./utils"
+import { getExploreListItemBackgroundColor } from "./utils"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
   modelDetails,
@@ -96,7 +96,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               <ExploreList>
                 {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
                   return (
-                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: buttonShade(explore.value, currentExplore, diagramExplore)}}>
+                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: getExploreListItemBackgroundColor(explore.value, currentExplore, diagramExplore)}}>
                       <ExploreButton
                         onClick={() => {
                           selectionInfo.lookmlElement === "explore" || setSelectionInfo({})

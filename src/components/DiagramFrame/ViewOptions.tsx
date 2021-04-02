@@ -42,7 +42,7 @@ import {
 } from "@looker/components"
 import {ViewOptionsProps} from "./types"
 import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./components"
-import {viewDisabled} from "./utils"
+import {getViewListItemColor} from "./utils"
 
 export const ViewOptions: React.FC<ViewOptionsProps> = ({ 
   displayFieldType,
@@ -119,11 +119,11 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               </FlexItem>
               <FlexItem>
                 <ViewList>
-                  {viewVisible && Object.keys(viewVisible).map((item: string, index) => {
+                  {viewVisible && Object.keys(viewVisible).map((item: string, index: number) => {
                     return (
-                      <ViewListItem key={`view-${index}`} style={{color: viewDisabled(viewVisible[item])}}>
+                      <ViewListItem key={`view-${index}`} style={{color: getViewListItemColor(viewVisible[item])}}>
                         <ViewButton
-                              onClick={(e: any) => {
+                              onClick={() => {
                                 let newViews: any = {}
                                 Object.assign(newViews, viewVisible)
                                 newViews[item] = !viewVisible[item]
