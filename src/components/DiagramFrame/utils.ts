@@ -4,14 +4,14 @@ import { OVERRIDE_KEY_SUBTLE, DIAGRAM_IGNORED_MODELS } from "../../utils/constan
 import { ExploreDropdown } from "./types"
 
 /**
- * styles the view list according to visibility status
+ * get the color of a view list item according to its visibility status
  * @param disabled - whether or not the current view is disabled
  */
-export function viewDisabled(disabled: boolean) {
-  if (!disabled) {
-    return theme.colors.text1
+export function getViewListItemColor(disabled: boolean) {
+  if (disabled) {
+    return undefined
   }
-  return undefined
+  return theme.colors.text1
 }
 
 /**
@@ -21,33 +21,28 @@ export function viewDisabled(disabled: boolean) {
  */
 export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]) => {
   return gitBranches.map((branch: IGitBranch) => {
-    let opt: SelectOptionProps = {
-      value: undefined,
-      label: undefined,
-    }
     if (gitBranch.name === branch.name) {
-      opt = {
+      return {
         value: branch.name, 
         label: branch.name, 
         icon: "GitBranch"
       }
     } else {
-      opt = {
+      return {
         value: branch.name, 
         label: branch.name, 
       }
     }
-    return opt
   })
 }
 
 /**
- * determines whether a Select an Explore list item should be shaded
+ * gets the background color for each ExploreListItem
  * @param exploreNameSel - name of the explore list item
  * @param currentExplore - current url explore obj
  * @param diagramExplore - current diagrammed explore obj
  */
-export function buttonShade(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
+export function getExploreListItemBackground(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
   if (currentExplore && currentExplore.name === exploreNameSel) {
     return OVERRIDE_KEY_SUBTLE
   }
@@ -61,18 +56,15 @@ export function buttonShade(exploreNameSel: string, currentExplore: ILookmlModel
  * Prepares a list of diagrammable models for the Choose a Model dropdown
  * @param unfilteredModels - the unprepared list of models
  */
-export function prepareModelDropdown(unfilteredModels: ILookmlModel[]) {
-  if (unfilteredModels) {
-    return unfilteredModels.filter((d: ILookmlModel)=>{ 
-      return d.explores.length >= 1 && !DIAGRAM_IGNORED_MODELS.includes(d.name)
-    }).map((d: ILookmlModel)=>{
-      return {
-        value: d.name,
-        label: d.label
-      }
-    }).sort((a: SelectOptionProps, b: SelectOptionProps) => a.label < b.label ? -1 : 1)
-  }
-  return []
+export function prepareModelDropdown(unfilteredModels: ILookmlModel[] = []) {
+  return unfilteredModels.filter((d: ILookmlModel)=>{ 
+    return d.explores.length >= 1 && !DIAGRAM_IGNORED_MODELS.includes(d.name)
+  }).map((d: ILookmlModel)=>{
+    return {
+      value: d.name,
+      label: d.label
+    }
+  }).sort((a: SelectOptionProps, b: SelectOptionProps) => a.label < b.label ? -1 : 1)
 }
 
 /**
@@ -80,13 +72,10 @@ export function prepareModelDropdown(unfilteredModels: ILookmlModel[]) {
  * @param unfilteredModels - the unprepared list of models
  */
 export function prepareExploreList(currentModel: ILookmlModel) {
-  if (currentModel) {
-    return currentModel.explores.map((d: ILookmlModelExplore)=>{
-      return {
-        value: d.name,
-        label: d.label
-      }
-    }).sort((a: ExploreDropdown, b: ExploreDropdown) => a.label < b.label ? -1 : 1)
-  }
-  return []
+  return currentModel?.explores.map((d: ILookmlModelExplore)=>{
+    return {
+      value: d.name,
+      label: d.label
+    }
+  }).sort((a: ExploreDropdown, b: ExploreDropdown) => a.label < b.label ? -1 : 1)
 }

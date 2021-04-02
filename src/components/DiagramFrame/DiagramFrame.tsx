@@ -104,19 +104,19 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const onlyDiagramSelected = () => { return showNoAside && !showViewOptions && !showSettings && !showHelp ? true : undefined }
 
-  let modelDetails = prepareModelDropdown(unfilteredModels)
+  const modelDetails = prepareModelDropdown(unfilteredModels)
 
   let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
 
-  let exploreList: ExploreDropdown[] = prepareExploreList(currentModel)
+  const exploreList: ExploreDropdown[] = prepareExploreList(currentModel)
 
-  let currentDimensions: DiagrammedModel = dimensions?.filter((d: DiagrammedModel)=>{
+  const currentDimensions: DiagrammedModel = dimensions?.filter((d: DiagrammedModel)=>{
     return d.exploreName === pathExploreName
   })[0]
 
-  let currentDiagramMetadata: DiagramMetadata = currentDimensions?.diagramDict
+  const currentDiagramMetadata: DiagramMetadata = currentDimensions?.diagramDict
 
   let defaultViews: VisibleViewLookup = {}
   Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && Object.keys(currentDiagramMetadata.tableData)
