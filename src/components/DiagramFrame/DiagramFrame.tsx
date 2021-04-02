@@ -48,10 +48,10 @@ import {
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import {DiagramFrameProps, ExploreDropdown} from "./types"
 import {Rail, Stage} from "./components"
-import {getBranchOptions} from "./utils"
+import {getBranchOptions, prepareModelDropdown, prepareExploreList} from "./utils"
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
@@ -104,25 +104,13 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const onlyDiagramSelected = () => { return showNoAside && !showViewOptions && !showSettings && !showHelp ? true : undefined }
 
-  let modelDetails = unfilteredModels ? unfilteredModels.filter((d: ILookmlModel)=>{ 
-    return d.explores.length >= 1
-  }).map((d: ILookmlModel)=>{
-    return {
-      value: d.name,
-      label: d.label
-    }
-  }).sort((a: SelectOptionProps, b: SelectOptionProps) => a.label < b.label ? -1 : 1) : []
+  let modelDetails = prepareModelDropdown(unfilteredModels)
 
   let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
 
-  let exploreList: ExploreDropdown[] = currentModel?.explores.map((d: ILookmlModelExplore)=>{
-    return {
-      value: d.name,
-      label: d.label
-    }
-  }).sort((a: ExploreDropdown, b: ExploreDropdown) => a.label < b.label ? -1 : 1)
+  let exploreList: ExploreDropdown[] = prepareExploreList(currentModel)
 
   let currentDimensions: DiagrammedModel = dimensions?.filter((d: DiagrammedModel)=>{
     return d.exploreName === pathExploreName
