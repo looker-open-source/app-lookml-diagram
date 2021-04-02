@@ -113,7 +113,7 @@ export function createLookmlViewElement(
   .attr("d", getDatatypePath)
   .attr("class", "datatype-icon")
   .attr("transform", (d: DiagramField, i: number) => {
-    return `translate(0,${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})scale(${DIAGRAM_ICON_SCALE})`
+    return `translate(2,${(DIAGRAM_FIELD_STROKE_WIDTH / 2) + 2})scale(${DIAGRAM_ICON_SCALE})`
   })
 
   // Add PK icon if needed
@@ -121,7 +121,7 @@ export function createLookmlViewElement(
   .attr("d", getPkPath)
   .attr("class", "pk-icon")
   .attr("transform", (d: DiagramField, i: number) => {
-    return `translate(${TABLE_WIDTH - (DIAGRAM_FIELD_STROKE_WIDTH * 3)}, ${DIAGRAM_FIELD_STROKE_WIDTH / 2})scale(${DIAGRAM_ICON_SCALE})`
+    return `translate(${TABLE_WIDTH - (DIAGRAM_FIELD_STROKE_WIDTH * 3)}, ${DIAGRAM_FIELD_STROKE_WIDTH / 2 + 2})scale(${DIAGRAM_ICON_SCALE})`
   })
 
   // Label table elements
@@ -129,14 +129,14 @@ export function createLookmlViewElement(
   .attr("transform", (d: DiagramField, i: number) => {
     return `translate(${i === 0 ? 5 : 25}, ${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})`
   })
-  .attr("dy", "0.8em")
+  .attr("dy", "0.9em")
   .text((d: DiagramField) => getLabel(d));
 
   // Add dividers
   tableRow.append('line')
-  .attr('x1', 0)
+  .attr('x1', 0 - (DIAGRAM_FIELD_STROKE_WIDTH/2))
   .attr('y1', TABLE_ROW_HEIGHT + 3)
-  .attr('x2', TABLE_WIDTH)
+  .attr('x2', TABLE_WIDTH + (DIAGRAM_FIELD_STROKE_WIDTH/2))
   .attr('y2', TABLE_ROW_HEIGHT + 3)
   .attr('class', (d: DiagramField, i: number) => {
     return (i === 0 || i === (tableData.length - 1)) || "row-divider"
