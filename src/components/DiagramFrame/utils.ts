@@ -21,17 +21,13 @@ export function getViewListItemColor(disabled: boolean) {
  */
 export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]) => {
   return gitBranches.map((branch: IGitBranch) => {
-    if (gitBranch.name === branch.name) {
-      return {
-        value: branch.name, 
-        label: branch.name, 
-        icon: "GitBranch"
-      }
-    } else {
-      return {
-        value: branch.name, 
-        label: branch.name, 
-      }
+    return gitBranch.name === branch.name ? {
+      value: branch.name, 
+      label: branch.name, 
+      icon: "GitBranch"
+    } : {
+      value: branch.name, 
+      label: branch.name, 
     }
   })
 }
@@ -42,7 +38,7 @@ export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[
  * @param currentExplore - current url explore obj
  * @param diagramExplore - current diagrammed explore obj
  */
-export function getExploreListItemBackground(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
+export function getExploreListItemBackgroundColor(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
   if (currentExplore && currentExplore.name === exploreNameSel) {
     return OVERRIDE_KEY_SUBTLE
   }
@@ -53,7 +49,7 @@ export function getExploreListItemBackground(exploreNameSel: string, currentExpl
 }
 
 /**
- * Prepares a list of diagrammable models for the Choose a Model dropdown
+ * Prepares a list of diagrammable models for the 'Choose a Model' dropdown
  * @param unfilteredModels - the unprepared list of models
  */
 export function prepareModelDropdown(unfilteredModels: ILookmlModel[] = []) {
@@ -68,7 +64,7 @@ export function prepareModelDropdown(unfilteredModels: ILookmlModel[] = []) {
 }
 
 /**
- * Prepares a list of diagrammable explores for the Select an Explore list
+ * Prepares a list of diagrammable explores for the 'Select an Explore' list
  * @param unfilteredModels - the unprepared list of models
  */
 export function prepareExploreList(currentModel: ILookmlModel) {
