@@ -2,7 +2,7 @@
 
 It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/) for writing your extension, the [React Extension SDK](https://github.com/looker-open-source/extension-sdk-react) for interacting with Looker, and [Webpack](https://webpack.js.org/) for building your code.
 
-<img src="https://github.com/looker-open-source/app-lookml-diagram/blob/main/docs/Screenshot%20from%202021-03-30%2023-31-03.png" alt="drawing" height="400"/>
+<img src="https://github.com/looker-open-source/app-lookml-diagram/blob/main/docs/Screenshot%20from%202021-03-30%2023-22-40.png?raw=true" alt="drawing" height="400"/>
 
 ## Getting Started for Development
 
