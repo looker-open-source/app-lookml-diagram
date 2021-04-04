@@ -2,7 +2,7 @@ import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/s
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { getActiveGitBranch, getAvailGitBranches, DiagramError } from "../../utils/fetchers"
 import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
-import { DiagrammedModel } from "../../utils/diagrammer"
+import { DiagrammedModel } from "../../utils/LookmlDiagrammer/"
 import styled from "styled-components"
 import {
   Aside,

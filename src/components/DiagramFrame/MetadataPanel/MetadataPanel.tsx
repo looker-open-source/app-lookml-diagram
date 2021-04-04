@@ -53,7 +53,7 @@ import {LookmlCodeBlock} from "./LookmlCodeBlock"
 import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
 import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
-import { getFields, DiagramField } from '../../../utils/diagrammer'
+import { getFields, DiagramField } from '../../../utils/LookmlDiagrammer/'
 import { exploreFieldURL } from '../../../utils/urls'
 import { useExplore } from '../../../utils/fetchers'
 import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata} from "./utils"

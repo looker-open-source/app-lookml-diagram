@@ -5,10 +5,10 @@ export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   let startLine = `join: ${join.name.toLowerCase()} {\n`
   let typeLine = join.type && `  type: ${join.type}\n`
   let relationLine = join.relationship && `  relationship: ${join.relationship}\n`
-  let sqlLine = join.sql_on && `  sql_on: ${join.sql_on} ;;\n`
+  let sqlOnLine = join.sql_on && `  sql_on: ${join.sql_on} ;;\n`
   let fkLine = join.foreign_key && `  foreign_key: ${join.foreign_key} \n`
   let endLine = `}`
-  return [startLine, typeLine, relationLine, sqlLine, fkLine, endLine].filter(Boolean).join("")
+  return [startLine, typeLine, relationLine, sqlOnLine, fkLine, endLine].filter(Boolean).join("")
 }
 
 export let dateOrDuration = (type: string) => (type.includes("date_") || type.includes("duration_"))

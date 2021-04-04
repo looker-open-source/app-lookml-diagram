@@ -28,7 +28,7 @@ import {
 import { 
   DiagramMetadata,
   DiagrammedModel
-} from "../../../utils/diagrammer"
+} from "../../../utils/LookmlDiagrammer/"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
 import { DiagramError } from "../../../utils/fetchers"
 import {

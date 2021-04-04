@@ -33,7 +33,7 @@ import {
 } from "@looker/components"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { useCurrentModel } from "../../utils/routes"
-import { DiagrammedModel, DiagramMetadata } from "../../utils/diagrammer"
+import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
 import "./styles.css"
 import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
 import { DiagramSettings } from "./DiagramSettings"
