@@ -1,38 +1,5 @@
 # LookML Diagram Extension
 
-## Usage
-
-- Install dependencies with Yarn: `yarn`
-- To run a development server: `yarn start`
-
-  In manifest for a LookML project on your Looker instance:
-
-  ```
-  application: lookml-diagram-dev {
-    label: "LookML Diagram (dev)"
-    url: "https://localhost:8080/bundle.js"
-    entitlements: {
-      new_window_external_urls: ["https://docs.looker.com/data-modeling/extension-framework/lookml-diagram"]
-      local_storage: yes
-      navigation: yes
-      new_window: yes
-      core_api_methods: ["new_window_external_urls", "run_inline_query", "lookml_model_explore", "all_lookml_models", "all_users", "me", "search_groups", "git_branch", "all_git_branches", "update_git_branch"]
-    }
-  }
-  ```
-  
-  And you will also need to add a dummy model to the project.
-  
-  ```
-    connection: "thelook"
-  ```
-
-- To do a build: `yarn build` (You should commit the built file.)
-
-
-
-# LookML Diagram Extension
-
 It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/) for writing your extension, the [React Extension SDK](https://github.com/looker-open-source/extension-sdk-react) for interacting with Looker, and [Webpack](https://webpack.js.org/) for building your code.
 
 ## Getting Started for Development
@@ -42,7 +9,7 @@ It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlan
 3. Install the dependencies with [Yarn](https://yarnpkg.com/).
 
     ```
-    yarn install
+    yarn
     ```
 
     > You may need to update your Node version or use a [Node version manager](https://github.com/nvm-sh/nvm) to change your Node version.
@@ -69,13 +36,19 @@ It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlan
 6. In your copy of the extension tablet you have `manifest.lkml` file.
 
     You can either drag & upload this file into your Looker project, or create a `manifest.lkml` with the same content. Change the `id`, `label`, or `url` as needed.
-
-    ```
-    application: lookml-diagram {
-      label: "LookML Diagram"
-      url: "http://localhost:8080/bundle.js"
-    }
-    ```
+```
+application: lookml-diagram-dev {
+  label: "LookML Diagram (dev)"
+  url: "https://localhost:8080/bundle.js"
+  entitlements: {
+    new_window_external_urls: ["https://docs.looker.com/data-modeling/extension-framework/lookml-diagram"]
+    local_storage: yes
+    navigation: yes
+    new_window: yes
+    core_api_methods: ["new_window_external_urls", "run_inline_query", "lookml_model_explore", "all_lookml_models", "all_users", "me", "search_groups", "git_branch", "all_git_branches", "update_git_branch"]
+  }
+}
+```
 
 7. Create a `model` LookML file in your project. The name doesn't matter. The model and connection won't be used, and in the future this step may be eliminated.
     - Add a connection in this model. It can be any connection, it doesn't matter which.
@@ -89,20 +62,6 @@ It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlan
 10. Reload the page and click the `Browse` dropdown menu. You should see your extension in the list.
     - The extension will load the JavaScript from the `url` you provided in the `application` definition/
     - Reloading the extension page will bring in any new code changes from the extension template. (Webpack's hot reloading is not currently supported.)
-
-## Deployment
-
-The process above requires your local development server to be running to load the extension code. To allow other people to use the extension, we can build the JavaScript file and include it in the project directly.
-
-1. In your extension project directory on your development machine you can build the extension with `yarn build`.
-2. Drag and drop the generated `dist/bundle.js` file into the Looker project interface
-3. Modify your `manifest.lkml` to use `file` instead of `url`:
-    ```
-    application: my-great-extension {
-      label: "My Great Extension"
-      file: "bundle.js"
-    }
-    ```
 
 ## Styling the Lookml Diagram
 The diagram is found in `./components/Diagram.tsx`. CSS classes are styled onto the surrounding SVG. These classes are defined as composable effects, added to individual elements by d3 on creation or during an event. Because the styles are applied using CSS classes, the number of d3 renders is cut down, and we can centralize the code describing them. 
@@ -137,8 +96,6 @@ Not everything that could be considered a "style" falls under the CSS sphere of 
 ## Component Structure
 ![Please refer to `/docs/component_structure.png`](http://url/to/img.png)
 
-
-      
 ## Notes
 
 - Webpack's hot reloading is not currently supported.
