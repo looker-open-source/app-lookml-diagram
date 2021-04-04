@@ -1,5 +1,5 @@
 import {single_table_input, single_table_output} from "../test_data/single_table"
-import {getDiagramDict} from "../utils/diagrammer"
+import {generateExploreDiagram} from "../utils/LookmlDiagrammer"
 import {polls_all_fields} from "../test_data/polls_all_fields"
 import {polls_all_fields_diagram} from "../test_data/polls_all_fields_diagram"
 import campaign_default from "../test_data/campaign_default.json"
@@ -10,9 +10,7 @@ import ecmap_just_joins from "../test_data/ecmap_just_joins.json"
 import ecmap_just_joins_diagram from "../test_data/ecmap_just_joins_diagram.json"
 
 test('1 table 0 joins - results - default', () => {
-  expect(JSON.stringify(getDiagramDict(
-    single_table_input.exploreFields,
-    single_table_input.joins,
+  expect(JSON.stringify(generateExploreDiagram(
     single_table_input.explore,
     single_table_input.hiddenToggle,
     single_table_input.displayFieldType
@@ -20,9 +18,7 @@ test('1 table 0 joins - results - default', () => {
 });
 
 test('7 tables 6 joins - polls - all fields', () => {
-  expect(JSON.stringify(getDiagramDict(
-    polls_all_fields.exploreFields,
-    polls_all_fields.joins,
+  expect(JSON.stringify(generateExploreDiagram(
     polls_all_fields.explore,
     polls_all_fields.hiddenToggle,
     polls_all_fields.displayFieldType
@@ -30,9 +26,7 @@ test('7 tables 6 joins - polls - all fields', () => {
 });
 
 test('6 tables 5 joins - ecmap - just joins', () => {
-  let diagram = getDiagramDict(
-    ecmap_just_joins.exploreFields,
-    ecmap_just_joins.joins,
+  let diagram = generateExploreDiagram(
     ecmap_just_joins.explore,
     ecmap_just_joins.hiddenToggle,
     ecmap_just_joins.displayFieldType
@@ -47,9 +41,7 @@ test('6 tables 5 joins - ecmap - just joins', () => {
 });
 
 test('26 tables 25 joins - campaign - default', () => {
-  let diagram = getDiagramDict(
-    campaign_default.exploreFields,
-    campaign_default.joins,
+  let diagram = generateExploreDiagram(
     campaign_default.explore,
     campaign_default.hiddenToggle,
     campaign_default.displayFieldType
@@ -61,9 +53,7 @@ test('26 tables 25 joins - campaign - default', () => {
 });
 
 test('13 tables 12 joins - covid_combined - default', () => {
-  let diagram = getDiagramDict(
-    covid_default.exploreFields,
-    covid_default.joins,
+  let diagram = generateExploreDiagram(
     covid_default.explore,
     covid_default.hiddenToggle,
     covid_default.displayFieldType
