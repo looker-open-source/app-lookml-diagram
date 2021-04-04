@@ -40,7 +40,8 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
 
   if (currentDimensions) {
     // figure out the horizontal breadth of diagram
-    let currentDegrees = currentDimensions && Object.keys(currentDimensions.yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
+    let currentDegrees = currentDimensions 
+      && Object.keys(currentDimensions.yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
     minDegree = currentDimensions && Math.min(...currentDegrees)
     maxDegree = currentDimensions && Math.max(...currentDegrees)
   

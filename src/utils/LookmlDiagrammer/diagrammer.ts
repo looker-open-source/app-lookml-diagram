@@ -85,6 +85,8 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
   const fields = getFields(exploreFields)
   const views = getViews(exploreFields, exploreJoins, explore.name)
 
+  // diagrammable metadata for a given explore
+  // the structure is well suited for d3 and SVG
   let diagramDict: DiagramMetadata = {
     joinData: [],
     yOrderLookup: {},
@@ -127,9 +129,13 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
   diagramDict.joinData = exploreJoins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
     let joinPath: DiagramJoin[] = []
     if (join.foreign_key) {
-      let baseTableId = join.foreign_key.includes(".") ? join.foreign_key.split(".")[0] : explore.name
+      let baseTableId = join.foreign_key.includes(".") 
+        ? join.foreign_key.split(".")[0] 
+        : explore.name
       let baseTableRef = diagramDict.tableData[baseTableId]
-      let baseTableLookupValue = join.foreign_key.includes(".") ? join.foreign_key : (explore.name + "." + join.foreign_key)
+      let baseTableLookupValue = join.foreign_key.includes(".")
+        ? join.foreign_key 
+        : (explore.name + "." + join.foreign_key)
       let fieldIndex = getViewFieldIndex(baseTableRef, baseTableLookupValue)
       let pkTableRef = diagramDict.tableData[join.name]
       let pkFieldIndex = getViewPkIndex(pkTableRef)
@@ -143,7 +149,8 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
         let tableRef = diagramDict.tableData[joinFieldArr[0]]
         let fieldIndex = getViewDependentFieldIndex(tableRef, field)
         if (join.sql_on) {
-          join.sql_on.includes("${"+field+"}") && joinPath.push(getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join))
+          join.sql_on.includes("${"+field+"}") 
+            && joinPath.push(getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join))
         } else {
           joinPath.push(getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join))
           joinPath.push(getJoinPathObj(join))
@@ -165,8 +172,15 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
   // For each table, get list of tables joined by way of it
   const scaffold = getJoinedViewsForView(buildOrder, diagramDict, explore)
 
+  // list of view names that have been arranged
   let built: string[] = []
+
+  // keeps track of the vertical distance which has
+  // been filled by previous tables for each degree
   let shift: any = {}
+  
+  // keeps track of the order the tables
+  // are arranged in vertically for each degree
   let yOrder: any = {}
 
   /**
@@ -178,20 +192,22 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
    * @param degree - number of joins away from base
    */
   function arrangeTables(table: string, degree: number) {
+    // calculate table X
     let calcX = getTableX(degree)
+    // calculate table Y
     let tableLen = diagramDict.tableData[table] ? diagramDict.tableData[table].length : 1
-
     shift[degree] = typeof(shift[degree]) !== 'undefined'
-    ? shift[degree] + TABLE_VERTICAL_PADDING + tableLen
-    : 0 + (Math.abs(degree) * TABLE_DEGREE_STEP) + tableLen + TABLE_VERTICAL_PADDING
+      ? shift[degree] + TABLE_VERTICAL_PADDING + tableLen
+      : 0 + (Math.abs(degree) * TABLE_DEGREE_STEP) + tableLen + TABLE_VERTICAL_PADDING
 
     yOrder[degree] = yOrder[degree] 
-    ? [...yOrder[degree], table]
-    : [table]
+      ? [...yOrder[degree], table]
+      : [table]
 
     let calcY = ((shift[degree] - tableLen) * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
 
-    diagramDict.tableData[table] = diagramDict.tableData[table] && diagramDict.tableData[table].map((field: any, i: number) => {
+    diagramDict.tableData[table] = diagramDict.tableData[table] 
+      && diagramDict.tableData[table].map((field: any, i: number) => {
       return {
         ...field,
         diagramX: calcX,
@@ -235,7 +251,8 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
 
   // Drop any tables that were collected but
   // lack fields and joins 
-  Object.keys(diagramDict.tableData).forEach(key => diagramDict.tableData[key] === undefined && delete diagramDict.tableData[key])
+  Object.keys(diagramDict.tableData).forEach(key => diagramDict.tableData[key] === undefined 
+    && delete diagramDict.tableData[key])
 
   diagramDict.yOrderLookup = yOrder
   return diagramDict
