@@ -2,7 +2,7 @@
 
 ## Usage
 
-- Install dependencies with Yarn: `yarn install`
+- Install dependencies with Yarn: `yarn`
 - To run a development server: `yarn start`
 
   In manifest for a LookML project on your Looker instance:
@@ -11,7 +11,14 @@
   application: lookml-diagram-dev {
     label: "LookML Diagram (dev)"
     url: "https://localhost:8080/bundle.js"
+    entitlements: {
+      new_window_external_urls: ["https://docs.looker.com/data-modeling/extension-framework/lookml-diagram"]
+      local_storage: yes
+      navigation: yes
+      new_window: yes
+      core_api_methods: ["new_window_external_urls", "run_inline_query", "lookml_model_explore", "all_lookml_models", "all_users", "me", "search_groups", "git_branch", "all_git_branches", "update_git_branch"]
   }
+}
   ```
   
   And you will also need to add a dummy model to the project.
@@ -21,9 +28,6 @@
   ```
 
 - To do a build: `yarn build` (You should commit the built file.)
-
-
-
 
 
 
