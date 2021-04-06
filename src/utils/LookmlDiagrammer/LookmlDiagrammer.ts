@@ -108,10 +108,13 @@ export class LookmlDiagrammer {
   }
 
   /**
-   * Drop any tables that were collected but lack fields and joins and return the 
-   * diagrammable metadata
+   * Orchestrate the diagram generation process. Arranges table data in the diagramDict
+   * from a base table. Ensures there are no stranded views left behind
+   * @param baseViewName - base table name
    */
-  getDiagram() {
+  getDiagram(baseViewName: string) {
+    this.arrangeTables(baseViewName, 0)
+    this.arrangeRemaining()
     // Drop any tables that were collected but lack fields and joins 
     Object.keys(this.diagramDict.tableData).forEach(key => this.diagramDict.tableData[key] === undefined 
       && delete this.diagramDict.tableData[key])

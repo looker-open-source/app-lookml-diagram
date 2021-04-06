@@ -167,14 +167,11 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
     return joinCount[a] > joinCount[b] ? -1 : 1;
   })
 
-  let diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
+  const diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
   
-  let seed = diagramDict.tableData[explore.name] ? explore.name : buildOrder[0]
-  seed && diagrammer.arrangeTables(seed, 0)
+  const baseViewName = diagramDict.tableData[explore.name] ? explore.name : buildOrder[0]
 
-  diagrammer.arrangeRemaining()
-
-  Object.assign(diagramDict, diagrammer.getDiagram())
+  Object.assign(diagramDict, diagrammer.getDiagram(baseViewName))
 
   return diagramDict
 }
