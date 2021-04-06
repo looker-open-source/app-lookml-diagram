@@ -55,7 +55,7 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
     Object.keys(currentDimensions.yOrderLookup).forEach((d: string) => {
       let degreeTablesLength = currentDimensions.yOrderLookup[d].map((tableName: string) => {
         let undefModel = typeof(currentDimensions.tableData[tableName]) === "undefined"
-        return undefModel || currentDimensions.tableData[tableName].length + TABLE_VERTICAL_PADDING
+        return undefModel ? 0 : currentDimensions.tableData[tableName].length + TABLE_VERTICAL_PADDING
       }).reduce((a: number, b: number) => a + b, 0)
       if (degreeTablesLength > maxLength) {
         maxLength = degreeTablesLength

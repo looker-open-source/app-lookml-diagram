@@ -26,19 +26,16 @@
 
 import { DetailedModel } from "../fetchers";
 import { ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
-import { TABLE_VERTICAL_PADDING, TABLE_DEGREE_STEP, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "../constants";
-import {DiagramMetadata, DiagramJoin, DiagrammedModel} from './types'
+import {DiagramMetadata, DiagramJoin, DiagrammedModel, DiagramField} from './types'
 import {
   getFields, 
   getViews, 
-  getJoinedViewsForView, 
   getFilteredViewFields, 
   getGrouplessViewFields, 
   getViewFieldIndex, 
   getViewPkIndex, 
   getViewDependentFieldIndex,
   countJoins,
-  getTableX,
 } from './utils'
 import {
   getPkJoinPathObj,
@@ -48,6 +45,7 @@ import {
   getExploreJoinPathObj,
 } from './join-utils'
 import {generateMinimapDiagram} from './minimapper'
+import {LookmlDiagrammer} from './LookmlDiagrammer'
 
 /**
  * generates all metadata needed for DiagramFrame to present all explores in a given model
@@ -116,7 +114,7 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
       diagramY: 0, 
       fieldTypeIndex: 0
     },
-    ...grouplessFilteredFields.map((datum: any, i: number) => {
+    ...grouplessFilteredFields.map((datum: DiagramField, i: number) => {
       datum.diagramX = 0,
       datum.diagramY = 0,
       datum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
@@ -169,91 +167,14 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
     return joinCount[a] > joinCount[b] ? -1 : 1;
   })
 
-  // For each table, get list of tables joined by way of it
-  const scaffold = getJoinedViewsForView(buildOrder, diagramDict, explore)
-
-  // list of view names that have been arranged
-  let built: string[] = []
-
-  // keeps track of the vertical distance which has
-  // been filled by previous tables for each degree
-  let shift: any = {}
-  
-  // keeps track of the order the tables
-  // are arranged in vertically for each degree
-  let yOrder: any = {}
-
-  /**
-   * A recursive function for arranging diagram tables. Starting at the base table,
-   * arrange each of its each joined tables to the left and right, switching sides for each
-   * table and leaving a gap between tables of same degree. As a table is arranged, join any of its 
-   * tables in the direction it was placed off of the base table. 
-   * @param table - view name
-   * @param degree - number of joins away from base
-   */
-  function arrangeTables(table: string, degree: number) {
-    // calculate table X
-    let calcX = getTableX(degree)
-    // calculate table Y
-    let tableLen = diagramDict.tableData[table] ? diagramDict.tableData[table].length : 1
-    shift[degree] = typeof(shift[degree]) !== 'undefined'
-      ? shift[degree] + TABLE_VERTICAL_PADDING + tableLen
-      : 0 + (Math.abs(degree) * TABLE_DEGREE_STEP) + tableLen + TABLE_VERTICAL_PADDING
-
-    yOrder[degree] = yOrder[degree] 
-      ? [...yOrder[degree], table]
-      : [table]
-
-    let calcY = ((shift[degree] - tableLen) * (TABLE_ROW_HEIGHT+DIAGRAM_FIELD_STROKE_WIDTH))
-
-    diagramDict.tableData[table] = diagramDict.tableData[table] 
-      && diagramDict.tableData[table].map((field: any, i: number) => {
-      return {
-        ...field,
-        diagramX: calcX,
-        diagramY: calcY,
-        diagramDegree: degree,
-        verticalIndex: yOrder[degree].length,
-      }
-    })
-
-    diagramDict.tableData[table] && built.push(table)
-    scaffold[table] && scaffold[table].forEach((t: string, i: number) => {
-      // Assign the next degree for each table joined to the current
-      // If current degree = 0, flip tables L and R
-      // If degree -1 or 1, join any tables in the same direction
-      if (!built.includes(t)) {
-        let nextDegree = 0
-        if (degree === 0 && ((i % 2) === 0)) {
-          nextDegree = 1
-        } else if (degree === 0 && ((i % 2) !== 0)) {
-          nextDegree = -1
-        } else if (degree > 0) {
-          nextDegree = degree + 1
-        } else if (degree < 0) {
-          nextDegree = degree - 1
-        }
-        t && arrangeTables(t, nextDegree)
-      }
-    })
-  }
+  let diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
   
   let seed = diagramDict.tableData[explore.name] ? explore.name : buildOrder[0]
-  seed && arrangeTables(seed, 0)
+  seed && diagrammer.arrangeTables(seed, 0)
 
-  // arrange any "stranded" views -- views not joined to the base view
-  while (buildOrder.length !== built.length) {
-    let build = buildOrder.filter((tableName: string) => {
-      return !built.includes(tableName)
-    })
-    build[0] && arrangeTables(build[0], 0)
-  }
+  diagrammer.arrangeRemaining()
 
-  // Drop any tables that were collected but
-  // lack fields and joins 
-  Object.keys(diagramDict.tableData).forEach(key => diagramDict.tableData[key] === undefined 
-    && delete diagramDict.tableData[key])
+  Object.assign(diagramDict, diagrammer.getDiagram())
 
-  diagramDict.yOrderLookup = yOrder
   return diagramDict
 }

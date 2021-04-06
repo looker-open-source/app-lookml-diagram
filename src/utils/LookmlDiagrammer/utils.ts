@@ -25,7 +25,7 @@
  */
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import { TABLE_PADDING } from '../constants'
-import { DiagramField, DiagramMetadata, JoinPopularity } from "./types";
+import { DiagramField, DiagramMetadata, JoinPopularity, DiagramDegreeOrderLookup } from "./types";
 
 /**
  * takes in an explore fieldset and returns an array of its dims and meas
@@ -194,8 +194,8 @@ export function countJoins(diagramDict: DiagramMetadata) {
  * @param diagramDict - diagrammable metadata
  * @param explore  - looker explore obj
  */
-export function getJoinedViewsForView(buildOrder: string[], diagramDict: DiagramMetadata, explore: ILookmlModelExplore) {
-  let scaffold: any = {}
+export function getJoinedViewsForViews(buildOrder: string[], diagramDict: DiagramMetadata, explore: ILookmlModelExplore) {
+  let scaffold: DiagramDegreeOrderLookup = {}
   buildOrder.map((viewName: string)=>{
     let joined: any[] = []
     diagramDict.joinData.map((join: any)=>{

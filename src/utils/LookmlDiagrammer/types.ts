@@ -52,9 +52,17 @@ export type JoinPopularity = {
   [key: string]: number
 }
 
+export type DiagramDegreeShiftLookup = {
+  [key: string]: number
+}
+
+export type DiagramDegreeOrderLookup = {
+  [key: string]: string[]
+}
+
 export interface DiagramMetadata {
   joinData: DiagramJoin[][]
-  yOrderLookup: any
+  yOrderLookup: DiagramDegreeOrderLookup
   tableData: DiagramTables
 }
 
