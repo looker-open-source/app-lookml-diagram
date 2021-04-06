@@ -1,7 +1,6 @@
 import { useRouteMatch } from "react-router-dom"
-import React, { useState, useEffect, useContext } from "react"
-import { useAllModels, useModelDetail, DiagramError, getActiveGitBranch, getAvailGitBranches } from "./fetchers"
-import { getDiagramDimensions, getMinimapDimensions, DiagrammedModel } from "./diagrammer"
+import { useAllModels, useModelDetail, DiagramError } from "./fetchers"
+import { generateModelDiagrams, DiagrammedModel } from "./LookmlDiagrammer"
 
 export function internalExploreURL({
   model,
@@ -73,11 +72,11 @@ export function usePathNames(): {
 }
 
 export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string, selectedBranch: string, diagramError: DiagramError, setDiagramError: (err: DiagramError) => void) {
-  const { modelName, exploreName } = usePathNames()
+  const { modelName } = usePathNames()
   const unfilteredModels = useAllModels(selectedBranch, diagramError)
   const currentModel = useCurrentModel(selectedBranch, diagramError)
   let {modelDetail} = useModelDetail(modelName, selectedBranch, diagramError, setDiagramError)
-  let dimensions: DiagrammedModel[] = getDiagramDimensions(modelDetail, hiddenToggle, displayFieldType)
+  let dimensions: DiagrammedModel[] = generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType)
   return {
     unfilteredModels,
     currentModel, 

@@ -7,7 +7,7 @@ import {
   DIAGRAM_FIELD_STROKE_WIDTH,
   TABLE_PADDING,
 } from '../utils/constants'
-import { onlyUnique, DiagramMetadata } from '../utils/diagrammer'
+import { onlyUnique, DiagramMetadata } from '../utils/LookmlDiagrammer'
 import { SelectionInfoPacket } from "../components/interfaces"
 import {makeJoinIcon} from "./join-icon"
 import {getManyPath, getOnePath, addJoinArrowheads} from "./join-helpers"
