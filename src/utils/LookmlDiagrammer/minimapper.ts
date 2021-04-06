@@ -40,7 +40,7 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
 
   if (currentDimensions) {
     // figure out the horizontal breadth of diagram
-    let currentDegrees = currentDimensions 
+    const currentDegrees = currentDimensions 
       && Object.keys(currentDimensions.yOrderLookup).map((d: string)=>{return +d}).sort((a: number, b: number) => a - b)
     minDegree = currentDimensions && Math.min(...currentDegrees)
     maxDegree = currentDimensions && Math.max(...currentDegrees)
@@ -53,8 +53,8 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
     median = ((len % 2) == 0) ? (currentDegrees[mid] + currentDegrees[mid - 1]) / 2 : currentDegrees[mid - 1];
 
     Object.keys(currentDimensions.yOrderLookup).forEach((d: string) => {
-      let degreeTablesLength = currentDimensions.yOrderLookup[d].map((tableName: string) => {
-        let undefModel = typeof(currentDimensions.tableData[tableName]) === "undefined"
+      const degreeTablesLength = currentDimensions.yOrderLookup[d].map((tableName: string) => {
+        const undefModel = typeof(currentDimensions.tableData[tableName]) === "undefined"
         return undefModel ? 0 : currentDimensions.tableData[tableName].length + TABLE_VERTICAL_PADDING
       }).reduce((a: number, b: number) => a + b, 0)
       if (degreeTablesLength > maxLength) {
@@ -62,20 +62,20 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
       }
     })
   }
-  let verticalCheck = 150 / (maxLength * (TABLE_ROW_HEIGHT + DIAGRAM_FIELD_STROKE_WIDTH))
-  let horizontalCheck = 300 / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
-  let minimapScale = Math.min(verticalCheck, horizontalCheck)
+  const verticalCheck = 150 / (maxLength * (TABLE_ROW_HEIGHT + DIAGRAM_FIELD_STROKE_WIDTH))
+  const horizontalCheck = 300 / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
+  const minimapScale = Math.min(verticalCheck, horizontalCheck)
 
   // shift to put the median degree in the middle
-  let medianCorrection = median > 0 
+  const medianCorrection = median > 0 
   ? -1 * median * TABLE_PADDING
   : Math.abs(median) * TABLE_PADDING
 
-  let minimapX = 150 - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
-  let minimapY = (Math.max(Math.abs(minDegree), Math.abs(maxDegree)) + 1) * (TABLE_DEGREE_STEP * -1)
+  const minimapX = 150 - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
+  const minimapY = (Math.max(Math.abs(minDegree), Math.abs(maxDegree)) + 1) * (TABLE_DEGREE_STEP * -1)
 
   // show minimap by default if degree > 2 or more than 40 rows
-  let defaultMinimap = Math.max(Math.abs(minDegree), Math.abs(maxDegree)) > 2 || maxLength > 40 ? true : false
+  const defaultMinimap = Math.max(Math.abs(minDegree), Math.abs(maxDegree)) > 2 || maxLength > 40 ? true : false
 
   return {
     scale: minimapScale, x: minimapX, y: minimapY, default: defaultMinimap

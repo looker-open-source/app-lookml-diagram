@@ -32,8 +32,7 @@ import { DiagramField, DiagramMetadata, JoinPopularity, DiagramDegreeOrderLookup
  * @param exploreFields 
  */
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
-  let fields = [...exploreFields.dimensions, ...exploreFields.measures]
-  return fields
+  return [...exploreFields.dimensions, ...exploreFields.measures]
 }
 
 /**
@@ -61,8 +60,8 @@ export function onlyStrings(value: any) {
  * @param exploreName - the name of the current explore
  */
 export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], exploreName?: string) {
-  let fields = getFields(exploreFields)
-  let views = fields.map((field: ILookmlModelExploreField)=>{return field.view})
+  const fields = getFields(exploreFields)
+  const views = fields.map((field: ILookmlModelExploreField)=>{return field.view})
   // not all views bring in fields... so we must check join refs too
   joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
     join.dependent_fields.map((field: string, depFieldIndex: number) => {

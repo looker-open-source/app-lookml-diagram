@@ -1,13 +1,38 @@
-import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
+/*
+
+ MIT License
+
+ Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+ */
+import { SelectionInfoPacket } from "../../interfaces"
 import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
-  let startLine = `join: ${join.name.toLowerCase()} {\n`
-  let typeLine = join.type && `  type: ${join.type}\n`
-  let relationLine = join.relationship && `  relationship: ${join.relationship}\n`
-  let sqlOnLine = join.sql_on && `  sql_on: ${join.sql_on} ;;\n`
-  let fkLine = join.foreign_key && `  foreign_key: ${join.foreign_key} \n`
-  let endLine = `}`
+  const startLine = `join: ${join.name.toLowerCase()} {\n`
+  const typeLine = join.type && `  type: ${join.type}\n`
+  const relationLine = join.relationship && `  relationship: ${join.relationship}\n`
+  const sqlOnLine = join.sql_on && `  sql_on: ${join.sql_on} ;;\n`
+  const fkLine = join.foreign_key && `  foreign_key: ${join.foreign_key} \n`
+  const endLine = `}`
   return [startLine, typeLine, relationLine, sqlOnLine, fkLine, endLine].filter(Boolean).join("")
 }
 
@@ -23,15 +48,15 @@ export let getSqlType = (type: string) => {
 }
 
 export function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any, selectionInfo: SelectionInfoPacket) {
-  let blobStart = dateOrDuration(field.type) ? "dimension_group" : field.category
-  let startLine = `${blobStart}: ${getFieldName(field.name, field.type, selectionInfo.grouped)} {\n`
-  let keyLine = field.primary_key && `  primary_key: yes\n`
-  let typeLine = field.type && `  type: ${getSqlType(field.type)}\n`
-  let vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
-  let tfLine = dateOrDuration(field.type) && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
-  let sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
-  let mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
-  let endLine = `}`
+  const blobStart = dateOrDuration(field.type) ? "dimension_group" : field.category
+  const startLine = `${blobStart}: ${getFieldName(field.name, field.type, selectionInfo.grouped)} {\n`
+  const keyLine = field.primary_key && `  primary_key: yes\n`
+  const typeLine = field.type && `  type: ${getSqlType(field.type)}\n`
+  const vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
+  const tfLine = dateOrDuration(field.type) && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
+  const sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
+  const mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
+  const endLine = `}`
   return [startLine, keyLine, typeLine, vfLine, tfLine, sqlLine, mapLayerLine, endLine].filter(Boolean).join("")
 }
 

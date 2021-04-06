@@ -97,8 +97,8 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
 
   // Add table data to DiagramDict for each view
   views.forEach((viewName: string, viewIndex: number) => {
-    let filteredFields = getFilteredViewFields(fields, viewName, joinSql, hiddenToggle, displayFieldType)
-    let grouplessFilteredFields = getGrouplessViewFields(filteredFields)
+    const filteredFields = getFilteredViewFields(fields, viewName, joinSql, hiddenToggle, displayFieldType)
+    const grouplessFilteredFields = getGrouplessViewFields(filteredFields)
     
     let dimLen = grouplessFilteredFields.filter((e, j) => {
       return e.view === viewName && e.category === "dimension"
