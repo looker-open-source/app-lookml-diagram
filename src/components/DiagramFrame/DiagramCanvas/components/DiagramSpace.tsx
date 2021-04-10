@@ -23,7 +23,7 @@ import {
   DIAGRAM_JOIN_SELECT_COLOR,
   DIAGRAM_MEASURE_HOVER_COLOR,
   DIAGRAM_MEASURE_ICON_COLOR
-} from "../../../../utils/constants"
+} from "../../../../utils/constants/"
 import {
   theme,
 } from "@looker/components"

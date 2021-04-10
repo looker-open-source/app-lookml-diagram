@@ -32,7 +32,7 @@ import {
   IconButton,
   theme
 } from "@looker/components"
-import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
+import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants/'
 import {DiagramToolbarProps} from "./types"
 import {Toolbar} from "./components/Layout"
 import {formatZoom} from "./utils"

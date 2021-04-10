@@ -24,7 +24,7 @@
 
  */
 import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
-import { TABLE_PADDING } from '../constants'
+import { TABLE_PADDING, SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS } from '../constants'
 import { DiagramField, DiagramMetadata, JoinPopularity, DiagramDegreeOrderLookup } from "./types";
 
 /**
@@ -89,11 +89,11 @@ export function getFilteredViewFields(fields: ILookmlModelExploreField[], viewNa
     if (hiddenToggle && field.hidden) {
       return false
     }
-    if (displayFieldType === "joined") {
+    if (displayFieldType === SHOW_JOINED_FIELDS) {
       return field.view === viewName && joinSql.map((d: any, i: number) => {
         return d && d.includes("${"+field.name+"}")
       }).includes(true)
-    } else if (displayFieldType === "all") {
+    } else if (displayFieldType === SHOW_ALL_FIELDS) {
       return field.view === viewName
     }
   })

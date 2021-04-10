@@ -1,24 +1,50 @@
+/*
+
+ MIT License
+
+ Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+ */
+
 import * as d3 from 'd3';
 import { ILookmlModelExplore } from '@looker/sdk/lib/sdk/3.1/models';
+import { SelectionInfoPacket } from "../components/types"
 import { 
   TABLE_WIDTH, 
   JOIN_CONNECTOR_WIDTH, 
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
   TABLE_PADDING,
-} from '../utils/constants'
-import { onlyUnique, DiagramMetadata } from '../utils/LookmlDiagrammer'
-import { SelectionInfoPacket } from "../components/interfaces"
+} from '../utils/constants/'
+import { onlyUnique, DiagramMetadata, DiagramJoin } from '../utils/LookmlDiagrammer'
 import {makeJoinIcon} from "./join-icon"
 import {getManyPath, getOnePath, addJoinArrowheads} from "./join-helpers"
 
-export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: DiagramMetadata, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
-  let partArray: any[] = []
+export function createLookmlJoinElement(svg: any, joinData: DiagramJoin[], diagramDict: DiagramMetadata, explore: ILookmlModelExplore, selectionInfo: SelectionInfoPacket, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
+  let partArray: DiagramJoin[][] = []
   let r_shift = TABLE_WIDTH + JOIN_CONNECTOR_WIDTH
   let l_shift = JOIN_CONNECTOR_WIDTH * -1
 
   // Break up join between multiple tables into join-parts between two tables
-  let joinParts = joinData.map((d: any) => { return d.viewName}).filter(onlyUnique).sort((a: any, b: any) => {
+  let joinParts = joinData.map((d: DiagramJoin) => { return d.viewName}).filter(onlyUnique).sort((a: string, b: string) => {
     if (diagramDict.tableData[a][0].diagramDegree < diagramDict.tableData[b][0].diagramDegree) {
       return -1
     } else {
@@ -26,27 +52,27 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: Di
     }
   })
   let stopPartIndex = joinParts.length - 2
-  joinParts.forEach((d: any, i: number) => {
+  joinParts.forEach((d: string, i: number) => {
     if (i <= stopPartIndex) {
-      partArray.push(joinData.filter((joinPoint: any, pointI: number) => {
+      partArray.push(joinData.filter((joinPoint: DiagramJoin, pointI: number) => {
         return joinPoint.viewName === joinParts[i] || joinPoint.viewName === joinParts[i+1]
       }))
     }
   })
 
   // Establish degrees in join
-  let joinDegrees = joinData.map((d: any, i: number) => {
+  let joinDegrees = joinData.map((d: DiagramJoin, i: number) => {
     return Math.abs(diagramDict.tableData[d.viewName][0].diagramDegree)
   })
 
   // Calculate the x,y of every field in join and sort left to right
-  partArray.map((path: any, partI: number) => {
+  partArray.map((path: DiagramJoin[], partI: number) => {
     let joinPath: any[]
-    let xLookup = path.map((d:any)=>{
+    let xLookup = path.map((d:DiagramJoin)=>{
       let joinedTableData = diagramDict.tableData[d.viewName]
       return joinedTableData[d.fieldIndex].diagramX
     })
-    joinPath = path.map((d: any, i: number)=>{
+    joinPath = path.map((d: DiagramJoin, i: number)=>{
       let nextIndex = i;
       while (path[nextIndex] && path[nextIndex].viewName === d.viewName) {
         nextIndex++;
@@ -87,10 +113,10 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: Di
     .append("g")
     .attr("class", "join-"+joinData[0].joinName)
 
-    let joinTables = joinPath.map((d: any) => { return d.viewName})
+    let joinTables = joinPath.map((d: DiagramJoin) => { return d.viewName})
     let terminalAlign = joinTables.filter(onlyUnique)
     let degreeAligned = [...terminalAlign]
-    degreeAligned = degreeAligned.sort((a: any, b: any) => {
+    degreeAligned = degreeAligned.sort((a: string, b: string) => {
       if (Math.abs(diagramDict.tableData[a][0].diagramDegree) < Math.abs(diagramDict.tableData[b][0].diagramDegree)) {
         return -1
       } else {

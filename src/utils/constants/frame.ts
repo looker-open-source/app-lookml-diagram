@@ -24,17 +24,14 @@
 
  */
 
-import {
-  Footer,
-} from "@looker/components"
-import styled from "styled-components"
-import {METADATA_PANEL_PIXEL} from "../../../utils/constants/"
+// Header
+export const DIAGRAM_HEADER_HEIGHT = 90
 
-export const MetadataFooter = styled(Footer as any)`
-  width: ${METADATA_PANEL_PIXEL}px;
-  right: -1px;
-  position: absolute;
-  bottom: 0px;
-  box-shadow: 0px 1px 15px ${(props) => props.theme.colors.ui2};
-  background-color: ${(props) => props.theme.colors.background};
-`
+// MetadataPanel
+export const METADATA_PANEL_PIXEL = 550
+
+// ViewOptions
+export const VIEW_OPTIONS_HIDDEN_DEFAULT = true
+export const SHOW_JOINED_FIELDS = "joined"
+export const SHOW_ALL_FIELDS = "all"
+export const VIEW_OPTIONS_FIELDS_DEFAULT = SHOW_ALL_FIELDS

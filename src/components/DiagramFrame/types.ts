@@ -1,16 +1,9 @@
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
-import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { getActiveGitBranch, getAvailGitBranches, DiagramError } from "../../utils/fetchers"
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
+import { SelectionInfoPacket, VisibleViewLookup } from "../types"
+import { DiagramError } from "../../utils/fetchers"
 import { DiagrammedModel } from "../../utils/LookmlDiagrammer/"
-import styled from "styled-components"
 import {
-  Aside,
-  Section,
   SelectOptionProps,
-  Icon,
-  theme,
-  Header,
 } from "@looker/components"
 
 export interface ViewOptionsProps {

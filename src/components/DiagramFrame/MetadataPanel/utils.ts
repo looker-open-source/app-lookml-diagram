@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import { SelectionInfoPacket } from "../../interfaces"
+import { SelectionInfoPacket } from "../../types"
 import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {

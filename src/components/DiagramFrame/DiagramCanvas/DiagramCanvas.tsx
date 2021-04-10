@@ -30,7 +30,7 @@ import {
   Heading,
   Status,
 } from "@looker/components"
-import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
+import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants/'
 import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"

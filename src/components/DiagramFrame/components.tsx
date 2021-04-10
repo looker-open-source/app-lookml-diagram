@@ -1,4 +1,4 @@
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
+import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../utils/constants/"
 import styled from "styled-components"
 import {
   Aside,

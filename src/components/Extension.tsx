@@ -29,8 +29,11 @@ import { ComponentsProvider, MessageBar } from "@looker/components"
 import { DiagramFrame } from "./DiagramFrame/DiagramFrame"
 import { useSelectExplore, usePathNames } from "../utils/routes"
 import { DiagramError } from "../utils/fetchers"
-import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
-} from '../utils/constants'
+import { 
+  VIEW_OPTIONS_HIDDEN_DEFAULT,
+  VIEW_OPTIONS_FIELDS_DEFAULT,
+  OVERRIDE_KEY
+} from '../utils/constants/'
 
 export const Extension: React.FC = () => {
   const [diagramError, setDiagramError] = useState<DiagramError | undefined>(undefined)
@@ -41,7 +44,7 @@ export const Extension: React.FC = () => {
   const { unfilteredModels, modelDetail, dimensions } = useSelectExplore(hiddenToggle, displayFieldType, selectedBranch, diagramError, setDiagramError)
   return (
   <ComponentsProvider themeCustomizations={{
-    colors: { key: "rgb(45, 126, 234)" },
+    colors: { key: OVERRIDE_KEY },
   }}>
     {/* Check out ./src/component_structure.png for a diagram of the app structure */}
     {diagramError?.kind === "git" && <MessageBar intent="critical">{diagramError.message}</MessageBar>}

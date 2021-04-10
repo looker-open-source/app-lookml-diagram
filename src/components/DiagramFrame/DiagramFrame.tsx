@@ -29,9 +29,8 @@ import {
   SpaceVertical,
   IconButton,
   Layout,
-  SelectOptionProps,
 } from "@looker/components"
-import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
+import { SelectionInfoPacket, VisibleViewLookup } from "../types"
 import { useCurrentModel } from "../../utils/routes"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
 import "./styles.css"
@@ -47,7 +46,7 @@ import {
   Y_INIT,
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
-} from '../../utils/constants'
+} from '../../utils/constants/'
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import {DiagramFrameProps, ExploreDropdown} from "./types"
 import {Rail, Stage} from "./components"

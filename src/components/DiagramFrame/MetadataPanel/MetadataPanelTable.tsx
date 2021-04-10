@@ -32,7 +32,7 @@ import {
   theme
 } from "@looker/components"
 import styled from "styled-components";
-import { LookmlObjectMetadata } from "../../interfaces"
+import { LookmlObjectMetadata } from "../../types"
 import { canGetDistribution, canGetTopValues } from "../../../utils/queries"
 import { QueryChart } from "./QueryChart"
 

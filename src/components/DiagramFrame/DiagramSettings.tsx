@@ -32,7 +32,7 @@ import {
   Label,
   Spinner,
 } from "@looker/components"
-import { X_INIT, Y_INIT, ZOOM_INIT } from '../../utils/constants'
+import { X_INIT, Y_INIT, ZOOM_INIT } from '../../utils/constants/'
 import { internalModelURL, internalExploreURL } from "../../utils/routes"
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { useHistory } from "react-router"

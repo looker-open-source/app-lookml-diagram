@@ -50,8 +50,8 @@ import MetadataPanelTable from "./MetadataPanelTable"
 import {MetadataInfoPanel} from "./MetadataInfoPanel"
 import {MetadataFooter} from "./MetadataFooter"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
-import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
-import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
+import { METADATA_PANEL_PIXEL } from "../../../utils/constants/"
+import { LookmlObjectMetadata, SelectionInfoPacket } from "../../types"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 import { getFields, DiagramField } from '../../../utils/LookmlDiagrammer/'
 import { exploreFieldURL } from '../../../utils/urls'
