@@ -67,8 +67,8 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               onChange={setDisplayFieldType}
               options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
           </FlexItem>
-          <Divider />
-          <FlexItem py="small">
+          <Divider appearance="light" />
+          <FlexItem py="xsmall">
             <Flex>
               <FlexItem>
                 <FieldToggleSwitch onChange={handleHiddenToggle} on={hiddenToggle} label="Hide hidden fields    " />
@@ -80,8 +80,8 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               </FlexItem>
             </Flex>
           </FlexItem>
-          <Divider />
-          <FlexItem pt="xsmall">
+          <Divider appearance="light" />
+          <FlexItem pt="small">
             <Flex flexDirection="column">
               <FlexItem>
                 <Flex alignItems="baseline">

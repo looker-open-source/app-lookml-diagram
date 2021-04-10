@@ -1,7 +1,7 @@
 import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
 import { SelectOptionProps, theme } from "@looker/components"
 import { OVERRIDE_KEY_SUBTLE, DIAGRAM_IGNORED_MODELS } from "../../utils/constants"
-import { ExploreDropdown } from "./types"
+import { ExploreDropdown } from "./FramePanels"
 
 /**
  * get the color of a view list item according to its visibility status

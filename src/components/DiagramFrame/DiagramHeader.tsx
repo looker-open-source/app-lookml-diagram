@@ -28,7 +28,8 @@ import React from "react"
 import {
   Heading,
   Space,
-  IconButton
+  IconButton,
+  theme
 } from "@looker/components"
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
 import {DiagramHeaderProps} from "./types"
@@ -45,10 +46,14 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
       py="xsmall"
       px="large"
       className={currentExplore ? 'has-explore' : 'no-explore'}
+      style={{
+        backgroundColor: theme.colors.background,
+        borderBottom: `solid 1px ${theme.colors.ui2}`
+      }}
     >
       <Space between>
         <Space gap="xsmall">
-          <Heading as="h1">{currentExplore && currentExplore.label}</Heading>
+          <Heading as="h1" px='1rg'>{currentExplore && currentExplore.label}</Heading>
         </Space>
         <Space gap="xsmall" justifyContent="flex-end">
           <IconButton 

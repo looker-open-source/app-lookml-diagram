@@ -24,22 +24,21 @@
 
  */
 
-import React, { useContext } from "react"
+import React from "react"
 import {
   SpaceVertical,
+  Divider,
   Heading,
   FieldSelect,
   Label,
-  Spinner,
+  theme
 } from "@looker/components"
-import { X_INIT, Y_INIT, ZOOM_INIT } from '../../utils/constants'
-import { internalModelURL, internalExploreURL } from "../../utils/routes"
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
+import { X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
+import { internalModelURL, internalExploreURL } from "../../../utils/routes"
 import { useHistory } from "react-router"
-import { ExtensionContext } from "@looker/extension-sdk-react"
 import { ExploreDropdown, DiagramSettingsProps } from "./types"
 import {ExploreList, ExploreListitem, ExploreButton, SettingsPanel} from "./components"
-import { getExploreListItemBackgroundColor } from "./utils"
+import { getExploreListItemBackgroundColor } from "../utils"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
   modelDetails,
@@ -64,9 +63,9 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
  }) => {
   const history = useHistory()
   return (
-    <SettingsPanel width="275px" px="medium" py="large">
+    <SettingsPanel width="275px" p="medium">
       <SpaceVertical>
-        <Heading fontSize="large">Diagram Settings</Heading>
+        <Heading fontSize="large" color={theme.colors.text4}>Diagram Settings</Heading>
         <FieldSelect
           options={modelDetails}
           label="Choose a Model"
@@ -82,46 +81,45 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
           isLoading={modelDetails.length === 0 ? true : false}
         />
         {modelName && (
-          <div>
-            <SpaceVertical size="xxsmall">
-              <FieldSelect
-                options={branchOpts ? branchOpts : []}
-                placeholder="Loading Git Branches..."
-                label="Current Branch"
-                value={gitBranch && gitBranch.name}
-                onChange={(value)=>{setSelectedBranch(value)}}
-                disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
-              />
-              <Label>Select an Explore</Label>
-              <ExploreList>
-                {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
-                  return (
-                    <ExploreListitem key={`explore-${index}`} style={{backgroundColor: getExploreListItemBackgroundColor(explore.value, currentExplore, diagramExplore)}}>
-                      <ExploreButton
-                        onClick={() => {
-                          selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
-                          setViewVisible({})
-                          setZoomFactor(ZOOM_INIT)
-                          setViewPosition({x: X_INIT, y: Y_INIT})
-                          setMinimapUntoggled(true)
-                          setMinimapEnabled(false)
-                          history.push(
-                            internalExploreURL({
-                              model: currentModel.name,
-                              explore: explore.value
-                            })
-                          )
-                        }}
-                        value={explore.value}
-                      >
-                        {explore.label}
-                      </ExploreButton>
-                    </ExploreListitem>
-                  )
-                })}
-              </ExploreList>
-            </SpaceVertical>
-          </div>
+          <>
+            <FieldSelect
+              options={branchOpts ? branchOpts : []}
+              placeholder="Loading Git Branches..."
+              label="Current Branch"
+              value={gitBranch && gitBranch.name}
+              onChange={(value)=>{setSelectedBranch(value)}}
+              disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
+            />
+            <Divider appearance="light" my="medium" />
+            <Label fontSize="small" style={{marginTop: "0rem"}}>Select an Explore</Label>
+            <ExploreList style={{marginTop: theme.sizes.xxxsmall, overflow: "auto"}}>
+              {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
+                return (
+                  <ExploreListitem key={`explore-${index}`} style={{backgroundColor: getExploreListItemBackgroundColor(explore.value, currentExplore, diagramExplore)}}>
+                    <ExploreButton
+                      onClick={() => {
+                        selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
+                        setViewVisible({})
+                        setZoomFactor(ZOOM_INIT)
+                        setViewPosition({x: X_INIT, y: Y_INIT})
+                        setMinimapUntoggled(true)
+                        setMinimapEnabled(false)
+                        history.push(
+                          internalExploreURL({
+                            model: currentModel.name,
+                            explore: explore.value
+                          })
+                        )
+                      }}
+                      value={explore.value}
+                    >
+                      {explore.label}
+                    </ExploreButton>
+                  </ExploreListitem>
+                )
+              })}
+            </ExploreList>
+          </>
         )}
       </SpaceVertical>
     </SettingsPanel>

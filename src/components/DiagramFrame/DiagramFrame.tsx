@@ -29,16 +29,15 @@ import {
   SpaceVertical,
   IconButton,
   Layout,
-  SelectOptionProps,
+  Section,
+  theme
 } from "@looker/components"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { useCurrentModel } from "../../utils/routes"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
 import "./styles.css"
 import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
-import { DiagramSettings } from "./DiagramSettings"
-import { HelpPanel } from "./HelpPanel"
-import { ViewOptions } from "./ViewOptions"
+import { ViewOptions, DiagramSettings, HelpPanel, ExploreDropdown } from "./FramePanels"
 import { DiagramHeader } from "./DiagramHeader"
 import { DiagramCanvas } from "./DiagramCanvas/DiagramCanvas"
 import { 
@@ -49,8 +48,8 @@ import {
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
-import {DiagramFrameProps, ExploreDropdown} from "./types"
-import {Rail, Stage} from "./components"
+import {DiagramFrameProps} from "./types"
+import {Rail} from "./components"
 import {getBranchOptions, prepareModelDropdown, prepareExploreList} from "./utils"
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
@@ -213,7 +212,11 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
         <HelpPanel
         />
       )}
-      <Stage>
+      <Section style={{
+        backgroundColor: theme.colors.ui1,
+        overflow: "hidden",
+        position: "relative"
+      }}>
         <DiagramHeader
           currentExplore={currentExplore}
           selectionInfo={selectionInfo}
@@ -253,7 +256,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           />
         )}
         </Layout>
-      </Stage>
+      </Section>
       </Layout>
   )
 }

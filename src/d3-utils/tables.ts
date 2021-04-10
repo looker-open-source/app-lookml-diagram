@@ -34,7 +34,7 @@ export function createLookmlViewElement(
   .append("g")
   .attr("class", "table-"+header.view)
 
-  table.append("rect")
+  type !== "minimap" && table.append("rect")
   .attr("class", "table-background table-background-"+header.view)
   .attr("x", header.diagramX)
   .attr("y", header.diagramY)
@@ -99,7 +99,7 @@ export function createLookmlViewElement(
   tableData.length > 1 && tableBottomCap()
 
   // Add datatype icon
-  tableRow.append("path")
+  type !== "minimap" && tableRow.append("path")
   .attr("d", getDatatypePath)
   .attr("class", "datatype-icon")
   .attr("transform", (d: DiagramField, i: number) => {
@@ -107,7 +107,7 @@ export function createLookmlViewElement(
   })
 
   // Add PK icon if needed
-  tableRow.append("path")
+  type !== "minimap" && tableRow.append("path")
   .attr("d", getPkPath)
   .attr("class", "pk-icon")
   .attr("transform", (d: DiagramField, i: number) => {
@@ -115,7 +115,7 @@ export function createLookmlViewElement(
   })
 
   // Label table elements
-  tableRow.append("text")
+  type !== "minimap" && tableRow.append("text")
   .attr("transform", (d: DiagramField, i: number) => {
     return `translate(${i === 0 ? 5 : 25}, ${(DIAGRAM_FIELD_STROKE_WIDTH / 2)})`
   })
@@ -123,7 +123,7 @@ export function createLookmlViewElement(
   .text((d: DiagramField) => getLabel(d));
 
   // Add dividers
-  tableRow.append('line')
+  type !== "minimap" && tableRow.append('line')
   .attr('x1', 0 - (DIAGRAM_FIELD_STROKE_WIDTH/2))
   .attr('y1', TABLE_ROW_HEIGHT + 3)
   .attr('x2', TABLE_WIDTH + (DIAGRAM_FIELD_STROKE_WIDTH/2))

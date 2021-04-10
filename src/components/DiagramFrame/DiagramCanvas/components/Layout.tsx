@@ -38,6 +38,12 @@ margin-top: 5em;
 max-width: 40%;
 color: ${theme.colors.text1};
 `
+export const ErrorText = styled(Paragraph as any)`
+text-align: center;
+margin-top: 1em;
+max-width: 40%;
+color: ${theme.colors.text1};
+`
 
 export const PageLoading = styled.div`
 display: flex;
