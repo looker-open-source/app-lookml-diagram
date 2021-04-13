@@ -28,7 +28,6 @@ import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
 import styled from "styled-components"
 import {
   Aside,
-  Icon,
 } from "@looker/components"
 
 export const SettingsPanel = styled(Aside as any)`

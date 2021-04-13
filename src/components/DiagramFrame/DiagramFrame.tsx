@@ -29,8 +29,6 @@ import {
   SpaceVertical,
   IconButton,
   Layout,
-  Section,
-  theme
 } from "@looker/components"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { useCurrentModel } from "../../utils/routes"

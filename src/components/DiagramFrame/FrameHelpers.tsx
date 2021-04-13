@@ -42,6 +42,8 @@ align-items: center;
 `
 
 export const DiagramHeaderWrapper = styled(Header as any)`
+background-color: ${(props) => props.theme.colors.background};
+border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
 transition: transform 500ms ease-out;
 position: relative;
 z-index: 1;
