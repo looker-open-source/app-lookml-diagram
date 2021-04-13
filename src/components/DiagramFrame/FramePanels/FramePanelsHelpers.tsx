@@ -24,50 +24,16 @@
 
  */
 
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../../utils/constants"
+import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
 import styled from "styled-components"
 import {
   Aside,
-  Section,
   Icon,
-  Header,
-  HeaderProps
 } from "@looker/components"
 
-export const ExploreList = styled.ul`
-`
-
-export const ExploreListitem = styled.li`
-border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
-`
-
-export const ExploreButton = styled.button`
-all: inherit;
-font-size: ${(props) => props.theme.fontSizes.small};
-color: ${(props) => props.theme.colors.text5};
-cursor: pointer;
-padding: ${(props) => props.theme.sizes.xxxsmall};
-width: 100%;
-border: none;
-
-
-${Icon} {
-  transform: translateX(0px);
-  transition: all 500ms ease-out;
-} 
-
-&:hover {
-  background-color: ${OVERRIDE_KEY_SUBTLE};
-  
-  ${Icon} {
-    transform: translateX(4px);
-  }
-
-}
-
-& > * {
-  pointer-events: none;
-}
+export const SettingsPanel = styled(Aside as any)`
+border-right: solid 1px ${(props) => props.theme.colors.ui2};
+overflow-y: auto;
 `
 
 export const ViewList = styled.ul`
@@ -92,8 +58,4 @@ border: none;
 & > * {
   pointer-events: none;
 }
-`
-export const SettingsPanel = styled(Aside as any)`
-border-right: solid 1px ${(props) => props.theme.colors.ui2};
-overflow-y: auto;
 `

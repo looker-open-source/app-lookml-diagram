@@ -33,7 +33,7 @@ import {
 } from "@looker/components"
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
 import {DiagramHeaderProps} from "./types"
-import {DiagramHeaderWrapper} from "./components"
+import {DiagramHeaderWrapper} from "./FrameHelpers"
 
 export const DiagramHeader: React.FC<DiagramHeaderProps> = ({ 
   currentExplore,

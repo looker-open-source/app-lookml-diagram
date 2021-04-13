@@ -41,7 +41,7 @@ import {
   theme
 } from "@looker/components"
 import {ViewOptionsProps} from "./types"
-import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./components"
+import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./FramePanelsHelpers"
 import {getViewListItemColor} from "./utils"
 
 export const ViewOptions: React.FC<ViewOptionsProps> = ({ 

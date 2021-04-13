@@ -49,7 +49,7 @@ import {
 } from '../../utils/constants'
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import {DiagramFrameProps} from "./types"
-import {Rail} from "./components"
+import {Rail, Stage} from "./FrameHelpers"
 import {getBranchOptions, prepareModelDropdown, prepareExploreList} from "./utils"
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
@@ -182,11 +182,9 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           exploreList={exploreList}
           currentModel={currentModel}
           setModelError={setModelError}
-          selectedBranch={selectedBranch}
           setSelectedBranch={setSelectedBranch}
           branchOpts={modelDetail && getBranchOptions(modelDetail.gitBranch, modelDetail.gitBranches)}
           gitBranch={modelDetail?.gitBranch}
-          gitBranches={modelDetail?.gitBranches}
           selectionInfo={selectionInfo}
           currentExplore={currentExplore}
           diagramExplore={pathExploreName}
@@ -212,11 +210,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
         <HelpPanel
         />
       )}
-      <Section style={{
-        backgroundColor: theme.colors.ui1,
-        overflow: "hidden",
-        position: "relative"
-      }}>
+      <Stage>
         <DiagramHeader
           currentExplore={currentExplore}
           selectionInfo={selectionInfo}
@@ -256,7 +250,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           />
         )}
         </Layout>
-      </Section>
+      </Stage>
       </Layout>
   )
 }

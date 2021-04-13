@@ -24,44 +24,50 @@
 
  */
 
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
-import { DiagramError } from "../../../utils/fetchers"
-import {
-  SelectOptionProps,
-} from "@looker/components"
+import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { X_INIT, Y_INIT, ZOOM_INIT, OVERRIDE_KEY_SUBTLE } from '../../../../utils/constants'
+import { internalExploreURL } from "../../../../utils/routes"
+import { ExploreDropdown } from "../types"
 
-export interface ViewOptionsProps {
-  displayFieldType: any,
-  hiddenToggle: any,
-  viewVisible: any,
-  setViewVisible: (visible: any) => void,
-  handleHiddenToggle: (toggle: React.FormEvent<HTMLInputElement>) => void,
-  setDisplayFieldType: (types: any) => void,
-}
-
-export interface DiagramSettingsProps {
-  modelDetails: SelectOptionProps[],
+export function handleExploreChange (
+  history: any,
   currentModel: ILookmlModel,
-  modelName: string,
-  exploreList: ExploreDropdown[],
-  setModelError: (error: DiagramError) => void,
-  setSelectedBranch: (branchName: string) => void,
-  branchOpts: SelectOptionProps[],
-  gitBranch: IGitBranch,
+  currentExplore: ExploreDropdown,
   selectionInfo: SelectionInfoPacket,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
   setSelectionInfo: (info: SelectionInfoPacket) => void,
   setViewVisible: (visible: VisibleViewLookup) => void,
   setZoomFactor: (zoom: number) => void,
   setViewPosition: (info: any) => void,
   setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
+  setMinimapEnabled: (toggle: boolean) => void
+) {
+  selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
+  setViewVisible({})
+  setZoomFactor(ZOOM_INIT)
+  setViewPosition({x: X_INIT, y: Y_INIT})
+  setMinimapUntoggled(true)
+  setMinimapEnabled(false)
+  history.push(
+    internalExploreURL({
+      model: currentModel.name,
+      explore: currentExplore.value
+    }
+  ))
 }
 
- export interface ExploreDropdown {
-  value: string;
-  label: string;
+/**
+ * gets the background color for each ExploreListItem
+ * @param exploreNameSel - name of the explore list item
+ * @param currentExplore - current url explore obj
+ * @param diagramExplore - current diagrammed explore obj
+ */
+ export function getExploreListItemBackgroundColor(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
+  if (currentExplore && currentExplore.name === exploreNameSel) {
+    return OVERRIDE_KEY_SUBTLE
+  }
+  if (diagramExplore === exploreNameSel) {
+    return OVERRIDE_KEY_SUBTLE
+  }
+  return undefined
 }
-

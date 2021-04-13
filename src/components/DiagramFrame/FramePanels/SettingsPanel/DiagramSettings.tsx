@@ -33,23 +33,20 @@ import {
   Label,
   theme
 } from "@looker/components"
-import { X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
-import { internalModelURL, internalExploreURL } from "../../../utils/routes"
+import { internalModelURL } from "../../../../utils/routes"
 import { useHistory } from "react-router"
-import { ExploreDropdown, DiagramSettingsProps } from "./types"
-import {ExploreList, ExploreListitem, ExploreButton, SettingsPanel} from "./components"
-import { getExploreListItemBackgroundColor } from "../utils"
+import { DiagramSettingsProps } from "../types"
+import {SettingsPanel} from "../FramePanelsHelpers"
+import {ExploreList} from "./ExploreList"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
   modelDetails,
   currentModel,
   modelName,
   setModelError,
-  selectedBranch,
   setSelectedBranch,
   branchOpts,
   gitBranch,
-  gitBranches,
   selectionInfo,
   exploreList,
   currentExplore,
@@ -92,33 +89,18 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
             />
             <Divider appearance="light" my="medium" />
             <Label fontSize="small" style={{marginTop: "0rem"}}>Select an Explore</Label>
-            <ExploreList style={{marginTop: theme.sizes.xxxsmall, overflow: "auto"}}>
-              {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
-                return (
-                  <ExploreListitem key={`explore-${index}`} style={{backgroundColor: getExploreListItemBackgroundColor(explore.value, currentExplore, diagramExplore)}}>
-                    <ExploreButton
-                      onClick={() => {
-                        selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
-                        setViewVisible({})
-                        setZoomFactor(ZOOM_INIT)
-                        setViewPosition({x: X_INIT, y: Y_INIT})
-                        setMinimapUntoggled(true)
-                        setMinimapEnabled(false)
-                        history.push(
-                          internalExploreURL({
-                            model: currentModel.name,
-                            explore: explore.value
-                          })
-                        )
-                      }}
-                      value={explore.value}
-                    >
-                      {explore.label}
-                    </ExploreButton>
-                  </ExploreListitem>
-                )
-              })}
-            </ExploreList>
+            <ExploreList 
+              exploreList={exploreList}
+              currentModel={currentModel}
+              selectionInfo={selectionInfo}
+              currentExplore={currentExplore}
+              diagramExplore={diagramExplore}
+              setSelectionInfo={setSelectionInfo}
+              setViewVisible={setViewVisible}
+              setZoomFactor={setZoomFactor}
+              setViewPosition={setViewPosition}
+              setMinimapUntoggled={setMinimapUntoggled}
+              setMinimapEnabled={setMinimapEnabled}/>
           </>
         )}
       </SpaceVertical>

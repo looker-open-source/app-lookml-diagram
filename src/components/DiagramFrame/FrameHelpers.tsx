@@ -24,7 +24,39 @@
 
  */
 
-export {ViewOptions} from './ViewOptions'
-export {HelpPanel} from './HelpPanel'
-export {DiagramSettings} from './SettingsPanel/DiagramSettings'
-export {ExploreDropdown} from './types'
+import { DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
+import styled from "styled-components"
+import {
+  Aside,
+  Section,
+  Header,
+} from "@looker/components"
+
+export const Italics = styled.span`
+font-style: italic;
+`
+
+export const Rail = styled(Aside as any)`
+border-right: solid 1px ${(props) => props.theme.colors.ui2};
+align-items: center;
+`
+
+export const DiagramHeaderWrapper = styled(Header as any)`
+transition: transform 500ms ease-out;
+position: relative;
+z-index: 1;
+
+&.no-explore {
+  transform: translateY(-${DIAGRAM_HEADER_HEIGHT}px);
+}
+
+&.has-explore {
+  transform: translateY(0);
+}
+`
+
+export const Stage = styled(Section as any)`
+background-coolor: ${(props) => props.theme.colors.ui1};
+overflow: hidden;
+position: relative;
+`

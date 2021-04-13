@@ -38,8 +38,8 @@ import {view_dimensions} from "../../../test_data/order_items_dimensions"
 import {join_dimensions} from "../../../test_data/polling_dimensions"
 import {join_explore} from "../../../test_data/polling_explore"
 import {Diagram} from "../DiagramCanvas/Diagram"
-import {Italics} from "../components"
-import {SettingsPanel} from "./components"
+import {Italics} from "../FrameHelpers"
+import {SettingsPanel} from "./FramePanelsHelpers"
 
 export const HelpPanel: React.FC<{
 }> = ({ 

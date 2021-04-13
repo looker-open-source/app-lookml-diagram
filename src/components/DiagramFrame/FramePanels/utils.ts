@@ -24,18 +24,12 @@
 
  */
 
-import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
-import { SelectOptionProps, theme } from "@looker/components"
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_IGNORED_MODELS } from "../../../utils/constants"
-import { ExploreDropdown } from "./types"
+import { theme } from "@looker/components"
 
 /**
  * get the color of a view list item according to its visibility status
  * @param disabled - whether or not the current view is disabled
  */
 export function getViewListItemColor(disabled: boolean) {
-  if (disabled) {
-    return undefined
-  }
-  return theme.colors.text1
+  return disabled ? undefined : theme.colors.text1
 }

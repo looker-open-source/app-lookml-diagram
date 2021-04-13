@@ -24,7 +24,46 @@
 
  */
 
-export {ViewOptions} from './ViewOptions'
-export {HelpPanel} from './HelpPanel'
-export {DiagramSettings} from './SettingsPanel/DiagramSettings'
-export {ExploreDropdown} from './types'
+ import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
+ import styled from "styled-components"
+ import {
+   Icon,
+ } from "@looker/components"
+
+export const ExploreListWrapper = styled.ul`
+margin-top: ${(props) => props.theme.sizes.xxxsmall};
+overflow: auto;
+`
+
+export const ExploreListitem = styled.li`
+border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+`
+
+export const ExploreButton = styled.button`
+all: inherit;
+font-size: ${(props) => props.theme.fontSizes.small};
+color: ${(props) => props.theme.colors.text5};
+cursor: pointer;
+padding: ${(props) => props.theme.sizes.xxxsmall};
+width: 100%;
+border: none;
+
+
+${Icon} {
+  transform: translateX(0px);
+  transition: all 500ms ease-out;
+} 
+
+&:hover {
+  background-color: ${OVERRIDE_KEY_SUBTLE};
+  
+  ${Icon} {
+    transform: translateX(4px);
+  }
+
+}
+
+& > * {
+  pointer-events: none;
+}
+`

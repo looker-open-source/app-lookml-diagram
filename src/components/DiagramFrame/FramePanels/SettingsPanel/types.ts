@@ -23,36 +23,20 @@
  SOFTWARE.
 
  */
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
+import { ExploreDropdown } from "../types"
 
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
-import styled from "styled-components"
-import {
-  Aside,
-  Section,
-  Icon,
-  Header,
-  HeaderProps
-} from "@looker/components"
-
-export const Italics = styled.span`
-font-style: italic;
-`
-
-export const Rail = styled(Aside as any)`
-border-right: solid 1px ${(props) => props.theme.colors.ui2};
-align-items: center;
-`
-
-export const DiagramHeaderWrapper = styled(Header as any)`
-transition: transform 500ms ease-out;
-position: relative;
-z-index: 1;
-
-&.no-explore {
-  transform: translateY(-${DIAGRAM_HEADER_HEIGHT}px);
+export interface ExploreListProps {
+  currentModel: ILookmlModel,
+  exploreList: ExploreDropdown[],
+  selectionInfo: SelectionInfoPacket,
+  currentExplore: ILookmlModelExplore,
+  diagramExplore: string,
+  setSelectionInfo: (info: SelectionInfoPacket) => void,
+  setViewVisible: (visible: VisibleViewLookup) => void,
+  setZoomFactor: (zoom: number) => void,
+  setViewPosition: (info: any) => void,
+  setMinimapUntoggled: (toggle: boolean) => void,
+  setMinimapEnabled: (toggle: boolean) => void,
 }
-
-&.has-explore {
-  transform: translateY(0);
-}
-`
