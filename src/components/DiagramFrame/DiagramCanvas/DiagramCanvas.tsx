@@ -28,7 +28,6 @@ import React from "react"
 import {
   Spinner,
   Heading,
-  Text,
   Status,
 } from "@looker/components"
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
