@@ -43,6 +43,7 @@ import {
 import {ViewOptionsProps} from "./types"
 import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./FramePanelsHelpers"
 import {getViewListItemColor} from "./utils"
+import {SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS} from "../../../utils/constants"
 
 export const ViewOptions: React.FC<ViewOptionsProps> = ({ 
   displayFieldType,
@@ -65,7 +66,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               name="fieldScopeSelection" 
               value={displayFieldType}
               onChange={setDisplayFieldType}
-              options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
+              options={[{label: "All fields", value: SHOW_ALL_FIELDS}, {label: "Fields with joins", value: SHOW_JOINED_FIELDS}]} />
           </FlexItem>
           <Divider appearance="light" />
           <FlexItem py="xsmall">
