@@ -24,37 +24,39 @@
 
  */
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
+import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
+import styled from "styled-components"
+import {
+  Aside,
+} from "@looker/components"
 
-jest.mock("@looker/components", () => ({
-  SpaceVertical: () => "SpaceVertical",
-  Heading: () => "Heading",
-  Divider: () => "Divider",
-  Label: () => "Label",
-  Paragraph: () => "Paragraph",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+export const SettingsPanel = styled(Aside as any)`
+border-right: solid 1px ${(props) => props.theme.colors.ui2};
+overflow-y: auto;
+`
 
-jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-  SettingsPanel: () => "SettingsPanel"
-}))
+export const ViewList = styled.ul`
+overflow-y: auto;
+height: 70vh;
+margin: 0;
+`
+export const ViewListItem = styled.li`
+border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+`
 
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
-}))
+export const ViewButton = styled.button`
+all: inherit;
+font-size: ${(props) => props.theme.fontSizes.small};
+cursor: pointer;
+padding: 12px 12px;
+width: 100%;
+border: none;
 
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram"
-}))
+:hover {
+  background-color: ${OVERRIDE_KEY_SUBTLE};
+}
 
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+& > * {
+  pointer-events: none;
+}
+`

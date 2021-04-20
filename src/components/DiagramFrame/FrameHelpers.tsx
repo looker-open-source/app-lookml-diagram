@@ -24,37 +24,41 @@
 
  */
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
+import { DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
+import styled from "styled-components"
+import {
+  Aside,
+  Section,
+  Header,
+} from "@looker/components"
 
-jest.mock("@looker/components", () => ({
-  SpaceVertical: () => "SpaceVertical",
-  Heading: () => "Heading",
-  Divider: () => "Divider",
-  Label: () => "Label",
-  Paragraph: () => "Paragraph",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+export const Italics = styled.span`
+font-style: italic;
+`
 
-jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-  SettingsPanel: () => "SettingsPanel"
-}))
+export const Rail = styled(Aside as any)`
+border-right: solid 1px ${(props) => props.theme.colors.ui2};
+align-items: center;
+`
 
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
-}))
+export const DiagramHeaderWrapper = styled(Header as any)`
+background-color: ${(props) => props.theme.colors.background};
+border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+transition: transform 500ms ease-out;
+position: relative;
+z-index: 1;
 
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram"
-}))
+&.no-explore {
+  transform: translateY(-${DIAGRAM_HEADER_HEIGHT}px);
+}
 
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+&.has-explore {
+  transform: translateY(0);
+}
+`
+
+export const Stage = styled(Section as any)`
+background-coolor: ${(props) => props.theme.colors.ui1};
+overflow: hidden;
+position: relative;
+`

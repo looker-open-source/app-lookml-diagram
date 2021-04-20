@@ -24,37 +24,47 @@
 
  */
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
+ import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
+ import styled from "styled-components"
+ import {
+   Icon,
+ } from "@looker/components"
 
-jest.mock("@looker/components", () => ({
-  SpaceVertical: () => "SpaceVertical",
-  Heading: () => "Heading",
-  Divider: () => "Divider",
-  Label: () => "Label",
-  Paragraph: () => "Paragraph",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+export const ExploreListWrapper = styled.ul`
+margin-top: ${(props) => props.theme.sizes.xxxsmall};
+overflow: auto;
+height: 70vh;
+`
 
-jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-  SettingsPanel: () => "SettingsPanel"
-}))
+export const ExploreListitem = styled.li`
+border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+`
 
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
-}))
+export const ExploreButton = styled.button`
+all: inherit;
+font-size: ${(props) => props.theme.fontSizes.small};
+color: ${(props) => props.theme.colors.text5};
+cursor: pointer;
+padding: ${(props) => props.theme.sizes.xxxsmall};
+width: 100%;
+border: none;
 
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram"
-}))
 
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+${Icon} {
+  transform: translateX(0px);
+  transition: all 500ms ease-out;
+} 
+
+&:hover {
+  background-color: ${OVERRIDE_KEY_SUBTLE};
+  
+  ${Icon} {
+    transform: translateX(4px);
+  }
+
+}
+
+& > * {
+  pointer-events: none;
+}
+`

@@ -28,13 +28,14 @@ import React from "react"
 import {
   Spinner,
   Heading,
+  Text,
   Status,
 } from "@looker/components"
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
 import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"
-import {DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText} from "./components/Layout"
+import {DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText, ErrorText} from "./components/Layout"
 
 export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ 
   unfilteredModels,
@@ -75,18 +76,26 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
     )}
     {modelError?.kind === "general" && (
       <PageLoading>
-        <Status intent="warn" />
-        <Heading mt="large">
-          Uh oh! Could not generate a diagram for this model.
+        <Status intent="warn" size="large"/>
+        <Heading mt="large" fontSize="large">
+          Can't generate LookML Diagram
         </Heading>
+        <ErrorText>
+          A future version of the LookML Diagram extension
+          may be able to support this model.
+        </ErrorText>
       </PageLoading>
     )}
     {modelError?.kind === "notFound" && (
       <PageLoading>
-        <Status intent="critical" />
-        <Heading mt="large">
-          Uh oh! Could not locate this model.
+        <Status intent="critical" size="large"/>
+        <Heading mt="large" fontSize="large">
+          Can't generate LookML Diagram
         </Heading>
+        <ErrorText>
+          Make sure the selected model or Explore exists, you have access,
+          and that it's fully validated on the current branch.
+        </ErrorText>
       </PageLoading>
     )}
     {unfilteredModels && !pathExploreName && !currentDimensions && (

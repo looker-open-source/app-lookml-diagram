@@ -137,8 +137,8 @@ g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row
   fill: ${DIAGRAM_HOVER_COLOR};
 }
 
-g.table-row.table-row-measure:not(.table-row-selected):not(.help-table-row):hover > rect,
-g.table-row.table-row-measure:not(.table-row-selected):not(.help-table-row):hover > path.table-row {
+g.table-row.table-row-measure:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > rect,
+g.table-row.table-row-measure:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > path.table-row {
   fill: ${DIAGRAM_MEASURE_HOVER_COLOR};
   stroke: ${DIAGRAM_MEASURE_HOVER_COLOR};
 }

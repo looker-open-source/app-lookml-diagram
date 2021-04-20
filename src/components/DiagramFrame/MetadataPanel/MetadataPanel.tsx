@@ -96,36 +96,36 @@ export const MetadataPanel: React.FC<{
   }
 	return (
   <MetadataInfoPanel width={`${METADATA_PANEL_PIXEL}px`} px="medium" py="large">
-    <SpaceVertical gap="xlarge">
+    <SpaceVertical gap="large">
       {/* NAME */}
-      <Heading fontSize="xlarge" style={{fontWeight: 600}}>{metadata.name}</Heading>
+      <Heading fontSize="xlarge" style={{fontWeight: 500}}>{metadata.name}</Heading>
 
       {/* PILLS */}
       <Space gap="xsmall">
         {metadata.joinType && 
-        <Badge intent="neutral" size="medium">
+        <Badge intent="neutral" size="small">
           <Flex alignItems="center">
             <JoinIcon type={metadata.joinIconType}/>
             <PillText>{metadata.joinType}</PillText>
           </Flex>
         </Badge>}
-        {metadata.joinRelationship && <Badge intent="neutral" size="medium"><PillText>{metadata.joinRelationship}</PillText></Badge>}
+        {metadata.joinRelationship && <Badge intent="neutral" size="small"><PillText>{metadata.joinRelationship}</PillText></Badge>}
         {metadata.fieldType && 
-          <Badge intent="neutral" size="medium">
+          <Badge intent="neutral" size="small">
             <PillText>
               {metadata.fieldType}
             </PillText>
           </Badge>
         }
         {metadata.fieldCategory && 
-          <Badge intent="neutral" size="medium">
+          <Badge intent="neutral" size="small">
             <PillText>
               {metadata.fieldCategory}
             </PillText>
           </Badge>
         }
         {metadata.primaryKey && 
-          <Badge intent="neutral" size="medium">
+          <Badge intent="neutral" size="small">
             <Space gap="xsmall">
               <Icon name="Key" size="xsmall" />
               <PillText>Primary Key</PillText>

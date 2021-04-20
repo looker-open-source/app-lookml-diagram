@@ -23,38 +23,20 @@
  SOFTWARE.
 
  */
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
+import { ExploreDropdown } from "../types"
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
-
-jest.mock("@looker/components", () => ({
-  SpaceVertical: () => "SpaceVertical",
-  Heading: () => "Heading",
-  Divider: () => "Divider",
-  Label: () => "Label",
-  Paragraph: () => "Paragraph",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
-
-jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-  SettingsPanel: () => "SettingsPanel"
-}))
-
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
-}))
-
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram"
-}))
-
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+export interface ExploreListProps {
+  currentModel: ILookmlModel,
+  exploreList: ExploreDropdown[],
+  selectionInfo: SelectionInfoPacket,
+  currentExplore: ILookmlModelExplore,
+  diagramExplore: string,
+  setSelectionInfo: (info: SelectionInfoPacket) => void,
+  setViewVisible: (visible: VisibleViewLookup) => void,
+  setZoomFactor: (zoom: number) => void,
+  setViewPosition: (info: any) => void,
+  setMinimapUntoggled: (toggle: boolean) => void,
+  setMinimapEnabled: (toggle: boolean) => void,
+}

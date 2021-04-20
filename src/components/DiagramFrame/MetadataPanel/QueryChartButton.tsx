@@ -29,10 +29,9 @@ import { theme, ButtonOutline, FlexItem, Text } from "@looker/components"
 import styled from "styled-components"
 
 const DisabledText = styled.div`
-  font-style: italic;
-  font-size: ${theme.fontSizes.small};
-  color: ${theme.colors.ui4};
-  margin-top: 0.2em;
+  font-size: ${theme.fontSizes.xsmall};
+  color: ${theme.colors.text2};
+  margin-top: 1rem;
 `
 
 export const QueryChartButton: React.FC<{
@@ -42,9 +41,7 @@ export const QueryChartButton: React.FC<{
   title: string
 }> = ({ disabledText, enabled, title, onClick }) => {
   return (
-    <FlexItem pb="medium">
-      <FlexItem mb="medium">
-      </FlexItem>
+    <FlexItem>
       <ButtonOutline
         iconBefore="CacheRefresh"
         onClick={onClick}

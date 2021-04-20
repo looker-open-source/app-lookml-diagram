@@ -32,13 +32,14 @@ import {
   Label,
   Paragraph,
 } from "@looker/components"
-import { ExternalLink } from "../ExternalLink"
-import {view_explore} from "../../test_data/order_items_explore"
-import {view_dimensions} from "../../test_data/order_items_dimensions"
-import {join_dimensions} from "../../test_data/polling_dimensions"
-import {join_explore} from "../../test_data/polling_explore"
-import {Diagram} from "./DiagramCanvas/Diagram"
-import {Italics, SettingsPanel} from "./components"
+import { ExternalLink } from "../../ExternalLink"
+import {view_explore} from "../../../test_data/order_items_explore"
+import {view_dimensions} from "../../../test_data/order_items_dimensions"
+import {join_dimensions} from "../../../test_data/polling_dimensions"
+import {join_explore} from "../../../test_data/polling_explore"
+import {Diagram} from "../DiagramCanvas/Diagram"
+import {Italics} from "../FrameHelpers"
+import {SettingsPanel} from "./FramePanelsHelpers"
 
 export const HelpPanel: React.FC<{
 }> = ({ 
@@ -80,7 +81,7 @@ export const HelpPanel: React.FC<{
         <Paragraph fontSize="small">
         Click on a table row to see its metadata.
         </Paragraph>
-        <Divider/>
+        <Divider appearance="light"/>
         <Label>Joins</Label>
         <Diagram 
           type={"help-join"}

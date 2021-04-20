@@ -24,37 +24,12 @@
 
  */
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
+import { theme } from "@looker/components"
 
-jest.mock("@looker/components", () => ({
-  SpaceVertical: () => "SpaceVertical",
-  Heading: () => "Heading",
-  Divider: () => "Divider",
-  Label: () => "Label",
-  Paragraph: () => "Paragraph",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
-
-jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-  SettingsPanel: () => "SettingsPanel"
-}))
-
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
-}))
-
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram"
-}))
-
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+/**
+ * get the color of a view list item according to its visibility status
+ * @param disabled - whether or not the current view is disabled
+ */
+export function getViewListItemColor(disabled: boolean) {
+  return disabled ? undefined : theme.colors.text1
+}

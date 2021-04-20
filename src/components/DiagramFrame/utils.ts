@@ -1,18 +1,7 @@
 import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
-import { SelectOptionProps, theme } from "@looker/components"
-import { OVERRIDE_KEY_SUBTLE, DIAGRAM_IGNORED_MODELS } from "../../utils/constants"
-import { ExploreDropdown } from "./types"
-
-/**
- * get the color of a view list item according to its visibility status
- * @param disabled - whether or not the current view is disabled
- */
-export function getViewListItemColor(disabled: boolean) {
-  if (disabled) {
-    return undefined
-  }
-  return theme.colors.text1
-}
+import { SelectOptionProps } from "@looker/components"
+import { DIAGRAM_IGNORED_MODELS } from "../../utils/constants"
+import { ExploreDropdown } from "./FramePanels"
 
 /**
  * prepares the Git Branch dropdown data
@@ -30,22 +19,6 @@ export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[
       label: branch.name, 
     }
   })
-}
-
-/**
- * gets the background color for each ExploreListItem
- * @param exploreNameSel - name of the explore list item
- * @param currentExplore - current url explore obj
- * @param diagramExplore - current diagrammed explore obj
- */
-export function getExploreListItemBackgroundColor(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
-  if (currentExplore && currentExplore.name === exploreNameSel) {
-    return OVERRIDE_KEY_SUBTLE
-  }
-  if (diagramExplore === exploreNameSel) {
-    return OVERRIDE_KEY_SUBTLE
-  }
-  return undefined
 }
 
 /**

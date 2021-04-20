@@ -2,7 +2,7 @@ import { theme } from '@looker/components'
 
 // MetadataPanel
 export const METADATA_PANEL_PIXEL = 550
-export const DIAGRAM_HEADER_HEIGHT = 90
+export const DIAGRAM_HEADER_HEIGHT = 60
 
 // ViewOptions
 export const VIEW_OPTIONS_HIDDEN_DEFAULT = true

@@ -33,7 +33,8 @@ import {
   TableDataCell,
   Box,
   Text,
-  ButtonTransparent
+  ButtonTransparent,
+  theme
 } from "@looker/components"
 import { QueryChartType, runChartQuery, SimpleResult } from "../../../utils/queries"
 import styled from "styled-components"
@@ -146,7 +147,7 @@ export class QueryChart extends React.Component<
     } else if (this.state.response) {
       if (this.state.response.data.length === 0) {
         return (
-          <Text fontSize="small">
+          <Text fontSize="small" style={{color: theme.colors.text1}}>
             No Data
           </Text>
         )
