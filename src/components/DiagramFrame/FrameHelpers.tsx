@@ -58,7 +58,7 @@ z-index: 1;
 `
 
 export const Stage = styled(Section as any)`
-background-coolor: ${(props) => props.theme.colors.ui1};
+background-color: ${(props) => props.theme.colors.ui1};
 overflow: hidden;
 position: relative;
 `
