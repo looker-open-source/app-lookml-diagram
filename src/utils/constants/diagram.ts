@@ -1,19 +1,14 @@
 /*
-
  MIT License
-
  Copyright (c) 2020 Looker Data Sciences, Inc.
-
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
-
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,44 +16,41 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
-
  */
 
-import { DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
-import styled from "styled-components"
-import {
-  Aside,
-  Section,
-  Header,
-} from "@looker/components"
+// Diagram zoom
+export const ZOOM_INIT = 0.5
+export const ZOOM_STEP = 0.1
+export const ZOOM_MAX = 2
+export const ZOOM_MIN = 0.2
+export const X_INIT = 600
+export const Y_INIT = 100
 
-export const Italics = styled.span`
-font-style: italic;
-`
+// Diagram tables, joins
+/**
+ * the width of each diagram table
+ */
+export const TABLE_WIDTH = 255
+ /**
+  * the height of each table row
+  */
+export const TABLE_ROW_HEIGHT = 30
+ /**
+  * the padding between tables
+  */
+export const TABLE_PADDING = TABLE_WIDTH * 2.2
+ /**
+  * the number of pixels from a diagram table the join path
+  * should be offset by to accomodate the join cardinality connector
+  */
+export const JOIN_CONNECTOR_WIDTH = 40
+ /**
+  * the vertical padding between tables of the same degree
+  */
+export const TABLE_VERTICAL_PADDING = 5
+ /**
+  * the vertical step each degree will take from the base table
+  */
+export const TABLE_DEGREE_STEP = -3
 
-export const Rail = styled(Aside as any)`
-border-right: solid 1px ${(props) => props.theme.colors.ui2};
-align-items: center;
-`
-
-export const DiagramHeaderWrapper = styled(Header as any)`
-background-color: ${(props) => props.theme.colors.background};
-border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
-transition: transform 500ms ease-out;
-position: relative;
-z-index: 1;
-
-&.no-explore {
-  transform: translateY(-${DIAGRAM_HEADER_HEIGHT}px);
-}
-
-&.has-explore {
-  transform: translateY(0);
-}
-`
-
-export const Stage = styled(Section as any)`
-background-color: ${(props) => props.theme.colors.ui1};
-overflow: hidden;
-position: relative;
-`
+export const DIAGRAM_IGNORED_MODELS = ['system__activity']

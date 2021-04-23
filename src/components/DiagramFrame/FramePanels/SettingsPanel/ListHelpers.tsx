@@ -33,6 +33,7 @@
 export const ExploreListWrapper = styled.ul`
 margin-top: ${(props) => props.theme.sizes.xxxsmall};
 overflow: auto;
+height: 70vh;
 `
 
 export const ExploreListitem = styled.li`

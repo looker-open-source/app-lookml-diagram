@@ -36,6 +36,8 @@ overflow-y: auto;
 `
 
 export const ViewList = styled.ul`
+overflow-y: auto;
+height: 70vh;
 margin: 0;
 `
 export const ViewListItem = styled.li`

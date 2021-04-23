@@ -1,6 +1,10 @@
 # LookML Diagram Extension
+Looker’s LookML Diagram extension provides an entity-relationship-diagram for the objects within your LookML model. With the LookML Diagram developers can:
 
-It uses [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/) for writing your extension, the [React Extension SDK](https://github.com/looker-open-source/extension-sdk-react) for interacting with Looker, and [Webpack](https://webpack.js.org/) for building your code.
+- Visualize relationships between LookML objects within an explore
+- Drill into metadata for explores, fields, and joins
+- Simplify the diagram with the option to hide hidden fields or only show fields in joins
+- Refresh the diagram to see the latest LookML
 
 <img src="https://github.com/looker-open-source/app-lookml-diagram/blob/main/docs/Screenshot%20from%202021-03-30%2023-22-40.png?raw=true" alt="drawing" height="400"/>
 
