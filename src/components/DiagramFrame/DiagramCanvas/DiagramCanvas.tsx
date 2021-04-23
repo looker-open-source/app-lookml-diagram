@@ -28,7 +28,7 @@ import React from "react"
 import {
   Spinner,
   Heading,
-  Text,
+  ProgressCircular,
   Status,
 } from "@looker/components"
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
@@ -68,7 +68,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
     <DiagramCanvasWrapper>
     {!unfilteredModels && !modelError && (
       <PageLoading>
-        <Spinner/>{' '}
+        <ProgressCircular/>{' '}
         <Heading mt="large">
           Loading Extension
         </Heading>
@@ -116,7 +116,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
     )}
     {!modelError && pathModelName && pathExploreName && !currentDimensions && (
       <PageLoading>
-        <Spinner/>{' '}
+        <ProgressCircular/>{' '}
         <Heading mt="large">
           Generating Diagram
         </Heading>
