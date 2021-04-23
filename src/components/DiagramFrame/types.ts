@@ -1,6 +1,6 @@
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { getActiveGitBranch, getAvailGitBranches, DiagramError } from "../../utils/fetchers"
+import { getActiveGitBranch, getAvailGitBranches, DiagramError, DetailedModel } from "../../utils/fetchers"
 import { OVERRIDE_KEY_SUBTLE, DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
 import { DiagrammedModel } from "../../utils/LookmlDiagrammer/"
 import styled from "styled-components"
@@ -17,7 +17,7 @@ export interface DiagramFrameProps {
   unfilteredModels: ILookmlModel[]
   pathModelName: string
   pathExploreName: string
-  modelDetail: any
+  modelDetail: DetailedModel
   dimensions: DiagrammedModel[]
   modelError: DiagramError
   setModelError: (e: DiagramError)=>void

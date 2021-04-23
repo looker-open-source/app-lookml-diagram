@@ -48,7 +48,7 @@ export const ExploreList: React.FC<ExploreListProps> = ({
   const history = useHistory()
   return (
     <ExploreListWrapper>
-      {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
+      {exploreList.length > 0 && exploreList.map((explore: ExploreDropdown, index: number) => {
         return (
           <ExploreListitem key={`explore-${index}`} style={{backgroundColor: getExploreListItemBackgroundColor(explore.value, currentExplore, diagramExplore)}}>
             <ExploreButton

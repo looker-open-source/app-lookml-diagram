@@ -31,13 +31,16 @@ import {
   Heading,
   FieldSelect,
   Label,
+  Spinner,
   theme
 } from "@looker/components"
-import { internalModelURL } from "../../../../utils/routes"
+import { internalModelURL, useCurrentModel } from "../../../../utils/routes"
+import { canUserDeploy } from "../../../../utils/fetchers"
 import { useHistory } from "react-router"
 import { DiagramSettingsProps } from "../types"
 import {SettingsPanel} from "../FramePanelsHelpers"
 import {ExploreList} from "./ExploreList"
+import {getBranchOptions, prepareExploreList} from "./utils"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
   modelDetails,
@@ -45,10 +48,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   modelName,
   setModelError,
   setSelectedBranch,
-  branchOpts,
-  gitBranch,
   selectionInfo,
-  exploreList,
   currentExplore,
   diagramExplore,
   setSelectionInfo,
@@ -59,6 +59,11 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   setMinimapEnabled,
  }) => {
   const history = useHistory()
+  const branchOpts = currentModel && getBranchOptions(currentModel.gitBranch, currentModel.gitBranches)
+  const gitBranch = currentModel?.gitBranch
+  const model = useCurrentModel(gitBranch?.name, undefined)
+  const exploreList = model ? prepareExploreList(model) : []
+  const { canDeploy } = canUserDeploy()
   return (
     <SettingsPanel width="275px" p="medium">
       <SpaceVertical>
@@ -77,21 +82,21 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
           listLayout={{ maxHeight: 300 }}
           isLoading={modelDetails.length === 0 ? true : false}
         />
-        {modelName && (
+        {model && (
           <>
-            <FieldSelect
+            {canDeploy && <FieldSelect
               options={branchOpts ? branchOpts : []}
               placeholder="Loading Git Branches..."
               label="Current Branch"
               value={gitBranch && gitBranch.name}
               onChange={(value)=>{setSelectedBranch(value)}}
               disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
-            />
+            />}
             <Divider appearance="light" my="medium" />
             <Label fontSize="small" style={{marginTop: "0rem"}}>Select an Explore</Label>
             <ExploreList 
               exploreList={exploreList}
-              currentModel={currentModel}
+              currentModel={model}
               selectionInfo={selectionInfo}
               currentExplore={currentExplore}
               diagramExplore={diagramExplore}

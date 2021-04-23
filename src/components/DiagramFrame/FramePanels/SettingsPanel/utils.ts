@@ -25,7 +25,7 @@
  */
 
 import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { X_INIT, Y_INIT, ZOOM_INIT, OVERRIDE_KEY_SUBTLE } from '../../../../utils/constants'
 import { internalExploreURL } from "../../../../utils/routes"
 import { ExploreDropdown } from "../types"
@@ -70,4 +70,34 @@ export function handleExploreChange (
     return OVERRIDE_KEY_SUBTLE
   }
   return undefined
+}
+
+/**
+ * prepares the Git Branch dropdown data
+ * @param gitBranch - currently selected branch obj
+ * @param gitBranches - list of available branch objs
+ */
+ export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]) => {
+  return gitBranches.map((branch: IGitBranch) => {
+    return gitBranch.name === branch.name ? {
+      value: branch.name, 
+      label: branch.name, 
+      icon: "GitBranch"
+    } : {
+      value: branch.name, 
+      label: branch.name, 
+    }
+  })
+}
+/**
+ * Prepares a list of diagrammable explores for the 'Select an Explore' list
+ * @param unfilteredModels - the unprepared list of models
+ */
+ export function prepareExploreList(currentModel: ILookmlModel): ExploreDropdown[] {
+  return currentModel?.explores.map((d: ILookmlModelExplore)=>{
+    return {
+      value: d.name,
+      label: d.label
+    }
+  }).sort((a: ExploreDropdown, b: ExploreDropdown) => a.label < b.label ? -1 : 1)
 }

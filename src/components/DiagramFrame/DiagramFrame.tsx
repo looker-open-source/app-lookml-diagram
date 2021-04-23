@@ -48,7 +48,7 @@ import {
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import {DiagramFrameProps} from "./types"
 import {Rail, Stage} from "./FrameHelpers"
-import {getBranchOptions, prepareModelDropdown, prepareExploreList} from "./utils"
+import { prepareModelDropdown } from "./utils"
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
@@ -76,7 +76,6 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
-  const currentModel = useCurrentModel(selectedBranch, modelError)
 
   const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
 
@@ -106,8 +105,6 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
-
-  const exploreList: ExploreDropdown[] = prepareExploreList(currentModel)
 
   const currentDimensions: DiagrammedModel = dimensions?.filter((d: DiagrammedModel)=>{
     return d.exploreName === pathExploreName
@@ -177,12 +174,9 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
         <DiagramSettings
           modelDetails={modelDetails}
           modelName={pathModelName}
-          exploreList={exploreList}
-          currentModel={currentModel}
+          currentModel={modelDetail}
           setModelError={setModelError}
           setSelectedBranch={setSelectedBranch}
-          branchOpts={modelDetail && getBranchOptions(modelDetail.gitBranch, modelDetail.gitBranches)}
-          gitBranch={modelDetail?.gitBranch}
           selectionInfo={selectionInfo}
           currentExplore={currentExplore}
           diagramExplore={pathExploreName}

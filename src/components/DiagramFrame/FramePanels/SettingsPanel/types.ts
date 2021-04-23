@@ -28,8 +28,8 @@ import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
 import { ExploreDropdown } from "../types"
 
 export interface ExploreListProps {
-  currentModel: ILookmlModel,
   exploreList: ExploreDropdown[],
+  currentModel: ILookmlModel,
   selectionInfo: SelectionInfoPacket,
   currentExplore: ILookmlModelExplore,
   diagramExplore: string,

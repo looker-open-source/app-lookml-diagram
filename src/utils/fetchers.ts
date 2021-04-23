@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { ExtensionContext } from "@looker/extension-sdk-react"
 import { Looker31SDK as LookerSDK  } from '@looker/sdk/lib/sdk/3.1/methods'
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch, IUser } from "@looker/sdk/lib/sdk/4.0/models"
 
 const globalCache: any = {}
 
@@ -41,10 +41,14 @@ export const getMyUser = async (sdk: LookerSDK) => {
   return sdk.ok(sdk.me())
 }
 
+export const getRole = async (sdk: LookerSDK, roleId: number) => {
+  return sdk.ok(sdk.role(roleId))
+}
+
 // lookml model explore fetchers
 
-export const loadAllModels = async (sdk: LookerSDK, selectedBranch?: string) => {
-  return loadCached(`all_lookml_models@${selectedBranch}`, () => sdk.ok(sdk.all_lookml_models()))
+export const loadAllModels = async (sdk: LookerSDK) => {
+  return loadCached(`all_lookml_models`, () => sdk.ok(sdk.all_lookml_models()))
 }
 
 export function useAllModels(selectedBranch: string, diagramError: DiagramError) {
@@ -52,27 +56,27 @@ export function useAllModels(selectedBranch: string, diagramError: DiagramError)
   const [allModels, allModelsSetter] = useState<ILookmlModel[] | undefined>(undefined)
   useEffect(() => {
     async function fetcher() {
-      allModelsSetter(await loadAllModels(coreSDK, selectedBranch))
+      allModelsSetter(await loadAllModels(coreSDK))
     }
     !diagramError && fetcher()
   }, [coreSDK, selectedBranch])
   return allModels
 }
 
-export const loadModel = async (sdk: LookerSDK, modelName: string) => {
+export const loadModel = async (sdk: LookerSDK, selectedBranch: string, modelName: string) => {
   return (await loadAllModels(sdk)).find(m => m.name === modelName)
 }
 
 export async function loadModelDetail(
   sdk: LookerSDK,
-  modelName: string,
   selectedBranch: string,
+  modelName: string,
   setModelError: (err: DiagramError) => void
 ): Promise<DetailedModel> {
-  const model = await loadModel(sdk, modelName)
+  const model = await loadModel(sdk, selectedBranch, modelName)
   selectedBranch === "" || await changeBranch(sdk, model.project_name, selectedBranch, "", setModelError)
-  let gitBranch = await getActiveBranch(sdk, model.project_name)
-  let gitBranches = await getAvailBranches(sdk, model.project_name)
+  let gitBranch = await getActiveBranch(sdk, model.project_name).catch(()=>setModelError({kind: "git"})) || {}
+  let gitBranches = await getAvailBranches(sdk, model.project_name).catch(()=>setModelError({kind: "git"})) || []
   const explores = await Promise.all(
     model.explores.map(explore => {
       return loadCachedExplore(sdk, model.name, explore.name)
@@ -89,10 +93,11 @@ export async function loadModelDetail(
 export function useModelDetail(modelName: string, selectedBranch: string, diagramError: DiagramError, setDiagramError: (err: DiagramError) => void) {
   const { coreSDK } = useContext(ExtensionContext)
   const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
+  console.log(modelName, selectedBranch)
   useEffect(() => {
     async function fetcher() {
       if (modelName && !diagramError) {
-        setModelDetail(await loadModelDetail(coreSDK, modelName, selectedBranch, setDiagramError))
+        setModelDetail(await loadModelDetail(coreSDK, selectedBranch, modelName, setDiagramError))
       }
     }
     fetcher().catch(()=>{
@@ -173,4 +178,20 @@ export function getAvailGitBranches(projectId: string) {
     projectId && fetcher()
   }, [coreSDK, projectId])
   return gitBranches
+}
+
+export function canUserDeploy() {
+  const { coreSDK } = useContext(ExtensionContext)
+  const [canDeploy, setCanDeploy] = useState(false)
+  useEffect(() => {
+    async function fetcher() {
+      const me = await getMyUser(coreSDK)
+      me.role_ids.forEach(async (roleId) => {
+        const role = await getRole(coreSDK, roleId)
+        role.permission_set.permissions.includes("deploy") && setCanDeploy(true)
+      })
+    }
+    fetcher()
+  }, [coreSDK])
+  return { canDeploy }
 }
