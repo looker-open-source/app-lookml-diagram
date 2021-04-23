@@ -33,11 +33,12 @@ import {
 export const SettingsPanel = styled(Aside as any)`
 border-right: solid 1px ${(props) => props.theme.colors.ui2};
 overflow-y: auto;
+height: 100%;
+overflow-x: hidden;
 `
 
 export const ViewList = styled.ul`
 overflow-y: auto;
-height: 70vh;
 margin: 0;
 `
 export const ViewListItem = styled.li`

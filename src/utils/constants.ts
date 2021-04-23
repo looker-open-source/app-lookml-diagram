@@ -68,3 +68,5 @@ export const DIAGRAM_SHADOW_ALPHA = 7
 export const CAP_RADIUS = 7
 
 export const DIAGRAM_IGNORED_MODELS = ['system__activity']
+
+export const MINIMAP_WIDTH = 200

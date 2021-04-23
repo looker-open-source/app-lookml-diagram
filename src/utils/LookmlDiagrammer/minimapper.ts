@@ -24,7 +24,7 @@
 
  */
 
-import { TABLE_VERTICAL_PADDING, TABLE_WIDTH, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "../constants";
+import { TABLE_VERTICAL_PADDING, TABLE_WIDTH, TABLE_DEGREE_STEP, TABLE_PADDING, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH, MINIMAP_WIDTH } from "../constants";
 import {DiagramMetadata} from './types'
 
 /**
@@ -63,7 +63,7 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
     })
   }
   const verticalCheck = 150 / (maxLength * (TABLE_ROW_HEIGHT + DIAGRAM_FIELD_STROKE_WIDTH))
-  const horizontalCheck = 300 / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
+  const horizontalCheck = MINIMAP_WIDTH / ((1 + Math.max(Math.abs(minDegree), Math.abs(maxDegree))) * (TABLE_PADDING+TABLE_WIDTH))
   const minimapScale = Math.min(verticalCheck, horizontalCheck)
 
   // shift to put the median degree in the middle
@@ -71,7 +71,7 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
   ? -1 * median * TABLE_PADDING
   : Math.abs(median) * TABLE_PADDING
 
-  const minimapX = 150 - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
+  const minimapX = (MINIMAP_WIDTH / 2) - (TABLE_WIDTH / 2 * minimapScale) + (medianCorrection * minimapScale)
   const minimapY = (Math.max(Math.abs(minDegree), Math.abs(maxDegree)) + 1) * (TABLE_DEGREE_STEP * -1)
 
   // show minimap by default if degree > 2 or more than 40 rows

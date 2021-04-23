@@ -32,4 +32,6 @@ import styled from "styled-components"
 export const LookmlCodeBlock = styled(CodeBlock as any)`
   background-color: ${(props) => props.theme.colors.neutralSubtle};
   color: ${(props) => props.theme.colors.keyInteractive};
+  white-space: pre-wrap;
+  width: 100%;
 `

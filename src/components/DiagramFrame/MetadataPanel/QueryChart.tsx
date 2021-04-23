@@ -34,6 +34,7 @@ import {
   Box,
   Text,
   ButtonTransparent,
+  ProgressCircular,
   theme
 } from "@looker/components"
 import { QueryChartType, runChartQuery, SimpleResult } from "../../../utils/queries"
@@ -142,7 +143,7 @@ export class QueryChart extends React.Component<
   render() {
     if (this.state.loading) {
       return (
-        <SpinnerBlock size={20} />
+        <ProgressCircular size='small' />
       )
     } else if (this.state.response) {
       if (this.state.response.data.length === 0) {

@@ -32,6 +32,9 @@ import {
   IconButton,
   theme
 } from "@looker/components"
+import { CenterFocusWeak, Map } from "@styled-icons/material"
+import { Plus, Minus } from "@styled-icons/boxicons-regular"
+
 import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
 import {DiagramToolbarProps} from "./types"
 import {Toolbar} from "./components/Layout"
@@ -53,23 +56,23 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
   return (
     <Toolbar raised>
       <Flex flexDirection="column" alignItems="center">
-        <FlexItem  pt="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{formatZoom(zoomFactor)}</FlexItem>
+        <FlexItem py="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{formatZoom(zoomFactor)}</FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem><IconButton icon="Plus" label="Zoom In" tooltipPlacement="right" 
+        <FlexItem pt="xsmall"><IconButton icon={<Plus />} label="Zoom In" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)} /></FlexItem>
-        <FlexItem><IconButton icon="Minus" label="Zoom Out" tooltipPlacement="right" 
+        <FlexItem pb="small"><IconButton icon={<Minus />} label="Zoom Out" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)}  /></FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem><IconButton icon="CenterFocus" label="Return to Start" tooltipPlacement="right"
+        <FlexItem py="xsmall"><IconButton icon={<CenterFocusWeak />} label="Return to Start" tooltipPlacement="right"
           onClick={()=>{
             setViewPosition({x: X_INIT, y: Y_INIT});
             setZoomFactor(ZOOM_INIT);
             setReload(!reload)}}
           /></FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem pb="xsmall">
+        <FlexItem py="xsmall">
           <IconButton 
-            icon="ChartMap" 
+            icon={<Map />}
             label="Toggle Minimap" 
             tooltipPlacement="right"
             onClick={()=>{

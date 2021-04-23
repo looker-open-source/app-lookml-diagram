@@ -27,7 +27,7 @@ export function isTableRowView(row: any) {
 }
 
 
-export let getPkPath = (d: any) => {
+export function getPkPath(d: any) {
   if (!d.primary_key) {
     return ""
   }
