@@ -45,7 +45,7 @@ export const HelpPanel: React.FC<{
 }> = ({ 
  }) => {
   return (
-    <SettingsPanel width={`275px`} px="medium" py="large">
+    <SettingsPanel width="275px" px="medium" py="large">
       <SpaceVertical>
         <Heading fontSize="large">Diagram Help</Heading>
         <Label>Views</Label>

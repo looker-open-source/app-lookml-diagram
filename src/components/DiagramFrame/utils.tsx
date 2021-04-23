@@ -1,8 +1,7 @@
 import React from "react"
-import { theme } from "@looker/components"
 import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
 import { SelectOptionProps } from "@looker/components"
-import { GitBranch } from "@styled-icons/ionicons-solid"
+import { GitBranch } from "@looker/icons"
 import { DIAGRAM_IGNORED_MODELS } from "../../utils/constants"
 import { ExploreDropdown } from "./FramePanels"
 

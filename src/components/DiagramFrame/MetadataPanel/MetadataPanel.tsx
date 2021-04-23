@@ -46,6 +46,7 @@ import {
 } from "@looker/components"
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { Explore, LogoRings } from "@looker/icons"
+import { VpnKey } from "@styled-icons/material"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
 
 import { getFields } from '../../../utils/LookmlDiagrammer/'
@@ -60,7 +61,6 @@ import {MetadataInfoPanel} from "./MetadataInfoPanel"
 import {MetadataFooter} from "./MetadataFooter"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
 import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata} from "./utils"
-import { PrimaryKey } from "./PrimaryKey"
 
 export const PillText:React.FC = ({children}) => {
   return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>
@@ -131,7 +131,7 @@ export const MetadataPanel: React.FC<{
         {metadata.primaryKey && 
           <Badge intent="neutral" size="small">
             <Space gap="xxsmall">
-              <Icon icon={<PrimaryKey />} color={theme.colors.text3} pt="xxsmall"/>
+              <Icon icon={<VpnKey />} color={theme.colors.text3} size="small" />
               <PillText>Primary Key</PillText>
             </Space>
           </Badge>}

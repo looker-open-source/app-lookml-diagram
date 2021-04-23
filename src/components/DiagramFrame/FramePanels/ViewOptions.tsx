@@ -40,9 +40,8 @@ import {
   Icon,
   theme
 } from "@looker/components"
-import { Visibility } from "@styled-icons/material-outlined"
+import { Visibility, Info } from "@styled-icons/material-outlined"
 import { VisibilityOff } from "@styled-icons/material"
-import { InfoCircle } from "@styled-icons/boxicons-regular"
 
 import { ViewOptionsProps } from "./types"
 import { ViewList, ViewListItem, ViewButton, SettingsPanel } from "./FramePanelsHelpers"
@@ -71,7 +70,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               onChange={setDisplayFieldType}
               options={[{label: "All fields", value: "all"}, {label: "Fields with joins", value: "joined"}]} />
           </FlexItem>
-          <Divider appearance="light" style={{height: 2}} />
+          <Divider appearance="light" />
           <FlexItem py="small">
             <Flex>
               <FlexItem>
@@ -79,12 +78,12 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               </FlexItem>
               <FlexItem ml="xxxlarge">
                 <Tooltip content="Enabled by default, this toggle hides fields from the diagram that contain 'hidden: yes'.">
-                  <Icon size="xsmall" color="subdued" icon={<InfoCircle />} />
+                  <Icon size="xsmall" color="subdued" icon={<Info />} />
                 </Tooltip>
               </FlexItem>
             </Flex>
           </FlexItem>
-          <Divider appearance="light" style={{height: 2}} />
+          <Divider appearance="light" />
           <FlexItem pt="small">
             <Flex flexDirection="column">
               <FlexItem>

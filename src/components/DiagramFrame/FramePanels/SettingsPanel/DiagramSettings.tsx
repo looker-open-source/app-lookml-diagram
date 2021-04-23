@@ -87,7 +87,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               onChange={(value)=>{setSelectedBranch(value)}}
               disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
             />
-            <Divider appearance="light" my="medium" style={{height: 2}} />
+            <Divider appearance="light" my="medium" />
             <Label fontSize="xsmall" style={{marginTop: "0rem"}}>Select an Explore</Label>
             <ExploreList 
               exploreList={exploreList}
