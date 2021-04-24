@@ -73,5 +73,6 @@ export {
   ZOOM_MAX,
   ZOOM_MIN,
   ZOOM_STEP,
-  JOIN_CONNECTOR_WIDTH
+  JOIN_CONNECTOR_WIDTH,
+  MINIMAP_WIDTH,
 } from './diagram'

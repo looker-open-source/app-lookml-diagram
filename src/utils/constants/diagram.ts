@@ -54,3 +54,5 @@ export const TABLE_VERTICAL_PADDING = 5
 export const TABLE_DEGREE_STEP = -3
 
 export const DIAGRAM_IGNORED_MODELS = ['system__activity']
+
+export const MINIMAP_WIDTH = 200

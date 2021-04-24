@@ -109,8 +109,8 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
           />
         </div>
         <IntroText>
-          Select a model and click on one of the Explores to the left to begin visualizing your LookML model. You'll see views, joins, SQL definitions, and more
-          for each object.
+          Choose a model, followed by an Explore, to better understand
+          your LookML relationships.
         </IntroText>
       </FullPage>
     )}

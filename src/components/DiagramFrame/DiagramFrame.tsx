@@ -70,7 +70,6 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [showSettings, setShowSettings] = React.useState(true)
   const [showHelp, setShowHelp] = React.useState(false)
   const [showViewOptions, setShowViewOptions] = React.useState(false)
-  const [showNoAside, setShowNoAside] = React.useState(false)
   const [reload, setReload] = React.useState(false)
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
   const [zoomFactor, setZoomFactor] = React.useState(ZOOM_INIT)
@@ -81,16 +80,10 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
 
-  function showDiagramFullPage() {
+  function closePanels() {
     setShowHelp(false)
     setShowViewOptions(false)
     setShowSettings(false)
-    setShowNoAside(true)
-  }
-
-  function isDiagramFullPage() {
-    showDiagramFullPage()
-    return true
   }
 
   function toggleExploreInfo() {
@@ -99,8 +92,6 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       setSelectionInfo(selectInfo)
     }
   }
-
-  const onlyDiagramSelected = () => { return showNoAside && !showViewOptions && !showSettings && !showHelp ? true : undefined }
 
   const modelDetails = prepareModelDropdown(unfilteredModels)
 
@@ -128,22 +119,11 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       <Rail width="50px">
         <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall">
           <IconButton
-            icon={<Dashboard />}
-            label="Diagram"
-            tooltipPlacement="right"
-            size="large"
-            toggle={onlyDiagramSelected()}
-            onClick={showDiagramFullPage}
-            style={{color: onlyDiagramSelected() && OVERRIDE_KEY, 
-              backgroundColor: onlyDiagramSelected() && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
-          />
-          <IconButton
             icon={<AccountTree />}
             label="Settings"
             tooltipPlacement="right"
             size="large"
-            onClick={() => isDiagramFullPage() && setShowSettings(!showSettings)}
+            onClick={() => {closePanels(); setShowSettings(!showSettings)}}
             toggle={showSettings}
             style={{color: showSettings && OVERRIDE_KEY, 
               backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
@@ -154,7 +134,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             label="View Options"
             tooltipPlacement="right"
             size="large"
-            onClick={() => isDiagramFullPage() && setShowViewOptions(!showViewOptions)}
+            onClick={() => {closePanels(); setShowViewOptions(!showViewOptions)}}
             toggle={showViewOptions}
             style={{color: showViewOptions && OVERRIDE_KEY, 
               backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
@@ -166,7 +146,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             tooltipPlacement="right"
             id="diagram-help-btn"
             size="large"
-            onClick={() => isDiagramFullPage() && setShowHelp(!showHelp)}
+            onClick={() => {closePanels(); setShowHelp(!showHelp)}}
             toggle={showHelp}
             style={{color: showHelp && OVERRIDE_KEY, 
               backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
