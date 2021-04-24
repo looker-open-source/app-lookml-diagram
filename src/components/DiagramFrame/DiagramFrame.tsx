@@ -30,6 +30,7 @@ import {
   IconButton,
   Layout,
 } from "@looker/components"
+import { AccountTree, Visibility, LiveHelp, Dashboard } from "@styled-icons/material-outlined"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { useCurrentModel } from "../../utils/routes"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
@@ -127,7 +128,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       <Rail width="50px">
         <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall">
           <IconButton
-            icon="Dashboard"
+            icon={<Dashboard />}
             label="Diagram"
             tooltipPlacement="right"
             size="large"
@@ -138,7 +139,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
               borderRadius: "10px"}}
           />
           <IconButton
-            icon="GearOutline"
+            icon={<AccountTree />}
             label="Settings"
             tooltipPlacement="right"
             size="large"
@@ -149,7 +150,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
               borderRadius: "10px"}}
           />
           <IconButton
-            icon="Tune"
+            icon={<Visibility />}
             label="View Options"
             tooltipPlacement="right"
             size="large"
@@ -160,7 +161,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
               borderRadius: "10px"}}
           />
           <IconButton
-            icon="Help"
+            icon={<LiveHelp />}
             label="Diagram Help"
             tooltipPlacement="right"
             id="diagram-help-btn"

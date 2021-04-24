@@ -45,7 +45,7 @@ export const HelpPanel: React.FC<{
 }> = ({ 
  }) => {
   return (
-    <SettingsPanel width={`375px`} px="medium" py="large">
+    <SettingsPanel width="275px" px="medium" py="large">
       <SpaceVertical>
         <Heading fontSize="large">Diagram Help</Heading>
         <Label>Views</Label>
@@ -63,7 +63,7 @@ export const HelpPanel: React.FC<{
           zoomFactor={0.479}
           setZoomFactor={()=>{}}
           viewPosition={{
-            x: 100.98,
+            x: 55.98,
             y: -84.96,
             displayX: 0,
             displayY: 0,
@@ -100,7 +100,7 @@ export const HelpPanel: React.FC<{
           zoomFactor={0.249}
           setZoomFactor={()=>{}}
           viewPosition={{
-            x: 56.12,
+            x: 20.12,
             y: -15.54,
             displayX: 0,
             displayY: 0,

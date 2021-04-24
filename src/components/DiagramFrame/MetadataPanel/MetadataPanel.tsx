@@ -36,6 +36,7 @@ import {
   Paragraph,
   Icon,
   Space,
+  Box,
   Tabs,
   Tab,
   TabList,
@@ -44,18 +45,21 @@ import {
   theme
 } from "@looker/components"
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
+import { Explore, LogoRings } from "@looker/icons"
+import { VpnKey } from "@styled-icons/material"
+import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
+
+import { getFields } from '../../../utils/LookmlDiagrammer/'
+import { exploreFieldURL } from '../../../utils/urls'
+import { useExplore } from '../../../utils/fetchers'
+import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
+import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
 import { ExternalLink } from "../../ExternalLink"
 import JoinIcon from "./JoinIcon"
 import MetadataPanelTable from "./MetadataPanelTable"
 import {MetadataInfoPanel} from "./MetadataInfoPanel"
 import {MetadataFooter} from "./MetadataFooter"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
-import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
-import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
-import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
-import { getFields, DiagramField } from '../../../utils/LookmlDiagrammer/'
-import { exploreFieldURL } from '../../../utils/urls'
-import { useExplore } from '../../../utils/fetchers'
 import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata} from "./utils"
 
 export const PillText:React.FC = ({children}) => {
@@ -126,8 +130,8 @@ export const MetadataPanel: React.FC<{
         }
         {metadata.primaryKey && 
           <Badge intent="neutral" size="small">
-            <Space gap="xsmall">
-              <Icon name="Key" size="xsmall" />
+            <Space gap="xxsmall">
+              <Icon icon={<VpnKey />} color={theme.colors.text3} size="small" />
               <PillText>Primary Key</PillText>
             </Space>
           </Badge>}
@@ -143,24 +147,26 @@ export const MetadataPanel: React.FC<{
         <LookmlCodeBlock>{metadata.joinCode}</LookmlCodeBlock>
       )}
 
+      <Box width="100%">
       {metadata.fieldCode ?
-      <>
-      <Tabs>
-        <TabList distribute>
-          <Tab>Details</Tab>
-          <Tab>Code</Tab>
-        </TabList>
-        <TabPanels pt={0}>
-          <TabPanel>
-            <MetadataPanelTable metadata={metadata} model={model} explore={explore} field={field} />
-          </TabPanel>
-          <TabPanel>
-            <LookmlCodeBlock>{metadata.fieldCode}</LookmlCodeBlock>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      </> :
-      <MetadataPanelTable metadata={metadata} /> }
+        <Tabs>
+          <TabList distribute>
+            <Tab>Details</Tab>
+            <Tab>Code</Tab>
+          </TabList>
+          <TabPanels pt={0}>
+            <TabPanel>
+              <MetadataPanelTable metadata={metadata} model={model} explore={explore} field={field} />
+            </TabPanel>
+            <TabPanel>
+              <LookmlCodeBlock>{metadata.fieldCode}</LookmlCodeBlock>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+       :
+      <MetadataPanelTable metadata={metadata} />
+      }
+      </Box>
 
     </SpaceVertical>
     <MetadataFooter
@@ -173,7 +179,7 @@ export const MetadataPanel: React.FC<{
           <ButtonTransparent
             mr="xxxlarge"
             ml="small"
-            iconBefore="LogoRings"
+            iconBefore={<LogoRings />}
           >
             Go to LookML
           </ButtonTransparent>
@@ -185,7 +191,7 @@ export const MetadataPanel: React.FC<{
           <ButtonTransparent
             ml="xxxlarge"
             mr="xsmall"
-            iconBefore="Explore"
+            iconBefore={<Explore />}
           >
             Explore with Field
           </ButtonTransparent>

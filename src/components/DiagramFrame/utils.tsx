@@ -23,9 +23,10 @@
  SOFTWARE.
 
  */
-
+import React from "react"
 import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
 import { SelectOptionProps } from "@looker/components"
+import { GitBranch } from "@looker/icons"
 import { DIAGRAM_IGNORED_MODELS } from "../../utils/constants"
 import { ExploreDropdown } from "./FramePanels"
 
@@ -34,15 +35,16 @@ import { ExploreDropdown } from "./FramePanels"
  * @param gitBranch - currently selected branch obj
  * @param gitBranches - list of available branch objs
  */
-export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]) => {
+export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]): SelectOptionProps[] => {
   return gitBranches.map((branch: IGitBranch) => {
     return gitBranch.name === branch.name ? {
       value: branch.name, 
       label: branch.name, 
-      icon: "GitBranch"
+      icon: (<GitBranch />)
     } : {
       value: branch.name, 
-      label: branch.name, 
+      label: branch.name,
+      icon: undefined
     }
   })
 }

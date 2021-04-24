@@ -24,8 +24,9 @@
 
  */
 
-import React, { FC } from "react"
-import { theme, ButtonOutline, FlexItem, Text } from "@looker/components"
+import React from "react"
+import { theme, ButtonOutline, FlexItem } from "@looker/components"
+import { Cached } from "@styled-icons/material"
 import styled from "styled-components"
 
 const DisabledText = styled.div`
@@ -43,7 +44,7 @@ export const QueryChartButton: React.FC<{
   return (
     <FlexItem>
       <ButtonOutline
-        iconBefore="CacheRefresh"
+        iconBefore={<Cached />}
         onClick={onClick}
         disabled={!enabled}
       >

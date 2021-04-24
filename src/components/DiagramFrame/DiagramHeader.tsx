@@ -30,6 +30,8 @@ import {
   Space,
   IconButton,
 } from "@looker/components"
+import { Info, Refresh } from "@styled-icons/material-outlined"
+
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
 import {DiagramHeaderProps} from "./types"
 import {DiagramHeaderWrapper} from "./FrameHelpers"
@@ -53,14 +55,14 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
         <Space gap="xsmall" justifyContent="flex-end">
           <IconButton 
             label="Explore Info" 
-            icon="CircleInfoOutline" 
+            icon={<Info />}
             onClick={toggleExploreInfo}
             style={{color: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY, 
               backgroundColor: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY_SUBTLE,
               borderRadius: "25px"}}
             size="large" 
           />
-          <IconButton label="Reload Diagram" icon="Refresh" size="large" onClick={() => location.reload()} />
+          <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={() => location.reload()} />
         </Space>
       </Space>
     </DiagramHeaderWrapper>

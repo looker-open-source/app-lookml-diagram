@@ -32,6 +32,7 @@ import {
   Section,
   theme,
 } from "@looker/components"
+import { MINIMAP_WIDTH } from "../../../../utils/constants"
 
 export const Toolbar = styled(Card as any)`
 min-width: 40px;
@@ -79,8 +80,8 @@ justify-content: center;
 height: 100%;
 `
 export const Minimap = styled(Card as any)`
-min-width: 300px;
-width: 300px;
+min-width: ${MINIMAP_WIDTH}px;
+width: ${MINIMAP_WIDTH}px;
 height: auto;
 right: 20px;
 top: 20px;

@@ -40,6 +40,9 @@ import {
   Icon,
   theme
 } from "@looker/components"
+import { Visibility, Info } from "@styled-icons/material-outlined"
+import { VisibilityOff } from "@styled-icons/material"
+
 import {ViewOptionsProps} from "./types"
 import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./FramePanelsHelpers"
 import {getViewListItemColor} from "./utils"
@@ -69,14 +72,14 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               options={[{label: "All fields", value: SHOW_ALL_FIELDS}, {label: "Fields with joins", value: SHOW_JOINED_FIELDS}]} />
           </FlexItem>
           <Divider appearance="light" />
-          <FlexItem py="xsmall">
+          <FlexItem py="small">
             <Flex>
               <FlexItem>
                 <FieldToggleSwitch onChange={handleHiddenToggle} on={hiddenToggle} label="Hide hidden fields    " />
               </FlexItem>
               <FlexItem ml="xxxlarge">
                 <Tooltip content="Enabled by default, this toggle hides fields from the diagram that contain 'hidden: yes'.">
-                  <Icon size="xsmall" color="subdued" name="CircleInfoOutline"/>
+                  <Icon size="xsmall" color="subdued" icon={<Info />} />
                 </Tooltip>
               </FlexItem>
             </Flex>
@@ -139,7 +142,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
                           <FlexItem>
                             <Icon 
                               size="xxsmall"
-                              name={viewVisible[item] ? "VisibilityOutline" : "VisibilityOff"}
+                              icon={viewVisible[item] ? <Visibility /> : <VisibilityOff />}
                               color={viewVisible[item] ? theme.colors.text : theme.colors.text1} />
                           </FlexItem>
                         </Flex>
