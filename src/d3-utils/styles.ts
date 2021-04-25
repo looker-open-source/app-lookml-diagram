@@ -66,8 +66,6 @@ export function addFilter(svg: any) {
   // store result in offsetBlur
   filter.append("feOffset")
   .attr("in", "blur")
-  .attr("dx", DIAGRAM_SHADOW_RADIUS)
-  .attr("dy", DIAGRAM_SHADOW_RADIUS)
   .attr("result", "offsetBlur");
   // overlay original SourceGraphic over translated blurred opacity by using
   // feMerge filter. Order of specifying inputs is important!
@@ -77,32 +75,23 @@ export function addFilter(svg: any) {
   feMerge.append("feMergeNode")
   .attr("in", "SourceGraphic");
 
-  var filter = defs.append("filter")
-  .attr("id", "pill-shadow")
-  .attr("width", "150%")
-  .attr("y", "-40%")
-  .attr("height", "200%");
-
-  filter.append("feGaussianBlur")
-  .attr("in", "SourceAlpha")
-  .attr("stdDeviation", DIAGRAM_SHADOW_ALPHA)
-  .attr("result", "blur");
-
-  filter.append("feOffset")
-  .attr("in", "blur")
-  .attr("result", "offsetBlur");
-
-  filter.append("feFlood")
-  .attr("in", "offsetBlur")
-  .attr("flood-color", theme.colors.background)
-  .attr("flood-opacity", "0.2")
-  .attr("result", "offsetColor");
-
-  var feMerge = filter.append("feMerge");
-  feMerge.append("feMergeNode")
-  .attr("in", "offsetBlur")
-  feMerge.append("feMergeNode")
-  .attr("in", "SourceGraphic");
+  var pattern = svg
+  .append('defs')
+  .append('pattern')
+  .attr('id', 'dotsPattern')
+  .attr('patternUnits', 'userSpaceOnUse')
+  .attr('width', 30)
+  .attr('height', 30);
+  pattern.append('circle')
+  .attr('cx', 15)
+  .attr('cy', 15)
+  .attr('r', 2)
+  .style('fill', "#e7eaec");
+  pattern.append('circle')
+  .attr('cx', 35)
+  .attr('cy', 35)
+  .attr('r', 2)
+  .style('fill', "#e7eaec");
 }
 
 export function getTranslation(transform: string) {

@@ -23,6 +23,7 @@
  SOFTWARE.
 
  */
+import {theme} from "@looker/components"
 import { 
   TABLE_WIDTH, 
   TABLE_ROW_HEIGHT, 
@@ -67,6 +68,19 @@ export function createLookmlViewElement(
   .attr("ry", CAP_RADIUS)
   .attr("width", TABLE_WIDTH)
   .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))-CAP_RADIUS))
+  .style("filter", "url(#drop-shadow)")
+  .style("opacity", 0.3)
+
+  type === "minimap" && table.append("rect")
+  .attr("x", header.diagramX)
+  .attr("y", header.diagramY)
+  .attr("rx", CAP_RADIUS)
+  .attr("ry", CAP_RADIUS)
+  .attr("width", TABLE_WIDTH)
+  .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))-CAP_RADIUS))
+  .style("stroke", theme.colors.text)
+  .style("stroke-width", "10px")
+  .style("fill", "transparent")
   
   let tableRow = table.selectAll(".table-row-"+header.view)
   .data(tableData)

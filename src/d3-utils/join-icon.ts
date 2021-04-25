@@ -34,7 +34,7 @@ export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX
   .attr("width", pillWidth)
   .attr("height", 36)
   .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
-  .style("filter", "url(#pill-shadow)")
+  .style("filter", "url(#drop-shadow)")
   .style("opacity", 0.3)
 
   join.append("rect")

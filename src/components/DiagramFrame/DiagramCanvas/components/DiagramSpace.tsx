@@ -65,10 +65,6 @@ width: 100%;
 height: 100%;
 user-select: none;
 
-.clickable-background {
-  fill: transparent;
-}
-
 rect.table-background {
   stroke: ${TABLE_BACKGROUND_COLOR};
   stroke-width: 10;
