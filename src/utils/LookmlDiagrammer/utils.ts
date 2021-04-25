@@ -66,7 +66,6 @@
        }
      })
    })
-   !views.includes(exploreName) && views.push(exploreName)
    return views.filter(onlyUnique).filter(onlyStrings)
  }
  
