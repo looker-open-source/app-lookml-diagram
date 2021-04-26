@@ -62,7 +62,7 @@ flex-direction: column;
 export const IntroText = styled(Paragraph as any)`
 text-align: center;
 margin-top: 5em;
-max-width: 40%;
+max-width: 30%;
 color: ${theme.colors.text1};
 `
 export const ErrorText = styled(Paragraph as any)`
