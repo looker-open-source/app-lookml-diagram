@@ -48,7 +48,9 @@ import {
   DIAGRAM_TEXT_SIZE,
   DIAGRAM_JOIN_SELECT_COLOR,
   DIAGRAM_MEASURE_HOVER_COLOR,
-  DIAGRAM_MEASURE_ICON_COLOR
+  DIAGRAM_MEASURE_ICON_COLOR,
+  DIAGRAM_JOINED_VIEW_HOVER_COLOR,
+  DIAGRAM_BASE_VIEW_HOVER_COLOR
 } from "../../../../utils/constants"
 import {
   theme,
@@ -163,13 +165,23 @@ g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row
   fill: ${DIAGRAM_HOVER_COLOR};
 }
 
+g.table-row.table-row-base-view:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > path.table-row {
+  fill: ${DIAGRAM_BASE_VIEW_HOVER_COLOR};
+  stroke: ${DIAGRAM_BASE_VIEW_HOVER_COLOR};
+}
+
+g.table-row.table-row-view:not(.table-row-base-view):not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > path.table-row {
+  fill: ${DIAGRAM_JOINED_VIEW_HOVER_COLOR};
+  stroke: ${DIAGRAM_JOINED_VIEW_HOVER_COLOR};
+}
+
 g.table-row.table-row-measure:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > rect,
 g.table-row.table-row-measure:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > path.table-row {
   fill: ${DIAGRAM_MEASURE_HOVER_COLOR};
   stroke: ${DIAGRAM_MEASURE_HOVER_COLOR};
 }
 
-g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > text {
+g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.table-row-base-view):not(.help-table-row):hover > text {
   fill: ${DIAGRAM_HOVER_TEXT_COLOR};
 }
 
