@@ -36,7 +36,7 @@ import { ExploreDropdown } from "./FramePanels"
  * @param gitBranches - list of available branch objs
  */
 export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]): SelectOptionProps[] => {
-  return gitBranches.map((branch: IGitBranch) => {
+  return gitBranches?.map((branch: IGitBranch) => {
     return gitBranch.name === branch.name ? {
       value: branch.name, 
       label: branch.name, 

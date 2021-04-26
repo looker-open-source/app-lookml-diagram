@@ -28,13 +28,17 @@ import React from "react"
 import * as ReactDOM from "react-dom"
 import { Extension } from "./components/Extension"
 import { ExtensionProvider } from "@looker/extension-sdk-react"
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 window.addEventListener("DOMContentLoaded", () => {
   const root = document.createElement("div")
+  const queryClient = new QueryClient()
   document.body.appendChild(root)
   ReactDOM.render(
     <ExtensionProvider>
-      <Extension />
+      <QueryClientProvider client={queryClient}>
+        <Extension />
+      </QueryClientProvider>
     </ExtensionProvider>,
     root
   )

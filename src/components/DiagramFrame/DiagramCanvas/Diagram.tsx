@@ -48,8 +48,7 @@ export const Diagram: React.FC<DiagramProps> = memo(({
   zoomFactor, 
   setZoomFactor,
   viewPosition,
-  setViewPosition,
-  selectedBranch
+  setViewPosition
 }) => {
   let diagramViews = Object.keys(viewVisible).filter((viewName: string) => {
     return viewVisible[viewName]
@@ -135,8 +134,7 @@ export const Diagram: React.FC<DiagramProps> = memo(({
       zoomFactor,
       viewPosition.displayX,
       viewPosition.displayY,
-      viewPosition.clientWidth,
-      selectedBranch
+      viewPosition.clientWidth
     ]
   );
   return (

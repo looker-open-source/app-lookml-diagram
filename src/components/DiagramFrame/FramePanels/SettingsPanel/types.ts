@@ -23,13 +23,33 @@
  SOFTWARE.
 
  */
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
 import { ExploreDropdown } from "../types"
+import { DiagramError, DetailedModel } from "../../../../utils/fetchers"
+import {
+  SelectOptionProps,
+} from "@looker/components"
 
 export interface ExploreListProps {
   currentModel: ILookmlModel,
   exploreList: ExploreDropdown[],
+  selectionInfo: SelectionInfoPacket,
+  currentExplore: ILookmlModelExplore,
+  diagramExplore: string,
+  setSelectionInfo: (info: SelectionInfoPacket) => void,
+  setViewVisible: (visible: VisibleViewLookup) => void,
+  setZoomFactor: (zoom: number) => void,
+  setViewPosition: (info: any) => void,
+  setMinimapUntoggled: (toggle: boolean) => void,
+  setMinimapEnabled: (toggle: boolean) => void,
+}
+
+export interface DiagramSettingsProps {
+  modelPathName: string,
+  modelDetails: SelectOptionProps[],
+  exploreList: ExploreDropdown[],
+  modelDetail: DetailedModel,
   selectionInfo: SelectionInfoPacket,
   currentExplore: ILookmlModelExplore,
   diagramExplore: string,

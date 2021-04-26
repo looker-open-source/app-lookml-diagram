@@ -39,7 +39,7 @@ import {DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText, ErrorTe
 
 export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ 
   unfilteredModels,
-  modelError,
+  modelDetail,
   pathModelName,
   pathExploreName,
   currentDimensions,
@@ -60,13 +60,12 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   displayFieldType,
   viewVisible,
   viewPosition,
-  selectedBranch
  }) => {
   let svgElement = document.querySelector(`svg#display-diagram-svg`)
 
   return (
     <DiagramCanvasWrapper>
-    {!unfilteredModels && !modelError && (
+    {!unfilteredModels && !modelDetail?.errorType && (
       <PageLoading>
         <ProgressCircular/>{' '}
         <Heading mt="large">
@@ -74,7 +73,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </Heading>
       </PageLoading>
     )}
-    {modelError?.kind === "general" && (
+    {modelDetail?.errorType === "general" && (
       <PageLoading>
         <Status intent="warn" size="large"/>
         <Heading mt="large" fontSize="large">
@@ -86,7 +85,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </ErrorText>
       </PageLoading>
     )}
-    {modelError?.kind === "notFound" && (
+    {modelDetail?.errorType === "notFound" && (
       <PageLoading>
         <Status intent="critical" size="large"/>
         <Heading mt="large" fontSize="large">
@@ -114,7 +113,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </IntroText>
       </FullPage>
     )}
-    {!modelError && pathModelName && pathExploreName && !currentDimensions && (
+    {!modelDetail?.errorType && pathModelName && pathExploreName && !currentDimensions && (
       <PageLoading>
         <ProgressCircular/>{' '}
         <Heading mt="large">
@@ -122,7 +121,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </Heading>
       </PageLoading>
     )}
-    {!modelError && pathModelName && pathExploreName && currentDimensions && (
+    {!modelDetail?.errorType && pathModelName && pathExploreName && currentDimensions && (
     <>
       <DiagramToolbar
         zoomFactor={zoomFactor}
@@ -150,7 +149,6 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         setZoomFactor={setZoomFactor}
         viewPosition={viewPosition}
         setViewPosition={setViewPosition}
-        selectedBranch={selectedBranch}
       />
       {(minimapEnabled || (minimapUntoggled && currentDimensions.minimapDefault)) && <Minimap raised>
         <Diagram 
@@ -174,7 +172,6 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
             clientHeight: svgElement && (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
           }}
           setViewPosition={()=>{}}
-          selectedBranch={selectedBranch}
         />
       </Minimap>}
     </>

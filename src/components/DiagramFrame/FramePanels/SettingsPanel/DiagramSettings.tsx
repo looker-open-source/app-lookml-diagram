@@ -30,23 +30,22 @@ import {
   Divider,
   Heading,
   FieldSelect,
+  FadeIn,
   Label,
   theme
 } from "@looker/components"
 import { internalModelURL } from "../../../../utils/routes"
 import { useHistory } from "react-router"
-import { DiagramSettingsProps } from "../types"
+import { DiagramSettingsProps } from "./types"
 import {SettingsPanel} from "../FramePanelsHelpers"
 import {ExploreList} from "./ExploreList"
+import {getBranchOptions} from "../../utils"
+import { useUpdateGitBranches } from "../../../../utils/fetchers"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
+  modelPathName,
   modelDetails,
-  currentModel,
-  modelName,
-  setModelError,
-  setSelectedBranch,
-  branchOpts,
-  gitBranch,
+  modelDetail,
   selectionInfo,
   exploreList,
   currentExplore,
@@ -59,6 +58,8 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   setMinimapEnabled,
  }) => {
   const history = useHistory()
+  const gitBranch = modelDetail?.gitBranch
+  const updateBranch = useUpdateGitBranches(modelDetail?.model?.project_name)
   return (
     <SettingsPanel width="275px" p="medium">
       <SpaceVertical>
@@ -67,31 +68,29 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
           options={modelDetails}
           label="Choose a Model"
           placeholder="Select a model"
-          value={modelName}
+          value={modelPathName}
           onChange={(selectedModel: string) => {
-            setModelError(undefined)
-            setSelectedBranch("")
             history.push(internalModelURL({ model: selectedModel }))
           }
           }
           listLayout={{ maxHeight: 300 }}
           isLoading={modelDetails.length === 0 ? true : false}
         />
-        {modelName && (
-          <>
+        {modelPathName && exploreList && (
+          <FadeIn duration="intricate">
             <FieldSelect
-              options={branchOpts ? branchOpts : []}
+              options={getBranchOptions(gitBranch, modelDetail.gitBranches)}
               placeholder="Loading Git Branches..."
               label="Current Branch"
               value={gitBranch && gitBranch.name}
-              onChange={(value)=>{setSelectedBranch(value)}}
+              onChange={(value)=>{updateBranch.mutate(value)}}
               disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
             />
             <Divider appearance="light" my="medium" />
             <Label fontSize="xsmall" style={{marginTop: "0rem"}}>Select an Explore</Label>
             <ExploreList 
               exploreList={exploreList}
-              currentModel={currentModel}
+              currentModel={modelDetail?.model}
               selectionInfo={selectionInfo}
               currentExplore={currentExplore}
               diagramExplore={diagramExplore}
@@ -101,7 +100,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               setViewPosition={setViewPosition}
               setMinimapUntoggled={setMinimapUntoggled}
               setMinimapEnabled={setMinimapEnabled}/>
-          </>
+          </FadeIn>
         )}
       </SpaceVertical>
     </SettingsPanel>

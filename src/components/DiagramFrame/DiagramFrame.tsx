@@ -57,14 +57,10 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   pathExploreName,
   modelDetail,
   dimensions,
-  modelError,
-  setModelError,
   hiddenToggle,
   setHiddenToggle,
   displayFieldType,
   setDisplayFieldType,
-  selectedBranch,
-  setSelectedBranch,
   }) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
@@ -76,7 +72,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
-  const currentModel = useCurrentModel(selectedBranch, modelError)
+  const currentModel = modelDetail?.model
 
   const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
 
@@ -95,7 +91,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const modelDetails = prepareModelDropdown(unfilteredModels)
 
-  let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
+  let currentExplore: ILookmlModelExplore = modelDetail?.explores?.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
 
@@ -156,14 +152,10 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       </Rail>
       {showSettings && (
         <DiagramSettings
+          modelPathName={pathModelName}
           modelDetails={modelDetails}
-          modelName={pathModelName}
           exploreList={exploreList}
-          currentModel={currentModel}
-          setModelError={setModelError}
-          setSelectedBranch={setSelectedBranch}
-          branchOpts={modelDetail && getBranchOptions(modelDetail.gitBranch, modelDetail.gitBranches)}
-          gitBranch={modelDetail?.gitBranch}
+          modelDetail={modelDetail}
           selectionInfo={selectionInfo}
           currentExplore={currentExplore}
           diagramExplore={pathExploreName}
@@ -197,8 +189,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
         />
         <Layout hasAside height="100%" id="DiagramStage">
         <DiagramCanvas
+          modelDetail={modelDetail}
           unfilteredModels={unfilteredModels}
-          modelError={modelError}
           pathModelName={pathModelName}
           pathExploreName={pathExploreName}
           currentDimensions={currentDimensions}
@@ -219,13 +211,12 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           displayFieldType={displayFieldType}
           viewVisible={viewVisible}
           viewPosition={viewPosition}
-          selectedBranch={selectedBranch}
         />
         {currentExplore && Object.keys(selectionInfo).length > 0 && (
           <MetadataPanel
-            explore={currentExplore}
+            currentExplore={currentExplore}
             selectionInfo={selectionInfo}
-            model={modelDetail.model}
+            model={modelDetail?.model}
           />
         )}
         </Layout>

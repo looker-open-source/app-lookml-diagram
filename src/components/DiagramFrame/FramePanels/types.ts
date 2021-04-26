@@ -26,7 +26,7 @@
 
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
-import { DiagramError } from "../../../utils/fetchers"
+import { DiagramError, DetailedModel } from "../../../utils/fetchers"
 import {
   SelectOptionProps,
 } from "@looker/components"
@@ -38,26 +38,6 @@ export interface ViewOptionsProps {
   setViewVisible: (visible: any) => void,
   handleHiddenToggle: (toggle: React.FormEvent<HTMLInputElement>) => void,
   setDisplayFieldType: (types: any) => void,
-}
-
-export interface DiagramSettingsProps {
-  modelDetails: SelectOptionProps[],
-  currentModel: ILookmlModel,
-  modelName: string,
-  exploreList: ExploreDropdown[],
-  setModelError: (error: DiagramError) => void,
-  setSelectedBranch: (branchName: string) => void,
-  branchOpts: SelectOptionProps[],
-  gitBranch: IGitBranch,
-  selectionInfo: SelectionInfoPacket,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
-  setSelectionInfo: (info: SelectionInfoPacket) => void,
-  setViewVisible: (visible: VisibleViewLookup) => void,
-  setZoomFactor: (zoom: number) => void,
-  setViewPosition: (info: any) => void,
-  setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
 }
 
  export interface ExploreDropdown {

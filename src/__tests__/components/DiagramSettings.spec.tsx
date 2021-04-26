@@ -122,12 +122,8 @@ describe('<DiagramSettings />', () => {
   const tree = render(
       <DiagramSettings
       modelDetails={[{value:"modelname", label: "Model Name"}]}
-      currentModel={mockCurrentModel}
-      modelName={""}
-      setModelError={undefined}
-      setSelectedBranch={undefined}
-      branchOpts={[{value:"main", label: "Main"}]}
-      gitBranch={{name: "gitBranch"}}
+      modelDetail={{model:{},explores:[],gitBranch:{},gitBranches:[],errorType:""}}
+      modelPathName={""}
       exploreList={[view_explore]}
       selectionInfo={{}}
       currentExplore={view_explore}

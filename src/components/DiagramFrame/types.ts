@@ -26,23 +26,19 @@
 
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import { SelectionInfoPacket } from "../interfaces"
-import { DiagramError } from "../../utils/fetchers"
+import { DetailedModel } from "../../utils/fetchers"
 import { DiagrammedModel } from "../../utils/LookmlDiagrammer/"
 
 export interface DiagramFrameProps {
   unfilteredModels: ILookmlModel[]
   pathModelName: string
   pathExploreName: string
-  modelDetail: any
+  modelDetail: DetailedModel
   dimensions: DiagrammedModel[]
-  modelError: DiagramError
-  setModelError: (e: DiagramError)=>void
   hiddenToggle: boolean,
   setHiddenToggle: (t: boolean)=>void
   displayFieldType: string,
   setDisplayFieldType: (s: string)=>void,
-  selectedBranch: string,
-  setSelectedBranch: (b: string)=>void,
  }
 
 export interface DiagramHeaderProps {

@@ -127,7 +127,7 @@ jest.mock("../../components/DiagramFrame/MetadataPanel/LookmlCodeBlock", () => (
 describe('<MetadataPanel />', () => {
   const basic = render(
   <MetadataPanel
-    explore={{joins:[{name:"join"}]}}
+    currentExplore={{joins:[{name:"join"}]}}
     selectionInfo={{lookmlElement: "join", name: "join"}}
     model={mockCurrentModel}
   />);

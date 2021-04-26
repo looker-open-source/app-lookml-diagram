@@ -116,11 +116,17 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
   }
 }
 
-export function getViewMetadata(viewResponse: any, lookmlLink: string, selectionInfo: SelectionInfoPacket) {
+export function getViewMetadata(viewResponse: ILookmlModelExplore, isLoading: boolean, lookmlLink: string, selectionInfo: SelectionInfoPacket) {
+  let sqlTableName = "unknown"
+  if (isLoading) {
+    sqlTableName = "Loading..."
+  } else if (viewResponse?.name === selectionInfo.name) {
+    sqlTableName = viewResponse.sql_table_name
+  }
   return {
     name: selectionInfo.name,
     lookmlLink: lookmlLink,
-    sqlTableName: viewResponse.currentExplore && viewResponse.currentExplore.name === selectionInfo.name ? viewResponse.currentExplore.sql_table_name : "unknown"
+    sqlTableName
   }
 }
 

@@ -55,7 +55,7 @@ import {LookmlDiagrammer} from './LookmlDiagrammer'
  */
 export function generateModelDiagrams(details: DetailedModel, hiddenToggle: boolean, displayFieldType: string) {
   let modifiedDetails: DiagrammedModel[] = []
-  details && details.explores.map((d: ILookmlModelExplore) => {
+  details?.explores?.map((d: ILookmlModelExplore) => {
     let modifiedDetail: DiagrammedModel = {
       exploreName: d.name,
       modelName: d.model_name,

@@ -53,8 +53,7 @@ export const HelpPanel: React.FC<{
           type={"help-view"}
           dimensions={view_dimensions.diagramDict} 
           explore={view_explore} 
-          reload={false} 
-          selectedBranch={""}
+          reload={false}
           selectionInfo={{}} 
           setSelectionInfo={undefined}
           hiddenToggle={true}
@@ -93,7 +92,6 @@ export const HelpPanel: React.FC<{
             name: "forecast"
           }} 
           setSelectionInfo={undefined}
-          selectedBranch={""}
           hiddenToggle={true}
           displayFieldType={"all"}
           viewVisible={{polling: true, forecast: true}}

@@ -28,7 +28,7 @@ import {
   DiagrammedModel
 } from "../../../utils/LookmlDiagrammer/"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
-import { DiagramError } from "../../../utils/fetchers"
+import { DetailedModel } from "../../../utils/fetchers"
 import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/sdk/3.1/models';
 
 export interface DiagramProps {
@@ -45,7 +45,6 @@ export interface DiagramProps {
   setZoomFactor: (zoomFactor: number) => void
   viewPosition: any
   setViewPosition: (positionPacket: any) => void
-  selectedBranch: string
 }
 
 export interface DiagramToolbarProps {
@@ -63,7 +62,7 @@ export interface DiagramToolbarProps {
 
 export interface DiagramCanvasProps {
   unfilteredModels: ILookmlModel[]
-  modelError: DiagramError
+  modelDetail: DetailedModel
   pathModelName: string
   pathExploreName: string
   currentDimensions: DiagrammedModel
@@ -84,5 +83,4 @@ export interface DiagramCanvasProps {
   displayFieldType: string
   viewVisible: VisibleViewLookup
   viewPosition: any
-  selectedBranch: string
 }
