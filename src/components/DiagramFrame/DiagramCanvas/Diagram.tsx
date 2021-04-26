@@ -72,6 +72,7 @@ export const Diagram: React.FC<DiagramProps> = memo(({
       .on("click", () => {
         setSelectionInfo({})
       })
+      .attr('fill', type === "minimap" ? 'transparent' : 'url(#dotsPattern)');
 
       // Add global svg defs
       let zoom = addZoom(svg, zoomFactor, setZoomFactor, viewPosition, setViewPosition, type);

@@ -64,11 +64,11 @@ export const HelpPanel: React.FC<{
           setZoomFactor={()=>{}}
           viewPosition={{
             x: 55.98,
-            y: -84.96,
+            y: -86,
             displayX: 0,
             displayY: 0,
             clientWidth: 375,
-            clientHeight: 150
+            clientHeight: 155
           }}
           setViewPosition={()=>{}}
         />
@@ -100,7 +100,7 @@ export const HelpPanel: React.FC<{
           zoomFactor={0.249}
           setZoomFactor={()=>{}}
           viewPosition={{
-            x: 20.12,
+            x: 10.12,
             y: -15.54,
             displayX: 0,
             displayY: 0,

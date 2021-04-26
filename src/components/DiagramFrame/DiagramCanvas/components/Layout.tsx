@@ -86,4 +86,9 @@ height: auto;
 right: 20px;
 top: 20px;
 position: absolute;
+border-width: 3px;
+border-color: white;
+:hover {
+  border-color: white;
+}
 `
