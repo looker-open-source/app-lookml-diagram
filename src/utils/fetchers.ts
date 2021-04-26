@@ -122,7 +122,7 @@ export function useModelDetail(modelName: string, selectedBranch: string, diagra
       }
     }
     fetcher().catch(()=>{
-      setDiagramError({kind: "general"})
+      setDiagramError({kind: "notFound"})
     })
   }, [coreSDK, modelName, selectedBranch])
   return { modelDetail }

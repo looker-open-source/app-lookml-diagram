@@ -33,12 +33,12 @@ import {
   DIAGRAM_FIELD_STROKE_WIDTH,
   TABLE_PADDING,
 } from '../utils/constants'
-import { onlyUnique, DiagramMetadata } from '../utils/LookmlDiagrammer'
+import { onlyUnique, DiagramMetadata, DiagramJoin } from '../utils/LookmlDiagrammer'
 import { SelectionInfoPacket } from "../components/interfaces"
 import {makeJoinIcon} from "./join-icon"
 import {getManyPath, getOnePath, addJoinArrowheads} from "./join-helpers"
 
-export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: DiagramMetadata, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
+export function createLookmlJoinElement(svg: any, joinData: DiagramJoin[], diagramDict: DiagramMetadata, explore: ILookmlModelExplore, selectionInfo: any, setSelectionInfo: (packet: SelectionInfoPacket) => void, type: string) {
   let partArray: any[] = []
   let r_shift = TABLE_WIDTH + JOIN_CONNECTOR_WIDTH
   let l_shift = JOIN_CONNECTOR_WIDTH * -1
@@ -270,21 +270,21 @@ export function createLookmlJoinElement(svg: any, joinData: any, diagramDict: Di
 
     let leftFill = 0
     let rightFill = 0
-    if (joinType === "left_outer" || joinType === "full_outer" || joinType === "cross") {
-      leftFill = 0.2
+    if (joinType === "left_outer" || joinType === "full_outer" || joinType === "cross" || joinType === "inner") {
+      leftFill = 0.15
     }
-    if (joinType === "full_outer" || joinType === "cross") {
-      rightFill = 0.2
+    if (joinType === "full_outer" || joinType === "cross" || joinType === "inner") {
+      rightFill = 0.15
     }
 
-    const iconWidth = isCross ? 70 : 50
+    const iconWidth = isCross ? 90 : 50
 
     const pillWidth = iconWidth + joinType.length * 6 + 10
 
     let lX = cX - (pillWidth / 2)
-    let lY = cY + (Math.abs(aY - fY) / 2 * goUp) - 24
+    let lY = cY + (Math.abs(aY - fY) / 2 * goUp) - 20
 
-    makeJoinIcon(join, iconWidth, pillWidth, lX, lY, cX, isCross, leftFill, rightFill, joinType)
+    makeJoinIcon(join, iconWidth, pillWidth, lX, lY, joinType)
 
     // Draw hover element for join-part path
     let drawnJoinHover = join.append("path")

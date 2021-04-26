@@ -31,6 +31,7 @@ import { addFilter } from '../../../d3-utils/styles'
 import { addZoom } from '../../../d3-utils/zoom'
 import { createLookmlViewElement } from '../../../d3-utils/tables'
 import { createLookmlJoinElement } from '../../../d3-utils/joins'
+import { DiagramJoin } from '../../../utils/LookmlDiagrammer'
 import {DiagramProps} from "./types"
 import {DiagramSpace} from "./components/DiagramSpace"
 
@@ -80,10 +81,10 @@ export const Diagram: React.FC<DiagramProps> = memo(({
       let filter = addFilter(svg);
 
       // Create all joins
-      dimensions.joinData.map((join: any, index: number) => {
+      dimensions.joinData.map((join: DiagramJoin[], index: number) => {
         // but not to any disabled tables
         let allVisible = true
-        join.map((joinPart: any) => {
+        join.map((joinPart: DiagramJoin) => {
           if (!viewVisible[joinPart.viewName]) {
             allVisible = false 
           }
