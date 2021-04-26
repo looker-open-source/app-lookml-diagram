@@ -161,6 +161,7 @@ g.table-row:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row
   fill: ${DIAGRAM_HOVER_COLOR};
 }
 
+g.table-row.table-row-base-view:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > rect,
 g.table-row.table-row-base-view:not(.table-row-selected):not(.minimap-table-row):not(.help-table-row):hover > path.table-row {
   fill: ${DIAGRAM_BASE_VIEW_HOVER_COLOR};
   stroke: ${DIAGRAM_BASE_VIEW_HOVER_COLOR};

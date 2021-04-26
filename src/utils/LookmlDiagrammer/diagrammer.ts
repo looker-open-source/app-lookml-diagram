@@ -82,6 +82,7 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
   const exploreJoins = explore.joins
   const fields = getFields(exploreFields)
   const views = getViews(exploreFields, exploreJoins, explore.name)
+  let baseViewName = ""
 
   // diagrammable metadata for a given explore
   // the structure is well suited for d3 and SVG
@@ -104,12 +105,16 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
       return e.view === viewName && e.category === "dimension"
     }).length
 
+    if (explore.name === viewName || explore.sets[0].name === viewName) {
+      baseViewName = viewName
+    }
+
     // add initial table data to the diagram dict
     diagramDict.tableData[viewName] = [{
       category: "view", 
       view: viewName, 
       name: viewName, 
-      base: (explore.name === viewName || explore.view_name === viewName), 
+      base: viewName === baseViewName, 
       diagramX: 0, 
       diagramY: 0, 
       fieldTypeIndex: 0
@@ -161,7 +166,7 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
     return joinPath
   })
 
-  // General order tables would be arranged in, if no joins and no base view
+  // General order tables would be arranged in, if no base view
   const joinCount = countJoins(diagramDict)
   let buildOrder = views.sort((a: string, b: string)=>{
     return joinCount[a] > joinCount[b] ? -1 : 1;
@@ -169,9 +174,9 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
 
   const diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
   
-  const baseViewName = diagramDict.tableData[explore.name] ? explore.name : buildOrder[0]
+  const seedName = baseViewName !== "" ? baseViewName : buildOrder[0]
 
-  Object.assign(diagramDict, diagrammer.getDiagram(baseViewName))
+  Object.assign(diagramDict, diagrammer.getDiagram(seedName))
 
   return diagramDict
 }
