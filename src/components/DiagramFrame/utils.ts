@@ -23,31 +23,10 @@
  SOFTWARE.
 
  */
-import React from "react"
-import { IGitBranch, ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/3.1/models"
 import { SelectOptionProps } from "@looker/components"
-import { GitBranch } from "@looker/icons"
 import { DIAGRAM_IGNORED_MODELS } from "../../utils/constants"
 import { ExploreDropdown } from "./FramePanels"
-
-/**
- * prepares the Git Branch dropdown data
- * @param gitBranch - currently selected branch obj
- * @param gitBranches - list of available branch objs
- */
-export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]): SelectOptionProps[] => {
-  return gitBranches?.map((branch: IGitBranch) => {
-    return gitBranch.name === branch.name ? {
-      value: branch.name, 
-      label: branch.name, 
-      icon: (<GitBranch />)
-    } : {
-      value: branch.name, 
-      label: branch.name,
-      icon: undefined
-    }
-  })
-}
 
 /**
  * Prepares a list of diagrammable models for the 'Choose a Model' dropdown

@@ -27,7 +27,7 @@
 import { useContext } from "react"
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { ExtensionContext } from "@looker/extension-sdk-react"
-import { ILookmlModel, ILookmlModelExplore, IGitBranch, IRequestRunInlineQuery } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -42,31 +42,53 @@ export interface DiagramError {
   message?: string
 }
 
+const defaultQueryOptions = {
+  staleTime: Infinity,
+  cacheTime: Infinity,
+  refetchOnWindowFocus: false,
+}
+
+/**
+ * gets the undetailed (explore metadata-less) models from instance
+ * @returns allModels - list of models
+ */
 export function useAllModels() {
   const { core40SDK } = useContext(ExtensionContext)
-  const { isLoading, error, data } = useQuery('allModels', () => core40SDK.ok(core40SDK.all_lookml_models()),
-  {
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { isLoading, error, data } = useQuery('allModels',
+    () => core40SDK.ok(core40SDK.all_lookml_models()),
+    {
+      ...defaultQueryOptions
+    }
+  )
   const allModels = data
   return allModels
 }
 
+/**
+ * gets the explore metadata for a given explore
+ * @param modelName - string model name
+ * @param exploreName - string explore name
+ * @returns - modelexplore metadata and loading
+ */
 export function useLookmlModelExplore(modelName: string, exploreName: string) {
   const { core40SDK } = useContext(ExtensionContext)
-  const { isLoading, error, data } = useQuery(`${modelName}|${exploreName}`, () => core40SDK.ok(core40SDK.lookml_model_explore(modelName, exploreName)),
-  {
-    retry: false,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { isLoading, error, data } = useQuery(
+    `${modelName}|${exploreName}`,
+    () => core40SDK.ok(core40SDK.lookml_model_explore(modelName, exploreName)),
+    {
+      retry: false,
+      ...defaultQueryOptions
+    }
+  )
   const explore = data
   return {explore, isLoading}
 }
 
+/**
+ * gets the explore metadata for all explores in model
+ * @param model - the model whose explores to fetch
+ * @returns - array of explores and errorType
+ */
 export function useLookmlModelExplores(model: ILookmlModel) {
   const { core40SDK } = useContext(ExtensionContext)
   const { isLoading, error, data } = useQuery(`${model?.name}Explores`, () => {
@@ -78,60 +100,69 @@ export function useLookmlModelExplores(model: ILookmlModel) {
   {
     enabled: !!model,
     retry: false,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false,
+    ...defaultQueryOptions
   })
   const explores = data
   const errorType = error && "notFound"
   return {explores, errorType}
 }
 
+/**
+ * gets the current active git branch
+ * @param projectId - model / project name
+ * @returns gitBranch metadata
+ */
 export function useCurrentGitBranch(projectId: string) {
   const { core40SDK } = useContext(ExtensionContext)
-  const { isLoading, error, data } = useQuery(`branch@${projectId}`, () => core40SDK.ok(core40SDK.git_branch(projectId)),
-  {
-    enabled: !!projectId,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { isLoading, error, data } = useQuery(`branch@${projectId}`,
+    () => core40SDK.ok(core40SDK.git_branch(projectId)),
+    {
+      enabled: !!projectId,
+      ...defaultQueryOptions
+    }
+  )
   const gitBranch = data
   return gitBranch
 }
 
+/**
+ * gets the available git branches to switch to
+ * @param projectId - model / project name
+ * @returns list of available git branches
+ */
 export function useAvailableGitBranches(projectId: string) {
   const { core40SDK } = useContext(ExtensionContext)
-  const { isLoading, error, data } = useQuery(`branches@${projectId}`, () => core40SDK.ok(core40SDK.all_git_branches(projectId)),
-  {
-    enabled: !!projectId,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { isLoading, error, data } = useQuery(`branches@${projectId}`,
+    () => core40SDK.ok(core40SDK.all_git_branches(projectId)),
+    {
+      enabled: !!projectId,
+      ...defaultQueryOptions
+    }
+  )
   const gitBranches = data
   return gitBranches
 }
 
+/**
+ * provides a mutation obj for updating git branch
+ * invalidatesQuery and reloads page on success
+ * @param projectId - model / project name
+ * @returns current gitBranch object
+ */
 export function useUpdateGitBranches(projectId: string) {
   const { core40SDK } = useContext(ExtensionContext)
   const queryClient = useQueryClient()
-  const mutation = useMutation((gitName: string) => core40SDK.ok(core40SDK.update_git_branch(projectId, {
-    name: gitName,
-    ref: ""
-  })),
-  {
-    onSuccess: () => {
-      queryClient.invalidateQueries()
-      location.reload()
+  const mutation = useMutation(
+    (gitName: string) => core40SDK.ok(core40SDK.update_git_branch(projectId, {
+      name: gitName,
+      ref: ""
+    })),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries()
+        location.reload()
+      }
     }
-  })
+  )
   return mutation
 }
-
-export function useRunInlineQuery() {
-  const { core40SDK } = useContext(ExtensionContext)
-  const mutation = useMutation((inlineQuery: IRequestRunInlineQuery) => core40SDK.ok(core40SDK.run_inline_query(inlineQuery)))
-  return mutation
-}
-

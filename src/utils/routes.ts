@@ -25,7 +25,7 @@
  */
 
 import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useLookmlModelExplores, useAvailableGitBranches, useCurrentGitBranch, DiagramError } from "./fetchers"
+import { useAllModels, useLookmlModelExplores, useAvailableGitBranches, useCurrentGitBranch } from "./fetchers"
 import { generateModelDiagrams, DiagrammedModel } from "./LookmlDiagrammer"
 
 export function internalExploreURL({

@@ -23,10 +23,10 @@
  SOFTWARE.
 
  */
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
 import { ExploreDropdown } from "../types"
-import { DiagramError, DetailedModel } from "../../../../utils/fetchers"
+import { DetailedModel } from "../../../../utils/fetchers"
 import {
   SelectOptionProps,
 } from "@looker/components"

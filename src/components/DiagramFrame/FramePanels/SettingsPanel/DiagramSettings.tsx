@@ -36,10 +36,10 @@ import {
 } from "@looker/components"
 import { internalModelURL } from "../../../../utils/routes"
 import { useHistory } from "react-router"
+import { SettingsPanel } from "../FramePanelsHelpers"
 import { DiagramSettingsProps } from "./types"
-import {SettingsPanel} from "../FramePanelsHelpers"
-import {ExploreList} from "./ExploreList"
-import {getBranchOptions} from "../../utils"
+import { ExploreList } from "./ExploreList"
+import { getBranchOptions } from "./utils"
 import { useUpdateGitBranches } from "../../../../utils/fetchers"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 

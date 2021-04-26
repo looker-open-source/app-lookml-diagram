@@ -174,9 +174,9 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
 
   const diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
   
-  const seedName = baseViewName !== "" ? baseViewName : buildOrder[0]
+  const startTableName = baseViewName !== "" ? baseViewName : buildOrder[0]
 
-  Object.assign(diagramDict, diagrammer.getDiagram(seedName))
+  Object.assign(diagramDict, diagrammer.getDiagram(startTableName))
 
   return diagramDict
 }

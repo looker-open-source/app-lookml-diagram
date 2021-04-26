@@ -24,16 +24,14 @@
 
  */
 
-import React, { useState } from "react"
-import { ComponentsProvider, MessageBar } from "@looker/components"
+import React from "react"
+import { ComponentsProvider } from "@looker/components"
 import { DiagramFrame } from "./DiagramFrame/DiagramFrame"
 import { useSelectExplore, usePathNames } from "../utils/routes"
-import { DiagramError } from "../utils/fetchers"
 import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
 } from '../utils/constants'
 
 export const Extension: React.FC = () => {
-  const [selectedBranch, setSelectedBranch] = React.useState("")
   const { modelName, exploreName, fullPage } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)

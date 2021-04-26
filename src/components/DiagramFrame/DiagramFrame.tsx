@@ -30,9 +30,8 @@ import {
   IconButton,
   Layout,
 } from "@looker/components"
-import { AccountTree, Visibility, LiveHelp, Dashboard } from "@styled-icons/material-outlined"
+import { AccountTree, Visibility, LiveHelp } from "@styled-icons/material-outlined"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { useCurrentModel } from "../../utils/routes"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
 import "./styles.css"
 import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
@@ -49,7 +48,7 @@ import {
 import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
 import {DiagramFrameProps} from "./types"
 import {Rail, Stage} from "./FrameHelpers"
-import {getBranchOptions, prepareModelDropdown, prepareExploreList} from "./utils"
+import {prepareModelDropdown, prepareExploreList} from "./utils"
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
