@@ -265,17 +265,7 @@ export function createLookmlJoinElement(svg: any, joinData: DiagramJoin[], diagr
     })
 
     let joinType = joinData[0].joinObj.type ? joinData[0].joinObj.type : "left_outer"
-    let joinTypeLabel = joinType.replace("_", " ").toUpperCase()
     let isCross = joinType === "cross"
-
-    let leftFill = 0
-    let rightFill = 0
-    if (joinType === "left_outer" || joinType === "full_outer" || joinType === "cross" || joinType === "inner") {
-      leftFill = 0.15
-    }
-    if (joinType === "full_outer" || joinType === "cross" || joinType === "inner") {
-      rightFill = 0.15
-    }
 
     const iconWidth = isCross ? 90 : 50
 
