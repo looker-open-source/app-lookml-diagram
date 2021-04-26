@@ -24,24 +24,27 @@
 
  */
 
-export function makeJoinIcon(join: any, iconOffset: number, lX: number, lY: number, cX: number, isCross: boolean, leftFill: number, rightFill: number, joinTypeLabel: string) {
-  join.append("rect")
-  .attr("fill", "none")
-  .attr("class", "join-path-icon-background")
-  .style("rx", 10)
-  .style("ry", 10)
-  .attr("width", (iconOffset * 2) - 5)
-  .attr("height", (iconOffset * 2))
-  .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
+export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX: number, lY: number, cX: number, isCross: boolean, leftFill: number, rightFill: number, joinTypeLabel: string) {
 
   join.append("rect")
   .attr("fill", "none")
   .attr("class", "join-path-icon-background")
-  .style("rx", 10)
-  .style("ry", 10)
-  .attr("width", (iconOffset * 2) + 15)
-  .attr("height", 18)
-  .attr("transform", `translate(${lX - 7.5}, ${lY + 35})`)
+  .style("rx", 15)
+  .style("ry", 15)
+  .attr("width", pillWidth)
+  .attr("height", 36)
+  .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
+  .style("filter", "url(#pill-shadow)")
+  .style("opacity", 0.3)
+
+  join.append("rect")
+  .attr("fill", "none")
+  .attr("class", "join-path-icon-background")
+  .style("rx", 15)
+  .style("ry", 15)
+  .attr("width", pillWidth)
+  .attr("height", 36)
+  .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
 
   isCross || join.append("path")
   .attr("d", "M23.6468 14.9375C17.7708 16.8958 14.834 26.6875 23.6468 32.5625C32.46 25.7083 28.5434 16.8958 23.6468 14.9375Z")
@@ -143,5 +146,5 @@ export function makeJoinIcon(join: any, iconOffset: number, lX: number, lY: numb
   .attr("class", "join-path-icon-label")
   .attr("fill", "none")
   .text(joinTypeLabel)
-  .attr("transform", `translate(${cX}, ${lY + 48})`);
+  .attr("transform", `translate(${lX + iconWidth - 2}, ${lY + 29})`);
 }

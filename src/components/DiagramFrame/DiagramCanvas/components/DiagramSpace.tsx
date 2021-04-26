@@ -219,14 +219,13 @@ g.join-path-selected > marker > path {
 }
 
 g.join-path-selected > text.join-path-icon-label {
-  fill: ${DIAGRAM_TEXT_COLOR};
-  font-size: xx-small;
-  font-family: monospace;
-  text-anchor: middle;
+  fill: ${theme.colors.text5};
+  font-size: medium;
+  font-weight: ${theme.fontWeights.medium}
 }
 
 g.join-path-selected > rect.join-path-icon-background {
-  fill: ${DIAGRAM_BACKGROUND_COLOR};
+  fill: ${DIAGRAM_FIELD_COLOR};
 }
 
 g.join-path-selected > path.join-path-icon-right,
