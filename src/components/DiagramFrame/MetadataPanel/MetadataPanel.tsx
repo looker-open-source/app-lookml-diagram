@@ -108,10 +108,10 @@ export const MetadataPanel: React.FC<{
       <Space gap="xsmall">
         {metadata.joinType && 
         <Badge intent="neutral" size="small">
-          <Flex alignItems="center">
-            <JoinIcon type={metadata.joinIconType}/>
+          <Space gap="xxsmall">
+            <JoinIcon type={metadata.joinIconType} />
             <PillText>{metadata.joinType}</PillText>
-          </Flex>
+          </Space>
         </Badge>}
         {metadata.joinRelationship && <Badge intent="neutral" size="small"><PillText>{metadata.joinRelationship}</PillText></Badge>}
         {metadata.fieldType && 

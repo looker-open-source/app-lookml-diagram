@@ -215,28 +215,21 @@ g.join-path-selected > marker > path {
   stroke-width: 2px;
 }
 
-g.join-path-selected > text.join-path-icon-label {
+text.join-path-icon-label {
   fill: ${theme.colors.text5};
   font-size: medium;
   font-weight: ${theme.fontWeights.medium}
 }
 
-g.join-path-selected > rect.join-path-icon-background {
+rect.join-path-icon-background {
   fill: ${DIAGRAM_FIELD_COLOR};
 }
 
-g.join-path-selected > path.join-path-icon-right,
-g.join-path-selected > circle.join-path-icon-right {
-  fill: #6EA391;
+g[class^="join-"] > g.join-path-icon {
+  opacity: 0;
 }
 
-g.join-path-selected > path.join-path-icon-left,
-g.join-path-selected > circle.join-path-icon-left {
-  fill: #997CAD;
-}
-
-g.join-path-selected > path.join-path-icon-connector {
-  stroke: #939BA5;
-  stroke-width: 1.95833;
+g.join-path-selected > g.join-path-icon {
+  opacity: 1;
 }
 `
