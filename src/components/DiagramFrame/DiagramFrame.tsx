@@ -74,6 +74,9 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
   const currentModel = modelDetail?.model
 
   const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
+  const toggleSettings = () => {closePanels(); setShowSettings(!showSettings)}
+  const toggleViewOptions = () => {closePanels(); setShowViewOptions(!showViewOptions)}
+  const toggleHelp = () => {closePanels(); setShowHelp(!showHelp)}
 
   function closePanels() {
     setShowHelp(false)
@@ -118,7 +121,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
             label="Settings"
             tooltipPlacement="right"
             size="large"
-            onClick={() => {closePanels(); setShowSettings(!showSettings)}}
+            onClick={toggleSettings}
             toggle={showSettings}
             style={{color: showSettings && OVERRIDE_KEY, 
               backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
@@ -129,7 +132,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
             label="View Options"
             tooltipPlacement="right"
             size="large"
-            onClick={() => {closePanels(); setShowViewOptions(!showViewOptions)}}
+            onClick={toggleViewOptions}
             toggle={showViewOptions}
             style={{color: showViewOptions && OVERRIDE_KEY, 
               backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
@@ -141,7 +144,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
             tooltipPlacement="right"
             id="diagram-help-btn"
             size="large"
-            onClick={() => {closePanels(); setShowHelp(!showHelp)}}
+            onClick={toggleHelp}
             toggle={showHelp}
             style={{color: showHelp && OVERRIDE_KEY, 
               backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
