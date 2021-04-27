@@ -24,7 +24,7 @@
 
  */
 
-import React, { useCallback } from "react"
+import React, { useCallback, memo } from "react"
 import {
   SpaceVertical,
   IconButton,
@@ -50,7 +50,7 @@ import {DiagramFrameProps} from "./types"
 import {Rail, Stage} from "./FrameHelpers"
 import {prepareModelDropdown, prepareExploreList} from "./utils"
 
-export const DiagramFrame: React.FC<DiagramFrameProps> = ({
+export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
   unfilteredModels,
   pathModelName,
   pathExploreName,
@@ -152,12 +152,13 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       {showSettings && (
         <DiagramSettings
           modelPathName={pathModelName}
+          explorePathName={pathExploreName}
           modelDetails={modelDetails}
           exploreList={exploreList}
           modelDetail={modelDetail}
           selectionInfo={selectionInfo}
           currentExplore={currentExplore}
-          diagramExplore={pathExploreName}
+          diagramExplore={currentDimensions?.exploreName}
           setSelectionInfo={setSelectionInfo}
           setViewVisible={setViewVisible}
           setZoomFactor={setZoomFactor}
@@ -222,4 +223,4 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       </Stage>
       </Layout>
   )
-}
+})

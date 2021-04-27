@@ -64,7 +64,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
 
   return (
     <DiagramCanvasWrapper>
-    {!unfilteredModels && !modelDetail?.errorType && (
+    {!unfilteredModels && !modelDetail?.fetchError && (
       <PageLoading>
         <ProgressCircular/>{' '}
         <Heading mt="large">
@@ -72,7 +72,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </Heading>
       </PageLoading>
     )}
-    {modelDetail?.errorType === "general" && (
+    {modelDetail?.fetchError === "general" && (
       <PageLoading>
         <Status intent="warn" size="large"/>
         <Heading mt="large" fontSize="large">
@@ -84,7 +84,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </ErrorText>
       </PageLoading>
     )}
-    {modelDetail?.errorType === "notFound" && (
+    {modelDetail?.fetchError === "notFound" && (
       <PageLoading>
         <Status intent="critical" size="large"/>
         <Heading mt="large" fontSize="large">
@@ -112,7 +112,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </IntroText>
       </FullPage>
     )}
-    {!modelDetail?.errorType && pathModelName && pathExploreName && !currentDimensions && (
+    {!modelDetail?.fetchError && pathModelName && pathExploreName && !currentDimensions && (
       <PageLoading>
         <ProgressCircular/>{' '}
         <Heading mt="large">
@@ -120,7 +120,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         </Heading>
       </PageLoading>
     )}
-    {!modelDetail?.errorType && pathModelName && pathExploreName && currentDimensions && (
+    {!modelDetail?.fetchError && pathModelName && pathExploreName && currentDimensions && (
     <>
       <DiagramToolbar
         zoomFactor={zoomFactor}

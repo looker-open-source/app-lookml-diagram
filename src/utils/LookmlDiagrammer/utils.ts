@@ -70,6 +70,7 @@
        }
      })
    })
+   views.length === 0 && views.push(exploreName)
    return views.filter(onlyUnique).filter(onlyStrings)
  }
  

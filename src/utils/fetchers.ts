@@ -34,7 +34,7 @@ export interface DetailedModel {
   explores: ILookmlModelExplore[]
   gitBranch: IGitBranch
   gitBranches: IGitBranch[]
-  errorType: string
+  fetchError: string
 }
 
 export interface DiagramError {
@@ -103,8 +103,8 @@ export function useLookmlModelExplores(model: ILookmlModel) {
     ...defaultQueryOptions
   })
   const explores = data
-  const errorType = error && "notFound"
-  return {explores, errorType}
+  const modelExploreError = error && "notFound"
+  return {explores, modelExploreError}
 }
 
 /**
@@ -122,7 +122,8 @@ export function useCurrentGitBranch(projectId: string) {
     }
   )
   const gitBranch = data
-  return gitBranch
+  const branchError = error && "git"
+  return {gitBranch, branchError}
 }
 
 /**
@@ -140,7 +141,8 @@ export function useAvailableGitBranches(projectId: string) {
     }
   )
   const gitBranches = data
-  return gitBranches
+  const branchesError = error && "git"
+  return {gitBranches, branchesError}
 }
 
 /**

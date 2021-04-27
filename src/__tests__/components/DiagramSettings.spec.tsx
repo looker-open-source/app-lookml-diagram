@@ -122,8 +122,9 @@ describe('<DiagramSettings />', () => {
   const tree = render(
       <DiagramSettings
       modelDetails={[{value:"modelname", label: "Model Name"}]}
-      modelDetail={{model:{},explores:[],gitBranch:{},gitBranches:[],errorType:""}}
+      modelDetail={{model:{},explores:[],gitBranch:{},gitBranches:[],fetchError:""}}
       modelPathName={""}
+      explorePathName={""}
       exploreList={[view_explore]}
       selectionInfo={{}}
       currentExplore={view_explore}

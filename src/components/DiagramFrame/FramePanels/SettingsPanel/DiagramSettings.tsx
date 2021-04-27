@@ -44,6 +44,7 @@ import { useUpdateGitBranches } from "../../../../utils/fetchers"
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
   modelPathName,
+  explorePathName,
   modelDetails,
   modelDetail,
   selectionInfo,
@@ -79,12 +80,12 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
         {modelPathName && exploreList && (
           <FadeIn duration="intricate">
             <FieldSelect
-              options={getBranchOptions(gitBranch, modelDetail.gitBranches)}
+              options={gitBranch ? getBranchOptions(gitBranch, modelDetail.gitBranches) : []}
               placeholder="Loading Git Branches..."
               label="Current Branch"
               value={gitBranch && gitBranch.name}
               onChange={(value)=>{updateBranch.mutate(value)}}
-              disabled={(gitBranch && gitBranch.is_production) || !diagramExplore}
+              disabled={(gitBranch && gitBranch.is_production) || !diagramExplore || modelDetail?.fetchError === "git"}
             />
             <Divider appearance="light" my="medium" />
             <Label fontSize="xsmall" style={{marginTop: "0rem"}}>Select an Explore</Label>
@@ -93,7 +94,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               currentModel={modelDetail?.model}
               selectionInfo={selectionInfo}
               currentExplore={currentExplore}
-              diagramExplore={diagramExplore}
+              diagramExplore={explorePathName}
               setSelectionInfo={setSelectionInfo}
               setViewVisible={setViewVisible}
               setZoomFactor={setZoomFactor}

@@ -38,6 +38,7 @@ export const Extension: React.FC = () => {
   const { unfilteredModels, modelDetail, dimensions } = useSelectExplore(hiddenToggle, displayFieldType)
   return (
   <ComponentsProvider themeCustomizations={{
+    fontFamilies: { brand: 'Google Sans' },
     colors: { key: "rgb(45, 126, 234)" },
   }}>
     {/* Check out ./src/component_structure.png for a diagram of the app structure */}

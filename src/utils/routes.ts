@@ -100,15 +100,16 @@ export function usePathNames(): {
 export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string) {
   const unfilteredModels = useAllModels()
   const model = useCurrentModel()
-  const {explores, errorType} = useLookmlModelExplores(model)
-  const gitBranch = useCurrentGitBranch(model?.project_name)
-  const gitBranches = useAvailableGitBranches(model?.project_name)
+  const {explores, modelExploreError} = useLookmlModelExplores(model)
+  const {gitBranch, branchError} = useCurrentGitBranch(model?.project_name)
+  const {gitBranches, branchesError} = useAvailableGitBranches(model?.project_name)
+  const fetchError = modelExploreError || branchError || branchesError
   const modelDetail = {
     model,
     explores,
     gitBranch,
     gitBranches,
-    errorType
+    fetchError
   }
   let dimensions: DiagrammedModel[] = generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType)
   return {

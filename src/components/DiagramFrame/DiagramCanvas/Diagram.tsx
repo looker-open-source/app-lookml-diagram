@@ -24,7 +24,7 @@
 
  */
 
-import React, { memo } from 'react';
+import React from 'react';
 import * as d3 from 'd3';
 import { useD3 } from '../../../d3-utils/useD3'
 import { addFilter } from '../../../d3-utils/styles'
@@ -35,7 +35,7 @@ import { DiagramJoin } from '../../../utils/LookmlDiagrammer'
 import {DiagramProps} from "./types"
 import {DiagramSpace} from "./components/DiagramSpace"
 
-export const Diagram: React.FC<DiagramProps> = memo(({
+export const Diagram: React.FC<DiagramProps> = ({
   type,
   dimensions, 
   explore, 
@@ -147,6 +147,6 @@ export const Diagram: React.FC<DiagramProps> = memo(({
       <g className={`${type}-area`} />
     </DiagramSpace>
   );
-})
+}
 
 export default Diagram;

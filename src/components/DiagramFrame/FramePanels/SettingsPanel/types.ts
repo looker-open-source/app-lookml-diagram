@@ -47,6 +47,7 @@ export interface ExploreListProps {
 
 export interface DiagramSettingsProps {
   modelPathName: string,
+  explorePathName: string,
   modelDetails: SelectOptionProps[],
   exploreList: ExploreDropdown[],
   modelDetail: DetailedModel,
