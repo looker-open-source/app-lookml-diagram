@@ -55,7 +55,11 @@
   */
  export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], exploreName?: string) {
    const fields = getFields(exploreFields)
-   const views = fields.map((field: ILookmlModelExploreField)=>{return field.view})
+   const views = fields.map((field: ILookmlModelExploreField)=>{
+     // `is_turtle` not on the model yet, but does exist
+     // @ts-ignore
+     return !field.is_turtle && field.view
+    })
    // not all views bring in fields... so we must check join refs too
    joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
      join.dependent_fields.map((field: string, depFieldIndex: number) => {
