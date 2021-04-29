@@ -24,7 +24,7 @@
 
  */
 import { SelectionInfoPacket } from "../../interfaces"
-import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
+import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/4.0/models';
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   const startLine = `join: ${join.name.toLowerCase()} {\n`

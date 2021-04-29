@@ -24,7 +24,7 @@
 
  */
 
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import { SelectionInfoPacket } from "../interfaces"
 import { DetailedModel } from "../../utils/fetchers"
 import { DiagrammedModel } from "../../utils/LookmlDiagrammer/"

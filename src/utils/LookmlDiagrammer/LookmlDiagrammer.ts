@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import { TABLE_VERTICAL_PADDING, TABLE_DEGREE_STEP, TABLE_ROW_HEIGHT, DIAGRAM_FIELD_STROKE_WIDTH } from "../constants";
 import {DiagramMetadata, DiagramDegreeShiftLookup, DiagramDegreeOrderLookup, DiagramField} from './types'
 import {

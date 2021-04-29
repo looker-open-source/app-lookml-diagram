@@ -22,22 +22,18 @@
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField
-} from '@looker/sdk/lib/sdk/3.1/models'
+} from '@looker/sdk/lib/3.1/models'
 import { exploreURL } from "./urls"
-import { Looker31SDK as LookerSDK } from '@looker/sdk/lib/sdk/3.1/methods'
+import { Looker31SDK as LookerSDK } from '@looker/sdk/lib/3.1/methods'
 
-const globalCache: any = {}
-
-export function getCached<T>(key: string): T {
-  return globalCache[key]
-}
+export const globalCache: any = {}
 
 export async function loadCached<T>(
   key: string,
   callback: () => Promise<T>
 ): Promise<T> {
   if (globalCache[key]) {
-    return getCached(key)
+    return globalCache[key]
   } else {
     const val = await callback()
     /* eslint-disable require-atomic-updates */
