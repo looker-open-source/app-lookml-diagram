@@ -57,9 +57,9 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
       <Flex flexDirection="column" alignItems="center">
         <FlexItem py="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{formatZoom(zoomFactor)}</FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem pt="xsmall"><IconButton icon={<Add />} label="Zoom In" tooltipPlacement="right" 
+        <FlexItem pt="xsmall" pb="xxsmall"><IconButton icon={<Add />} label="Zoom In" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)} /></FlexItem>
-        <FlexItem pb="small"><IconButton icon={<Remove />} label="Zoom Out" tooltipPlacement="right" 
+        <FlexItem pb="xsmall" pt="xxsmall"><IconButton icon={<Remove />} label="Zoom Out" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)}  /></FlexItem>
         <FlexItem width="40px"><Divider/></FlexItem>
         <FlexItem py="xsmall"><IconButton icon={<CenterFocusWeak />} label="Return to Start" tooltipPlacement="right"
@@ -84,8 +84,7 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
               }
             }}
             style={{color: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY, 
-              backgroundColor: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
+              backgroundColor: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY_SUBTLE}}
           />
         </FlexItem>
       </Flex>
