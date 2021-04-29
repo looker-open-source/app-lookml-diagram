@@ -24,7 +24,7 @@
 
  */
 import { SelectionInfoPacket } from "../../interfaces"
-import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models'
+import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/4.0/models'
 
 export const UNKNOWN_VIEW_SQLTABLENAME = "This value is known only for views that are also defined as an Explore."
 
