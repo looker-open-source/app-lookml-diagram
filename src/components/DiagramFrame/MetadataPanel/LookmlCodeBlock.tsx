@@ -64,8 +64,7 @@
  const lookmlKeywords = ["join", "type", "relationship", "sql_on", "dimension", "dimension_group", "sql", "measure", "timeframes", "value_format", "primary_key"]
  
  /**
- * Provides a view-only syntax highlighter for all supported SDK languages.
- * TODO: LookML syntax highlighting
+ * Provides a (partial) LookML syntax highlighter.
  */
  export const LookmlCodeBlock: FC<LookmlCodeBlockProps> = ({
    code,
