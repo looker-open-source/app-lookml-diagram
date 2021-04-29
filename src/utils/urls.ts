@@ -27,7 +27,7 @@
 import {
   ILookmlModelExplore,
   ILookmlModelExploreField
-} from '@looker/sdk/lib/sdk/3.1/models'
+} from '@looker/sdk/lib/4.0/models'
 
 export function exploreURL(explore: ILookmlModelExplore) {
   return `/explore/${encodeURIComponent(

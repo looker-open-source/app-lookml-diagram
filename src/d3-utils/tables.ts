@@ -177,7 +177,7 @@ export function createLookmlViewElement(
     let target = d.toElement || d.target
     let arr: any = d3.select(target).datum()
     setSelectionInfo({
-      lookmlElement: arr.category,
+      lookmlElement: arr?.category,
       name: arr.name,
       grouped: arr.dimension_group,
       link: arr.lookml_link

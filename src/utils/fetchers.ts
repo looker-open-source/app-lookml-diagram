@@ -24,36 +24,17 @@
 
  */
 
-import { useState, useEffect, useContext } from "react"
-import { ExtensionContext } from "@looker/extension-sdk-react"
-import { Looker31SDK as LookerSDK  } from '@looker/sdk/lib/sdk/3.1/methods'
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
-
-const globalCache: any = {}
-
-export function getCached<T>(key: string): T {
-  return globalCache[key]
-}
-
-export async function loadCached<T>(
-  key: string,
-  callback: () => Promise<T>
-): Promise<T> {
-  if (globalCache[key]) {
-    return getCached(key)
-  } else {
-    const val = await callback()
-    /* eslint-disable require-atomic-updates */
-    globalCache[key] = val
-    return val
-  }
-}
+import { useContext } from "react"
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { ExtensionContext2 } from "@looker/extension-sdk-react"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/4.0/models"
 
 export interface DetailedModel {
   model: ILookmlModel
   explores: ILookmlModelExplore[]
   gitBranch: IGitBranch
   gitBranches: IGitBranch[]
+  fetchError: string
 }
 
 export interface DiagramError {
@@ -61,142 +42,129 @@ export interface DiagramError {
   message?: string
 }
 
-// user fetchers
-
-export const getMyUser = async (sdk: LookerSDK) => {
-  return sdk.ok(sdk.me())
+const defaultQueryOptions = {
+  staleTime: Infinity,
+  cacheTime: Infinity,
+  refetchOnWindowFocus: false,
 }
 
-// lookml model explore fetchers
-
-export const loadAllModels = async (sdk: LookerSDK, selectedBranch?: string) => {
-  return loadCached(`all_lookml_models@${selectedBranch}`, () => sdk.ok(sdk.all_lookml_models()))
-}
-
-export function useAllModels(selectedBranch: string, diagramError: DiagramError) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [allModels, allModelsSetter] = useState<ILookmlModel[] | undefined>(undefined)
-  useEffect(() => {
-    async function fetcher() {
-      allModelsSetter(await loadAllModels(coreSDK, selectedBranch))
+/**
+ * gets the undetailed (explore metadata-less) models from instance
+ * @returns allModels - list of models
+ */
+export function useAllModels(): ILookmlModel[] {
+  const { coreSDK } = useContext(ExtensionContext2)
+  const { isLoading, error, data } = useQuery('allModels',
+    () => coreSDK.ok(coreSDK.all_lookml_models()),
+    {
+      ...defaultQueryOptions
     }
-    !diagramError && fetcher()
-  }, [coreSDK, selectedBranch])
+  )
+  const allModels = data
   return allModels
 }
 
-export const loadModel = async (sdk: LookerSDK, modelName: string) => {
-  return (await loadAllModels(sdk)).find(m => m.name === modelName)
-}
-
-export async function loadModelDetail(
-  sdk: LookerSDK,
-  modelName: string,
-  selectedBranch: string,
-  setModelError: (err: DiagramError) => void
-): Promise<DetailedModel> {
-  const model = await loadModel(sdk, modelName)
-  selectedBranch === "" || await changeBranch(sdk, model.project_name, selectedBranch, "", setModelError)
-  let gitBranch = await getActiveBranch(sdk, model.project_name)
-  let gitBranches = await getAvailBranches(sdk, model.project_name)
-  const explores = await Promise.all(
-    model.explores.map(explore => {
-      return loadCachedExplore(sdk, model.name, explore.name)
-    })
-  ).catch(()=>setModelError({kind: "notFound"})) || []
-  return {
-    model,
-    explores,
-    gitBranch, 
-    gitBranches
-  }
-}
-
-export function useModelDetail(modelName: string, selectedBranch: string, diagramError: DiagramError, setDiagramError: (err: DiagramError) => void) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [modelDetail, setModelDetail] = useState<DetailedModel | undefined>(undefined)
-  useEffect(() => {
-    async function fetcher() {
-      if (modelName && !diagramError) {
-        setModelDetail(await loadModelDetail(coreSDK, modelName, selectedBranch, setDiagramError))
-      }
-    }
-    fetcher().catch(()=>{
-      setDiagramError({kind: "notFound"})
-    })
-  }, [coreSDK, modelName, selectedBranch])
-  return { modelDetail }
-}
-
-export const loadCachedExplore = async (
-  sdk: LookerSDK,
-  modelName: string,
-  exploreName: string,
-) => {
-  return loadCached(`${modelName}|${exploreName}`, () =>
-    sdk.ok(sdk.lookml_model_explore(modelName, exploreName))
-  )
-}
-
-export function useExplore(modelName?: string, exploreName?: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [currentExplore, exploreSetter] = useState<ILookmlModelExplore | undefined>(undefined)
-  const [loadingExplore, loadingExploreSetter] = useState(exploreName)
-  useEffect(() => {
-    async function fetcher() {
-      if (modelName && exploreName) {
-        loadingExploreSetter(exploreName)
-        exploreSetter(await loadCachedExplore(coreSDK, modelName, exploreName))
-        loadingExploreSetter(null)
-      }
-    }
-    fetcher()
-  }, [coreSDK, modelName, exploreName])
-  return { loadingExplore, currentExplore }
-}
-
-// git fetchers
-
-export const getActiveBranch = async (sdk: LookerSDK, projectId: string) => {
-  return sdk.ok(sdk.git_branch(projectId))
-}
-
-export const getAvailBranches = async (sdk: LookerSDK, projectId: string) => {
-  return sdk.ok(sdk.all_git_branches(projectId))
-}
-
-export const changeBranch = async (sdk: LookerSDK, projectId: string, gitName: string, gitRef: string, setModelError: (err: DiagramError) => void) => {
-  let res = sdk.ok(sdk.update_git_branch(projectId, 
+/**
+ * gets the explore metadata for a given explore
+ * @param modelName - string model name
+ * @param exploreName - string explore name
+ * @returns - modelexplore metadata and loading
+ */
+export function useLookmlModelExplore(modelName: string, exploreName: string) {
+  const { coreSDK } = useContext(ExtensionContext2)
+  const { isLoading, error, data } = useQuery(
+    `${modelName}|${exploreName}`,
+    () => coreSDK.ok(coreSDK.lookml_model_explore(modelName, exploreName)),
     {
+      retry: false,
+      ...defaultQueryOptions
+    }
+  )
+  const explore = data
+  return {explore, isLoading}
+}
+
+/**
+ * gets the explore metadata for all explores in model
+ * @param model - the model whose explores to fetch
+ * @returns - array of explores and errorType
+ */
+export function useLookmlModelExplores(model: ILookmlModel) {
+  const { coreSDK } = useContext(ExtensionContext2)
+  const { isLoading, error, data } = useQuery(`${model?.name}Explores`, () => {
+    return Promise.all(
+      model.explores.map(explore => {
+        return coreSDK.ok(coreSDK.lookml_model_explore(model.name, explore.name))
+      }))
+  },
+  {
+    enabled: !!model,
+    retry: false,
+    ...defaultQueryOptions
+  })
+  const explores = data
+  const modelExploreError = error && "notFound"
+  return {explores, modelExploreError}
+}
+
+/**
+ * gets the current active git branch
+ * @param projectId - model / project name
+ * @returns gitBranch metadata
+ */
+export function useCurrentGitBranch(projectId: string) {
+  const { coreSDK } = useContext(ExtensionContext2)
+  const { isLoading, error, data } = useQuery(`branch@${projectId}`,
+    () => coreSDK.ok(coreSDK.git_branch(projectId)),
+    {
+      enabled: !!projectId,
+      ...defaultQueryOptions
+    }
+  )
+  const gitBranch = data
+  const branchError = error && "git"
+  return {gitBranch, branchError}
+}
+
+/**
+ * gets the available git branches to switch to
+ * @param projectId - model / project name
+ * @returns list of available git branches
+ */
+export function useAvailableGitBranches(projectId: string) {
+  const { coreSDK } = useContext(ExtensionContext2)
+  const { isLoading, error, data } = useQuery(`branches@${projectId}`,
+    () => coreSDK.ok(coreSDK.all_git_branches(projectId)),
+    {
+      enabled: !!projectId,
+      ...defaultQueryOptions
+    }
+  )
+  const gitBranches = data
+  const branchesError = error && "git"
+  return {gitBranches, branchesError}
+}
+
+/**
+ * provides a mutation obj for updating git branch
+ * invalidatesQuery and reloads page on success
+ * @param projectId - model / project name
+ * @returns current gitBranch object
+ */
+export function useUpdateGitBranches(projectId: string) {
+  const { coreSDK } = useContext(ExtensionContext2)
+  const queryClient = useQueryClient()
+  const mutation = useMutation(
+    (gitName: string) => coreSDK.ok(coreSDK.update_git_branch(projectId, {
       name: gitName,
-      ref: gitRef
-    })).catch(()=>{
-      setModelError({kind: "git", message: `Could not switch to branch ${gitName}.`})
-    })
-  location.reload()
-  return res
-}
-
-export function getActiveGitBranch(projectId: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [gitBranch, setGitBranch] = useState<any>(undefined)
-  useEffect(() => {
-    async function fetcher() {
-      setGitBranch(await getActiveBranch(coreSDK, projectId))
+      ref: ""
+    })),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries()
+        location.reload()
+      }
     }
-    projectId && fetcher()
-  }, [coreSDK, projectId])
-  return gitBranch
-}
-
-export function getAvailGitBranches(projectId: string) {
-  const { coreSDK } = useContext(ExtensionContext)
-  const [gitBranches, setGitBranches] = useState<IGitBranch[]>([])
-  useEffect(() => {
-    async function fetcher() {
-      setGitBranches(await getAvailBranches(coreSDK, projectId))
-    }
-    projectId && fetcher()
-  }, [coreSDK, projectId])
-  return gitBranches
+  )
+  return mutation
 }

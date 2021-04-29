@@ -25,7 +25,7 @@
  */
 
 import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useModelDetail, DiagramError } from "./fetchers"
+import { useAllModels, useLookmlModelExplores, useAvailableGitBranches, useCurrentGitBranch } from "./fetchers"
 import { generateModelDiagrams, DiagrammedModel } from "./LookmlDiagrammer"
 
 export function internalExploreURL({
@@ -97,23 +97,31 @@ export function usePathNames(): {
   }
 }
 
-export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string, selectedBranch: string, diagramError: DiagramError, setDiagramError: (err: DiagramError) => void) {
-  const { modelName } = usePathNames()
-  const unfilteredModels = useAllModels(selectedBranch, diagramError)
-  const currentModel = useCurrentModel(selectedBranch, diagramError)
-  let {modelDetail} = useModelDetail(modelName, selectedBranch, diagramError, setDiagramError)
+export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string) {
+  const unfilteredModels = useAllModels()
+  const model = useCurrentModel()
+  const {explores, modelExploreError} = useLookmlModelExplores(model)
+  const {gitBranch, branchError} = useCurrentGitBranch(model?.project_name)
+  const {gitBranches, branchesError} = useAvailableGitBranches(model?.project_name)
+  const fetchError = modelExploreError || branchError || branchesError
+  const modelDetail = {
+    model,
+    explores,
+    gitBranch,
+    gitBranches,
+    fetchError
+  }
   let dimensions: DiagrammedModel[] = generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType)
   return {
     unfilteredModels,
-    currentModel, 
     modelDetail, 
     dimensions, 
   }
 }
 
-export function useCurrentModel(selectedBranch: string, diagramError: DiagramError) {
+export function useCurrentModel() {
   const { modelName } = usePathNames()
-  const modelData = useAllModels(selectedBranch, diagramError)
+  const modelData = useAllModels()
   let currentModel = modelData && modelData.find(m => m.name === modelName)
   return currentModel
 

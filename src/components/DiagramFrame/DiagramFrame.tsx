@@ -24,15 +24,14 @@
 
  */
 
-import React, { useCallback } from "react"
+import React, { useCallback, memo } from "react"
 import {
   SpaceVertical,
   IconButton,
   Layout,
 } from "@looker/components"
-import { AccountTree, Visibility, LiveHelp, Dashboard } from "@styled-icons/material-outlined"
+import { AccountTree, Visibility, LiveHelp } from "@styled-icons/material-outlined"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { useCurrentModel } from "../../utils/routes"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
 import "./styles.css"
 import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
@@ -46,25 +45,21 @@ import {
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
-import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import {DiagramFrameProps} from "./types"
 import {Rail, Stage} from "./FrameHelpers"
-import {getBranchOptions, prepareModelDropdown, prepareExploreList} from "./utils"
+import {prepareModelDropdown, prepareExploreList} from "./utils"
 
-export const DiagramFrame: React.FC<DiagramFrameProps> = ({
+export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
   unfilteredModels,
   pathModelName,
   pathExploreName,
   modelDetail,
   dimensions,
-  modelError,
-  setModelError,
   hiddenToggle,
   setHiddenToggle,
   displayFieldType,
   setDisplayFieldType,
-  selectedBranch,
-  setSelectedBranch,
   }) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
@@ -76,9 +71,12 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
-  const currentModel = useCurrentModel(selectedBranch, modelError)
+  const currentModel = modelDetail?.model
 
   const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
+  const toggleSettings = () => {closePanels(); setShowSettings(!showSettings)}
+  const toggleViewOptions = () => {closePanels(); setShowViewOptions(!showViewOptions)}
+  const toggleHelp = () => {closePanels(); setShowHelp(!showHelp)}
 
   function closePanels() {
     setShowHelp(false)
@@ -95,7 +93,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const modelDetails = prepareModelDropdown(unfilteredModels)
 
-  let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
+  let currentExplore: ILookmlModelExplore = modelDetail?.explores?.filter((d: ILookmlModelExplore)=>{
     return d.name === pathExploreName
   })[0]
 
@@ -123,7 +121,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             label="Settings"
             tooltipPlacement="right"
             size="large"
-            onClick={() => {closePanels(); setShowSettings(!showSettings)}}
+            onClick={toggleSettings}
             toggle={showSettings}
             style={{color: showSettings && OVERRIDE_KEY, 
               backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
@@ -134,7 +132,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             label="View Options"
             tooltipPlacement="right"
             size="large"
-            onClick={() => {closePanels(); setShowViewOptions(!showViewOptions)}}
+            onClick={toggleViewOptions}
             toggle={showViewOptions}
             style={{color: showViewOptions && OVERRIDE_KEY, 
               backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
@@ -146,7 +144,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             tooltipPlacement="right"
             id="diagram-help-btn"
             size="large"
-            onClick={() => {closePanels(); setShowHelp(!showHelp)}}
+            onClick={toggleHelp}
             toggle={showHelp}
             style={{color: showHelp && OVERRIDE_KEY, 
               backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
@@ -156,17 +154,14 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
       </Rail>
       {showSettings && (
         <DiagramSettings
+          modelPathName={pathModelName}
+          explorePathName={pathExploreName}
           modelDetails={modelDetails}
-          modelName={pathModelName}
           exploreList={exploreList}
-          currentModel={currentModel}
-          setModelError={setModelError}
-          setSelectedBranch={setSelectedBranch}
-          branchOpts={modelDetail && getBranchOptions(modelDetail.gitBranch, modelDetail.gitBranches)}
-          gitBranch={modelDetail?.gitBranch}
+          modelDetail={modelDetail}
           selectionInfo={selectionInfo}
           currentExplore={currentExplore}
-          diagramExplore={pathExploreName}
+          diagramExplore={currentDimensions?.exploreName}
           setSelectionInfo={setSelectionInfo}
           setViewVisible={setViewVisible}
           setZoomFactor={setZoomFactor}
@@ -197,8 +192,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
         />
         <Layout hasAside height="100%" id="DiagramStage">
         <DiagramCanvas
+          modelDetail={modelDetail}
           unfilteredModels={unfilteredModels}
-          modelError={modelError}
           pathModelName={pathModelName}
           pathExploreName={pathExploreName}
           currentDimensions={currentDimensions}
@@ -219,17 +214,16 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           displayFieldType={displayFieldType}
           viewVisible={viewVisible}
           viewPosition={viewPosition}
-          selectedBranch={selectedBranch}
         />
         {currentExplore && Object.keys(selectionInfo).length > 0 && (
           <MetadataPanel
-            explore={currentExplore}
+            currentExplore={currentExplore}
             selectionInfo={selectionInfo}
-            model={modelDetail.model}
+            model={modelDetail?.model}
           />
         )}
         </Layout>
       </Stage>
       </Layout>
   )
-}
+})

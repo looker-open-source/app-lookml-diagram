@@ -25,7 +25,7 @@
  */
 
 import { DetailedModel } from "../fetchers";
-import { ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import {DiagramMetadata, DiagramJoin, DiagrammedModel, DiagramField} from './types'
 import {
   getFields, 
@@ -55,7 +55,7 @@ import {LookmlDiagrammer} from './LookmlDiagrammer'
  */
 export function generateModelDiagrams(details: DetailedModel, hiddenToggle: boolean, displayFieldType: string) {
   let modifiedDetails: DiagrammedModel[] = []
-  details && details.explores.map((d: ILookmlModelExplore) => {
+  details?.explores?.map((d: ILookmlModelExplore) => {
     let modifiedDetail: DiagrammedModel = {
       exploreName: d.name,
       modelName: d.model_name,
@@ -105,7 +105,8 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
       return e.view === viewName && e.category === "dimension"
     }).length
 
-    if (explore.name === viewName || explore.sets[0].name === viewName) {
+    const firstSetName = explore.sets[0].name
+    if (explore.name === viewName || firstSetName === viewName || firstSetName.split(".")[0] === viewName) {
       baseViewName = viewName
     }
 
@@ -174,9 +175,9 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
 
   const diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
   
-  const seedName = baseViewName !== "" ? baseViewName : buildOrder[0]
+  const startTableName = baseViewName !== "" ? baseViewName : buildOrder[0]
 
-  Object.assign(diagramDict, diagrammer.getDiagram(seedName))
+  Object.assign(diagramDict, diagrammer.getDiagram(startTableName))
 
   return diagramDict
 }

@@ -26,7 +26,6 @@
 
 import React from "react"
 import {
-  Spinner,
   Heading,
   ProgressCircular,
   Status,
@@ -35,12 +34,77 @@ import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
 import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"
-import {DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText, ErrorText} from "./components/Layout"
+import {DiagramCanvasWrapper, Minimap, ColumnPage, FullPage, IntroText, ErrorText} from "./components/Layout"
 import { EmptyStateArt } from "./components/EmptyStateArt"
 
-export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ 
+const renderError = (fetchError: string) => {
+  let errorText
+  if (fetchError === "general") {
+    errorText = "A future version of the LookML Diagram extension may be able to support this model."
+  } else if (fetchError === "notFound") {
+    errorText = "Make sure the selected model or Explore exists, you have access, and that it's fully validated on the current branch."
+  } else {
+    errorText = "An unknown problem happened."
+  }
+  return (
+    <DiagramCanvasWrapper>
+      <ColumnPage>
+        <Status intent="warn" size="large"/>
+        <Heading mt="large" fontSize="large">
+          Can't generate LookML Diagram
+        </Heading>
+        <ErrorText>
+          {errorText}
+        </ErrorText>
+      </ColumnPage>
+    </DiagramCanvasWrapper>
+  )
+}
+
+const renderInitializingExtension = () => (
+  <DiagramCanvasWrapper>
+    <ColumnPage>
+      <ProgressCircular/>{' '}
+        <Heading mt="large">
+          Initializing Extension
+        </Heading>
+    </ColumnPage>
+  </DiagramCanvasWrapper>
+)
+
+const renderChoose = () => (
+  <DiagramCanvasWrapper>
+    <FullPage>
+      <div style={{ width: "30%" }}>
+        <img
+          src={
+            "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
+          }
+          alt="Empty Image"
+        />
+      </div>
+      <IntroText>
+        Choose a model, followed by an Explore, to better understand
+        your LookML relationships.
+      </IntroText>
+    </FullPage>
+  </DiagramCanvasWrapper>
+)
+
+const renderGenerating = () => (
+  <DiagramCanvasWrapper>
+    <ColumnPage>
+      <ProgressCircular/>{' '}
+      <Heading mt="large">
+        Generating Diagram
+      </Heading>
+    </ColumnPage>
+  </DiagramCanvasWrapper>
+)
+
+export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   unfilteredModels,
-  modelError,
+  modelDetail,
   pathModelName,
   pathExploreName,
   currentDimensions,
@@ -61,66 +125,27 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   displayFieldType,
   viewVisible,
   viewPosition,
-  selectedBranch
  }) => {
   let svgElement = document.querySelector(`svg#display-diagram-svg`)
 
+  if (modelDetail?.fetchError) {
+    return renderError(modelDetail.fetchError)
+  }
+
+  if (!unfilteredModels) {
+    return renderInitializingExtension()
+  }
+
+  if (!pathExploreName && !currentDimensions) {
+    return renderChoose()
+  }
+
+  if (pathModelName && pathExploreName && !currentDimensions) {
+    return renderGenerating()
+  }
+
   return (
     <DiagramCanvasWrapper>
-    {!unfilteredModels && !modelError && (
-      <PageLoading>
-        <ProgressCircular/>{' '}
-        <Heading mt="large">
-          Loading Extension
-        </Heading>
-      </PageLoading>
-    )}
-    {modelError?.kind === "general" && (
-      <PageLoading>
-        <Status intent="warn" size="large"/>
-        <Heading mt="large" fontSize="large">
-          Can't generate LookML Diagram
-        </Heading>
-        <ErrorText>
-          A future version of the LookML Diagram extension
-          may be able to support this model.
-        </ErrorText>
-      </PageLoading>
-    )}
-    {modelError?.kind === "notFound" && (
-      <PageLoading>
-        <Status intent="critical" size="large"/>
-        <Heading mt="large" fontSize="large">
-          Can't generate LookML Diagram
-        </Heading>
-        <ErrorText>
-          Make sure the selected model or Explore exists, you have access,
-          and that it's fully validated on the current branch.
-        </ErrorText>
-      </PageLoading>
-    )}
-    {unfilteredModels && !pathExploreName && !currentDimensions && (
-      <FullPage>
-        <div style={{ width: "35%" }}>
-          <EmptyStateArt />
-        </div>
-        <Heading fontSize="large">Begin visualizing your LookML model</Heading>
-        <IntroText>
-          Choose a model, followed by an Explore, to better understand
-          your LookML relationships.
-        </IntroText>
-      </FullPage>
-    )}
-    {!modelError && pathModelName && pathExploreName && !currentDimensions && (
-      <PageLoading>
-        <ProgressCircular/>{' '}
-        <Heading mt="large">
-          Generating Diagram
-        </Heading>
-      </PageLoading>
-    )}
-    {!modelError && pathModelName && pathExploreName && currentDimensions && (
-    <>
       <DiagramToolbar
         zoomFactor={zoomFactor}
         reload={reload}
@@ -135,10 +160,10 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
       />
       <Diagram
         type={"display"}
-        dimensions={dimensions} 
-        explore={explore} 
-        reload={reload} 
-        selectionInfo={selectionInfo} 
+        dimensions={dimensions}
+        explore={explore}
+        reload={reload}
+        selectionInfo={selectionInfo}
         setSelectionInfo={setSelectionInfo}
         hiddenToggle={hiddenToggle}
         displayFieldType={displayFieldType}
@@ -147,15 +172,15 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         setZoomFactor={setZoomFactor}
         viewPosition={viewPosition}
         setViewPosition={setViewPosition}
-        selectedBranch={selectedBranch}
       />
-      {(minimapEnabled || (minimapUntoggled && currentDimensions.minimapDefault)) && <Minimap raised>
-        <Diagram 
+      {(minimapEnabled || (minimapUntoggled && currentDimensions.minimapDefault)) &&
+      <Minimap raised>
+        <Diagram
           type={"minimap"}
-          dimensions={dimensions} 
-          explore={explore} 
-          reload={reload} 
-          selectionInfo={selectionInfo} 
+          dimensions={dimensions}
+          explore={explore}
+          reload={reload}
+          selectionInfo={selectionInfo}
           setSelectionInfo={setSelectionInfo}
           hiddenToggle={hiddenToggle}
           displayFieldType={displayFieldType}
@@ -171,11 +196,8 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
             clientHeight: svgElement && (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
           }}
           setViewPosition={()=>{}}
-          selectedBranch={selectedBranch}
         />
       </Minimap>}
-    </>
-    )}
     </DiagramCanvasWrapper>
   )
 }

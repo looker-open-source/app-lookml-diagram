@@ -24,41 +24,47 @@
 
  */
 
-import React, { useState } from "react"
-import { ComponentsProvider, MessageBar } from "@looker/components"
+import React, { useContext } from "react"
+import { ComponentsProvider } from "@looker/components"
 import { DiagramFrame } from "./DiagramFrame/DiagramFrame"
 import { useSelectExplore, usePathNames } from "../utils/routes"
-import { DiagramError } from "../utils/fetchers"
-import { VIEW_OPTIONS_HIDDEN_DEFAULT, VIEW_OPTIONS_FIELDS_DEFAULT,
+import { 
+  VIEW_OPTIONS_HIDDEN_DEFAULT,
+  VIEW_OPTIONS_FIELDS_DEFAULT,
 } from '../utils/constants'
+import { Looker40SDK } from '@looker/sdk'
+import {
+  ExtensionContext2,
+  ExtensionContextData2,
+} from '@looker/extension-sdk-react'
 
 export const Extension: React.FC = () => {
-  const [diagramError, setDiagramError] = useState<DiagramError | undefined>(undefined)
-  const [selectedBranch, setSelectedBranch] = React.useState("")
+  const extensionContext = useContext<ExtensionContextData2<Looker40SDK>>(
+    ExtensionContext2
+  )
+  const { extensionSDK } = extensionContext
+  const extensionHost = (extensionSDK.lookerHostData || {}).hostType
+  const fontOverride = !!extensionHost || extensionHost === "standard" ? {fontFamilies: { brand: 'Google Sans' }} : {}
   const { modelName, exploreName, fullPage } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
-  const { unfilteredModels, modelDetail, dimensions } = useSelectExplore(hiddenToggle, displayFieldType, selectedBranch, diagramError, setDiagramError)
+  const { unfilteredModels, modelDetail, dimensions } = useSelectExplore(hiddenToggle, displayFieldType)
   return (
   <ComponentsProvider themeCustomizations={{
     colors: { key: "rgb(45, 126, 234)" },
+    ...fontOverride,
   }}>
     {/* Check out ./src/component_structure.png for a diagram of the app structure */}
-    {diagramError?.kind === "git" && <MessageBar intent="critical">{diagramError.message}</MessageBar>}
     <DiagramFrame
       unfilteredModels={unfilteredModels}
       pathModelName={modelName}
       pathExploreName={exploreName}
       modelDetail={modelDetail}
       dimensions={dimensions}
-      modelError={diagramError}
-      setModelError={setDiagramError}
       hiddenToggle={hiddenToggle}
       setHiddenToggle={setHiddenToggle}
       displayFieldType={displayFieldType}
       setDisplayFieldType={setDisplayFieldType}
-      selectedBranch={selectedBranch}
-      setSelectedBranch={setSelectedBranch}
     />
   </ComponentsProvider>
 )}

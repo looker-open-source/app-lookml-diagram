@@ -124,14 +124,10 @@ describe('<DiagramFrame />', () => {
     pathExploreName={"test_explore"}
     modelDetail={mockModels[0]}
     dimensions={[{exploreName: "text_explore", modelName: "test", diagramDict: view_dimensions}]}
-    modelError={undefined}
-    setModelError={undefined}
     hiddenToggle={true}
     setHiddenToggle={undefined}
     displayFieldType={"all"}
-    setDisplayFieldType={undefined}
-    selectedBranch={"main"}
-    setSelectedBranch={undefined} />);
+    setDisplayFieldType={undefined} />);
   it('default loading', () => {
     expect(default_loading.debug()).toMatchSnapshot();
   });
@@ -142,14 +138,10 @@ describe('<DiagramFrame />', () => {
     pathExploreName={"test_explore"}
     modelDetail={mockModels[0]}
     dimensions={[{exploreName: "text_explore", modelName: "test", diagramDict: view_dimensions}]}
-    modelError={undefined}
-    setModelError={undefined}
     hiddenToggle={true}
     setHiddenToggle={undefined}
     displayFieldType={"all"}
-    setDisplayFieldType={undefined}
-    selectedBranch={"main"}
-    setSelectedBranch={undefined} />);
+    setDisplayFieldType={undefined} />);
   it('should help section', () => {
     show_help
     .find("IconButton#diagram-help-btn")
@@ -163,14 +155,10 @@ describe('<DiagramFrame />', () => {
     pathExploreName={"test_explore"}
     modelDetail={mockModels[0]}
     dimensions={[{exploreName: "text_explore", modelName: "test", diagramDict: view_dimensions}]}
-    modelError={undefined}
-    setModelError={undefined}
     hiddenToggle={true}
     setHiddenToggle={undefined}
     displayFieldType={"all"}
-    setDisplayFieldType={undefined}
-    selectedBranch={"main"}
-    setSelectedBranch={undefined} />);
+    setDisplayFieldType={undefined} />);
   it('should settings section', () => {
     show_settings
     .find("IconButton[label='Settings']")

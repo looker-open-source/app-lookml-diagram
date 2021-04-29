@@ -17,7 +17,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
- import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+ import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
  import { TABLE_PADDING, SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS } from '../constants'
  import { DiagramField, DiagramMetadata, JoinPopularity, DiagramDegreeOrderLookup } from "./types";
  
@@ -55,7 +55,11 @@
   */
  export function getViews(exploreFields: ILookmlModelExploreFieldset, joins: ILookmlModelExploreJoins[], exploreName?: string) {
    const fields = getFields(exploreFields)
-   const views = fields.map((field: ILookmlModelExploreField)=>{return field.view})
+   const views = fields.map((field: ILookmlModelExploreField)=>{
+     // `is_turtle` not on the model yet, but does exist
+     // @ts-ignore
+     return !field.is_turtle && field.view
+    })
    // not all views bring in fields... so we must check join refs too
    joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
      join.dependent_fields.map((field: string, depFieldIndex: number) => {
@@ -66,6 +70,9 @@
        }
      })
    })
+   if (views.length === 0) {
+    views.push(exploreName)
+   }
    return views.filter(onlyUnique).filter(onlyStrings)
  }
  

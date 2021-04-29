@@ -47,11 +47,11 @@ import {
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { Explore, LogoRings } from "@looker/icons"
 import { VpnKey } from "@styled-icons/material"
-import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
+import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/4.0/models';
 
 import { getFields } from '../../../utils/LookmlDiagrammer/'
 import { exploreFieldURL } from '../../../utils/urls'
-import { useExplore } from '../../../utils/fetchers'
+import { useLookmlModelExplore } from '../../../utils/fetchers'
 import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
 import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
 import { ExternalLink } from "../../ExternalLink"
@@ -67,11 +67,11 @@ export const PillText:React.FC = ({children}) => {
 }
 
 export const MetadataPanel: React.FC<{
-  explore: ILookmlModelExplore,
+  currentExplore: ILookmlModelExplore,
   selectionInfo: SelectionInfoPacket,
   model: ILookmlModel,
 }> = ({
-  explore,
+  currentExplore,
   selectionInfo,
   model
 }) => {
@@ -80,23 +80,23 @@ export const MetadataPanel: React.FC<{
   // 'lookml_link' only exists on api response if user has "see_lookml"
   // permission. This is a requirement for using the extension. 
   // @ts-ignore
-  let exploreLookmlLink = explore.lookml_link
+  let exploreLookmlLink = currentExplore.lookml_link
   if (selectionInfo.lookmlElement === "explore") {
-    metadata = getExploreMetadata(explore, exploreLookmlLink)
+    metadata = getExploreMetadata(currentExplore, exploreLookmlLink)
   } else if (selectionInfo.lookmlElement === "join") {
-    let joinObj = explore.joins.filter((join: ILookmlModelExploreJoins) => {
+    let joinObj = currentExplore.joins.filter((join: ILookmlModelExploreJoins) => {
       return join.name === selectionInfo.name
     })[0]
     metadata = getJoinMetadata(joinObj, exploreLookmlLink)
   } else if (selectionInfo.lookmlElement === "dimension" || selectionInfo.lookmlElement === "measure") {
-    let fields = getFields(explore.fields).filter((field: any) => {
+    let fields = getFields(currentExplore.fields).filter((field: any) => {
       return field.lookml_link === selectionInfo.link && (field.name === selectionInfo.name || (field.dimension_group === selectionInfo.grouped && field.name.includes(selectionInfo.name)))
     })
     field = fields[0]
     metadata = getFieldMetadata(fields, selectionInfo)
   } else if (selectionInfo.lookmlElement === "view") {
-    let viewResponse = useExplore(explore.model_name, selectionInfo.name)
-    metadata = getViewMetadata(viewResponse, exploreLookmlLink, selectionInfo)
+    const {explore, isLoading} = useLookmlModelExplore(currentExplore.model_name, selectionInfo.name)
+    metadata = getViewMetadata(explore, isLoading, exploreLookmlLink, selectionInfo)
   }
 	return (
   <MetadataInfoPanel width={`${METADATA_PANEL_PIXEL}px`} px="medium" py="large">
@@ -156,7 +156,7 @@ export const MetadataPanel: React.FC<{
           </TabList>
           <TabPanels pt={0}>
             <TabPanel>
-              <MetadataPanelTable metadata={metadata} model={model} explore={explore} field={field} />
+              <MetadataPanelTable metadata={metadata} model={model} explore={currentExplore} field={field} />
             </TabPanel>
             <TabPanel>
               <LookmlCodeBlock>{metadata.fieldCode}</LookmlCodeBlock>
@@ -186,7 +186,7 @@ export const MetadataPanel: React.FC<{
         </ExternalLink></FlexItem>
         <FlexItem flexBasis="40%">{field && <ExternalLink
           target="_blank"
-          href={exploreFieldURL(explore, field)}
+          href={exploreFieldURL(currentExplore, field)}
         >
           <ButtonTransparent
             ml="xxxlarge"
