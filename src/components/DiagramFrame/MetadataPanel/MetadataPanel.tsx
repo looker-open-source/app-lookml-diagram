@@ -60,7 +60,7 @@ import MetadataPanelTable from "./MetadataPanelTable"
 import {MetadataInfoPanel} from "./MetadataInfoPanel"
 import {MetadataFooter} from "./MetadataFooter"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
-import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata} from "./utils"
+import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata, isSelectedFieldOrDimGroupMember} from "./utils"
 
 export const PillText:React.FC = ({children}) => {
   return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>
@@ -90,8 +90,7 @@ export const MetadataPanel: React.FC<{
     metadata = getJoinMetadata(joinObj, exploreLookmlLink)
   } else if (selectionInfo.lookmlElement === "dimension" || selectionInfo.lookmlElement === "measure") {
     let fields = getFields(currentExplore.fields).filter((field: any) => {
-      return field.lookml_link === selectionInfo.link && (field.name === selectionInfo.name || (field.dimension_group === selectionInfo.grouped && 
-        (field.name.includes(selectionInfo.name) || selectionInfo.name === field.sql)))
+      return isSelectedFieldOrDimGroupMember(selectionInfo, field)
     })
     field = fields[0]
     metadata = getFieldMetadata(fields, selectionInfo)

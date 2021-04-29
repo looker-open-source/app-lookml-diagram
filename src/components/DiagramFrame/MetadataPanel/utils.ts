@@ -146,3 +146,17 @@ export function getExploreMetadata(explore: ILookmlModelExplore, lookmlLink: str
     accessFilters: explore.access_filters,
   }
 }
+
+export function isSelectedFieldOrDimGroupMember(selectionInfo: SelectionInfoPacket, field: ILookmlModelExploreField) {
+  // dimension group not on type but does exist
+  // @ts-ignore
+  const dimensionGroup = field.dimension_group
+  if (field.lookml_link === selectionInfo.link) {
+    if (field.name === selectionInfo.name) {
+      return true
+    } else if (dimensionGroup === selectionInfo.grouped && (field.name.includes(selectionInfo.name) || selectionInfo.name === field.sql)) {
+      return true
+    }
+  }
+  return false
+}
