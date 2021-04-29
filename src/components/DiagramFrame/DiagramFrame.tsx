@@ -116,8 +116,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   return (
     <Layout hasAside height="100%">
-      <Rail width="50px">
-        <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall">
+      <Rail width="50px" py="xxsmall" pr="xsmall">
+        <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall" ml="xxsmall">
           <IconButton
             icon={<AccountTree />}
             label="Settings"
@@ -126,8 +126,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             onClick={() => {closePanels(); setShowSettings(!showSettings)}}
             toggle={showSettings}
             style={{color: showSettings && OVERRIDE_KEY, 
-              backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
+              backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE}}
           />
           <IconButton
             icon={<Visibility />}
@@ -137,8 +136,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             onClick={() => {closePanels(); setShowViewOptions(!showViewOptions)}}
             toggle={showViewOptions}
             style={{color: showViewOptions && OVERRIDE_KEY, 
-              backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
+              backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE}}
           />
           <IconButton
             icon={<LiveHelp />}
@@ -150,7 +148,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             toggle={showHelp}
             style={{color: showHelp && OVERRIDE_KEY, 
               backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px", position: "absolute", bottom: "0px"}}
+              position: "absolute", bottom: "5px"}}
           />
         </SpaceVertical>
       </Rail>

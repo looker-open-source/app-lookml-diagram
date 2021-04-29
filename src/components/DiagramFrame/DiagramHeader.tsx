@@ -58,8 +58,7 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
             icon={<Info />}
             onClick={toggleExploreInfo}
             style={{color: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY, 
-              backgroundColor: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "25px"}}
+              backgroundColor: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY_SUBTLE}}
             size="large" 
           />
           <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={() => location.reload()} />
