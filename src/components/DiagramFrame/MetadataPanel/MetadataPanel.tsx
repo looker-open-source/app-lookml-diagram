@@ -132,7 +132,7 @@ export const MetadataPanel: React.FC<{
           <Badge intent="neutral" size="small">
             <Space gap="xxsmall">
               <Icon icon={<VpnKey />} color={theme.colors.text3} size="small" />
-              <PillText>Primary Key</PillText>
+              <PillText>primary_key</PillText>
             </Space>
           </Badge>}
       </Space>
