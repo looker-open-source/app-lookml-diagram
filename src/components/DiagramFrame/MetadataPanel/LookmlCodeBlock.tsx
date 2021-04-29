@@ -91,7 +91,7 @@
                        color: "rgb(12, 150, 155)"
                      }
                    }
-                   return <span key={key} {...tokenProps} />
+                   return <span key={key} {...tokenProps}>{text}</span>
                  })}
                </LineContent>
              </Line>

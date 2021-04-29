@@ -106,7 +106,7 @@ export function generateExploreDiagram(explore: ILookmlModelExplore, hiddenToggl
     }).length
 
     const firstSetName = explore.sets[0].name
-    if (baseViewName === "" && (explore.name === viewName || firstSetName === viewName || firstSetName.split(".")[0] === viewName)) {
+    if (baseViewName === "" && (explore.name === viewName || firstSetName === viewName || firstSetName.startsWith(viewName + "."))) {
       baseViewName = viewName
     }
 
