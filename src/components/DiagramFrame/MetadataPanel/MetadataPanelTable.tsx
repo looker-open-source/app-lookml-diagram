@@ -28,6 +28,7 @@ import React from 'react';
 import {
   Flex,
   FlexItem,
+  ProgressCircular,
   Text,
   theme
 } from "@looker/components"
@@ -35,6 +36,7 @@ import styled from "styled-components";
 import { LookmlObjectMetadata } from "../../interfaces"
 import { canGetDistribution, canGetTopValues } from "../../../utils/queries"
 import { QueryChart } from "./QueryChart"
+import { UNKNOWN_VIEW_SQLTABLENAME } from "./utils"
 
 const MetadataRow = styled(Flex as any)`
   border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
@@ -53,6 +55,12 @@ const CodeText = styled(Text as any)`
 const ValueText = styled(Text as any)`
   font-weight: 400;
 `
+export const getSqlTableNameElement = (tableName: string) => {
+  if (tableName === UNKNOWN_VIEW_SQLTABLENAME) {
+    return <ValueText>{tableName}</ValueText> 
+  }
+  return <CodeText>{tableName}</CodeText> 
+}
 
 const MetadataPanelTable: React.FC<{
   metadata: LookmlObjectMetadata,
@@ -75,12 +83,15 @@ const MetadataPanelTable: React.FC<{
         <CodeText>{metadata.fieldName}</CodeText>
       </FlexItem>
     </MetadataRow>}
-    {metadata.sqlTableName && <MetadataRow>
+    {metadata.lookmlObject === "view" && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>SQL Table Name</KeyText>
       </FlexItem>
       <FlexItem flexBasis="65%">
-        <CodeText>{metadata.sqlTableName}</CodeText>
+        {!metadata.sqlTableName ?
+        <ProgressCircular size="small" /> :
+        getSqlTableNameElement(metadata.sqlTableName)
+        }
       </FlexItem>
     </MetadataRow>}
     {metadata.label && <MetadataRow>

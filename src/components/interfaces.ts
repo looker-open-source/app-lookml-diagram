@@ -116,6 +116,7 @@ export interface LookmlObjectMetadata {
   mapLayer?: string,
   fieldCategory?: string,
   timeframes?: string[],
-  sqlTableName?: string
+  sqlTableName?: string,
+  lookmlObject?: string
 }
 

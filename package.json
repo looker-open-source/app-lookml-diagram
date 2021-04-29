@@ -43,6 +43,7 @@
     "humanize-string": "^2.1.0",
     "jest-styled-components": "^7.0.3",
     "lodash": "^4.17.15",
+    "prism-react-renderer": "^1.2.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-force-graph": "^1.27.1",

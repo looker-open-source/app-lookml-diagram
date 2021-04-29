@@ -24,14 +24,80 @@
 
  */
 
-import {
-  CodeBlock,
-} from "@looker/components"
-import styled from "styled-components"
-
-export const LookmlCodeBlock = styled(CodeBlock as any)`
-  background-color: ${(props) => props.theme.colors.neutralSubtle};
-  color: ${(props) => props.theme.colors.keyInteractive};
-  white-space: pre-wrap;
-  width: 100%;
-`
+ import React, { FC } from 'react'
+ import styled from 'styled-components'
+ import { Span, theme } from '@looker/components'
+ import Highlight, { defaultProps } from 'prism-react-renderer'
+ import prismTheme from 'prism-react-renderer/themes/nightOwlLight'
+ 
+ export interface LookmlCodeBlockProps {
+   /** Code blob to be highlighted */
+   code: string
+ }
+ 
+ const Pre = styled.pre`
+   padding: ${theme.sizes.xsmall};
+   white-space: pre-wrap;
+   overflow: auto;
+   // override default margin for Pre
+   // so we can set from parent
+   margin: 0px;
+   width: 100%;
+ `
+ 
+ const Line = styled.div`
+   display: table-row;
+ `
+ 
+ const LineNo = styled(Span as any)`
+   display: table-cell;
+   text-align: right;
+   padding-right: 1em;
+   user-select: none;
+   opacity: 0.5;
+ `
+ 
+ const LineContent = styled(Span as any)`
+   display: table-cell;
+   font-family: monospace;
+ `
+ const lookmlKeywords = ["join", "type", "relationship", "sql_on", "dimension", "dimension_group", "sql", "measure", "timeframes", "value_format", "primary_key"]
+ 
+ /**
+ * Provides a (partial) LookML syntax highlighter.
+ */
+ export const LookmlCodeBlock: FC<LookmlCodeBlockProps> = ({
+   code,
+ }) => {
+   return (
+     <Highlight
+       {...defaultProps}
+       code={code}
+       language={'json'}
+       theme={prismTheme}
+     >
+       {({ className, style, tokens, getLineProps, getTokenProps }) => (
+         <Pre className={className} style={style}>
+           {tokens.map((line, i) => (
+             <Line key={i} {...getLineProps({ line, key: i })}>
+               <LineNo>{i + 1}</LineNo>
+               <LineContent>
+                 {line.map((token, key) => {
+                   const {children, ...tokenProps} = getTokenProps({ token, key })
+                   if (lookmlKeywords.includes(children.trim())) {
+                     tokenProps.style = {
+                       ...tokenProps.style,
+                       color: "rgb(12, 150, 155)"
+                     }
+                   }
+                   return <span key={key} {...tokenProps}>{children}</span>
+                 })}
+               </LineContent>
+             </Line>
+           ))}
+         </Pre>
+       )}
+     </Highlight>
+   )
+ }
+ 

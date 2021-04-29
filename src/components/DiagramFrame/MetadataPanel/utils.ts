@@ -24,7 +24,9 @@
 
  */
 import { SelectionInfoPacket } from "../../interfaces"
-import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/4.0/models';
+import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/4.0/models'
+
+export const UNKNOWN_VIEW_SQLTABLENAME = "This value is known only for views that are also defined as an Explore."
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   const startLine = `join: ${join.name.toLowerCase()} {\n`
@@ -52,7 +54,7 @@ export function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any, sele
   const startLine = `${blobStart}: ${getFieldName(field.name, field.type, selectionInfo.grouped)} {\n`
   const keyLine = field.primary_key && `  primary_key: yes\n`
   const typeLine = field.type && `  type: ${getSqlType(field.type)}\n`
-  const vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
+  const vfLine = field.value_format && `  value_format: ${field.value_format}\n`
   const tfLine = dateOrDuration(field.type) && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
   const sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
   const mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
@@ -93,7 +95,7 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
   // 'lookml_link' only exists on api response if user has "see_lookml"
   // permission. This is a requirement for using the extension. 
   // @ts-ignore
-  let lookmlLink = field.lookml_link
+  let lookmlLink = field?.lookml_link
   let timeframes = fields.map((f: any) => {
     return f.type.includes("date_") && f.type.replace("date_", "") || f.type.includes("duration_") && f.type.replace("duration_", "")
   })
@@ -117,15 +119,17 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
 }
 
 export function getViewMetadata(viewResponse: ILookmlModelExplore, isLoading: boolean, lookmlLink: string, selectionInfo: SelectionInfoPacket) {
-  let sqlTableName = "unknown"
-  if (isLoading) {
-    sqlTableName = "Loading..."
-  } else if (viewResponse?.name === selectionInfo.name) {
+  let sqlTableName: string
+  if (!viewResponse && !isLoading) {
+    sqlTableName = UNKNOWN_VIEW_SQLTABLENAME
+  }
+  if (viewResponse?.name === selectionInfo.name) {
     sqlTableName = viewResponse.sql_table_name
   }
   return {
     name: selectionInfo.name,
     lookmlLink: lookmlLink,
+    lookmlObject: "view",
     sqlTableName
   }
 }
@@ -141,4 +145,18 @@ export function getExploreMetadata(explore: ILookmlModelExplore, lookmlLink: str
     projectName: explore.project_name,
     accessFilters: explore.access_filters,
   }
+}
+
+export function isSelectedFieldOrDimGroupMember(selectionInfo: SelectionInfoPacket, field: ILookmlModelExploreField) {
+  // dimension group not on type but does exist
+  // @ts-ignore
+  const dimensionGroup = field.dimension_group
+  if (field.lookml_link === selectionInfo.link) {
+    if (field.name === selectionInfo.name) {
+      return true
+    } else if (dimensionGroup === selectionInfo.grouped && (field.name.includes(selectionInfo.name) || selectionInfo.name === field.sql)) {
+      return true
+    }
+  }
+  return false
 }
