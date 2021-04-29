@@ -27,18 +27,12 @@
  import React, { FC } from 'react'
  import styled from 'styled-components'
  import { Span, theme } from '@looker/components'
- import Highlight, { defaultProps, Language } from 'prism-react-renderer'
+ import Highlight, { defaultProps } from 'prism-react-renderer'
  import prismTheme from 'prism-react-renderer/themes/nightOwlLight'
  
  export interface LookmlCodeBlockProps {
    /** Code blob to be highlighted */
    code: string
-   /** SDK programming language to syntax highlight */
-   language?: string
-   /** Search pattern to be marked */
-   pattern?: string
-   /** Flag to provide background or not */
-   transparent?: boolean
  }
  
  const Pre = styled.pre`
@@ -48,11 +42,7 @@
    // override default margin for Pre
    // so we can set from parent
    margin: 0px;
-   // selector for search matches
-   .match {
-     border: 1px yellow solid;
-     border-radius: 4px;
-   }
+   width: 100%;
  `
  
  const Line = styled.div`

@@ -24,7 +24,9 @@
 
  */
 import { SelectionInfoPacket } from "../../interfaces"
-import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models';
+import { ILookmlModelExplore, ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/sdk/3.1/models'
+
+export const UNKNOWN_VIEW_SQLTABLENAME = "This value is known only for views that are also defined as an Explore."
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   const startLine = `join: ${join.name.toLowerCase()} {\n`
@@ -52,7 +54,7 @@ export function getFieldCodeBlock(field: ILookmlModelExploreField, tf: any, sele
   const startLine = `${blobStart}: ${getFieldName(field.name, field.type, selectionInfo.grouped)} {\n`
   const keyLine = field.primary_key && `  primary_key: yes\n`
   const typeLine = field.type && `  type: ${getSqlType(field.type)}\n`
-  const vfLine = field.value_format && `  value_format: ${field.value_format} ;;\n`
+  const vfLine = field.value_format && `  value_format: ${field.value_format}\n`
   const tfLine = dateOrDuration(field.type) && `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
   const sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
   const mapLayerLine = field.map_layer && field.map_layer.name && `  map_layer_name: ${field.map_layer.name}\n`
@@ -117,15 +119,17 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
 }
 
 export function getViewMetadata(viewResponse: ILookmlModelExplore, isLoading: boolean, lookmlLink: string, selectionInfo: SelectionInfoPacket) {
-  let sqlTableName = "This value is known only for views that are also defined as an Explore."
-  if (isLoading) {
-    sqlTableName = "Loading..."
-  } else if (viewResponse?.name === selectionInfo.name) {
+  let sqlTableName: string
+  if (!viewResponse && !isLoading) {
+    sqlTableName = UNKNOWN_VIEW_SQLTABLENAME
+  }
+  if (viewResponse?.name === selectionInfo.name) {
     sqlTableName = viewResponse.sql_table_name
   }
   return {
     name: selectionInfo.name,
     lookmlLink: lookmlLink,
+    lookmlObject: "view",
     sqlTableName
   }
 }
