@@ -72,7 +72,7 @@ max-width: 40%;
 color: ${theme.colors.text1};
 `
 
-export const PageLoading = styled.div`
+export const ColumnPage = styled.div`
 display: flex;
 align-items: center;
 flex-direction: column;
