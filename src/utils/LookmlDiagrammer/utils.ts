@@ -17,7 +17,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
- import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+ import { ILookmlModelExploreFieldset, ILookmlModelExploreField, ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
  import { TABLE_PADDING, SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS } from '../constants'
  import { DiagramField, DiagramMetadata, JoinPopularity, DiagramDegreeOrderLookup } from "./types";
  
@@ -70,7 +70,9 @@
        }
      })
    })
-   views.length === 0 && views.push(exploreName)
+   if (views.length === 0) {
+    views.push(exploreName)
+   }
    return views.filter(onlyUnique).filter(onlyStrings)
  }
  

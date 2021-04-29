@@ -25,7 +25,7 @@
  */
 import React from "react"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/4.0/models"
 import { GitBranch } from "@looker/icons"
 import { SelectOptionProps } from "@looker/components"
 import { X_INIT, Y_INIT, ZOOM_INIT, OVERRIDE_KEY_SUBTLE } from '../../../../utils/constants'

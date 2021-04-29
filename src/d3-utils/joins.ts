@@ -25,7 +25,7 @@
  */
 
 import * as d3 from 'd3';
-import { ILookmlModelExplore } from '@looker/sdk/lib/sdk/3.1/models';
+import { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models';
 import { 
   TABLE_WIDTH, 
   JOIN_CONNECTOR_WIDTH, 

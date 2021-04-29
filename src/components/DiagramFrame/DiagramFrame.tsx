@@ -45,7 +45,7 @@ import {
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
-import { ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import {DiagramFrameProps} from "./types"
 import {Rail, Stage} from "./FrameHelpers"
 import {prepareModelDropdown, prepareExploreList} from "./utils"
