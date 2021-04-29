@@ -83,8 +83,8 @@ export function getJoinMetadata(joinObj: ILookmlModelExploreJoins, lookmlLink: s
     lookmlLink: lookmlLink,
     joinCode: getJoinCodeBlock(joinObj),
     joinIconType: joinTypeRaw.replace("_", "-"),
-    joinType: joinTypeRaw.replace(/_/g, " ").toUpperCase(),
-    joinRelationship: joinObj.relationship && joinObj.relationship.replace(/_/g, " ").toUpperCase(),
+    joinType: joinTypeRaw,
+    joinRelationship: joinObj.relationship && joinObj.relationship,
   }
 }
 
@@ -102,7 +102,7 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
     name: getFieldName(field.name, field.type, selectionInfo.grouped),
     fieldName: field.name.split(".")[0],
     lookmlLink: lookmlLink,
-    fieldType: getFieldType(field.type.toUpperCase()),
+    fieldType: getFieldType(field.type),
     description: field.description,
     label: field.label,
     timeframes: !timeframes.includes(false) ? timeframes : [],
@@ -112,7 +112,7 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
     fieldSql: field.sql,
     primaryKey: field.primary_key,
     fieldCode: getFieldCodeBlock(field, tf, selectionInfo),
-    fieldCategory: field.category.toUpperCase(),
+    fieldCategory: field.category,
   }
 }
 
