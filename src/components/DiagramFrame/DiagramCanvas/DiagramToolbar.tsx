@@ -52,41 +52,73 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
   setMinimapEnabled,
  }) => {
 
+  const minimapIconStyles = (minimapEnabled || (minimapUntoggled && defaultMinimap)) ?
+  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  {}
+
+  const recenterViewport = () => {
+    setViewPosition({x: X_INIT, y: Y_INIT});
+    setZoomFactor(ZOOM_INIT);
+    setReload(!reload)
+  }
+
+  const toggleMinimap = () => {
+    if (defaultMinimap && minimapUntoggled) {
+      setMinimapEnabled(false)
+      setMinimapUntoggled(false)
+    } else {
+      setMinimapEnabled(!minimapEnabled)
+      setMinimapUntoggled(false)
+    }
+  }
+
+  const removeZoom = () => setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)
+
+  const addZoom = () => setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)
+
   return (
     <Toolbar raised>
       <Flex flexDirection="column" alignItems="center">
-        <FlexItem py="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{formatZoom(zoomFactor)}</FlexItem>
-        <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem pt="xsmall"><IconButton icon={<Add />} label="Zoom In" tooltipPlacement="right" 
-          onClick={()=>setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)} /></FlexItem>
-        <FlexItem pb="small"><IconButton icon={<Remove />} label="Zoom Out" tooltipPlacement="right" 
-          onClick={()=>setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)}  /></FlexItem>
-        <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem py="xsmall"><IconButton icon={<CenterFocusWeak />} label="Return to Start" tooltipPlacement="right"
-          onClick={()=>{
-            setViewPosition({x: X_INIT, y: Y_INIT});
-            setZoomFactor(ZOOM_INIT);
-            setReload(!reload)}}
-          /></FlexItem>
-        <FlexItem width="40px"><Divider/></FlexItem>
+        <FlexItem py="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>
+          {formatZoom(zoomFactor)}
+        </FlexItem>
+        <FlexItem width="40px">
+          <Divider appearance="light" />
+        </FlexItem>
+        <FlexItem pt="xsmall" pb="xxsmall">
+          <IconButton
+            icon={<Add />}
+            label="Zoom In"
+            tooltipPlacement="right" 
+            onClick={addZoom} />
+          </FlexItem>
+        <FlexItem pb="xsmall" pt="xxsmall">
+          <IconButton
+            icon={<Remove />}
+            label="Zoom Out"
+            tooltipPlacement="right" 
+            onClick={removeZoom} />
+          </FlexItem>
+        <FlexItem width="40px">
+          <Divider appearance="light" />
+        </FlexItem>
         <FlexItem py="xsmall">
+          <IconButton
+            icon={<CenterFocusWeak />}
+            label="Return to Start"
+            tooltipPlacement="right"
+            onClick={recenterViewport} />
+          </FlexItem>
+        <FlexItem width="40px">
+          <Divider appearance="light" />
+        </FlexItem>
+        <FlexItem my="xsmall">
           <IconButton 
             icon={<Map />}
             label="Toggle Minimap" 
             tooltipPlacement="right"
-            onClick={()=>{
-              if (defaultMinimap && minimapUntoggled) {
-                setMinimapEnabled(false)
-                setMinimapUntoggled(false)
-              } else {
-                setMinimapEnabled(!minimapEnabled)
-                setMinimapUntoggled(false)
-              }
-            }}
-            style={{color: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY, 
-              backgroundColor: (minimapEnabled || (minimapUntoggled && defaultMinimap)) && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
-          />
+            onClick={toggleMinimap}
+            style={minimapIconStyles} />
         </FlexItem>
       </Flex>
     </Toolbar>

@@ -41,6 +41,10 @@ height: auto;
 left: 20px;
 bottom: 80px;
 position: absolute;
+border-color: transparent;
+:hover {
+  border-color: transparent;
+}
 `
 
 export const DiagramCanvasWrapper = styled(Section as any)`
