@@ -35,6 +35,7 @@ import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"
 import {DiagramCanvasWrapper, Minimap, ColumnPage, FullPage, IntroText, ErrorText} from "./components/Layout"
+import { EmptyStateArt } from "./components/EmptyStateArt"
 
 const renderError = (fetchError: string) => {
   let errorText
