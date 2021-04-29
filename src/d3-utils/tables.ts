@@ -69,7 +69,7 @@ export function createLookmlViewElement(
   .attr("width", TABLE_WIDTH)
   .attr("height", (tableData.length*(TABLE_ROW_HEIGHT+(DIAGRAM_FIELD_STROKE_WIDTH-1))-CAP_RADIUS))
   .style("filter", "url(#drop-shadow)")
-  .style("opacity", 0.3)
+  .style("opacity", 0.1)
 
   type === "minimap" && table.append("rect")
   .attr("x", header.diagramX)
