@@ -83,15 +83,14 @@
                <LineNo>{i + 1}</LineNo>
                <LineContent>
                  {line.map((token, key) => {
-                   const tokenProps = getTokenProps({ token, key })
-                   const text = tokenProps.children
-                   if (lookmlKeywords.includes(text.trim())) {
+                   const {children, ...tokenProps} = getTokenProps({ token, key })
+                   if (lookmlKeywords.includes(children.trim())) {
                      tokenProps.style = {
                        ...tokenProps.style,
                        color: "rgb(12, 150, 155)"
                      }
                    }
-                   return <span key={key} {...tokenProps}>{text}</span>
+                   return <span key={key} {...tokenProps}>{children}</span>
                  })}
                </LineContent>
              </Line>
