@@ -93,16 +93,18 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
     }
   }
 
+  const iconStyleOverride = {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE}
+
   const settingsIconStyles = showSettings ?
-  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  iconStyleOverride :
   {}
 
   const viewOptionsIconStyles = showViewOptions ?
-  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  iconStyleOverride :
   {}
 
   const helpIconStyles = showHelp ?
-  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  iconStyleOverride :
   {}
 
   const modelDetails = prepareModelDropdown(unfilteredModels)
