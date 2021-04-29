@@ -56,20 +56,20 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
     <Toolbar raised>
       <Flex flexDirection="column" alignItems="center">
         <FlexItem py="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>{formatZoom(zoomFactor)}</FlexItem>
-        <FlexItem width="40px"><Divider/></FlexItem>
+        <FlexItem width="40px"><Divider appearance="light" /></FlexItem>
         <FlexItem pt="xsmall" pb="xxsmall"><IconButton icon={<Add />} label="Zoom In" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.min(zoomFactor, ZOOM_MAX)+ZOOM_STEP)} /></FlexItem>
         <FlexItem pb="xsmall" pt="xxsmall"><IconButton icon={<Remove />} label="Zoom Out" tooltipPlacement="right" 
           onClick={()=>setZoomFactor(Math.max(zoomFactor, ZOOM_MIN)-ZOOM_STEP)}  /></FlexItem>
-        <FlexItem width="40px"><Divider/></FlexItem>
+        <FlexItem width="40px"><Divider appearance="light" /></FlexItem>
         <FlexItem py="xsmall"><IconButton icon={<CenterFocusWeak />} label="Return to Start" tooltipPlacement="right"
           onClick={()=>{
             setViewPosition({x: X_INIT, y: Y_INIT});
             setZoomFactor(ZOOM_INIT);
             setReload(!reload)}}
           /></FlexItem>
-        <FlexItem width="40px"><Divider/></FlexItem>
-        <FlexItem py="xsmall">
+        <FlexItem width="40px"><Divider appearance="light" /></FlexItem>
+        <FlexItem my="xsmall">
           <IconButton 
             icon={<Map />}
             label="Toggle Minimap" 
