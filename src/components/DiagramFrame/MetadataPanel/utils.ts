@@ -93,7 +93,7 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
   // 'lookml_link' only exists on api response if user has "see_lookml"
   // permission. This is a requirement for using the extension. 
   // @ts-ignore
-  let lookmlLink = field.lookml_link
+  let lookmlLink = field?.lookml_link
   let timeframes = fields.map((f: any) => {
     return f.type.includes("date_") && f.type.replace("date_", "") || f.type.includes("duration_") && f.type.replace("duration_", "")
   })
@@ -117,7 +117,7 @@ export function getFieldMetadata(fields: ILookmlModelExploreField[], selectionIn
 }
 
 export function getViewMetadata(viewResponse: ILookmlModelExplore, isLoading: boolean, lookmlLink: string, selectionInfo: SelectionInfoPacket) {
-  let sqlTableName = "unknown"
+  let sqlTableName = "This value is known only for views that are also defined as an Explore."
   if (isLoading) {
     sqlTableName = "Loading..."
   } else if (viewResponse?.name === selectionInfo.name) {

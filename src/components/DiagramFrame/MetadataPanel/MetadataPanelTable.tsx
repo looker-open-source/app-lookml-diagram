@@ -28,6 +28,7 @@ import React from 'react';
 import {
   Flex,
   FlexItem,
+  ProgressCircular,
   Text,
   theme
 } from "@looker/components"
@@ -80,7 +81,10 @@ const MetadataPanelTable: React.FC<{
         <KeyText>SQL Table Name</KeyText>
       </FlexItem>
       <FlexItem flexBasis="65%">
-        <CodeText>{metadata.sqlTableName}</CodeText>
+        {metadata.sqlTableName === "Loading..." ?
+        <ProgressCircular size="small" /> :
+        <ValueText>{metadata.sqlTableName}</ValueText> 
+        }
       </FlexItem>
     </MetadataRow>}
     {metadata.label && <MetadataRow>

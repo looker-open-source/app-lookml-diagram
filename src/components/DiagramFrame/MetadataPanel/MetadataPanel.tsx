@@ -90,7 +90,8 @@ export const MetadataPanel: React.FC<{
     metadata = getJoinMetadata(joinObj, exploreLookmlLink)
   } else if (selectionInfo.lookmlElement === "dimension" || selectionInfo.lookmlElement === "measure") {
     let fields = getFields(currentExplore.fields).filter((field: any) => {
-      return field.lookml_link === selectionInfo.link && (field.name === selectionInfo.name || (field.dimension_group === selectionInfo.grouped && field.name.includes(selectionInfo.name)))
+      return field.lookml_link === selectionInfo.link && (field.name === selectionInfo.name || (field.dimension_group === selectionInfo.grouped && 
+        (field.name.includes(selectionInfo.name) || selectionInfo.name === field.sql)))
     })
     field = fields[0]
     metadata = getFieldMetadata(fields, selectionInfo)
@@ -144,7 +145,7 @@ export const MetadataPanel: React.FC<{
 
       {/* JOIN CODE BLOCK */}
       {metadata.joinCode && (
-        <LookmlCodeBlock>{metadata.joinCode}</LookmlCodeBlock>
+        <LookmlCodeBlock code={metadata.joinCode} />
       )}
 
       <Box width="100%">
@@ -159,7 +160,7 @@ export const MetadataPanel: React.FC<{
               <MetadataPanelTable metadata={metadata} model={model} explore={currentExplore} field={field} />
             </TabPanel>
             <TabPanel>
-              <LookmlCodeBlock>{metadata.fieldCode}</LookmlCodeBlock>
+            <LookmlCodeBlock code={metadata.fieldCode} />
             </TabPanel>
           </TabPanels>
         </Tabs>
