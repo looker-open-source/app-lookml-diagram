@@ -91,6 +91,20 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
     }
   }
 
+  const iconStyleOverride = {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE}
+
+  const settingsIconStyles = showSettings ?
+  iconStyleOverride :
+  {}
+
+  const viewOptionsIconStyles = showViewOptions ?
+  iconStyleOverride :
+  {}
+
+  const helpIconStyles = showHelp ?
+  iconStyleOverride :
+  {}
+
   const modelDetails = prepareModelDropdown(unfilteredModels)
 
   let currentExplore: ILookmlModelExplore = modelDetail?.explores?.filter((d: ILookmlModelExplore)=>{
@@ -114,8 +128,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
 
   return (
     <Layout hasAside height="100%">
-      <Rail width="50px">
-        <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall">
+      <Rail width="50px" py="xxsmall" pr="xsmall">
+        <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall" ml="xxsmall">
           <IconButton
             icon={<AccountTree />}
             label="Settings"
@@ -123,9 +137,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
             size="large"
             onClick={toggleSettings}
             toggle={showSettings}
-            style={{color: showSettings && OVERRIDE_KEY, 
-              backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
+            style={settingsIconStyles}
           />
           <IconButton
             icon={<Visibility />}
@@ -134,9 +146,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
             size="large"
             onClick={toggleViewOptions}
             toggle={showViewOptions}
-            style={{color: showViewOptions && OVERRIDE_KEY, 
-              backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px"}}
+            style={viewOptionsIconStyles}
           />
           <IconButton
             icon={<LiveHelp />}
@@ -146,9 +156,11 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
             size="large"
             onClick={toggleHelp}
             toggle={showHelp}
-            style={{color: showHelp && OVERRIDE_KEY, 
-              backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
-              borderRadius: "10px", position: "absolute", bottom: "0px"}}
+            style={{
+              ...helpIconStyles,
+              position: "absolute",
+              bottom: "5px"
+            }}
           />
         </SpaceVertical>
       </Rail>
