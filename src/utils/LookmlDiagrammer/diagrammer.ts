@@ -25,7 +25,7 @@
  */
 
 import { DetailedModel } from "../fetchers";
-import { ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/sdk/4.0/models"
+import { ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import {DiagramMetadata, DiagramJoin, DiagrammedModel, DiagramField} from './types'
 import {
   getFields, 

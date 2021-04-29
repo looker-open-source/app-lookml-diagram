@@ -29,7 +29,7 @@ import {
 } from "../../../utils/LookmlDiagrammer/"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
 import { DetailedModel } from "../../../utils/fetchers"
-import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/sdk/3.1/models';
+import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/4.0/models';
 
 export interface DiagramProps {
   type: string

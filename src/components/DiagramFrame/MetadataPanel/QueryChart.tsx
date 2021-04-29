@@ -34,9 +34,9 @@ import {
 import { QueryChartType, runChartQuery, SimpleResult } from "../../../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar, Tooltip } from "recharts"
-import { ExtensionContext } from "@looker/extension-sdk-react"
+import { ExtensionContext2 } from "@looker/extension-sdk-react"
 import { ExternalLink } from "../../ExternalLink"
-import { getCached } from "../../../utils/queries"
+import { globalCache } from "../../../utils/queries"
 import { MetadataItem } from "./MetadataList"
 import { QueryChartButton } from "./QueryChartButton"
 
@@ -96,13 +96,13 @@ export class QueryChart extends React.Component<
   QueryChartProps,
   QueryChartState
 > {
-  static contextType = ExtensionContext
+  static contextType = ExtensionContext2
 
   constructor(props: QueryChartProps) {
     super(props)
     this.state = {
       loading: false,
-      response: getCached(JSON.stringify(props.type))
+      response: globalCache[JSON.stringify(props.type)]
     }
   }
 
@@ -110,7 +110,7 @@ export class QueryChart extends React.Component<
     this.setState({ loading: true })
     try {
       const response = await runChartQuery(
-        this.context.core31SDK,
+        this.context.coreSDK,
         this.props.type
       )
       this.setState({
@@ -129,7 +129,7 @@ export class QueryChart extends React.Component<
   componentDidUpdate(prevProps: QueryChartProps) {
     if (JSON.stringify(this.props.type) !== JSON.stringify(prevProps.type)) {
       this.setState({
-        response: getCached(JSON.stringify(this.props.type))
+        response: globalCache[JSON.stringify(this.props.type)]
       })
     }
   }

@@ -24,13 +24,6 @@
 
  */
 
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/sdk/4.0/models"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
-import { DiagramError, DetailedModel } from "../../../utils/fetchers"
-import {
-  SelectOptionProps,
-} from "@looker/components"
-
 export interface ViewOptionsProps {
   displayFieldType: any,
   hiddenToggle: any,
