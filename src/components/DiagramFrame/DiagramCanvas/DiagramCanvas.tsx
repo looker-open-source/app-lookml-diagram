@@ -36,6 +36,7 @@ import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"
 import {DiagramCanvasWrapper, Minimap, PageLoading, FullPage, IntroText, ErrorText} from "./components/Layout"
+import { EmptyStateArt } from "./components/EmptyStateArt"
 
 export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ 
   unfilteredModels,
@@ -100,14 +101,10 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
     )}
     {unfilteredModels && !pathExploreName && !currentDimensions && (
       <FullPage>
-        <div style={{ width: "30%" }}>
-          <img
-            src={
-              "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
-            }
-            alt="Empty Image"
-          />
+        <div style={{ width: "35%" }}>
+          <EmptyStateArt />
         </div>
+        <Heading fontSize="large">Begin visualizing your LookML model</Heading>
         <IntroText>
           Choose a model, followed by an Explore, to better understand
           your LookML relationships.
