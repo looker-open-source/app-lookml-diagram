@@ -42,6 +42,10 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   toggleExploreInfo,
  }) => {
 
+  const exploreInfoStyles = selectionInfo.lookmlElement === "explore" ?
+  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  {}
+
   return (
     <DiagramHeaderWrapper
       py="xsmall"
@@ -57,8 +61,7 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
             label="Explore Info" 
             icon={<Info />}
             onClick={toggleExploreInfo}
-            style={{color: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY, 
-              backgroundColor: selectionInfo.lookmlElement === "explore" && OVERRIDE_KEY_SUBTLE}}
+            style={exploreInfoStyles}
             size="large" 
           />
           <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={() => location.reload()} />

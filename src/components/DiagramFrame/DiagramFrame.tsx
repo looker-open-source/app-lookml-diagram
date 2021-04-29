@@ -93,6 +93,18 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
     }
   }
 
+  const settingsIconStyles = showSettings ?
+  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  {}
+
+  const viewOptionsIconStyles = showViewOptions ?
+  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  {}
+
+  const helpIconStyles = showHelp ?
+  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
+  {}
+
   const modelDetails = prepareModelDropdown(unfilteredModels)
 
   let currentExplore: ILookmlModelExplore = modelDetail?.explores.filter((d: ILookmlModelExplore)=>{
@@ -125,8 +137,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             size="large"
             onClick={() => {closePanels(); setShowSettings(!showSettings)}}
             toggle={showSettings}
-            style={{color: showSettings && OVERRIDE_KEY, 
-              backgroundColor: showSettings && OVERRIDE_KEY_SUBTLE}}
+            style={settingsIconStyles}
           />
           <IconButton
             icon={<Visibility />}
@@ -135,8 +146,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             size="large"
             onClick={() => {closePanels(); setShowViewOptions(!showViewOptions)}}
             toggle={showViewOptions}
-            style={{color: showViewOptions && OVERRIDE_KEY, 
-              backgroundColor: showViewOptions && OVERRIDE_KEY_SUBTLE}}
+            style={viewOptionsIconStyles}
           />
           <IconButton
             icon={<LiveHelp />}
@@ -146,9 +156,11 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             size="large"
             onClick={() => {closePanels(); setShowHelp(!showHelp)}}
             toggle={showHelp}
-            style={{color: showHelp && OVERRIDE_KEY, 
-              backgroundColor: showHelp && OVERRIDE_KEY_SUBTLE,
-              position: "absolute", bottom: "5px"}}
+            style={{
+              ...helpIconStyles,
+              position: "absolute",
+              bottom: "5px"
+            }}
           />
         </SpaceVertical>
       </Rail>
