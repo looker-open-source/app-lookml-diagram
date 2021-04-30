@@ -27,6 +27,7 @@
 import React from 'react';
 import {
   Flex,
+  Space,
   FlexItem,
   ProgressCircular,
   Text,
@@ -37,6 +38,7 @@ import { LookmlObjectMetadata } from "../../interfaces"
 import { canGetDistribution, canGetTopValues } from "../../../utils/queries"
 import { QueryChart } from "./QueryChart"
 import { UNKNOWN_VIEW_SQLTABLENAME } from "./utils"
+import { LookmlCodeBlock } from "./LookmlCodeBlock"
 
 const MetadataRow = styled(Flex as any)`
   border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
@@ -59,7 +61,7 @@ export const getSqlTableNameElement = (tableName: string) => {
   if (tableName === UNKNOWN_VIEW_SQLTABLENAME) {
     return <ValueText>{tableName}</ValueText> 
   }
-  return <CodeText>{tableName}</CodeText> 
+  return <LookmlCodeBlock code={tableName}/>
 }
 
 const MetadataPanelTable: React.FC<{
@@ -83,17 +85,19 @@ const MetadataPanelTable: React.FC<{
         <CodeText>{metadata.fieldName}</CodeText>
       </FlexItem>
     </MetadataRow>}
-    {metadata.lookmlObject === "view" && <MetadataRow>
-      <FlexItem flexBasis="35%">
+    {metadata.lookmlObject === "view" && <Flex flexDirection="column" pt="xxsmall">
+      <FlexItem>
         <KeyText>SQL Table Name</KeyText>
       </FlexItem>
-      <FlexItem flexBasis="65%">
+      <FlexItem pt="small" style={{minHeight:"50px"}}>
         {!metadata.sqlTableName ?
-        <ProgressCircular size="small" /> :
+        <Space p="medium" style={{backgroundColor: "rgb(251, 251, 251)"}} around>
+          <ProgressCircular size="small" />
+        </Space> :
         getSqlTableNameElement(metadata.sqlTableName)
         }
       </FlexItem>
-    </MetadataRow>}
+    </Flex>}
     {metadata.label && <MetadataRow>
       <FlexItem flexBasis="35%">
         <KeyText>Label</KeyText>
