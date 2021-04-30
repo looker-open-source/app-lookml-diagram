@@ -33,7 +33,6 @@ import {
 import { AccountTree, Visibility, LiveHelp } from "@styled-icons/material-outlined"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
-import "./styles.css"
 import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
 import { ViewOptions, DiagramSettings, HelpPanel, ExploreDropdown } from "./FramePanels"
 import { DiagramHeader } from "./DiagramHeader"
