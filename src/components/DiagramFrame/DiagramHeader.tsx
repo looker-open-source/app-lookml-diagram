@@ -30,7 +30,8 @@ import {
   Space,
   IconButton,
 } from "@looker/components"
-import { Info, Refresh } from "@styled-icons/material-outlined"
+import { Info } from "@styled-icons/material-outlined/Info"
+import { Refresh } from "@styled-icons/material-outlined/Refresh"
 
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
 import {DiagramHeaderProps} from "./types"

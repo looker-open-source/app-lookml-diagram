@@ -32,7 +32,10 @@ import {
   IconButton,
   theme
 } from "@looker/components"
-import { CenterFocusWeak, Map, Remove, Add } from "@styled-icons/material"
+import { Add } from "@styled-icons/material/Add"
+import { Remove } from "@styled-icons/material/Remove"
+import { Map } from "@styled-icons/material/Map"
+import { CenterFocusWeak } from "@styled-icons/material/CenterFocusWeak"
 
 import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
 import {DiagramToolbarProps} from "./types"
