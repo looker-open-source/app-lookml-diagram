@@ -75,14 +75,10 @@ const renderInitializingExtension = () => (
 const renderChoose = () => (
   <DiagramCanvasWrapper>
     <FullPage>
-      <div style={{ width: "30%" }}>
-        <img
-          src={
-            "https://marketplace-api.looker.com/app-assets/data_dictionary_2x.png"
-          }
-          alt="Empty Image"
-        />
+      <div style={{ width: "35%" }}>
+        <EmptyStateArt />
       </div>
+      <Heading fontSize="large">Begin visualizing your LookML model</Heading>
       <IntroText>
         Choose a model, followed by an Explore, to better understand
         your LookML relationships.
