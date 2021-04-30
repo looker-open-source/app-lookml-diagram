@@ -26,7 +26,7 @@
 
 import React from "react"
 import { theme, ButtonOutline, FlexItem } from "@looker/components"
-import { Cached } from "@styled-icons/material"
+import { Cached } from "@styled-icons/material/Cached"
 import styled from "styled-components"
 
 const DisabledText = styled.div`

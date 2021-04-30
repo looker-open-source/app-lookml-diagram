@@ -26,13 +26,13 @@
 
 import React from "react"
 import { Link, LinkProps } from "@looker/components"
-import { ExtensionContext } from "@looker/extension-sdk-react"
+import { ExtensionContext2 } from "@looker/extension-sdk-react"
 
 export const ExternalLink: React.FC<Omit<LinkProps, "color">> = (
   props: any
 ) => {
   return (
-    <ExtensionContext.Consumer>
+    <ExtensionContext2.Consumer>
       {context => {
         return (
           <Link
@@ -52,6 +52,6 @@ export const ExternalLink: React.FC<Omit<LinkProps, "color">> = (
           />
         )
       }}
-    </ExtensionContext.Consumer>
+    </ExtensionContext2.Consumer>
   )
 }

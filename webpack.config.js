@@ -1,5 +1,6 @@
 const path = require("path")
-const fs = require('fs');
+const fs = require('fs')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -27,6 +28,9 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist")
   },
+  plugins: [
+    new BundleAnalyzerPlugin({generateStatsFile: true})
+  ],
   devServer: {
     index: 'index.html',
     headers: {

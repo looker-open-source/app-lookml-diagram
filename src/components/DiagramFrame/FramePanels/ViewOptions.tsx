@@ -40,8 +40,9 @@ import {
   Icon,
   theme
 } from "@looker/components"
-import { Visibility, Info } from "@styled-icons/material-outlined"
-import { VisibilityOff } from "@styled-icons/material"
+import { Visibility } from "@styled-icons/material-outlined/Visibility"
+import { Info } from "@styled-icons/material-outlined/Info"
+import { VisibilityOff } from "@styled-icons/material/VisibilityOff"
 
 import {ViewOptionsProps} from "./types"
 import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./FramePanelsHelpers"

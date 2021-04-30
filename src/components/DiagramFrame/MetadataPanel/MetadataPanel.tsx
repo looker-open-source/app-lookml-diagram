@@ -46,7 +46,7 @@ import {
 } from "@looker/components"
 import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
 import { Explore, LogoRings } from "@looker/icons"
-import { VpnKey } from "@styled-icons/material"
+import { VpnKey } from "@styled-icons/material/VpnKey"
 import { ILookmlModelExploreField, ILookmlModelExploreJoins } from '@looker/sdk/lib/4.0/models';
 
 import { getFields } from '../../../utils/LookmlDiagrammer/'

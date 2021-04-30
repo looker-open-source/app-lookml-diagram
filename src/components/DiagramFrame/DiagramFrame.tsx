@@ -30,7 +30,9 @@ import {
   IconButton,
   Layout,
 } from "@looker/components"
-import { AccountTree, Visibility, LiveHelp } from "@styled-icons/material-outlined"
+import { AccountTree } from "@styled-icons/material-outlined/AccountTree"
+import { Visibility } from "@styled-icons/material-outlined/Visibility"
+import { LiveHelp } from "@styled-icons/material-outlined/LiveHelp"
 import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
 import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
 import "./styles.css"
