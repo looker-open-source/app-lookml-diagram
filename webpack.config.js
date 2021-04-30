@@ -29,7 +29,9 @@ module.exports = {
     path: path.resolve(__dirname, "dist")
   },
   plugins: [
-    new BundleAnalyzerPlugin({generateStatsFile: true})
+    new BundleAnalyzerPlugin({
+      analyzerMode: process.env.ANALYZE_MODE || 'disabled',
+    })
   ],
   devServer: {
     index: 'index.html',
