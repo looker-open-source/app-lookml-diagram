@@ -44,7 +44,7 @@ export const Extension: React.FC = () => {
   )
   const { extensionSDK } = extensionContext
   const extensionHost = (extensionSDK.lookerHostData || {}).hostType
-  const fontOverride = !!extensionHost || extensionHost === "standard" ? {fontFamilies: { brand: 'Google Sans' }} : {}
+  const fontOverride = !extensionHost || extensionHost === "standard" ? {fontFamilies: { brand: 'Google Sans' }} : {}
   const { modelName, exploreName, fullPage } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(VIEW_OPTIONS_HIDDEN_DEFAULT)
   const [displayFieldType, setDisplayFieldType] = React.useState(VIEW_OPTIONS_FIELDS_DEFAULT)
