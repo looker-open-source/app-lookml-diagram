@@ -100,12 +100,12 @@ export const MetadataPanel: React.FC<{
   }
 	return (
   <MetadataInfoPanel width={`${METADATA_PANEL_PIXEL}px`} px="medium" py="large">
-    <SpaceVertical gap="large">
+    <SpaceVertical gap="medium">
       {/* NAME */}
       <Heading fontSize="xlarge" style={{fontWeight: 500}}>{metadata.name}</Heading>
 
       {/* PILLS */}
-      <Space gap="xsmall">
+      {metadata.lookmlObject !== "view" && <Space gap="xsmall">
         {metadata.joinType && 
         <Badge intent="neutral" size="small">
           <Space gap="xxsmall">
@@ -135,7 +135,7 @@ export const MetadataPanel: React.FC<{
               <PillText>primary_key</PillText>
             </Space>
           </Badge>}
-      </Space>
+      </Space>}
 
       {/* DESCRIPTION */}
       {metadata.description && (
