@@ -39,7 +39,7 @@ import { CenterFocusWeak } from "@styled-icons/material/CenterFocusWeak"
 
 import { OVERRIDE_KEY_SUBTLE, ZOOM_MAX, OVERRIDE_KEY, ZOOM_STEP, ZOOM_MIN, X_INIT, Y_INIT, ZOOM_INIT } from '../../../utils/constants'
 import {DiagramToolbarProps} from "./types"
-import {Toolbar} from "./components/Layout"
+import {Toolbar} from "./components/canvas_components"
 import {formatZoom} from "./utils"
 
 export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({ 
@@ -85,9 +85,7 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
         <FlexItem py="xsmall" fontSize="xsmall" style={{color: theme.colors.text2}}>
           {formatZoom(zoomFactor)}
         </FlexItem>
-        <FlexItem width="40px">
-          <Divider appearance="light" />
-        </FlexItem>
+        <Divider appearance="light" />
         <FlexItem pt="xsmall" pb="xxsmall">
           <IconButton
             icon={<Add />}
@@ -101,20 +99,16 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
             label="Zoom Out"
             tooltipPlacement="right" 
             onClick={removeZoom} />
-          </FlexItem>
-        <FlexItem width="40px">
-          <Divider appearance="light" />
         </FlexItem>
+        <Divider appearance="light" />
         <FlexItem py="xsmall">
           <IconButton
             icon={<CenterFocusWeak />}
             label="Return to Start"
             tooltipPlacement="right"
             onClick={recenterViewport} />
-          </FlexItem>
-        <FlexItem width="40px">
-          <Divider appearance="light" />
         </FlexItem>
+        <Divider appearance="light" />
         <FlexItem my="xsmall">
           <IconButton 
             icon={<Map />}

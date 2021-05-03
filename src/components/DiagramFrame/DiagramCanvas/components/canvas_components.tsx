@@ -23,21 +23,20 @@
  SOFTWARE.
 
  */
-
+import React from 'react'
 import styled from "styled-components"
 import {
   Card,
   Paragraph,
-  Box,
   Section,
   theme,
 } from "@looker/components"
 import { MINIMAP_WIDTH } from "../../../../utils/constants"
 
-export const Toolbar = styled(Card as any)`
-min-width: 40px;
-width: 40px;
-height: auto;
+/**
+ * Layout component for Toolbar. Floats to bottom left of container
+ */
+export const Toolbar = styled(Card)`
 left: 20px;
 bottom: 80px;
 position: absolute;
@@ -46,53 +45,70 @@ border-color: transparent;
   border-color: transparent;
 }
 `
+Toolbar.defaultProps = {
+  height: 'auto',
+  width: '40px',
+  minWidth: '40px',
+}
 
-export const DiagramCanvasWrapper = styled(Section as any)`
+/**
+ * Top level layout component for the DiagramCanvas
+ */
+export const DiagramCanvasWrapper = styled(Section)`
 background: ${(props) => props.theme.colors.ui1};
 overflow: hidden;
 position: relative;
-`
-export const FullPage = styled(Box as any)`
-position: relative;
-display: flex;
-align-items: stretch;
-justify-content: center;
-align-items: center;
-width: 100%;
-min-height: 93vh;
-flex-direction: column;
-`
-
-export const IntroText = styled(Paragraph as any)`
-text-align: center;
-margin-top: 1em;
-max-width: 30%;
-color: ${theme.colors.text1};
-`
-export const ErrorText = styled(Paragraph as any)`
-text-align: center;
-margin-top: 1em;
-max-width: 40%;
-color: ${theme.colors.text1};
-`
-
-export const ColumnPage = styled.div`
 display: flex;
 align-items: center;
 flex-direction: column;
 justify-content: center;
 height: 100%;
 `
-export const Minimap = styled(Card as any)`
-min-width: ${MINIMAP_WIDTH}px;
-width: ${MINIMAP_WIDTH}px;
-height: auto;
+
+/**
+ * Text component for empty state description
+ */
+export const IntroText: React.FC = ({children}) => {
+  return (
+    <Paragraph
+      textAlign='center'
+      maxWidth='30%'
+      mt='1em'
+      color={theme.colors.text1}
+    >
+      {children}
+    </Paragraph>
+  )
+}
+
+/**
+ * Text component for error state text
+ */
+export const ErrorText: React.FC = ({children}) => {
+  return (
+    <Paragraph
+      textAlign='center'
+      maxWidth='40%'
+      mt='1em'
+      color={theme.colors.text1}
+    >
+      {children}
+    </Paragraph>
+  )
+}
+
+export const Minimap = styled(Card)`
 right: 20px;
 top: 20px;
 position: absolute;
-border-width: 3px;
 border-color: white;
+border-width: 3px;
 :hover {
   border-color: white;
 }
 `
+Minimap.defaultProps = {
+  minWidth: `${MINIMAP_WIDTH}px`,
+  width: `${MINIMAP_WIDTH}px`,
+  height: 'auto'
+}
