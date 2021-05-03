@@ -63,7 +63,7 @@ import {
   PillText,
   MetadataHeading,
   PillWrapper,
-} from "./common"
+} from "./metadata_components"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
 import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata, isSelectedFieldOrDimGroupMember} from "./utils"
 
