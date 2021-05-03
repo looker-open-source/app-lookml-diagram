@@ -40,7 +40,7 @@ import {join_dimensions} from "../../../test_data/polling_dimensions"
 import {join_explore} from "../../../test_data/polling_explore"
 import {Diagram} from "../DiagramCanvas/Diagram"
 import {Italics} from "../FrameHelpers"
-import {SettingsPanel} from "./frame_components"
+import {SettingsPanel, HelpBody} from "./frame_components"
 
 export const HelpPanel: React.FC = () => {
   return (
@@ -71,15 +71,15 @@ export const HelpPanel: React.FC = () => {
             }}
             setViewPosition={()=>{}}
           />
-          <Paragraph fontSize="small">
+          <HelpBody>
           The base view is indicated by a dark blue header. In each view table, dimension rows are white; measure rows are light orange.
-          </Paragraph>
-          <Paragraph fontSize="small">
+          </HelpBody>
+          <HelpBody>
           To the left of each field is an icon representing its type. If the field is a primary key, a key icon appears to the right of the field name.
-          </Paragraph>
-          <Paragraph fontSize="small">
+          </HelpBody>
+          <HelpBody>
           Click on a table row to see its metadata.
-          </Paragraph>
+          </HelpBody>
           <Divider appearance="light"/>
           <Label>Joins</Label>
           <Diagram 
@@ -107,15 +107,15 @@ export const HelpPanel: React.FC = () => {
             }}
             setViewPosition={()=>{}}
           />
-          <Paragraph fontSize="small">
+          <HelpBody>
           Joins are represented by a directed line that connects two views. Joined views are indicated by a light blue header. 
-          </Paragraph>
-          <Paragraph fontSize="small">
+          </HelpBody>
+          <HelpBody>
           The shape of the line, where it attaches to the view or field, conveys the cardinality of the relationship between the two objects; a forked line indicates a “many” cardinality, and a single line indicates a “one” cardinality. You would read the relationship as <Italics>from</Italics> the base view <Italics>to</Italics> the joined view.
-          </Paragraph>
-          <Paragraph fontSize="small">
+          </HelpBody>
+          <HelpBody>
           Hover over a join to see its join relationship type. Click on a join line to see its metadata.
-          </Paragraph>
+          </HelpBody>
           <ExternalLink fontSize="small" target="_blank" href="https://docs.looker.com/data-modeling/extension-framework/lookml-diagram">Full documentation.</ExternalLink>
         </SpaceVertical>
       </FadeIn>

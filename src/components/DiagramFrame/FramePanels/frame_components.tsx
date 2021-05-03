@@ -23,11 +23,12 @@
  SOFTWARE.
 
  */
-
+import React from 'react'
 import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
 import styled from "styled-components"
 import {
   Aside,
+  Paragraph,
   theme
 } from "@looker/components"
 
@@ -64,3 +65,10 @@ border: none;
   pointer-events: none;
 }
 `
+export const HelpBody: React.FC = ({children}) => {
+  return (
+    <Paragraph fontSize="small">
+      {children}
+    </Paragraph>
+  )
+}
