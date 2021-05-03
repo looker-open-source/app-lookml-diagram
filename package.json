@@ -9,6 +9,8 @@
     "start": "webpack serve --no-hot --mode=development",
     "test": "jest",
     "build": "webpack --mode=production",
+    "build:ci:clean": "rm -rf ./temp && mkdir ./temp",
+    "build:ci": "webpack --mode=production --output-path=./temp",
     "lint": "eslint 'src/components/*.ts{,x}'",
     "lint-fix": "eslint 'src/components/*.ts{,x}' --fix",
     "analyze": "export ANALYZE_MODE=static && yarn build"
