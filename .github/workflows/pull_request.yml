@@ -1,13 +1,13 @@
 on: [push]
 name: "CI"
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: c-hive/gha-yarn-cache@v1
-      - run: yarn
-      - run: yarn lint
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: c-hive/gha-yarn-cache@v1
+  #     - run: yarn
+  #     - run: yarn lint
   test:
     if: false # always skip job
     runs-on: ubuntu-latest
