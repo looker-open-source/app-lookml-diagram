@@ -57,15 +57,22 @@ import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
 import { ExternalLink } from "../../ExternalLink"
 import JoinIcon from "./JoinIcon"
 import MetadataPanelTable from "./MetadataPanelTable"
-import {MetadataInfoPanel} from "./MetadataInfoPanel"
-import {MetadataFooter} from "./MetadataFooter"
+import {
+  MetadataFooter,
+  MetadataInfoPanel,
+  PillText,
+  MetadataHeading,
+  PillWrapper,
+} from "./metadata_components"
 import {LookmlCodeBlock} from "./LookmlCodeBlock"
 import {getJoinMetadata, getFieldMetadata, getViewMetadata, getExploreMetadata, isSelectedFieldOrDimGroupMember} from "./utils"
 
-export const PillText:React.FC = ({children}) => {
-  return <Code color="text3" fontSize="xsmall" lineHeight="medium">{children}</Code>
-}
-
+/**
+ * Displays selected diagram object's metadata.
+ * @param currentExplore - URL path explore object
+ * @param selectionInfo - metadata about the diagram's selected object
+ * @param model - model metadata for the current explore
+ */
 export const MetadataPanel: React.FC<{
   currentExplore: ILookmlModelExplore,
   selectionInfo: SelectionInfoPacket,
@@ -99,42 +106,47 @@ export const MetadataPanel: React.FC<{
     metadata = getViewMetadata(explore, isLoading, exploreLookmlLink, selectionInfo)
   }
 	return (
-  <MetadataInfoPanel width={`${METADATA_PANEL_PIXEL}px`} px="medium" py="large">
+  <MetadataInfoPanel>
     <SpaceVertical gap="medium">
-      {/* NAME */}
-      <Heading fontSize="xlarge" style={{fontWeight: 500}}>{metadata.name}</Heading>
+
+      {/* HEADER */}
+      <MetadataHeading>{metadata.name}</MetadataHeading>
 
       {/* PILLS */}
-      {metadata.lookmlObject !== "view" && <Space gap="xsmall">
+      {metadata.lookmlObject !== "view" &&
+      <Space gap="xsmall">
         {metadata.joinType && 
-        <Badge intent="neutral" size="small">
+        <PillWrapper>
           <Space gap="xxsmall">
             <JoinIcon type={metadata.joinIconType} />
             <PillText>{metadata.joinType}</PillText>
           </Space>
-        </Badge>}
-        {metadata.joinRelationship && <Badge intent="neutral" size="small"><PillText>{metadata.joinRelationship}</PillText></Badge>}
+        </PillWrapper>}
+        {metadata.joinRelationship &&
+        <PillWrapper>
+          <PillText>{metadata.joinRelationship}</PillText>
+        </PillWrapper>}
         {metadata.fieldType && 
-          <Badge intent="neutral" size="small">
-            <PillText>
-              {metadata.fieldType}
-            </PillText>
-          </Badge>
+        <PillWrapper>
+          <PillText>
+            {metadata.fieldType}
+          </PillText>
+        </PillWrapper>
         }
         {metadata.fieldCategory && 
-          <Badge intent="neutral" size="small">
-            <PillText>
-              {metadata.fieldCategory}
-            </PillText>
-          </Badge>
+        <PillWrapper>
+          <PillText>
+            {metadata.fieldCategory}
+          </PillText>
+        </PillWrapper>
         }
         {metadata.primaryKey && 
-          <Badge intent="neutral" size="small">
-            <Space gap="xxsmall">
-              <Icon icon={<VpnKey />} color={theme.colors.text3} size="small" />
-              <PillText>primary_key</PillText>
-            </Space>
-          </Badge>}
+        <PillWrapper>
+          <Space gap="xxsmall">
+            <Icon icon={<VpnKey />} color={theme.colors.text3} size="small" />
+            <PillText>primary_key</PillText>
+          </Space>
+        </PillWrapper>}
       </Space>}
 
       {/* DESCRIPTION */}
@@ -147,6 +159,7 @@ export const MetadataPanel: React.FC<{
         <LookmlCodeBlock code={metadata.joinCode} />
       )}
 
+      {/* METADATA TABLE */}
       <Box width="100%">
       {metadata.fieldCode ?
         <Tabs>
@@ -169,33 +182,35 @@ export const MetadataPanel: React.FC<{
       </Box>
 
     </SpaceVertical>
-    <MetadataFooter
-        borderTop={`1px solid ${theme.colors.ui2}`}
-        pt="small"
-        pb="small"
-    >
+
+    {/* FOOTER */}
+    <MetadataFooter>
       <Flex width="100%">
-        <FlexItem flexBasis="60%"><ExternalLink target="_blank" href={metadata.lookmlLink}>
-          <ButtonTransparent
-            mr="xxxlarge"
-            ml="small"
-            iconBefore={<LogoRings />}
+        <FlexItem flexBasis="60%">
+          <ExternalLink target="_blank" href={metadata.lookmlLink}>
+            <ButtonTransparent
+              mr="xxxlarge"
+              ml="small"
+              iconBefore={<LogoRings />}
+            >
+              Go to LookML
+            </ButtonTransparent>
+          </ExternalLink>
+        </FlexItem>
+        <FlexItem flexBasis="40%">{field &&
+          <ExternalLink
+            target="_blank"
+            href={exploreFieldURL(currentExplore, field)}
           >
-            Go to LookML
-          </ButtonTransparent>
-        </ExternalLink></FlexItem>
-        <FlexItem flexBasis="40%">{field && <ExternalLink
-          target="_blank"
-          href={exploreFieldURL(currentExplore, field)}
-        >
-          <ButtonTransparent
-            ml="xxxlarge"
-            mr="xsmall"
-            iconBefore={<Explore />}
-          >
-            Explore with Field
-          </ButtonTransparent>
-        </ExternalLink>}</FlexItem>
+            <ButtonTransparent
+              ml="xxxlarge"
+              mr="xsmall"
+              iconBefore={<Explore />}
+            >
+              Explore with Field
+            </ButtonTransparent>
+          </ExternalLink>}
+        </FlexItem>
       </Flex>
     </MetadataFooter>
   </MetadataInfoPanel>
