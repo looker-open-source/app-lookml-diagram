@@ -27,43 +27,28 @@
  import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
  import styled from "styled-components"
  import {
-   Icon,
+   theme
  } from "@looker/components"
 
 export const ExploreListWrapper = styled.ul`
-margin-top: ${(props) => props.theme.sizes.xxxsmall};
+margin-top: ${theme.sizes.xxxsmall};
 overflow: auto;
 width: 100%;
 `
-
 export const ExploreListitem = styled.li`
-border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
+border-bottom: solid 1px ${theme.colors.ui2};
 `
-
 export const ExploreButton = styled.button`
 all: inherit;
-font-size: ${(props) => props.theme.fontSizes.small};
-color: ${(props) => props.theme.colors.text5};
+font-size: ${theme.fontSizes.small};
+color: ${theme.colors.text5};
 cursor: pointer;
-padding: ${(props) => props.theme.sizes.xxxsmall};
+padding: ${theme.sizes.xxxsmall};
 width: 100%;
 border: none;
-
-
-${Icon} {
-  transform: translateX(0px);
-  transition: all 500ms ease-out;
-} 
-
 &:hover {
   background-color: ${OVERRIDE_KEY_SUBTLE};
-  
-  ${Icon} {
-    transform: translateX(4px);
-  }
-
 }
-
 & > * {
   pointer-events: none;
 }
