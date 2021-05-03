@@ -37,6 +37,7 @@ import {
   Truncate,
   Tooltip,
   ButtonTransparent,
+  FadeIn,
   Icon,
   theme
 } from "@looker/components"
@@ -45,7 +46,7 @@ import { Info } from "@styled-icons/material-outlined/Info"
 import { VisibilityOff } from "@styled-icons/material/VisibilityOff"
 
 import {ViewOptionsProps} from "./types"
-import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./FramePanelsHelpers"
+import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./frame_components"
 import {getViewListItemColor} from "./utils"
 import {SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS} from "../../../utils/constants"
 
@@ -63,6 +64,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
       <SpaceVertical>
         <Heading fontSize="large">View Options</Heading>
         <Flex width="250px" flexDirection="column">
+        <FadeIn duration="intricate">
           <FlexItem pb="small">
             <Label>Fields to Display</Label>
             <RadioGroup 
@@ -155,6 +157,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
               </FlexItem>
             </Flex>
           </FlexItem>
+        </FadeIn>
         </Flex>
       </SpaceVertical>
     </SettingsPanel>

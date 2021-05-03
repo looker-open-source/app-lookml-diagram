@@ -36,7 +36,7 @@ import {
 } from "@looker/components"
 import { internalModelURL } from "../../../../utils/routes"
 import { useHistory } from "react-router"
-import { SettingsPanel } from "../FramePanelsHelpers"
+import { SettingsPanel } from "../frame_components"
 import { DiagramSettingsProps } from "./types"
 import { ExploreList } from "./ExploreList"
 import { getBranchOptions } from "./utils"

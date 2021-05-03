@@ -29,7 +29,7 @@ import { useHistory } from "react-router"
 import { ExploreDropdown } from "../types"
 import { ExploreListProps } from './types'
 import {handleExploreChange, getExploreListItemBackgroundColor} from "./utils"
-import {ExploreListWrapper, ExploreListitem, ExploreButton } from "./ListHelpers"
+import {ExploreListWrapper, ExploreListitem, ExploreButton } from "./list_components"
 
  
 export const ExploreList: React.FC<ExploreListProps> = ({ 
