@@ -47,11 +47,11 @@ import {
   SubKeyText,
   KeyColumn,
   ValueColumn
-} from "./common"
+} from "./metadata_components"
 
 const getSqlTableNameElement = (tableName: string) => {
   if (tableName === UNKNOWN_VIEW_SQLTABLENAME) {
-    return <ValueText>{tableName}</ValueText> 
+    return <ValueText>{tableName}</ValueText>
   }
   return <LookmlCodeBlock code={tableName}/>
 }
