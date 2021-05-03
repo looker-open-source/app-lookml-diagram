@@ -151,7 +151,7 @@ export const PillText: React.FC = ({children}) => {
  * Generic header for metadata panel
  */
 export const MetadataHeading: React.FC = ({children}) => {
-  return <Heading fontSize='xlarge' fontWeight='semiBold'>{children}</Heading>
+  return <Heading fontSize='xlarge'>{children}</Heading>
 }
 
 /**
