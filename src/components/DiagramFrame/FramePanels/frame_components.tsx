@@ -29,6 +29,7 @@ import styled from "styled-components"
 import {
   Aside,
   Paragraph,
+  Heading,
   theme
 } from "@looker/components"
 
@@ -70,5 +71,11 @@ export const HelpBody: React.FC = ({children}) => {
     <Paragraph fontSize="small">
       {children}
     </Paragraph>
+  )
+}
+
+export const PanelHeading: React.FC = ({children}) => {
+  return (
+    <Heading fontSize="large" color={theme.colors.text4}>{children}</Heading>
   )
 }

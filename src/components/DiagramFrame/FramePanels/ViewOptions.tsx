@@ -27,7 +27,6 @@
 import React from "react"
 import {
   SpaceVertical,
-  Heading,
   Divider,
   RadioGroup,
   FieldToggleSwitch,
@@ -46,7 +45,7 @@ import { Info } from "@styled-icons/material-outlined/Info"
 import { VisibilityOff } from "@styled-icons/material/VisibilityOff"
 
 import {ViewOptionsProps} from "./types"
-import {ViewList, ViewListItem, ViewButton, SettingsPanel} from "./frame_components"
+import {ViewList, ViewListItem, ViewButton, SettingsPanel, PanelHeading} from "./frame_components"
 import {getViewListItemColor} from "./utils"
 import {SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS} from "../../../utils/constants"
 
@@ -60,9 +59,9 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
  }) => {
 
   return (
-    <SettingsPanel width="275px" px="medium" py="large">
+    <SettingsPanel>
       <SpaceVertical>
-        <Heading fontSize="large">View Options</Heading>
+        <PanelHeading>View Options</PanelHeading>
         <Flex width="250px" flexDirection="column">
         <FadeIn duration="intricate">
           <FlexItem pb="small">

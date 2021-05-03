@@ -27,11 +27,9 @@
 import React from "react"
 import {
   SpaceVertical,
-  Heading,
   FadeIn,
   Divider,
   Label,
-  Paragraph,
 } from "@looker/components"
 import { ExternalLink } from "../../ExternalLink"
 import {view_explore} from "../../../test_data/order_items_explore"
@@ -40,14 +38,14 @@ import {join_dimensions} from "../../../test_data/polling_dimensions"
 import {join_explore} from "../../../test_data/polling_explore"
 import {Diagram} from "../DiagramCanvas/Diagram"
 import {Italics} from "../FrameHelpers"
-import {SettingsPanel, HelpBody} from "./frame_components"
+import {SettingsPanel, HelpBody, PanelHeading} from "./frame_components"
 
 export const HelpPanel: React.FC = () => {
   return (
-    <SettingsPanel width="275px" px="medium" py="large">
+    <SettingsPanel>
       <FadeIn duration="intricate">
         <SpaceVertical>
-          <Heading fontSize="large">Diagram Help</Heading>
+          <PanelHeading>Diagram Help</PanelHeading>
           <Label>Views</Label>
           <Diagram 
             type={"help-view"}
