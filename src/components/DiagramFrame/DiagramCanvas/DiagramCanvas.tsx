@@ -36,6 +36,7 @@ import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"
 import {DiagramCanvasWrapper, Minimap, IntroText, ErrorText} from "./components/canvas_components"
 import { EmptyStateArt } from "./components/EmptyStateArt"
+import { DiagramMetadata } from "../../../utils/LookmlDiagrammer"
 
 const renderError = (fetchError: string) => {
   let errorText
@@ -96,7 +97,6 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   modelDetail,
   pathModelName,
   pathExploreName,
-  currentDimensions,
   zoomFactor,
   reload,
   minimapUntoggled,
@@ -106,7 +106,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   setReload,
   setMinimapUntoggled,
   setMinimapEnabled,
-  dimensions,
+  currentDimensions,
   explore,
   selectionInfo,
   setSelectionInfo,
@@ -116,6 +116,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   viewPosition,
  }) => {
   const svgElement = document.querySelector(`svg#display-diagram-svg`)
+  const dimensions: DiagramMetadata = currentDimensions?.diagramDict
 
   if (modelDetail?.fetchError) {
     return renderError(modelDetail.fetchError)

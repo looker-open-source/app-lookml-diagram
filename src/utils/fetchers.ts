@@ -28,6 +28,7 @@ import { useContext } from "react"
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { ExtensionContext2 } from "@looker/extension-sdk-react"
 import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/4.0/models"
+import { DiagrammedModel, generateModelDiagrams } from "./LookmlDiagrammer"
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -100,11 +101,28 @@ export function useLookmlModelExplores(model: ILookmlModel) {
   {
     enabled: !!model,
     retry: false,
-    ...defaultQueryOptions
+    ...defaultQueryOptions,
+    initialData: undefined
   })
   const explores = data
   const modelExploreError = error && "notFound"
   return {explores, modelExploreError}
+}
+
+/**
+ * gets the model diagrams from the detailed model
+ * @returns diagrammable model metadata
+ */
+ export function useModelDiagrams(modelDetail: DetailedModel, hiddenToggle: boolean, displayFieldType: string): DiagrammedModel[] {
+  const { isLoading, error, data } = useQuery(JSON.stringify(modelDetail),
+    () => generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType),
+    {
+      ...defaultQueryOptions,
+      initialData: undefined
+    }
+  )
+  const dimensions = data
+  return dimensions
 }
 
 /**
@@ -161,8 +179,7 @@ export function useUpdateGitBranches(projectId: string) {
     })),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries()
-        location.reload()
+        queryClient.resetQueries()
       }
     }
   )
