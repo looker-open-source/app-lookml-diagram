@@ -23,10 +23,9 @@
  SOFTWARE.
 
  */
-
 import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useLookmlModelExplores, useAvailableGitBranches, useCurrentGitBranch } from "./fetchers"
-import { generateModelDiagrams, DiagrammedModel } from "./LookmlDiagrammer"
+import { useAllModels, useLookmlModelExplores, useAvailableGitBranches, useCurrentGitBranch, DetailedModel, useModelDiagrams } from "./fetchers"
+import { DiagrammedModel } from "./LookmlDiagrammer"
 
 export function internalExploreURL({
   model,
@@ -104,18 +103,18 @@ export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string
   const {gitBranch, branchError} = useCurrentGitBranch(model?.project_name)
   const {gitBranches, branchesError} = useAvailableGitBranches(model?.project_name)
   const fetchError = modelExploreError || branchError || branchesError
-  const modelDetail = {
+  const modelDetail: DetailedModel = {
     model,
     explores,
     gitBranch,
     gitBranches,
     fetchError
   }
-  let dimensions: DiagrammedModel[] = generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType)
+  const dimensions = useModelDiagrams(modelDetail, hiddenToggle, displayFieldType)
   return {
     unfilteredModels,
-    modelDetail, 
-    dimensions, 
+    modelDetail,
+    dimensions,
   }
 }
 

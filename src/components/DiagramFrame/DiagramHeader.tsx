@@ -30,6 +30,7 @@ import {
   Space,
   IconButton,
 } from "@looker/components"
+import { useQueryClient } from 'react-query'
 import { Info } from "@styled-icons/material-outlined/Info"
 import { Refresh } from "@styled-icons/material-outlined/Refresh"
 
@@ -40,8 +41,10 @@ import {DiagramHeaderWrapper} from "./FrameHelpers"
 export const DiagramHeader: React.FC<DiagramHeaderProps> = ({ 
   currentExplore,
   selectionInfo,
-  toggleExploreInfo,
+  toggleExploreInfo
  }) => {
+  const queryClient = useQueryClient()
+  const reloadPage = () => queryClient.resetQueries()
 
   const exploreInfoStyles = selectionInfo.lookmlElement === "explore" ?
   {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
@@ -65,7 +68,7 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
             style={exploreInfoStyles}
             size="large" 
           />
-          <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={() => location.reload()} />
+          <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={reloadPage} />
         </Space>
       </Space>
     </DiagramHeaderWrapper>

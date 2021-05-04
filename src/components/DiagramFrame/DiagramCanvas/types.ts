@@ -75,7 +75,6 @@ export interface DiagramCanvasProps {
   setReload: (r: boolean)=>void
   setMinimapUntoggled: (ut: boolean)=>void
   setMinimapEnabled: (e: boolean)=>void
-  dimensions: DiagramMetadata
   explore: ILookmlModelExplore
   selectionInfo: SelectionInfoPacket
   setSelectionInfo: (packet: SelectionInfoPacket) => void

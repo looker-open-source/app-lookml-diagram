@@ -31,6 +31,7 @@ import {
 import { DiagramHeader } from '../../components/DiagramFrame/DiagramHeader'
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
+import { QueryClient, QueryClientProvider } from "react-query"
 
 // jest.mock("@looker/components", () => ({
 //   Heading: () => "Heading",
@@ -49,12 +50,15 @@ import 'jest-styled-components'
 // }))
 
 describe('<DiagramHeader />', () => {
+  const queryClient = new QueryClient()
   const basic = shallow(
-  <DiagramHeader
-    currentExplore={view_explore}
-    selectionInfo={{}}
-    toggleExploreInfo={undefined}
-  />);
+    <QueryClientProvider client={queryClient}>
+    <DiagramHeader
+      currentExplore={view_explore}
+      selectionInfo={{}}
+      toggleExploreInfo={undefined}
+    />
+    </QueryClientProvider>);
   it('should match the basic diagram header', () => {
     expect(basic.debug()).toMatchSnapshot();
   });

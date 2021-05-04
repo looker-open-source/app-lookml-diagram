@@ -24,7 +24,7 @@
 
  */
 
-import React, { useCallback, memo } from "react"
+import React, { useCallback } from "react"
 import {
   SpaceVertical,
   IconButton,
@@ -51,7 +51,7 @@ import {DiagramFrameProps} from "./types"
 import {Rail, Stage} from "./FrameHelpers"
 import {prepareModelDropdown, prepareExploreList} from "./utils"
 
-export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
+export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
   pathModelName,
   pathExploreName,
@@ -219,7 +219,6 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
           setReload={setReload}
           setMinimapUntoggled={setMinimapUntoggled}
           setMinimapEnabled={setMinimapEnabled}
-          dimensions={currentDiagramMetadata}
           explore={currentExplore}
           selectionInfo={selectionInfo}
           setSelectionInfo={setSelectionInfo}
@@ -239,4 +238,4 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = memo(({
       </Stage>
       </Layout>
   )
-})
+}
