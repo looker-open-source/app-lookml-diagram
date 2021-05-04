@@ -31,12 +31,12 @@ import {
   ProgressCircular,
   theme
 } from "@looker/components"
-import { QueryChartType, runChartQuery, SimpleResult } from "../../../utils/queries"
+import { QueryChartType, runChartQuery, SimpleResult } from "../../../../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar, Tooltip } from "recharts"
 import { ExtensionContext2 } from "@looker/extension-sdk-react"
-import { ExternalLink } from "../../ExternalLink"
-import { globalCache } from "../../../utils/queries"
+import { ExternalLink } from "../../../ExternalLink"
+import { globalCache } from "../../../../utils/queries"
 import { MetadataItem } from "./MetadataList"
 import { QueryChartButton } from "./QueryChartButton"
 
@@ -51,15 +51,11 @@ interface QueryChartProps {
   type: QueryChartType
 }
 
-const SpinnerBlock = styled(Spinner as any)`
-  display: inline-block;
-`
-
 interface ProgressTableRowProps {
   progress: number
 }
 
-const ProgressTableRow = styled(TableRow as any)`
+const ProgressTableRow = styled(TableRow)`
   background-image: linear-gradient(
     to right,
     #f5f6f7 0%,
@@ -68,9 +64,11 @@ const ProgressTableRow = styled(TableRow as any)`
   );
 `
 
-const PaddedCell = styled(TableDataCell as any)`
-  padding: 4px;
+const PaddedCell = styled(TableDataCell)`
 `
+PaddedCell.defaultProps = {
+  p: "4px"
+}
 
 const BarTooltip = styled.div`
   padding: 4px;

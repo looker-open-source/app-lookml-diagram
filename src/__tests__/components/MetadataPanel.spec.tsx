@@ -26,106 +26,106 @@
 
 import React from 'react';
 import {MetadataPanel} from '../../components/DiagramFrame/MetadataPanel/MetadataPanel'
-import { shallow, mount, render } from 'enzyme';
-import { 
+import { shallow } from 'enzyme';
+import {
   mockCurrentModel,
   view_dimensions,
   view_explore } from "../../test_data";
 // import 'jest-styled-components';
 
-jest.mock("@looker/components", () => ({
-  Divider: () => "Divider",
-  Flex: () => "Flex",
-  Aside: () => "Aside",
-  FlexItem: () => "FlexItem",
-  Card: () => "Card",
-  IconButton: () => "IconButton",
-  Badge: () => "Badge",
-  ButtonTransparent: () => "ButtonTransparent",
-  CodeBlock: () => "CodeBlock",
-  Code: () => "Code",
-  Heading: () => "Heading",
-  SpaceVertical: () => "SpaceVertical",
-  Paragraph: () => "Paragraph",
-  Footer: () => "Footer",
-  Icon: () => "Icon",
-  Space: () => "Space",
-  Tabs: () => "Tabs",
-  Tab: () => "Tab",
-  TabList: () => "TabList",
-  TabPanel: () => "TabPanel",
-  TabPanels: () => "TabPanels",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+// jest.mock("@looker/components", () => ({
+//   Divider: () => "Divider",
+//   Flex: () => "Flex",
+//   Aside: () => "Aside",
+//   FlexItem: () => "FlexItem",
+//   Card: () => "Card",
+//   IconButton: () => "IconButton",
+//   Badge: () => "Badge",
+//   ButtonTransparent: () => "ButtonTransparent",
+//   CodeBlock: () => "CodeBlock",
+//   Code: () => "Code",
+//   Heading: () => "Heading",
+//   SpaceVertical: () => "SpaceVertical",
+//   Paragraph: () => "Paragraph",
+//   Footer: () => "Footer",
+//   Icon: () => "Icon",
+//   Space: () => "Space",
+//   Tabs: () => "Tabs",
+//   Tab: () => "Tab",
+//   TabList: () => "TabList",
+//   TabPanel: () => "TabPanel",
+//   TabPanels: () => "TabPanels",
+//   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
+// }))
 
-jest.mock('react', () => {
-  return {
-    useContext: jest.fn(() => {
-      return "useContext"
-    }),
-    createContext: jest.fn(() => {
-      return "createContext"
-    }),
-    createElement: jest.fn(() => {
-      return "createElement"
-    }),
-  }
-})
+// jest.mock('react', () => {
+//   return {
+//     useContext: jest.fn(() => {
+//       return "useContext"
+//     }),
+//     createContext: jest.fn(() => {
+//       return "createContext"
+//     }),
+//     createElement: jest.fn(() => {
+//       return "createElement"
+//     }),
+//   }
+// })
 
-jest.mock('@looker/extension-sdk-react', () => {
-  return {
-    ExtensionContext: jest.fn(() => {
-      return "ExtensionContext"
-    }),
-  }
-})
+// jest.mock('@looker/extension-sdk-react', () => {
+//   return {
+//     ExtensionContext: jest.fn(() => {
+//       return "ExtensionContext"
+//     }),
+//   }
+// })
 
-jest.mock('styled-components', () => {
-  return {
-    SpinnerBlock: jest.fn(() => {
-      return "SpinnerBlock"
-    }),
-    Spinner: jest.fn(() => {
-      return "Spinner"
-    }),
-    DisabledText: jest.fn(() => {
-      return "DisabledText"
-    }),
-    _styledComponents: jest.fn(() => {
-      return "div"
-    }),
-    Aside: jest.fn(() => {
-      return "Aside"
-    }),
-  }
-})
+// jest.mock('styled-components', () => {
+//   return {
+//     SpinnerBlock: jest.fn(() => {
+//       return "SpinnerBlock"
+//     }),
+//     Spinner: jest.fn(() => {
+//       return "Spinner"
+//     }),
+//     DisabledText: jest.fn(() => {
+//       return "DisabledText"
+//     }),
+//     _styledComponents: jest.fn(() => {
+//       return "div"
+//     }),
+//     Aside: jest.fn(() => {
+//       return "Aside"
+//     }),
+//   }
+// })
 
-jest.mock("../../components/ExternalLink", () => ({
-  ExternalLink: () => "ExternalLink"
-}))
+// jest.mock("../../components/ExternalLink", () => ({
+//   ExternalLink: () => "ExternalLink"
+// }))
 
-jest.mock("../../components/DiagramFrame/MetadataPanel/JoinIcon", () => ({
-  JoinIcon: () => "JoinIcon"
-}))
+// jest.mock("../../components/DiagramFrame/MetadataPanel/JoinIcon", () => ({
+//   JoinIcon: () => "JoinIcon"
+// }))
 
-jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataPanelTable", () => ({
-  MetadataPanelTable: () => "MetadataPanelTable"
-}))
+// jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataPanelTable", () => ({
+//   MetadataPanelTable: () => "MetadataPanelTable"
+// }))
 
-jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataInfoPanel", () => ({
-  MetadataInfoPanel: () => "MetadataInfoPanel"
-}))
+// jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataInfoPanel", () => ({
+//   MetadataInfoPanel: () => "MetadataInfoPanel"
+// }))
 
-jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataFooter", () => ({
-  MetadataInfoPanel: () => "MetadataFooter"
-}))
+// jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataFooter", () => ({
+//   MetadataInfoPanel: () => "MetadataFooter"
+// }))
 
-jest.mock("../../components/DiagramFrame/MetadataPanel/LookmlCodeBlock", () => ({
-  LookmlCodeBlock: () => "LookmlCodeBlock"
-}))
+// jest.mock("../../components/DiagramFrame/MetadataPanel/LookmlCodeBlock", () => ({
+//   LookmlCodeBlock: () => "LookmlCodeBlock"
+// }))
 
 describe('<MetadataPanel />', () => {
-  const basic = render(
+  const basic = shallow(
   <MetadataPanel
     currentExplore={{joins:[{name:"join"}]}}
     selectionInfo={{lookmlElement: "join", name: "join"}}

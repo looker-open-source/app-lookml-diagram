@@ -24,40 +24,4 @@
 
  */
 
-import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
-import styled from "styled-components"
-import {
-  Aside,
-} from "@looker/components"
-
-export const SettingsPanel = styled(Aside as any)`
-border-right: solid 1px ${(props) => props.theme.colors.ui2};
-overflow-y: auto;
-height: 100%;
-overflow-x: hidden;
-`
-
-export const ViewList = styled.ul`
-overflow-y: auto;
-margin: 0;
-`
-export const ViewListItem = styled.li`
-border-bottom: solid 1px ${(props) => props.theme.colors.ui2};
-`
-
-export const ViewButton = styled.button`
-all: inherit;
-font-size: ${(props) => props.theme.fontSizes.small};
-cursor: pointer;
-padding: 12px 12px;
-width: 100%;
-border: none;
-
-:hover {
-  background-color: ${OVERRIDE_KEY_SUBTLE};
-}
-
-& > * {
-  pointer-events: none;
-}
-`
+export { QueryChart } from "./QueryChart"

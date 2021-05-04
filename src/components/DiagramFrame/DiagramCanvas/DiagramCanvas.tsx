@@ -34,7 +34,7 @@ import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
 import Diagram from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import {DiagramCanvasProps} from "./types"
-import {DiagramCanvasWrapper, Minimap, ColumnPage, FullPage, IntroText, ErrorText} from "./components/Layout"
+import {DiagramCanvasWrapper, Minimap, IntroText, ErrorText} from "./components/canvas_components"
 import { EmptyStateArt } from "./components/EmptyStateArt"
 
 const renderError = (fetchError: string) => {
@@ -48,56 +48,49 @@ const renderError = (fetchError: string) => {
   }
   return (
     <DiagramCanvasWrapper>
-      <ColumnPage>
-        <Status intent="warn" size="large"/>
-        <Heading mt="large" fontSize="large">
-          Can't generate LookML Diagram
-        </Heading>
-        <ErrorText>
-          {errorText}
-        </ErrorText>
-      </ColumnPage>
+      <Status intent="critical" size="large"/>
+      <Heading mt="large" fontSize="large">
+        Can't generate LookML Diagram
+      </Heading>
+      <ErrorText>
+        {errorText}
+      </ErrorText>
     </DiagramCanvasWrapper>
   )
 }
 
 const renderInitializingExtension = () => (
   <DiagramCanvasWrapper>
-    <ColumnPage>
-      <ProgressCircular/>{' '}
-        <Heading mt="large">
-          Initializing Extension
-        </Heading>
-    </ColumnPage>
+    <ProgressCircular/>{' '}
+    <Heading mt="large">
+      Initializing Extension
+    </Heading>
   </DiagramCanvasWrapper>
 )
 
 const renderChoose = () => (
   <DiagramCanvasWrapper>
-    <FullPage>
-      <div style={{ width: "35%" }}>
-        <EmptyStateArt />
-      </div>
-      <Heading fontSize="large">Begin visualizing your LookML model</Heading>
-      <IntroText>
-        Choose a model, followed by an Explore, to better understand
-        your LookML relationships.
-      </IntroText>
-    </FullPage>
+    <EmptyStateArt />
+    <Heading fontSize="large">Begin visualizing your LookML model</Heading>
+    <IntroText>
+      Choose a model, followed by an Explore, to better understand
+      your LookML relationships.
+    </IntroText>
   </DiagramCanvasWrapper>
 )
 
 const renderGenerating = () => (
   <DiagramCanvasWrapper>
-    <ColumnPage>
-      <ProgressCircular/>{' '}
-      <Heading mt="large">
-        Generating Diagram
-      </Heading>
-    </ColumnPage>
+    <ProgressCircular/>{' '}
+    <Heading mt="large">
+      Generating Diagram
+    </Heading>
   </DiagramCanvasWrapper>
 )
 
+/**
+ * This function has the responsibility of taking in various 
+ */
 export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   unfilteredModels,
   modelDetail,
@@ -122,7 +115,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   viewVisible,
   viewPosition,
  }) => {
-  let svgElement = document.querySelector(`svg#display-diagram-svg`)
+  const svgElement = document.querySelector(`svg#display-diagram-svg`)
 
   if (modelDetail?.fetchError) {
     return renderError(modelDetail.fetchError)

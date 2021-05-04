@@ -24,18 +24,32 @@
 
  */
 
-import {
-  Footer,
-} from "@looker/components"
-import styled from "styled-components"
-import {METADATA_PANEL_PIXEL} from "../../../utils/constants"
+ import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
+ import styled from "styled-components"
+ import {
+   theme
+ } from "@looker/components"
 
-export const MetadataFooter = styled(Footer as any)`
-  width: ${METADATA_PANEL_PIXEL}px;
-  right: -1px;
-  position: absolute;
-  bottom: 0px;
-  border-top-color: transparent;
-  box-shadow: 0px 1px 15px ${(props) => props.theme.colors.ui2};
-  background-color: ${(props) => props.theme.colors.background};
+export const ExploreListWrapper = styled.ul`
+margin-top: ${theme.sizes.xxxsmall};
+overflow: auto;
+width: 100%;
+`
+export const ExploreListitem = styled.li`
+border-bottom: solid 1px ${theme.colors.ui2};
+`
+export const ExploreButton = styled.button`
+all: inherit;
+font-size: ${theme.fontSizes.small};
+color: ${theme.colors.text5};
+cursor: pointer;
+padding: ${theme.sizes.xxxsmall};
+width: 100%;
+border: none;
+&:hover {
+  background-color: ${OVERRIDE_KEY_SUBTLE};
+}
+& > * {
+  pointer-events: none;
+}
 `

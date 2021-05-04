@@ -25,28 +25,28 @@
  */
 
 import React from 'react';
-import { 
+import {
   view_explore,
 } from "../../test_data";
 import { DiagramHeader } from '../../components/DiagramFrame/DiagramHeader'
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
 
-jest.mock("@looker/components", () => ({
-  Heading: () => "Heading",
-  Header: () => "Header",
-  Space: () => "Space",
-  IconButton: () => "IconButton",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+// jest.mock("@looker/components", () => ({
+//   Heading: () => "Heading",
+//   Header: () => "Header",
+//   Space: () => "Space",
+//   IconButton: () => "IconButton",
+//   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
+// }))
 
-jest.mock("styled-components", () => ({
-  DiagramHeaderWrapper: () => "DiagramHeaderWrapper",
-  SettingsPanel: () => "SettingsPanel",
-  Italics: () => "Italics",
-  span: () => "span",
-  styled: () => "styled"
-}))
+// jest.mock("styled-components", () => ({
+//   DiagramHeaderWrapper: () => "DiagramHeaderWrapper",
+//   SettingsPanel: () => "SettingsPanel",
+//   Italics: () => "Italics",
+//   span: () => "span",
+//   styled: () => "styled"
+// }))
 
 describe('<DiagramHeader />', () => {
   const basic = shallow(

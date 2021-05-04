@@ -28,15 +28,13 @@ import React from "react"
 import {
   SpaceVertical,
   Divider,
-  Heading,
   FieldSelect,
   FadeIn,
   Label,
-  theme
 } from "@looker/components"
 import { internalModelURL } from "../../../../utils/routes"
 import { useHistory } from "react-router"
-import { SettingsPanel } from "../FramePanelsHelpers"
+import { SettingsPanel, PanelHeading } from "../frame_components"
 import { DiagramSettingsProps } from "./types"
 import { ExploreList } from "./ExploreList"
 import { getBranchOptions } from "./utils"
@@ -62,9 +60,9 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   const gitBranch = modelDetail?.gitBranch
   const updateBranch = useUpdateGitBranches(modelDetail?.model?.project_name)
   return (
-    <SettingsPanel width="275px" p="medium">
+    <SettingsPanel>
       <SpaceVertical>
-        <Heading fontSize="large" color={theme.colors.text4}>Diagram Settings</Heading>
+        <PanelHeading>Diagram Settings</PanelHeading>
         <FieldSelect
           options={modelDetails}
           label="Choose a Model"
