@@ -88,7 +88,7 @@ export const Diagram: React.FC<DiagramProps> = ({
             allVisible = false 
           }
         })
-        allVisible && createLookmlJoinElement(svg, join, dimensions, explore, selectionInfo, setSelectionInfo, type);
+        allVisible && createLookmlJoinElement(svg, join, dimensions, selectionInfo, setSelectionInfo, type);
       })
 
       // Create all tables
