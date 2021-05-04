@@ -25,12 +25,12 @@
  */
 
 import React from 'react';
-import { 
-  mockModels, 
-  mockActiveGit, 
-  mockAvailGit, 
-  mockCurrentModel, 
-  mockSelectExplore, 
+import {
+  mockModels,
+  mockActiveGit,
+  mockAvailGit,
+  mockCurrentModel,
+  mockSelectExplore,
   view_dimensions,
   mockPathNames,
   mockMinimapDimensions } from "../../test_data";
@@ -66,56 +66,56 @@ jest.mock('../../utils/routes', () => {
   }
 })
 
-jest.mock('../../utils/diagrammer', () => {
-  return {
-    getMinimapDimensions: jest.fn(() => {
-      return mockMinimapDimensions
-    }),
-  }
-})
+// jest.mock('../../utils/diagrammer', () => {
+//   return {
+//     getMinimapDimensions: jest.fn(() => {
+//       return mockMinimapDimensions
+//     }),
+//   }
+// })
 
-jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataPanel", () => ({
-  MetadataPanel: () => "MetadataPanel"
-}))
+// jest.mock("../../components/DiagramFrame/MetadataPanel/MetadataPanel", () => ({
+//   MetadataPanel: () => "MetadataPanel"
+// }))
 
-jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-  DiagramSettings: () => "DiagramSettings"
-}))
+// jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
+//   DiagramSettings: () => "DiagramSettings"
+// }))
 
-jest.mock("../../components/DiagramFrame/HelpPanel", () => ({
-  HelpPanel: () => "HelpPanel"
-}))
+// jest.mock("../../components/DiagramFrame/HelpPanel", () => ({
+//   HelpPanel: () => "HelpPanel"
+// }))
 
-jest.mock("../../components/DiagramFrame/ViewOptions", () => ({
-  ViewOptions: () => "ViewOptions"
-}))
+// jest.mock("../../components/DiagramFrame/ViewOptions", () => ({
+//   ViewOptions: () => "ViewOptions"
+// }))
 
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram"
-}))
+// jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
+//   Diagram: () => "Diagram"
+// }))
 
-jest.mock("../../components/DiagramFrame/DiagramHeader", () => ({
-  DiagramHeader: () => "DiagramHeader"
-}))
+// jest.mock("../../components/DiagramFrame/DiagramHeader", () => ({
+//   DiagramHeader: () => "DiagramHeader"
+// }))
 
-jest.mock("../../components/DiagramFrame/DiagramCanvas/DiagramToolbar", () => ({
-  DiagramToolbar: () => "DiagramToolbar"
-}))
+// jest.mock("../../components/DiagramFrame/DiagramCanvas/DiagramToolbar", () => ({
+//   DiagramToolbar: () => "DiagramToolbar"
+// }))
 
-jest.mock("@looker/components", () => ({
-  Card: () => "Card",
-  Heading: () => "Heading",
-  Spinner: () => "Spinner",
-  SpaceVertical: () => "SpaceVertical",
-  IconButton: () => "IconButton",
-  Box: () => "Box",
-  Paragraph: () => "Paragraph",
-  Aside: () => "Aside",
-  Section: () => "Section",
-  Layout: () => "Layout",
-  Status: () => "Status",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+// jest.mock("@looker/components", () => ({
+//   Card: () => "Card",
+//   Heading: () => "Heading",
+//   Spinner: () => "Spinner",
+//   SpaceVertical: () => "SpaceVertical",
+//   IconButton: () => "IconButton",
+//   Box: () => "Box",
+//   Paragraph: () => "Paragraph",
+//   Aside: () => "Aside",
+//   Section: () => "Section",
+//   Layout: () => "Layout",
+//   Status: () => "Status",
+//   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
+// }))
 
 describe('<DiagramFrame />', () => {
   const default_loading = shallow(<DiagramFrame

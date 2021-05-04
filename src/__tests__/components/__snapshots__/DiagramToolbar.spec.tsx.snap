@@ -1,31 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DiagramToolbar /> should match the basic 1`] = `
-"<Styled(Card) raised={true}>
+"<Styled(Card) raised={true} height=\\"auto\\" width=\\"40px\\" minWidth=\\"40px\\">
   <Flex flexDirection=\\"column\\" alignItems=\\"center\\">
-    <FlexItem pt=\\"xsmall\\" fontSize=\\"xsmall\\" style={{...}}>
+    <FlexItem py=\\"xsmall\\" fontSize=\\"xsmall\\" style={{...}}>
       100%
     </FlexItem>
-    <FlexItem width=\\"40px\\">
-      <Divider />
+    <Divider appearance=\\"light\\" />
+    <FlexItem pt=\\"xsmall\\" pb=\\"xxsmall\\">
+      <IconButton icon={{...}} label=\\"Zoom In\\" tooltipPlacement=\\"right\\" onClick={[Function: addZoom]} />
     </FlexItem>
-    <FlexItem>
-      <IconButton icon=\\"Plus\\" label=\\"Zoom In\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} />
+    <FlexItem pb=\\"xsmall\\" pt=\\"xxsmall\\">
+      <IconButton icon={{...}} label=\\"Zoom Out\\" tooltipPlacement=\\"right\\" onClick={[Function: removeZoom]} />
     </FlexItem>
-    <FlexItem>
-      <IconButton icon=\\"Minus\\" label=\\"Zoom Out\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} />
+    <Divider appearance=\\"light\\" />
+    <FlexItem py=\\"xsmall\\">
+      <IconButton icon={{...}} label=\\"Return to Start\\" tooltipPlacement=\\"right\\" onClick={[Function: recenterViewport]} />
     </FlexItem>
-    <FlexItem width=\\"40px\\">
-      <Divider />
-    </FlexItem>
-    <FlexItem>
-      <IconButton icon=\\"CenterFocus\\" label=\\"Return to Start\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} />
-    </FlexItem>
-    <FlexItem width=\\"40px\\">
-      <Divider />
-    </FlexItem>
-    <FlexItem pb=\\"xsmall\\">
-      <IconButton icon=\\"ChartMap\\" label=\\"Toggle Minimap\\" tooltipPlacement=\\"right\\" onClick={[Function: onClick]} style={{...}} />
+    <Divider appearance=\\"light\\" />
+    <FlexItem my=\\"xsmall\\">
+      <IconButton icon={{...}} label=\\"Toggle Minimap\\" tooltipPlacement=\\"right\\" onClick={[Function: toggleMinimap]} style={{...}} />
     </FlexItem>
   </Flex>
 </Styled(Card)>"
