@@ -43,7 +43,8 @@ export let addJoinArrowheads = (join: any, joinName: string) => {
 
 export interface JoinPoint {
   x: number,
-  y: number
+  y: number,
+  viewName?: string,
 }
 
 export function getManyPath(connectorSize: number, rightmost: number, joinField: any): JoinPoint[][] {

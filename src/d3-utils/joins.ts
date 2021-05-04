@@ -214,7 +214,6 @@ export function createLookmlJoinElement(
     join.append("path")
     .datum(tableJoinPath)
     .attr("class", "join-path")
-    .attr("id", (d: DiagramJoin) => d.viewName)
     .attr("d", d3.line().curve(d3.curveBundle.beta(0.95))
       .x((d: any) => d.joinX)
       .y((d: any) => d.joinY)
@@ -231,12 +230,12 @@ export function createLookmlJoinElement(
       joinField.joinX = isBaseView ? joinField.joinX + (connectorAlign / 4) : joinField.joinX
 
       if (isBaseView) {
-        let manyKinds = ["many_to_one", "many_to_many"]
+        const manyKinds = ["many_to_one", "many_to_many"]
         manyKinds.includes(joinField.joinObj.relationship) 
         ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
         : connectorPath = getOnePath(connectorSize, rightmost, joinField)
       } else {
-        let manyKinds = ["one_to_many", "many_to_many"]
+        const manyKinds = ["one_to_many", "many_to_many"]
         manyKinds.includes(joinField.joinObj.relationship) 
         ? connectorPath = getManyPath(connectorSize, rightmost, joinField) 
         : connectorPath = getOnePath(connectorSize, rightmost, joinField)
@@ -246,21 +245,20 @@ export function createLookmlJoinElement(
       addJoinArrowheads(join, joinData[0].joinName)
 
       // Add the "bracket" that links many fields on one table
-      connectorPath.map((connector: any) => {
+      connectorPath.map((connector) => {
         join.append("path")
         .datum(connector)
         .attr("class", "join-path")
         .attr("marker-end", () => isBaseView || "url(#arrows-" + joinData[0].joinName + ")")
-        .attr("id", (d:any) => d.viewName)
         .attr("d", d3.line().curve(d3.curveLinear)
           .x((d: any) => d.x)
           .y((d: any) => d.y)
         )
       })
 
-      let tableJoins = joinPath.filter((row: any)=>row.viewName === joinField.viewName)
-      let joinNode = tableJoins[0]
-      let joinBracketPath: any[] = []
+      const tableJoins = joinPath.filter((row)=>row.viewName === joinField.viewName)
+      const joinNode = tableJoins[0]
+      const joinBracketPath: JoinPoint[] = []
       joinBracketPath.push({x: joinNode.joinX, y: joinNode.joinY + (TABLE_ROW_HEIGHT/2), viewName: joinNode.viewName})
       joinBracketPath.push({x: joinField.joinX, y: joinField.joinY + (TABLE_ROW_HEIGHT/2), viewName: joinField.viewName})
       tableJoins.length > 1 && join.append("path")
@@ -273,11 +271,9 @@ export function createLookmlJoinElement(
 
     })
 
-    let joinType = joinData[0].joinObj.type ? joinData[0].joinObj.type : "left_outer"
-    let isCross = joinType === "cross"
-
+    const joinType = joinData[0].joinObj.type ? joinData[0].joinObj.type : "left_outer"
+    const isCross = joinType === "cross"
     const iconWidth = isCross ? 90 : 50
-
     const pillWidth = iconWidth + joinType.length * 6 + 10
 
     let lX = cX - (pillWidth / 2)
@@ -290,18 +286,17 @@ export function createLookmlJoinElement(
     .datum(tableJoinPath)
     .attr("class", "join-path-hover")
     .classed("minimap-join-path-hover", type === "minimap" ? true : false)
-    .attr("id", (d:any) => d.viewName)
     .attr("d", d3.line().curve(d3.curveBundle.beta(1))
       .x((d: any) => d.joinX)
       .y((d: any) => d.joinY)
     )
 
-    let hoverMouseEnter = type === "display" && drawnJoinHover.on("mouseenter", (d: any, i: number) => {
+    let hoverMouseEnter = type === "display" && drawnJoinHover.on("mouseenter", () => {
       d3.selectAll(`.${type}-area > g.join-`+joinData[0].joinName)
       .classed("join-path-selected", true)
       .raise()
     })
-    let hoverMouseLeave = type === "display" && hoverMouseEnter.on("mouseleave", (d: any, i: number) => {
+    let hoverMouseLeave = type === "display" && hoverMouseEnter.on("mouseleave", () => {
       if (JSON.stringify(selectionInfo) !== JSON.stringify({
         lookmlElement: "join",
         name: joinData[0].joinName
@@ -310,7 +305,7 @@ export function createLookmlJoinElement(
         .classed("join-path-selected", false)
       }
     })
-    let hoverMouseClick = type === "display" && hoverMouseLeave.on("click", (d: any, i: number) => {
+    let hoverMouseClick = type === "display" && hoverMouseLeave.on("click", () => {
       setSelectionInfo({
         lookmlElement: "join",
         name: joinData[0].joinName
