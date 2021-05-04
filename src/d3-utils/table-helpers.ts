@@ -24,28 +24,30 @@
 
  */
 
-export function isTableRowDimension(row: any) {
+import { DiagramField } from "../utils/LookmlDiagrammer"
+
+export function isTableRowDimension(row: DiagramField) {
   if (row.category === "dimension") {
     return true
   }
   return false
 }
 
-export function isTableRowMeasure(row: any) {
+export function isTableRowMeasure(row: DiagramField) {
   if (row.category === "measure") {
     return true
   }
   return false
 }
 
-export function isTableRowBaseView(row: any) {
+export function isTableRowBaseView(row: DiagramField) {
   if (row.category === "view") {
     return row.base ? true : false
   }
   return false
 }
 
-export function isTableRowView(row: any) {
+export function isTableRowView(row: DiagramField) {
   if (row.category === "view") {
     return true
   }
@@ -53,14 +55,14 @@ export function isTableRowView(row: any) {
 }
 
 
-export function getPkPath(d: any) {
+export function getPkPath(d: DiagramField) {
   if (!d.primary_key) {
     return ""
   }
   return "M7 14a2 2 0 01-2-2 2 2 0 012-2 2 2 0 012 2 2 2 0 01-2 2m5.65-4A5.99 5.99 0 007 6a6 6 0 00-6 6 6 6 0 006 6 5.99 5.99 0 005.65-4H17v4h4v-4h2v-4H12.65z"
 }
 
-export let getDatatypePath = (d: any) => {
+export let getDatatypePath = (d: DiagramField) => {
   if (!d.type) {
     return ""
   }

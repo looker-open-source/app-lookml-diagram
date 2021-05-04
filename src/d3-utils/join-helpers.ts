@@ -41,7 +41,13 @@ export let addJoinArrowheads = (join: any, joinName: string) => {
   .attr("d", "M 12 12 24 18 12 24 15 18");
 }
 
-export function getManyPath(connectorSize: number, rightmost: number, joinField: any) {
+export interface JoinPoint {
+  x: number,
+  y: number,
+  viewName?: string,
+}
+
+export function getManyPath(connectorSize: number, rightmost: number, joinField: any): JoinPoint[][] {
   let connectorAlign = rightmost ? connectorSize : connectorSize * -1
 
   let baseX = joinField.joinX

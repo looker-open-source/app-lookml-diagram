@@ -37,12 +37,14 @@ export interface DiagramField extends Omit<ILookmlModelExploreField, 'category'>
 }
 
 export interface DiagramJoin {
-  viewName: string 
-  fieldIndex: number
-  selector: string
-  type: string
-  joinName: string
-  joinObj: ILookmlModelExploreJoins
+  viewName?: string 
+  fieldIndex?: number
+  selector?: string
+  type?: string
+  joinName?: string
+  joinObj?: ILookmlModelExploreJoins
+  joinX?: number
+  joinY?: number
 }
 
 type DiagramTables = {
