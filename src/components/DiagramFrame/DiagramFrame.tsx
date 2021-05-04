@@ -24,7 +24,7 @@
 
  */
 
-import React, { useCallback, memo, useEffect } from "react"
+import React, { useCallback } from "react"
 import {
   SpaceVertical,
   IconButton,

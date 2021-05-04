@@ -44,5 +44,5 @@ export interface DiagramFrameProps {
 export interface DiagramHeaderProps {
   currentExplore: ILookmlModelExplore,
   selectionInfo: SelectionInfoPacket,
-  toggleExploreInfo: ()=>void
+  toggleExploreInfo: () => void,
 }

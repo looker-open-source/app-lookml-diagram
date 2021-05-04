@@ -44,6 +44,7 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   toggleExploreInfo
  }) => {
   const queryClient = useQueryClient()
+  const reloadPage = () => queryClient.resetQueries()
 
   const exploreInfoStyles = selectionInfo.lookmlElement === "explore" ?
   {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
@@ -67,7 +68,7 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
             style={exploreInfoStyles}
             size="large" 
           />
-          <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={() => queryClient.resetQueries()} />
+          <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={reloadPage} />
         </Space>
       </Space>
     </DiagramHeaderWrapper>
