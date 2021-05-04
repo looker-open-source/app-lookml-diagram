@@ -1,10 +1,12 @@
-import {getBranchOptions, viewDisabled} from "../components/DiagramFrame/utils"
+import React from "react"
+import { GitBranch } from "@looker/icons"
+import {getBranchOptions} from "../components/DiagramFrame/FramePanels/SettingsPanel/utils"
 import {formatZoom} from "../components/DiagramFrame/DiagramCanvas/utils"
 import { theme } from "@looker/components"
 
 test('git branches load', () => {
   expect(getBranchOptions({name: "main"}, [{name: "main"}, {name: "main1"}, {name: "main2"}])).toEqual([
-    {value: "main", label: "main", icon: "GitBranch"},{value: "main1", label: "main1"},{value: "main2", label: "main2"}
+    {value: "main", label: "main", icon: <GitBranch/>},{value: "main1", label: "main1"},{value: "main2", label: "main2"}
   ]);
 });
 
@@ -24,11 +26,11 @@ test('zoom .33', () => {
   expect(formatZoom(.33)).toEqual("30%")
 })
 
-test('disabled', () => {
-  expect(viewDisabled(false)).toEqual(theme.colors.text1)
-})
+// test('disabled', () => {
+//   expect(viewDisabled(false)).toEqual(theme.colors.text1)
+// })
 
-test('not disabled', () => {
-  expect(viewDisabled(true)).toEqual(undefined)
-})
+// test('not disabled', () => {
+//   expect(viewDisabled(true)).toEqual(undefined)
+// })
 

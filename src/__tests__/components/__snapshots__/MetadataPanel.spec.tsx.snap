@@ -1,28 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MetadataPanel /> should match the basic 1`] = `
-initialize {
-  "0": Node {
-    "children": Array [
-      Node {
-        "data": "createElement",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "text",
-      },
-    ],
-    "name": "root",
-    "next": null,
-    "parent": null,
-    "prev": null,
-    "type": "root",
-  },
-  "_root": [Circular],
-  "length": 1,
-  "options": Object {
-    "decodeEntities": true,
-    "xml": false,
-  },
-}
-`;
+exports[`<MetadataPanel /> should match the basic 1`] = `ShallowWrapper {}`;

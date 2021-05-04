@@ -29,14 +29,14 @@ import { DiagramToolbar } from '../../components/DiagramFrame/DiagramCanvas/Diag
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
 
-jest.mock("@looker/components", () => ({
-  Divider: () => "Divider",
-  Flex: () => "Flex",
-  FlexItem: () => "FlexItem",
-  Card: () => "Card",
-  IconButton: () => "IconButton",
-  theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-}))
+// jest.mock("@looker/components", () => ({
+//   Divider: () => "Divider",
+//   Flex: () => "Flex",
+//   FlexItem: () => "FlexItem",
+//   Card: () => "Card",
+//   IconButton: () => "IconButton",
+//   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
+// }))
 
 describe('<DiagramToolbar />', () => {
   const basic = shallow(
