@@ -28,59 +28,67 @@ import {model_few_views_explore, model_few_views_output} from "./test_data/diagr
 import {github_commit_explore, github_commit_dimensions} from "./test_data/github_commit"
 import {github_pr_explore, github_pr_dimensions} from "./test_data/github_pr"
 import {diagrams_gov_explore, diagrams_gov_dimensions} from "./test_data/diagrams_gov"
+import {diagrams_universe_explore, diagrams_universe_dimensions} from "./test_data/diagrams_universe"
+import {bigquery_block_explore, bigquery_block_dimensions} from "./test_data/bigquery_block"
 import {generateExploreDiagram} from "../utils/LookmlDiagrammer"
 
-test('lookml_diagrams::database_simple_view', () => {
-  const inputExplore = JSON.parse(database_simple_view_explore)
-  const generated = JSON.stringify(generateExploreDiagram(
-    inputExplore,
+const cases = [
+  [
+    database_simple_view_explore,
+    database_simple_view_output,
     true,
     "all"
-  ))
-  const testCase = database_simple_view_output
-  expect(generated).toEqual(testCase);
-});
-
-test('lookml_diagrams::model_few_views', () => {
-  const inputExplore = JSON.parse(decodeURI(model_few_views_explore))
-  const generated = generateExploreDiagram(
-    inputExplore,
+  ],
+  [
+    model_few_views_explore,
+    model_few_views_output,
     true,
     "all"
-  )
-  const testCase = JSON.parse(decodeURI(model_few_views_output))
-  expect(generated).toEqual(testCase)
-});
-
-test('github_block::commit', () => {
-  const inputExplore = JSON.parse(decodeURI(github_commit_explore))
-  const generated = generateExploreDiagram(
-    inputExplore,
+  ],
+  [
+    github_commit_explore,
+    github_commit_dimensions,
     true,
     "all"
-  )
-  const testCase = JSON.parse(decodeURI(github_commit_dimensions))
-  expect(generated).toEqual(testCase)
-});
-
-test('github_block::pull_request', () => {
-  const inputExplore = JSON.parse(decodeURI(github_pr_explore))
-  const generated = generateExploreDiagram(
-    inputExplore,
+  ],
+  [
+    github_pr_explore,
+    github_pr_dimensions,
     false,
     "joined"
-  )
-  const testCase = JSON.parse(decodeURI(github_pr_dimensions))
-  expect(generated).toEqual(testCase)
-});
-
-test('diagrams::us_government', () => {
-  const inputExplore = JSON.parse(decodeURI(diagrams_gov_explore))
-  const generated = generateExploreDiagram(
-    inputExplore,
+  ],
+  [
+    diagrams_gov_explore,
+    diagrams_gov_dimensions,
     true,
     "all"
+  ],
+  [
+    diagrams_universe_explore,
+    diagrams_universe_dimensions,
+    false,
+    "all"
+  ],
+  [
+    bigquery_block_explore,
+    bigquery_block_dimensions,
+    true,
+    "all"
+  ]
+]
+
+describe('Diagram generation', () => {
+  test.each(cases)(
+    'it can generate the expected diagram',
+    (input, output, hiddenFields, fieldType) => {
+      const inputExplore = JSON.parse(decodeURI(input))
+      const generated = generateExploreDiagram(
+        inputExplore,
+        hiddenFields,
+        fieldType
+      )
+      const testCase = JSON.parse(decodeURI(output))
+      expect(generated).toEqual(testCase)
+    }
   )
-  const testCase = JSON.parse(decodeURI(diagrams_gov_dimensions))
-  expect(generated).toEqual(testCase)
-});
+})
