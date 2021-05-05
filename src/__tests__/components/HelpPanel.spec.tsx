@@ -25,20 +25,33 @@
  */
 
 import React from 'react'
-import { ComponentsProvider } from "@looker/components"
 import { screen } from '@testing-library/react'
 import { renderWithTheme } from '@looker/components-test-utils'
-import { ExtensionProvider2 } from "@looker/extension-sdk-react"
+import {  ExtensionContext2, ExtensionContextData2 } from "@looker/extension-sdk-react"
+import {  LookerHostData,  registerHostApi, ExtensionHostApi } from "@looker/extension-sdk"
 import { Looker40SDK } from '@looker/sdk'
 
 import { HelpPanel } from '../../components/DiagramFrame/FramePanels/HelpPanel'
 
 describe('HelpPanel', () => {
+
+  // TODO - create a renderWithExtensionContext helper method with this ugly mocking
+  const extensionSDK = {
+    lookerHostData: {} as Readonly<LookerHostData>,
+    error: (_: ErrorEvent) => {}
+  } as ExtensionHostApi
+  registerHostApi(extensionSDK)
+  const extensionContext: ExtensionContextData2<Looker40SDK> = {
+    extensionSDK,
+    coreSDK: {} as Looker40SDK,
+    route: ''
+  }
+
   test('it renders documentation', () => {
     renderWithTheme(
-      <ExtensionProvider2 type={Looker40SDK}>
+      <ExtensionContext2.Provider value={extensionContext}>
         <HelpPanel />
-      </ExtensionProvider2>
+      </ExtensionContext2.Provider>
     )
     expect(
       screen.getByText(
