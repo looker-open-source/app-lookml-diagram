@@ -24,37 +24,26 @@
 
  */
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
+import React from 'react'
+import { ComponentsProvider } from "@looker/components"
+import { screen } from '@testing-library/react'
+import { renderWithTheme } from '@looker/components-test-utils'
+import { ExtensionProvider2 } from "@looker/extension-sdk-react"
+import { Looker40SDK } from '@looker/sdk'
 
-// jest.mock("@looker/components", () => ({
-//   SpaceVertical: () => "SpaceVertical",
-//   Heading: () => "Heading",
-//   Divider: () => "Divider",
-//   Label: () => "Label",
-//   Paragraph: () => "Paragraph",
-//   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-// }))
+import { HelpPanel } from '../../components/DiagramFrame/FramePanels/HelpPanel'
 
-// jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-//   SettingsPanel: () => "SettingsPanel"
-// }))
-
-// jest.mock("../../components/ExternalLink", () => ({
-//   ExternalLink: () => "ExternalLink"
-// }))
-
-// jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-//   Diagram: () => "Diagram"
-// }))
-
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+describe('HelpPanel', () => {
+  test('it renders documentation', () => {
+    renderWithTheme(
+      <ExtensionProvider2 type={Looker40SDK}>
+        <HelpPanel />
+      </ExtensionProvider2>
+    )
+    expect(
+      screen.getByText(
+        'The base view is indicated by a dark blue header. In each view table, dimension rows are white; measure rows are light orange.'
+      )
+    ).toBeInTheDocument()
+  })
+})
