@@ -9,7 +9,10 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/
+        exclude: [
+          /node_modules/,
+          path.resolve(__dirname, "src/__tests__")
+        ],
       },
       {
         test: /\.css$/i,

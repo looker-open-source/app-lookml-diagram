@@ -26,11 +26,4 @@ test('zoom .33', () => {
   expect(formatZoom(.33)).toEqual("30%")
 })
 
-// test('disabled', () => {
-//   expect(viewDisabled(false)).toEqual(theme.colors.text1)
-// })
-
-// test('not disabled', () => {
-//   expect(viewDisabled(true)).toEqual(undefined)
-// })
 

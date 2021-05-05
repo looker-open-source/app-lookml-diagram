@@ -32,10 +32,7 @@ import {
   Label,
 } from "@looker/components"
 import { ExternalLink } from "../../ExternalLink"
-import {view_explore} from "../../../test_data/order_items_explore"
-import {view_dimensions} from "../../../test_data/order_items_dimensions"
-import {join_dimensions} from "../../../test_data/polling_dimensions"
-import {join_explore} from "../../../test_data/polling_explore"
+import {view_explore, view_dimensions, join_dimensions, join_explore} from "./HelpPanelData"
 import {Diagram} from "../DiagramCanvas/Diagram"
 import {Italics} from "../FrameHelpers"
 import {SettingsPanel, HelpBody, PanelHeading} from "./frame_components"

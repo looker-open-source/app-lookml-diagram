@@ -114,7 +114,7 @@ export function useLookmlModelExplores(model: ILookmlModel) {
  * @returns diagrammable model metadata
  */
  export function useModelDiagrams(modelDetail: DetailedModel, hiddenToggle: boolean, displayFieldType: string): DiagrammedModel[] {
-  const { isLoading, error, data } = useQuery(JSON.stringify(modelDetail),
+  const { isLoading, error, data } = useQuery(JSON.stringify(modelDetail)+hiddenToggle+displayFieldType,
     () => generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType),
     {
       ...defaultQueryOptions,

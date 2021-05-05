@@ -28,9 +28,7 @@ import React from 'react';
 import {MetadataPanel} from '../../components/DiagramFrame/MetadataPanel/MetadataPanel'
 import { shallow } from 'enzyme';
 import {
-  mockCurrentModel,
-  view_dimensions,
-  view_explore } from "../../test_data";
+  mockCurrentModel} from "../test_data";
 // import 'jest-styled-components';
 
 // jest.mock("@looker/components", () => ({
