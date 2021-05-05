@@ -24,33 +24,43 @@
 
  */
 
-export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX: number, lY: number, joinTypeLabel: string) {
+export function makeJoinIcon(
+  join: any,
+  iconWidth: number,
+  pillWidth: number,
+  lX: number,
+  lY: number,
+  joinTypeLabel: string
+) {
+  const iconG = join.append("g").attr("class", "join-path-icon")
 
-  const iconG = join.append('g')
-  .attr("class", "join-path-icon")
+  iconG
+    .append("rect")
+    .attr("fill", "none")
+    .attr("class", "join-path-icon-background")
+    .style("rx", 15)
+    .style("ry", 15)
+    .attr("width", pillWidth)
+    .attr("height", 36)
+    .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
+    .style("filter", "url(#drop-shadow)")
+    .style("opacity", 0.2)
 
-  iconG.append("rect")
-  .attr("fill", "none")
-  .attr("class", "join-path-icon-background")
-  .style("rx", 15)
-  .style("ry", 15)
-  .attr("width", pillWidth)
-  .attr("height", 36)
-  .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
-  .style("filter", "url(#drop-shadow)")
-  .style("opacity", 0.2)
+  iconG
+    .append("rect")
+    .attr("fill", "none")
+    .attr("class", "join-path-icon-background")
+    .style("rx", 15)
+    .style("ry", 15)
+    .attr("width", pillWidth)
+    .attr("height", 36)
+    .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
 
-  iconG.append("rect")
-  .attr("fill", "none")
-  .attr("class", "join-path-icon-background")
-  .style("rx", 15)
-  .style("ry", 15)
-  .attr("width", pillWidth)
-  .attr("height", 36)
-  .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
-  
-  joinTypeLabel === "left_outer" && iconG.append('g')
-  .html(`<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
+  joinTypeLabel === "left_outer" &&
+    iconG
+      .append("g")
+      .html(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
   <path d="M30 16C30 22.6274 24.6274 28 18 28C11.3726 28 6 22.6274 6 16C6 9.37258 11.3726 4 18 4C24.6274 4 30 9.37258 30 16Z" fill="#8C3AC6" fill-opacity="0.64"/>
   <path d="M42 16C42 22.6274 36.6274 28 30 28C23.3726 28 18 22.6274 18 16C18 9.37258 23.3726 4 30 4C36.6274 4 42 9.37258 42 16Z" fill="#6CA290" fill-opacity="0.15"/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M24 26.3946C27.5868 24.3198 30 20.4417 30 16C30 11.5583 27.5868 7.68024 24 5.60539C25.765 4.58437 27.8143 4 30 4C36.6274 4 42 9.37258 42 16C42 22.6274 36.6274 28 30 28C27.8143 28 25.765 27.4156 24 26.3946Z" fill="white"/>
@@ -71,11 +81,15 @@ export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX
   <path fill-rule="evenodd" clip-rule="evenodd" d="M44 16C44 23.732 37.732 30 30 30C22.268 30 16 23.732 16 16C16 8.26801 22.268 2 30 2C37.732 2 44 8.26801 44 16ZM30 28C36.6274 28 42 22.6274 42 16C42 9.37258 36.6274 4 30 4C23.3726 4 18 9.37258 18 16C18 22.6274 23.3726 28 30 28Z" fill="#194839"/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M32 16C32 23.732 25.732 30 18 30C10.268 30 4 23.732 4 16C4 8.26801 10.268 2 18 2C25.732 2 32 8.26801 32 16ZM18 28C24.6274 28 30 22.6274 30 16C30 9.37258 24.6274 4 18 4C11.3726 4 6 9.37258 6 16C6 22.6274 11.3726 28 18 28Z" fill="#41344A"/>
   <path d="M24 27C27.5868 24.8043 30 20.7004 30 16C30 11.2996 27.5868 7.1957 24 5C20.4132 7.1957 18 11.2996 18 16C18 20.7004 20.4132 24.8043 24 27Z" fill="#B2C6D8"/>
-  </svg>`)
-  .attr("transform", `translate(${lX}, ${lY + 7})`)
+  </svg>`
+      )
+      .attr("transform", `translate(${lX}, ${lY + 7})`)
 
-  joinTypeLabel === "inner" && iconG.append('g')
-  .html(`
+  joinTypeLabel === "inner" &&
+    iconG
+      .append("g")
+      .html(
+        `
   <svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M30 16C30 22.6274 24.6274 28 18 28C11.3726 28 6 22.6274 6 16C6 9.37258 11.3726 4 18 4C24.6274 4 30 9.37258 30 16Z" fill="#8D6BA5" fill-opacity="0.15"/>
 <path d="M42 16C42 22.6274 36.6274 28 30 28C23.3726 28 18 22.6274 18 16C18 9.37258 23.3726 4 30 4C36.6274 4 42 9.37258 42 16Z" fill="#6CA290" fill-opacity="0.15"/>
@@ -92,11 +106,15 @@ export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX
 </g>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M44 16C44 23.732 37.732 30 30 30C22.268 30 16 23.732 16 16C16 8.26801 22.268 2 30 2C37.732 2 44 8.26801 44 16ZM30 28C36.6274 28 42 22.6274 42 16C42 9.37258 36.6274 4 30 4C23.3726 4 18 9.37258 18 16C18 22.6274 23.3726 28 30 28Z" fill="#194839"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M32 16C32 23.732 25.732 30 18 30C10.268 30 4 23.732 4 16C4 8.26801 10.268 2 18 2C25.732 2 32 8.26801 32 16ZM18 28C24.6274 28 30 22.6274 30 16C30 9.37258 24.6274 4 18 4C11.3726 4 6 9.37258 6 16C6 22.6274 11.3726 28 18 28Z" fill="#41344A"/>
-</svg>`)
-  .attr("transform", `translate(${lX}, ${lY + 7})`)
+</svg>`
+      )
+      .attr("transform", `translate(${lX}, ${lY + 7})`)
 
-  joinTypeLabel === "full_outer" && iconG.append("g")
-  .html(`<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
+  joinTypeLabel === "full_outer" &&
+    iconG
+      .append("g")
+      .html(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
   <path d="M30 16C30 22.6274 24.6274 28 18 28C11.3726 28 6 22.6274 6 16C6 9.37258 11.3726 4 18 4C24.6274 4 30 9.37258 30 16Z" fill="#8C3AC6" fill-opacity="0.64"/>
   <path d="M42 16C42 22.6274 36.6274 28 30 28C23.3726 28 18 22.6274 18 16C18 9.37258 23.3726 4 30 4C36.6274 4 42 9.37258 42 16Z" fill="#6CA290" fill-opacity="0.72"/>
   <path d="M24 27C27.5868 24.8043 30 20.7004 30 16C30 11.2996 27.5868 7.1957 24 5C20.4132 7.1957 18 11.2996 18 16C18 20.7004 20.4132 24.8043 24 27Z" fill="#C2CAD1"/>
@@ -131,11 +149,15 @@ export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX
   </g>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M32 16C32 23.732 25.732 30 18 30C10.268 30 4 23.732 4 16C4 8.26801 10.268 2 18 2C25.732 2 32 8.26801 32 16ZM18 28C24.6274 28 30 22.6274 30 16C30 9.37258 24.6274 4 18 4C11.3726 4 6 9.37258 6 16C6 22.6274 11.3726 28 18 28Z" fill="#41344A"/>
   <path d="M24 27C27.5868 24.8043 30 20.7004 30 16C30 11.2996 27.5868 7.1957 24 5C20.4132 7.1957 18 11.2996 18 16C18 20.7004 20.4132 24.8043 24 27Z" fill="#B2C6D8"/>
-  </svg>`)
-  .attr("transform", `translate(${lX}, ${lY + 7})`)
+  </svg>`
+      )
+      .attr("transform", `translate(${lX}, ${lY + 7})`)
 
-  joinTypeLabel === "cross" && iconG.append('g')
-  .html(`<svg xmlns="http://www.w3.org/2000/svg" width="80" height="32" viewBox="0 0 80 32" fill="none">
+  joinTypeLabel === "cross" &&
+    iconG
+      .append("g")
+      .html(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="32" viewBox="0 0 80 32" fill="none">
   <path d="M27 17C27 23.6274 21.6274 29 15 29C8.37258 29 3 23.6274 3 17C3 10.3726 8.37258 5 15 5C21.6274 5 27 10.3726 27 17Z" fill="#8C3AC6" fill-opacity="0.64"/>
   <path d="M77 17C77 23.6274 71.6274 29 65 29C58.3726 29 53 23.6274 53 17C53 10.3726 58.3726 5 65 5C71.6274 5 77 10.3726 77 17Z" fill="#6CA290" fill-opacity="0.72"/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M79 17C79 24.732 72.732 31 65 31C57.268 31 51 24.732 51 17C51 9.26801 57.268 3 65 3C72.732 3 79 9.26801 79 17ZM65 29C71.6274 29 77 23.6274 77 17C77 10.3726 71.6274 5 65 5C58.3726 5 53 10.3726 53 17C53 23.6274 58.3726 29 65 29Z" fill="#194839"/>
@@ -171,12 +193,14 @@ export function makeJoinIcon(join: any, iconWidth: number, pillWidth: number, lX
   <rect x="3" y="28" width="26" height="2" fill="#41344A"/>
   </g>
   </g>
-  </svg>`)
-  .attr("transform", `translate(${lX + 4}, ${lY + 6})`)
+  </svg>`
+      )
+      .attr("transform", `translate(${lX + 4}, ${lY + 6})`)
 
-  iconG.append("text")
-  .attr("class", "join-path-icon-label")
-  .attr("fill", "none")
-  .text(joinTypeLabel)
-  .attr("transform", `translate(${lX + iconWidth}, ${lY + 29})`);
+  iconG
+    .append("text")
+    .attr("class", "join-path-icon-label")
+    .attr("fill", "none")
+    .text(joinTypeLabel)
+    .attr("transform", `translate(${lX + iconWidth}, ${lY + 29})`)
 }

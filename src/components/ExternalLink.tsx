@@ -24,36 +24,35 @@
 
  */
 
- import React, {useContext} from "react"
- import { Link, LinkProps } from "@looker/components"
- import { Looker40SDK } from '@looker/sdk'
- import {
-   ExtensionContext2,
-   ExtensionContextData2,
- } from '@looker/extension-sdk-react'
- 
- export const ExternalLink: React.FC<Omit<LinkProps, "color">> = (
-   {href, target, onClick, ...rest}
- ) => {
-   const extensionContext = useContext<ExtensionContextData2<Looker40SDK>>(
-     ExtensionContext2
-   )
-   const { extensionSDK } = extensionContext
-   const onLinkClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-     // probably don't need to call this as href is no longer added to the Link
-     event.stopPropagation()
-     if (href) {
-       extensionSDK.updateLocation(
-         href,
-         undefined,
-         target
-       )
-     } else if (onClick) {
-       onClick(event)
-     }
-   }
- 
-   return (
-     <Link onClick={onLinkClick} {...rest} />
-   )
- }
+import React, { useContext } from "react"
+import { Link, LinkProps } from "@looker/components"
+import { Looker40SDK } from "@looker/sdk"
+import {
+  ExtensionContext2,
+  ExtensionContextData2
+} from "@looker/extension-sdk-react"
+
+export const ExternalLink: React.FC<Omit<LinkProps, "color">> = ({
+  href,
+  target,
+  onClick,
+  ...rest
+}) => {
+  const extensionContext = useContext<ExtensionContextData2<Looker40SDK>>(
+    ExtensionContext2
+  )
+  const { extensionSDK } = extensionContext
+  const onLinkClick = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    // probably don't need to call this as href is no longer added to the Link
+    event.stopPropagation()
+    if (href) {
+      extensionSDK.updateLocation(href, undefined, target)
+    } else if (onClick) {
+      onClick(event)
+    }
+  }
+
+  return <Link onClick={onLinkClick} {...rest} />
+}

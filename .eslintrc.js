@@ -23,6 +23,9 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "react/prop-types": "off",
     "camelcase": "off",
-    "@typescript-eslint/camelcase": "off"
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/ban-ts-ignore": "off"
   }
 }

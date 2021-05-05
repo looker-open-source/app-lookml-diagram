@@ -18,7 +18,7 @@
  SOFTWARE.
  */
 
- import {
+import {
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField
@@ -153,7 +153,7 @@ export async function getTopValues({
       }
     })
   )
-  const data = qr.data.map((row: any) => [
+  const data = qr?.data.map((row: any) => [
     formatData(row[field.name]),
     formatData(row[countField.name])
   ])
