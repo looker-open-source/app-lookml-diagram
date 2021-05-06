@@ -34,11 +34,9 @@ import {
   mockAvailGit,
   mockCurrentModel,
   mockSelectExplore,
-  view_dimensions,
-  view_explore,
   mockPathNames,
   mockMinimapDimensions
-} from "../../test_data";
+} from "../test_data";
 import renderer from 'react-test-renderer';
 
 
@@ -117,26 +115,26 @@ import renderer from 'react-test-renderer';
 //   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
 // }))
 
-describe.skip('<DiagramSettings />', () => {
-  it('should match the basic', () => {
-  const tree = render(
-      <DiagramSettings
-      modelDetails={[{value:"modelname", label: "Model Name"}]}
-      modelDetail={{model:{},explores:[],gitBranch:{},gitBranches:[],fetchError:""}}
-      modelPathName={""}
-      explorePathName={""}
-      exploreList={[view_explore]}
-      selectionInfo={{}}
-      currentExplore={view_explore}
-      diagramExplore={"explorename"}
-      setSelectionInfo={undefined}
-      setViewVisible={undefined}
-      setZoomFactor={undefined}
-      setViewPosition={undefined}
-      setMinimapUntoggled={undefined}
-      setMinimapEnabled={undefined}
-  />
-  );
-  expect(tree).toMatchSnapshot();
-  });
-});
+// describe.skip('<DiagramSettings />', () => {
+//   it('should match the basic', () => {
+//   const tree = render(
+//       <DiagramSettings
+//       modelDetails={[{value:"modelname", label: "Model Name"}]}
+//       modelDetail={{model:{},explores:[],gitBranch:{},gitBranches:[],fetchError:""}}
+//       modelPathName={""}
+//       explorePathName={""}
+//       exploreList={[view_explore]}
+//       selectionInfo={{}}
+//       currentExplore={view_explore}
+//       diagramExplore={"explorename"}
+//       setSelectionInfo={undefined}
+//       setViewVisible={undefined}
+//       setZoomFactor={undefined}
+//       setViewPosition={undefined}
+//       setMinimapUntoggled={undefined}
+//       setMinimapEnabled={undefined}
+//   />
+//   );
+//   expect(tree).toMatchSnapshot();
+//   });
+// });

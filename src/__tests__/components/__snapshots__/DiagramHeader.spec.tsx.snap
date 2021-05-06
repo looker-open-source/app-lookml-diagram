@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<DiagramHeader /> should match the basic diagram header 1`] = `
-"<ContextProvider value={false}>
-  <ContextProvider value={{...}}>
-    <DiagramHeader currentExplore={{...}} selectionInfo={{...}} toggleExploreInfo={[undefined]} />
-  </ContextProvider>
-</ContextProvider>"
-`;

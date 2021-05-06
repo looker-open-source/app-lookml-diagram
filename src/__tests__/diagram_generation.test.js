@@ -23,70 +23,72 @@
  SOFTWARE.
 
  */
-import {single_table_input, single_table_output} from "../test_data/single_table"
+import {database_simple_view_explore, database_simple_view_output} from "./test_data/diagrams_basic"
+import {model_few_views_explore, model_few_views_output} from "./test_data/diagrams_polls"
+import {github_commit_explore, github_commit_dimensions} from "./test_data/github_commit"
+import {github_pr_explore, github_pr_dimensions} from "./test_data/github_pr"
+import {diagrams_gov_explore, diagrams_gov_dimensions} from "./test_data/diagrams_gov"
+import {diagrams_universe_explore, diagrams_universe_dimensions} from "./test_data/diagrams_universe"
+import {bigquery_block_explore, bigquery_block_dimensions} from "./test_data/bigquery_block"
 import {generateExploreDiagram} from "../utils/LookmlDiagrammer"
-import {polls_all_fields} from "../test_data/polls_all_fields"
-import {polls_all_fields_diagram} from "../test_data/polls_all_fields_diagram"
-import campaign_default from "../test_data/campaign_default.json"
-import campaign_default_diagram from "../test_data/campaign_default_diagram.json"
-import covid_default from "../test_data/covid_default.json"
-import covid_default_diagram from "../test_data/covid_default_diagram.json"
-import ecmap_just_joins from "../test_data/ecmap_just_joins.json"
-import ecmap_just_joins_diagram from "../test_data/ecmap_just_joins_diagram.json"
 
-test('1 table 0 joins - results - default', () => {
-  expect(JSON.stringify(generateExploreDiagram(
-    single_table_input.explore,
-    single_table_input.hiddenToggle,
-    single_table_input.displayFieldType
-  ))).toEqual(JSON.stringify(single_table_output));
-});
+const cases = [
+  [
+    database_simple_view_explore,
+    database_simple_view_output,
+    true,
+    "all"
+  ],
+  [
+    model_few_views_explore,
+    model_few_views_output,
+    true,
+    "all"
+  ],
+  [
+    github_commit_explore,
+    github_commit_dimensions,
+    true,
+    "all"
+  ],
+  [
+    github_pr_explore,
+    github_pr_dimensions,
+    false,
+    "joined"
+  ],
+  [
+    diagrams_gov_explore,
+    diagrams_gov_dimensions,
+    true,
+    "all"
+  ],
+  [
+    diagrams_universe_explore,
+    diagrams_universe_dimensions,
+    false,
+    "all"
+  ],
+  [
+    bigquery_block_explore,
+    bigquery_block_dimensions,
+    true,
+    "all"
+  ]
+]
 
-test('7 tables 6 joins - polls - all fields', () => {
-  expect(JSON.stringify(generateExploreDiagram(
-    polls_all_fields.explore,
-    polls_all_fields.hiddenToggle,
-    polls_all_fields.displayFieldType
-  ))).toEqual(JSON.stringify(polls_all_fields_diagram));
-});
-
-test('6 tables 5 joins - ecmap - just joins', () => {
-  let diagram = generateExploreDiagram(
-    ecmap_just_joins.explore,
-    ecmap_just_joins.hiddenToggle,
-    ecmap_just_joins.displayFieldType
+describe('Diagram generation', () => {
+  test.each(cases)(
+    'it can generate the expected diagram',
+    (input, output, hiddenFields, fieldType) => {
+      const inputExplore = JSON.parse(decodeURI(input))
+      const generated = generateExploreDiagram(
+        inputExplore,
+        hiddenFields,
+        fieldType
+      )
+      const testCase = JSON.parse(decodeURI(output))
+      expect(generated).toEqual(testCase)
+    }
   )
-  expect(Object.keys(diagram.tableData).length).toEqual(Object.keys(ecmap_just_joins_diagram.tableData).length);
-  expect(Object.keys(diagram.tableData)).toEqual(Object.keys(ecmap_just_joins_diagram.tableData));
-  expect(JSON.stringify(diagram.joinData)).toEqual(JSON.stringify(ecmap_just_joins_diagram.joinData));
-  expect(JSON.stringify(diagram.tableData["ecmap"])).toEqual(JSON.stringify(ecmap_just_joins_diagram.tableData["ecmap"]));
-  expect(JSON.stringify(diagram.tableData["general_polls"])).toEqual(JSON.stringify(ecmap_just_joins_diagram.tableData["general_polls"]));
-  expect(JSON.stringify(diagram.tableData["margins"])).toEqual(JSON.stringify(ecmap_just_joins_diagram.tableData["margins"]));
-  expect(JSON.stringify(diagram.tableData["niskanen"].length)).toEqual(JSON.stringify(ecmap_just_joins_diagram.tableData["niskanen"].length));
-});
-
-test('26 tables 25 joins - campaign - default', () => {
-  let diagram = generateExploreDiagram(
-    campaign_default.explore,
-    campaign_default.hiddenToggle,
-    campaign_default.displayFieldType
-  )
-  expect(Object.keys(diagram.tableData).length).toEqual(Object.keys(campaign_default_diagram.tableData).length);
-  expect(Object.keys(diagram.tableData)).toEqual(Object.keys(campaign_default_diagram.tableData));
-  expect(JSON.stringify(diagram.joinData)).toEqual(JSON.stringify(campaign_default_diagram.joinData));
-  expect(JSON.stringify(diagram.tableData["campaign"])).toEqual(JSON.stringify(campaign_default_diagram.tableData["campaign"]));
-});
-
-test('13 tables 12 joins - covid_combined - default', () => {
-  let diagram = generateExploreDiagram(
-    covid_default.explore,
-    covid_default.hiddenToggle,
-    covid_default.displayFieldType
-  )
-  expect(Object.keys(diagram.tableData).length).toEqual(Object.keys(covid_default_diagram.tableData).length);
-  expect(Object.keys(diagram.tableData)).toEqual(Object.keys(covid_default_diagram.tableData));
-  expect(JSON.stringify(diagram.joinData)).toEqual(JSON.stringify(covid_default_diagram.joinData));
-  expect(JSON.stringify(diagram.tableData["covid_combined"])).toEqual(JSON.stringify(covid_default_diagram.tableData["covid_combined"]));
-  expect(JSON.stringify(diagram.tableData["hospital_bed_summary"])).toEqual(JSON.stringify(covid_default_diagram.tableData["hospital_bed_summary"]));
-  expect(JSON.stringify(diagram.tableData["fips_rank"])).toEqual(JSON.stringify(covid_default_diagram.tableData["fips_rank"]));
-});
+})

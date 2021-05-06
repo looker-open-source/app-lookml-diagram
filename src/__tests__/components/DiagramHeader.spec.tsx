@@ -25,9 +25,6 @@
  */
 
 import React from 'react';
-import {
-  view_explore,
-} from "../../test_data";
 import { DiagramHeader } from '../../components/DiagramFrame/DiagramHeader'
 import { shallow } from 'enzyme';
 import 'jest-styled-components'
@@ -49,17 +46,17 @@ import { QueryClient, QueryClientProvider } from "react-query"
 //   styled: () => "styled"
 // }))
 
-describe('<DiagramHeader />', () => {
-  const queryClient = new QueryClient()
-  const basic = shallow(
-    <QueryClientProvider client={queryClient}>
-    <DiagramHeader
-      currentExplore={view_explore}
-      selectionInfo={{}}
-      toggleExploreInfo={undefined}
-    />
-    </QueryClientProvider>);
-  it('should match the basic diagram header', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+// describe('<DiagramHeader />', () => {
+//   const queryClient = new QueryClient()
+//   const basic = shallow(
+//     <QueryClientProvider client={queryClient}>
+//     <DiagramHeader
+//       currentExplore={view_explore}
+//       selectionInfo={{}}
+//       toggleExploreInfo={undefined}
+//     />
+//     </QueryClientProvider>);
+//   it('should match the basic diagram header', () => {
+//     expect(basic.debug()).toMatchSnapshot();
+//   });
+// });
