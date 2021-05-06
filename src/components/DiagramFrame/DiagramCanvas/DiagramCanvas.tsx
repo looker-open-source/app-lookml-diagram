@@ -27,7 +27,7 @@
 import React from "react"
 import { Heading, ProgressCircular, Status } from "@looker/components"
 import { DIAGRAM_HEADER_HEIGHT } from "../../../utils/constants"
-import Diagram from "./Diagram"
+import { Diagram } from "./Diagram"
 import { DiagramToolbar } from "./DiagramToolbar"
 import { DiagramCanvasProps } from "./types"
 import {

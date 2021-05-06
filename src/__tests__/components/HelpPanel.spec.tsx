@@ -24,37 +24,27 @@
 
  */
 
-import React from 'react';
-import { HelpPanel } from '../../components/DiagramFrame/FramePanels/'
-import { shallow } from 'enzyme';
-import 'jest-styled-components'
+import React from 'react'
+import { screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
-// jest.mock("@looker/components", () => ({
-//   SpaceVertical: () => "SpaceVertical",
-//   Heading: () => "Heading",
-//   Divider: () => "Divider",
-//   Label: () => "Label",
-//   Paragraph: () => "Paragraph",
-//   theme: {colors: {key:"rgb(45, 126, 234)"}, space: {large: "2em"}, fontSizes: {large: "2em"}, fontWeights: {normal: "1em"}}
-// }))
+import { HelpPanel } from '../../components/DiagramFrame/FramePanels/HelpPanel'
+import { renderWithExtensionContext } from '../test-utils/render_with_extension'
 
-// jest.mock("../../components/DiagramFrame/DiagramSettings", () => ({
-//   SettingsPanel: () => "SettingsPanel"
-// }))
+jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
+  Diagram: () => "Diagram",
+}))
 
-// jest.mock("../../components/ExternalLink", () => ({
-//   ExternalLink: () => "ExternalLink"
-// }))
+describe('HelpPanel', () => {
 
-// jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-//   Diagram: () => "Diagram"
-// }))
-
-describe('<HelpPanel />', () => {
-  const basic = shallow(
-  <HelpPanel
-  />);
-  it('should match the basic', () => {
-    expect(basic.debug()).toMatchSnapshot();
-  });
-});
+  test('it renders documentation', () => {
+    renderWithExtensionContext(
+      <HelpPanel />
+    )
+    expect(
+      screen.getByText(
+        'The base view is indicated by a dark blue header. In each view table, dimension rows are white; measure rows are light orange.'
+      )
+    ).toBeInTheDocument()
+  })
+})

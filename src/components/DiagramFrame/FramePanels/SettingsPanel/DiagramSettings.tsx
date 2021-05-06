@@ -90,8 +90,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               }}
               disabled={
                 (gitBranch && gitBranch.is_production) ||
-                !diagramExplore ||
-                modelDetail?.fetchError === "git"
+                (!diagramExplore && !modelDetail?.fetchError)
               }
             />
             <Divider appearance="light" my="medium" />
