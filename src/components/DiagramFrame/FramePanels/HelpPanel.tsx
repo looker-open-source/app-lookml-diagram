@@ -25,17 +25,17 @@
  */
 
 import React from 'react'
+import { SpaceVertical, FadeIn, Divider, Label } from '@looker/components'
+import { ExternalLink } from '../../ExternalLink'
+import { Diagram } from '../DiagramCanvas/Diagram'
+import { Italics } from '../FrameHelpers'
 import {
-  SpaceVertical,
-  FadeIn,
-  Divider,
-  Label,
-} from "@looker/components"
-import { ExternalLink } from "../../ExternalLink"
-import {view_explore, view_dimensions, join_dimensions, join_explore} from "./HelpPanelData"
-import {Diagram} from "../DiagramCanvas/Diagram"
-import {Italics} from "../FrameHelpers"
-import {SettingsPanel, HelpBody, PanelHeading} from "./frame_components"
+  view_explore,
+  view_dimensions,
+  join_dimensions,
+  join_explore
+} from './HelpPanelData'
+import { SettingsPanel, HelpBody, PanelHeading } from './frame_components'
 
 export const HelpPanel: React.FC = () => {
   return (
