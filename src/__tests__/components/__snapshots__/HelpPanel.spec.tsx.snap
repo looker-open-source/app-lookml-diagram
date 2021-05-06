@@ -29,7 +29,8 @@ exports[`<HelpPanel /> should match the basic 1`] = `
         Joins are represented by a directed line that connects two views. Joined views are indicated by a light blue header.
       </HelpBody>
       <HelpBody>
-        The shape of the line, where it attaches to the view or field, conveys the cardinality of the relationship between the two objects; a forked line indicates a “many” cardinality, and a single line indicates a “one” cardinality. You would read the relationship as 
+        The shape of the line, where it attaches to the view or field, conveys the cardinality of the relationship between the two objects; a forked line indicates a “many” cardinality, and a single line indicates a “one” cardinality. You would read the relationship as
+         
         <styled.span>
           from
         </styled.span>
