@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,48 +24,46 @@
 
  */
 
-import React from "react"
-import {
-  Heading,
-  ProgressCircular,
-  Status,
-} from "@looker/components"
+import React from 'react'
+import { Heading, ProgressCircular, Status } from '@looker/components'
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
-import Diagram from "./Diagram"
-import { DiagramToolbar } from "./DiagramToolbar"
-import {DiagramCanvasProps} from "./types"
-import {DiagramCanvasWrapper, Minimap, IntroText, ErrorText} from "./components/canvas_components"
-import { EmptyStateArt } from "./components/EmptyStateArt"
-import { DiagramMetadata } from "../../../utils/LookmlDiagrammer"
+import { DiagramMetadata } from '../../../utils/LookmlDiagrammer'
+import Diagram from './Diagram'
+import { DiagramToolbar } from './DiagramToolbar'
+import { DiagramCanvasProps } from './types'
+import {
+  DiagramCanvasWrapper,
+  Minimap,
+  IntroText,
+  ErrorText
+} from './components/canvas_components'
+import { EmptyStateArt } from './components/EmptyStateArt'
 
 const renderError = (fetchError: string) => {
   let errorText
-  if (fetchError === "general") {
-    errorText = "A future version of the LookML Diagram extension may be able to support this model."
-  } else if (fetchError === "notFound") {
-    errorText = "Make sure the selected model or Explore exists, you have access, and that it's fully validated on the current branch."
+  if (fetchError === 'general') {
+    errorText =
+      'A future version of the LookML Diagram extension may be able to support this model.'
+  } else if (fetchError === 'notFound') {
+    errorText =
+      "Make sure the selected model or Explore exists, you have access, and that it's fully validated on the current branch."
   } else {
-    errorText = "An unknown problem happened."
+    errorText = 'An unknown problem happened.'
   }
   return (
     <DiagramCanvasWrapper>
-      <Status intent="critical" size="large"/>
+      <Status intent="critical" size="large" />
       <Heading mt="large" fontSize="large">
-        Can't generate LookML Diagram
+        {"Can't generate LookML Diagram"}
       </Heading>
-      <ErrorText>
-        {errorText}
-      </ErrorText>
+      <ErrorText>{errorText}</ErrorText>
     </DiagramCanvasWrapper>
   )
 }
 
 const renderInitializingExtension = () => (
   <DiagramCanvasWrapper>
-    <ProgressCircular/>{' '}
-    <Heading mt="large">
-      Initializing Extension
-    </Heading>
+    <ProgressCircular /> <Heading mt="large">Initializing Extension</Heading>
   </DiagramCanvasWrapper>
 )
 
@@ -74,23 +72,20 @@ const renderChoose = () => (
     <EmptyStateArt />
     <Heading fontSize="large">Begin visualizing your LookML model</Heading>
     <IntroText>
-      Choose a model, followed by an Explore, to better understand
-      your LookML relationships.
+      Choose a model, followed by an Explore, to better understand your LookML
+      relationships.
     </IntroText>
   </DiagramCanvasWrapper>
 )
 
 const renderGenerating = () => (
   <DiagramCanvasWrapper>
-    <ProgressCircular/>{' '}
-    <Heading mt="large">
-      Generating Diagram
-    </Heading>
+    <ProgressCircular /> <Heading mt="large">Generating Diagram</Heading>
   </DiagramCanvasWrapper>
 )
 
 /**
- * This function has the responsibility of taking in various 
+ * This function has the responsibility of taking in various
  */
 export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   unfilteredModels,
@@ -113,8 +108,8 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   hiddenToggle,
   displayFieldType,
   viewVisible,
-  viewPosition,
- }) => {
+  viewPosition
+}) => {
   const svgElement = document.querySelector(`svg#display-diagram-svg`)
   const dimensions = currentDimensions?.diagramDict
 
@@ -149,7 +144,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         setMinimapEnabled={setMinimapEnabled}
       />
       <Diagram
-        type={"display"}
+        type={'display'}
         dimensions={dimensions}
         explore={explore}
         reload={reload}
@@ -163,31 +158,35 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         viewPosition={viewPosition}
         setViewPosition={setViewPosition}
       />
-      {(minimapEnabled || (minimapUntoggled && currentDimensions.minimapDefault)) &&
-      <Minimap raised>
-        <Diagram
-          type={"minimap"}
-          dimensions={dimensions}
-          explore={explore}
-          reload={reload}
-          selectionInfo={selectionInfo}
-          setSelectionInfo={setSelectionInfo}
-          hiddenToggle={hiddenToggle}
-          displayFieldType={displayFieldType}
-          viewVisible={viewVisible}
-          zoomFactor={currentDimensions.minimapScale}
-          setZoomFactor={()=>{}}
-          viewPosition={{
-            x: currentDimensions.minimapX,
-            y: currentDimensions.minimapY,
-            displayX: (viewPosition.x) / zoomFactor,
-            displayY: (viewPosition.y) / zoomFactor,
-            clientWidth: svgElement && svgElement.clientWidth / zoomFactor,
-            clientHeight: svgElement && (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
-          }}
-          setViewPosition={()=>{}}
-        />
-      </Minimap>}
+      {(minimapEnabled ||
+        (minimapUntoggled && currentDimensions.minimapDefault)) && (
+        <Minimap raised>
+          <Diagram
+            type={'minimap'}
+            dimensions={dimensions}
+            explore={explore}
+            reload={reload}
+            selectionInfo={selectionInfo}
+            setSelectionInfo={setSelectionInfo}
+            hiddenToggle={hiddenToggle}
+            displayFieldType={displayFieldType}
+            viewVisible={viewVisible}
+            zoomFactor={currentDimensions.minimapScale}
+            setZoomFactor={() => {}}
+            viewPosition={{
+              x: currentDimensions.minimapX,
+              y: currentDimensions.minimapY,
+              displayX: viewPosition.x / zoomFactor,
+              displayY: viewPosition.y / zoomFactor,
+              clientWidth: svgElement && svgElement.clientWidth / zoomFactor,
+              clientHeight:
+                svgElement &&
+                (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
+            }}
+            setViewPosition={() => {}}
+          />
+        </Minimap>
+      )}
     </DiagramCanvasWrapper>
   )
 }

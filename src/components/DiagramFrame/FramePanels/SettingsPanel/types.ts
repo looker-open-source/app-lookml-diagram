@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,41 +23,39 @@
  SOFTWARE.
 
  */
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
-import { ExploreDropdown } from "../types"
-import { DetailedModel } from "../../../../utils/fetchers"
-import {
-  SelectOptionProps,
-} from "@looker/components"
+import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import { SelectOptionProps } from '@looker/components'
+import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
+import { ExploreDropdown } from '../types'
+import { DetailedModel } from '../../../../utils/fetchers'
 
 export interface ExploreListProps {
-  currentModel: ILookmlModel,
-  exploreList: ExploreDropdown[],
-  selectionInfo: SelectionInfoPacket,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
-  setSelectionInfo: (info: SelectionInfoPacket) => void,
-  setViewVisible: (visible: VisibleViewLookup) => void,
-  setZoomFactor: (zoom: number) => void,
-  setViewPosition: (info: any) => void,
-  setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
+  currentModel: ILookmlModel
+  exploreList: ExploreDropdown[]
+  selectionInfo: SelectionInfoPacket
+  currentExplore: ILookmlModelExplore
+  diagramExplore: string
+  setSelectionInfo: (info: SelectionInfoPacket) => void
+  setViewVisible: (visible: VisibleViewLookup) => void
+  setZoomFactor: (zoom: number) => void
+  setViewPosition: (info: any) => void
+  setMinimapUntoggled: (toggle: boolean) => void
+  setMinimapEnabled: (toggle: boolean) => void
 }
 
 export interface DiagramSettingsProps {
-  modelPathName: string,
-  explorePathName: string,
-  modelDetails: SelectOptionProps[],
-  exploreList: ExploreDropdown[],
-  modelDetail: DetailedModel,
-  selectionInfo: SelectionInfoPacket,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
-  setSelectionInfo: (info: SelectionInfoPacket) => void,
-  setViewVisible: (visible: VisibleViewLookup) => void,
-  setZoomFactor: (zoom: number) => void,
-  setViewPosition: (info: any) => void,
-  setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
+  modelPathName: string
+  explorePathName: string
+  modelDetails: SelectOptionProps[]
+  exploreList: ExploreDropdown[]
+  modelDetail: DetailedModel
+  selectionInfo: SelectionInfoPacket
+  currentExplore: ILookmlModelExplore
+  diagramExplore: string
+  setSelectionInfo: (info: SelectionInfoPacket) => void
+  setViewVisible: (visible: VisibleViewLookup) => void
+  setZoomFactor: (zoom: number) => void
+  setViewPosition: (info: any) => void
+  setMinimapUntoggled: (toggle: boolean) => void
+  setMinimapEnabled: (toggle: boolean) => void
 }

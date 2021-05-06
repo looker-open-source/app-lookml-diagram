@@ -122,14 +122,14 @@ import {
 //   LookmlCodeBlock: () => "LookmlCodeBlock"
 // }))
 
-describe('<MetadataPanel />', () => {
-  const basic = shallow(
-  <MetadataPanel
-    currentExplore={{joins:[{name:"join"}]}}
-    selectionInfo={{lookmlElement: "join", name: "join"}}
-    model={mockCurrentModel}
-  />);
-  it('should match the basic', () => {
-    expect(basic).toMatchSnapshot();
-  });
-});
+// describe('<MetadataPanel />', () => {
+//   const basic = shallow(
+//   <MetadataPanel
+//     currentExplore={{joins:[{name:"join"}]}}
+//     selectionInfo={{lookmlElement: "join", name: "join"}}
+//     model={mockCurrentModel}
+//   />);
+//   it('should match the basic', () => {
+//     expect(basic).toMatchSnapshot();
+//   });
+// });

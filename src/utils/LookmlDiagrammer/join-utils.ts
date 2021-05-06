@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,11 @@
  SOFTWARE.
 
  */
-import { ILookmlModelExploreJoins, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
-import { DiagramField } from "./types";
+import {
+  ILookmlModelExploreJoins,
+  ILookmlModelExplore
+} from '@looker/sdk/lib/4.0/models'
+import { DiagramField } from './types'
 
 /**
  * Returns properly formatted DiagramJoin for PKs
@@ -32,14 +35,18 @@ import { DiagramField } from "./types";
  * @param pkTableRef - joined diagram table fields
  * @param pkFieldIndex - joined diagram table index
  */
-export function getPkJoinPathObj(join: ILookmlModelExploreJoins, pkTableRef: DiagramField[], pkFieldIndex: number) {
+export function getPkJoinPathObj(
+  join: ILookmlModelExploreJoins,
+  pkTableRef: DiagramField[],
+  pkFieldIndex: number
+) {
   return {
-    viewName: join.name, 
+    viewName: join.name,
     fieldIndex: pkFieldIndex,
-    selector: pkTableRef[pkFieldIndex].name.replace(".","-"),
-    type: "core",
+    selector: pkTableRef[pkFieldIndex].name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
-    joinObj: join,
+    joinObj: join
   }
 }
 
@@ -50,16 +57,20 @@ export function getPkJoinPathObj(join: ILookmlModelExploreJoins, pkTableRef: Dia
  * @param baseTableRef - base table fields
  * @param fieldIndex - base table field index
  */
-export function getBaseJoinPathObj(join: ILookmlModelExploreJoins, baseTableId: string, baseTableRef: DiagramField[], fieldIndex: number) {
+export function getBaseJoinPathObj(
+  join: ILookmlModelExploreJoins,
+  baseTableId: string,
+  baseTableRef: DiagramField[],
+  fieldIndex: number
+) {
   return {
-    viewName: baseTableId, 
+    viewName: baseTableId,
     fieldIndex: fieldIndex,
-    selector: baseTableRef[fieldIndex].name.replace(".","-"),
-    type: "core",
+    selector: baseTableRef[fieldIndex].name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
-    joinObj: join,
+    joinObj: join
   }
-  
 }
 
 /**
@@ -69,14 +80,19 @@ export function getBaseJoinPathObj(join: ILookmlModelExploreJoins, baseTableId: 
  * @param field - field name
  * @param join - looker join obj
  */
-export function getSqlJoinPathObj(joinFieldArr: string[], fieldIndex: number, field: string, join: ILookmlModelExploreJoins) {
+export function getSqlJoinPathObj(
+  joinFieldArr: string[],
+  fieldIndex: number,
+  field: string,
+  join: ILookmlModelExploreJoins
+) {
   return {
-    viewName: joinFieldArr[0], 
+    viewName: joinFieldArr[0],
     fieldIndex: fieldIndex,
-    selector: field.replace(".","-"),
-    type: "core",
+    selector: field.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
-    joinObj: join,
+    joinObj: join
   }
 }
 
@@ -86,12 +102,12 @@ export function getSqlJoinPathObj(joinFieldArr: string[], fieldIndex: number, fi
  */
 export function getJoinPathObj(join: ILookmlModelExploreJoins) {
   return {
-    viewName: join.name, 
+    viewName: join.name,
     fieldIndex: 0,
-    selector: join.name.replace(".","-"),
-    type: "core",
+    selector: join.name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
-    joinObj: join,
+    joinObj: join
   }
 }
 
@@ -100,13 +116,16 @@ export function getJoinPathObj(join: ILookmlModelExploreJoins) {
  * @param explore - looker explore obj
  * @param join - looker join obj
  */
-export function getExploreJoinPathObj(explore: ILookmlModelExplore, join: ILookmlModelExploreJoins) {
+export function getExploreJoinPathObj(
+  explore: ILookmlModelExplore,
+  join: ILookmlModelExploreJoins
+) {
   return {
-    viewName: explore.name, 
+    viewName: explore.name,
     fieldIndex: 0,
-    selector: join.name.replace(".","-"),
-    type: "core",
+    selector: join.name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
-    joinObj: join,
+    joinObj: join
   }
 }

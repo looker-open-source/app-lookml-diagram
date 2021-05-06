@@ -24,11 +24,15 @@
 
  */
 
-import { useContext } from "react"
+import { useContext } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { ExtensionContext2 } from "@looker/extension-sdk-react"
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/4.0/models"
-import { DiagrammedModel, generateModelDiagrams } from "./LookmlDiagrammer"
+import { ExtensionContext2 } from '@looker/extension-sdk-react'
+import {
+  ILookmlModel,
+  ILookmlModelExplore,
+  IGitBranch
+} from '@looker/sdk/lib/4.0/models'
+import { DiagrammedModel, generateModelDiagrams } from './LookmlDiagrammer'
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -39,14 +43,14 @@ export interface DetailedModel {
 }
 
 export interface DiagramError {
-  kind: string,
+  kind: string
   message?: string
 }
 
 const defaultQueryOptions = {
   staleTime: Infinity,
   cacheTime: Infinity,
-  refetchOnWindowFocus: false,
+  refetchOnWindowFocus: false
 }
 
 /**
@@ -55,7 +59,8 @@ const defaultQueryOptions = {
  */
 export function useAllModels(): ILookmlModel[] {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery('allModels',
+  const { isLoading, error, data } = useQuery(
+    'allModels',
     () => coreSDK.ok(coreSDK.all_lookml_models()),
     {
       ...defaultQueryOptions
@@ -82,7 +87,7 @@ export function useLookmlModelExplore(modelName: string, exploreName: string) {
     }
   )
   const explore = data
-  return {explore, isLoading}
+  return { explore, isLoading }
 }
 
 /**
@@ -92,30 +97,42 @@ export function useLookmlModelExplore(modelName: string, exploreName: string) {
  */
 export function useLookmlModelExplores(model: ILookmlModel) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(`${model?.name}Explores`, () => {
-    return Promise.all(
-      model.explores.map(explore => {
-        return coreSDK.ok(coreSDK.lookml_model_explore(model.name, explore.name))
-      }))
-  },
-  {
-    enabled: !!model,
-    retry: false,
-    ...defaultQueryOptions,
-    initialData: undefined
-  })
+  const { isLoading, error, data } = useQuery(
+    `${model?.name}Explores`,
+    () => {
+      return Promise.all(
+        model.explores.map(explore => {
+          return coreSDK.ok(
+            coreSDK.lookml_model_explore(model.name, explore.name)
+          )
+        })
+      )
+    },
+    {
+      enabled: !!model,
+      retry: false,
+      ...defaultQueryOptions,
+      initialData: undefined
+    }
+  )
   const explores = data
-  const modelExploreError = error && "notFound"
-  return {explores, modelExploreError}
+  const modelExploreError = error && 'notFound'
+  return { explores, modelExploreError }
 }
 
 /**
  * gets the model diagrams from the detailed model
  * @returns diagrammable model metadata
  */
- export function useModelDiagrams(modelDetail: DetailedModel, hiddenToggle: boolean, displayFieldType: string): DiagrammedModel[] {
-  const queryCacheKey = JSON.stringify(modelDetail) + hiddenToggle + displayFieldType
-  const { isLoading, error, data } = useQuery(queryCacheKey,
+export function useModelDiagrams(
+  modelDetail: DetailedModel,
+  hiddenToggle: boolean,
+  displayFieldType: string
+): DiagrammedModel[] {
+  const queryCacheKey =
+    JSON.stringify(modelDetail) + hiddenToggle + displayFieldType
+  const { isLoading, error, data } = useQuery(
+    queryCacheKey,
     () => generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType),
     {
       ...defaultQueryOptions,
@@ -133,7 +150,8 @@ export function useLookmlModelExplores(model: ILookmlModel) {
  */
 export function useCurrentGitBranch(projectId: string) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(`branch@${projectId}`,
+  const { isLoading, error, data } = useQuery(
+    `branch@${projectId}`,
     () => coreSDK.ok(coreSDK.git_branch(projectId)),
     {
       enabled: !!projectId,
@@ -141,8 +159,8 @@ export function useCurrentGitBranch(projectId: string) {
     }
   )
   const gitBranch = data
-  const branchError = error && "git"
-  return {gitBranch, branchError}
+  const branchError = error && 'git'
+  return { gitBranch, branchError }
 }
 
 /**
@@ -152,7 +170,8 @@ export function useCurrentGitBranch(projectId: string) {
  */
 export function useAvailableGitBranches(projectId: string) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(`branches@${projectId}`,
+  const { isLoading, error, data } = useQuery(
+    `branches@${projectId}`,
     () => coreSDK.ok(coreSDK.all_git_branches(projectId)),
     {
       enabled: !!projectId,
@@ -160,8 +179,8 @@ export function useAvailableGitBranches(projectId: string) {
     }
   )
   const gitBranches = data
-  const branchesError = error && "git"
-  return {gitBranches, branchesError}
+  const branchesError = error && 'git'
+  return { gitBranches, branchesError }
 }
 
 /**
@@ -174,10 +193,13 @@ export function useUpdateGitBranches(projectId: string) {
   const { coreSDK } = useContext(ExtensionContext2)
   const queryClient = useQueryClient()
   const mutation = useMutation(
-    (gitName: string) => coreSDK.ok(coreSDK.update_git_branch(projectId, {
-      name: gitName,
-      ref: ""
-    })),
+    (gitName: string) =>
+      coreSDK.ok(
+        coreSDK.update_git_branch(projectId, {
+          name: gitName,
+          ref: ''
+        })
+      ),
     {
       onSuccess: () => {
         queryClient.resetQueries()

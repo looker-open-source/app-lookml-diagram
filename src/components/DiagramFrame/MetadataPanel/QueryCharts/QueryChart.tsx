@@ -1,14 +1,19 @@
 /*
+
  MIT License
- Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Copyright (c) 2021 Looker Data Sciences, Inc.
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -16,11 +21,11 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
+
  */
 
-import React from "react"
+import React from 'react'
 import {
-  Spinner,
   Table,
   TableBody,
   TableRow,
@@ -30,15 +35,20 @@ import {
   ButtonTransparent,
   ProgressCircular,
   theme
-} from "@looker/components"
-import { QueryChartType, runChartQuery, SimpleResult } from "../../../../utils/queries"
-import styled from "styled-components"
-import { BarChart, Bar, Tooltip } from "recharts"
-import { ExtensionContext2 } from "@looker/extension-sdk-react"
-import { ExternalLink } from "../../../ExternalLink"
-import { globalCache } from "../../../../utils/queries"
-import { MetadataItem } from "./MetadataList"
-import { QueryChartButton } from "./QueryChartButton"
+} from '@looker/components'
+import styled from 'styled-components'
+import { BarChart, Bar, Tooltip } from 'recharts'
+import { ExtensionContext2 } from '@looker/extension-sdk-react'
+import {
+  QueryChartType,
+  runChartQuery,
+  SimpleResult,
+  globalCache
+} from '../../../../utils/queries'
+import { ExternalLink } from '../../../ExternalLink'
+
+import { MetadataItem } from './MetadataList'
+import { QueryChartButton } from './QueryChartButton'
 
 interface QueryChartState {
   loading: boolean
@@ -64,16 +74,15 @@ const ProgressTableRow = styled(TableRow)`
   );
 `
 
-const PaddedCell = styled(TableDataCell)`
-`
+const PaddedCell = styled(TableDataCell)``
 PaddedCell.defaultProps = {
-  p: "4px"
+  p: '4px'
 }
 
 const BarTooltip = styled.div`
   padding: 4px;
   border-radius: 5px;
-  color: #FFF;
+  color: #fff;
   opacity: 0.9;
   background: #282828;
 `
@@ -82,13 +91,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <BarTooltip>
-        <p className="label">{`Range: [${Math.round(payload[0].payload.min)},${Math.round(payload[0].payload.max)}] Count: ${payload[0].value}`}</p>
+        <p className="label">{`Range: [${Math.round(
+          payload[0].payload.min
+        )},${Math.round(payload[0].payload.max)}] Count: ${
+          payload[0].value
+        }`}</p>
       </BarTooltip>
-    );
+    )
   }
 
-  return null;
-};
+  return null
+}
 
 export class QueryChart extends React.Component<
   QueryChartProps,
@@ -119,7 +132,7 @@ export class QueryChart extends React.Component<
       console.error(e)
       this.setState({
         loading: false,
-        response: {data:[], align:[], max:[]}
+        response: { data: [], align: [], max: [] }
       })
     }
   }
@@ -134,13 +147,11 @@ export class QueryChart extends React.Component<
 
   render() {
     if (this.state.loading) {
-      return (
-        <ProgressCircular size='small' />
-      )
+      return <ProgressCircular size="small" />
     } else if (this.state.response) {
       if (this.state.response.data.length === 0) {
         return (
-          <Text fontSize="small" style={{color: theme.colors.text1}}>
+          <Text fontSize="small" style={{ color: theme.colors.text1 }}>
             No Data
           </Text>
         )

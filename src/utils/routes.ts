@@ -23,20 +23,26 @@
  SOFTWARE.
 
  */
-import { useRouteMatch } from "react-router-dom"
-import { useAllModels, useLookmlModelExplores, useAvailableGitBranches, useCurrentGitBranch, DetailedModel, useModelDiagrams } from "./fetchers"
-import { DiagrammedModel } from "./LookmlDiagrammer"
+import { useRouteMatch } from 'react-router-dom'
+import {
+  useAllModels,
+  useLookmlModelExplores,
+  useAvailableGitBranches,
+  useCurrentGitBranch,
+  DetailedModel,
+  useModelDiagrams
+} from './fetchers'
 
 export function internalExploreURL({
   model,
   explore,
   field,
-  tab,
+  tab
 }: {
   model: string
   explore: string
-  field?: string,
-  tab?: string,
+  field?: string
+  tab?: string
 }) {
   let url = `/models/${encodeURIComponent(model)}/explores/${encodeURIComponent(
     explore
@@ -67,23 +73,28 @@ export function usePathNames(): {
 } {
   const match =
     useRouteMatch<{ model: string }>({
-      path: "/models/:model",
+      path: '/models/:model',
       sensitive: true
     }) || undefined
 
   const match2 =
     useRouteMatch<{ model: string; explore: string }>({
-      path: "/models/:model/explores/:explore",
+      path: '/models/:model/explores/:explore',
       sensitive: true
     }) || undefined
 
   const match3 =
-    useRouteMatch<{ model: string; explore: string; field: string; tab: string;}>({
-      path: "/models/:model/explores/:explore/field/:field/pane/:tab",
+    useRouteMatch<{
+      model: string
+      explore: string
+      field: string
+      tab: string
+    }>({
+      path: '/models/:model/explores/:explore/field/:field/pane/:tab'
     }) || undefined
-  
+
   const renderMatch = useRouteMatch({
-    path: "/models/:model/explores/:explore/render",
+    path: '/models/:model/explores/:explore/render',
     sensitive: true
   })
 
@@ -96,12 +107,24 @@ export function usePathNames(): {
   }
 }
 
-export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string) {
+export function useCurrentModel() {
+  const { modelName } = usePathNames()
+  const modelData = useAllModels()
+  const currentModel = modelData && modelData.find(m => m.name === modelName)
+  return currentModel
+}
+
+export function useSelectExplore(
+  hiddenToggle: boolean,
+  displayFieldType: string
+) {
   const unfilteredModels = useAllModels()
   const model = useCurrentModel()
-  const {explores, modelExploreError} = useLookmlModelExplores(model)
-  const {gitBranch, branchError} = useCurrentGitBranch(model?.project_name)
-  const {gitBranches, branchesError} = useAvailableGitBranches(model?.project_name)
+  const { explores, modelExploreError } = useLookmlModelExplores(model)
+  const { gitBranch, branchError } = useCurrentGitBranch(model?.project_name)
+  const { gitBranches, branchesError } = useAvailableGitBranches(
+    model?.project_name
+  )
   const fetchError = modelExploreError || branchError || branchesError
   const modelDetail: DetailedModel = {
     model,
@@ -110,18 +133,14 @@ export function useSelectExplore(hiddenToggle: boolean, displayFieldType: string
     gitBranches,
     fetchError
   }
-  const dimensions = useModelDiagrams(modelDetail, hiddenToggle, displayFieldType)
+  const dimensions = useModelDiagrams(
+    modelDetail,
+    hiddenToggle,
+    displayFieldType
+  )
   return {
     unfilteredModels,
     modelDetail,
-    dimensions,
+    dimensions
   }
-}
-
-export function useCurrentModel() {
-  const { modelName } = usePathNames()
-  const modelData = useAllModels()
-  let currentModel = modelData && modelData.find(m => m.name === modelName)
-  return currentModel
-
 }

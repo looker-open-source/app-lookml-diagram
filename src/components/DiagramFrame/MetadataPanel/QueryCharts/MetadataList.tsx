@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@
 
  */
 
-import React from "react"
-import { Box, Text, Flex, FlexItem } from "@looker/components"
+import React from 'react'
+import { Box, Text, Flex, FlexItem } from '@looker/components'
 
 export const MetadataItem = ({
   aux,
@@ -53,9 +53,7 @@ export const MetadataItem = ({
           <Flex>
             {aux && (
               <FlexItem textAlign="right" flex="1 1 auto">
-                <Text fontSize="small">
-                  {aux}
-                </Text>
+                <Text fontSize="small">{aux}</Text>
               </FlexItem>
             )}
           </Flex>

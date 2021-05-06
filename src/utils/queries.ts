@@ -18,13 +18,14 @@
  SOFTWARE.
  */
 
- import {
+import {
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField
 } from '@looker/sdk/lib/3.1/models'
 import { exploreURL } from "./urls"
 import { Looker31SDK as LookerSDK } from '@looker/sdk/lib/3.1/methods'
+import { IQuery } from '@looker/sdk'
 
 export const globalCache: any = {}
 
@@ -153,7 +154,8 @@ export async function getTopValues({
       }
     })
   )
-  const data = qr.data.map((row: any) => [
+  /* eslint-disable */
+  const data = qr?.data?.map((row: any) => [
     formatData(row[field.name]),
     formatData(row[countField.name])
   ])

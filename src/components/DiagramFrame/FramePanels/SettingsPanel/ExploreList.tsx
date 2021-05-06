@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,18 @@
 
  */
 
-import React from "react"
-import { useHistory } from "react-router"
-import { ExploreDropdown } from "../types"
+import React from 'react'
+import { useHistory } from 'react-router'
+import { ExploreDropdown } from '../types'
 import { ExploreListProps } from './types'
-import {handleExploreChange, getExploreListItemBackgroundColor} from "./utils"
-import {ExploreListWrapper, ExploreListitem, ExploreButton } from "./list_components"
+import { handleExploreChange, getExploreListItemBackgroundColor } from './utils'
+import {
+  ExploreListWrapper,
+  ExploreListitem,
+  ExploreButton
+} from './list_components'
 
- 
-export const ExploreList: React.FC<ExploreListProps> = ({ 
+export const ExploreList: React.FC<ExploreListProps> = ({
   currentModel,
   selectionInfo,
   exploreList,
@@ -43,34 +46,46 @@ export const ExploreList: React.FC<ExploreListProps> = ({
   setZoomFactor,
   setViewPosition,
   setMinimapUntoggled,
-  setMinimapEnabled,
+  setMinimapEnabled
 }) => {
   const history = useHistory()
   return (
     <ExploreListWrapper>
-      {exploreList && exploreList.map((explore: ExploreDropdown, index: number) => {
-        return (
-          <ExploreListitem key={`explore-${index}`} style={{backgroundColor: getExploreListItemBackgroundColor(explore.value, currentExplore, diagramExplore)}}>
-            <ExploreButton
-              onClick={()=>handleExploreChange(
-                history,
-                currentModel,
-                explore,
-                selectionInfo,
-                setSelectionInfo,
-                setViewVisible,
-                setZoomFactor,
-                setViewPosition,
-                setMinimapUntoggled,
-                setMinimapEnabled
-              )}
-              value={explore.value}
+      {exploreList &&
+        exploreList.map((explore: ExploreDropdown, index: number) => {
+          return (
+            <ExploreListitem
+              key={`explore-${index}`}
+              style={{
+                backgroundColor: getExploreListItemBackgroundColor(
+                  explore.value,
+                  currentExplore,
+                  diagramExplore
+                )
+              }}
             >
-              {explore.label}
-            </ExploreButton>
-          </ExploreListitem>
-        )
-      })}
+              <ExploreButton
+                onClick={() =>
+                  handleExploreChange(
+                    history,
+                    currentModel,
+                    explore,
+                    selectionInfo,
+                    setSelectionInfo,
+                    setViewVisible,
+                    setZoomFactor,
+                    setViewPosition,
+                    setMinimapUntoggled,
+                    setMinimapEnabled
+                  )
+                }
+                value={explore.value}
+              >
+                {explore.label}
+              </ExploreButton>
+            </ExploreListitem>
+          )
+        })}
     </ExploreListWrapper>
   )
 }

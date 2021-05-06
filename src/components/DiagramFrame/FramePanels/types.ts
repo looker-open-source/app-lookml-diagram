@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +25,15 @@
  */
 
 export interface ViewOptionsProps {
-  displayFieldType: any,
-  hiddenToggle: any,
-  viewVisible: any,
-  setViewVisible: (visible: any) => void,
-  handleHiddenToggle: (toggle: React.FormEvent<HTMLInputElement>) => void,
-  setDisplayFieldType: (types: any) => void,
+  displayFieldType: any
+  hiddenToggle: any
+  viewVisible: any
+  setViewVisible: (visible: any) => void
+  handleHiddenToggle: (toggle: React.FormEvent<HTMLInputElement>) => void
+  setDisplayFieldType: (types: any) => void
 }
 
- export interface ExploreDropdown {
-  value: string;
-  label: string;
+export interface ExploreDropdown {
+  value: string
+  label: string
 }
-

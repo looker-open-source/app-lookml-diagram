@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +24,33 @@
 
  */
 
-import React, { useCallback } from "react"
+import React, { useCallback } from 'react'
+import { SpaceVertical, IconButton, Layout } from '@looker/components'
+import { AccountTree } from '@styled-icons/material-outlined/AccountTree'
+import { Visibility } from '@styled-icons/material-outlined/Visibility'
+import { LiveHelp } from '@styled-icons/material-outlined/LiveHelp'
+import { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import { SelectionInfoPacket, VisibleViewLookup } from '../interfaces'
+import { DiagrammedModel, DiagramMetadata } from '../../utils/LookmlDiagrammer/'
 import {
-  SpaceVertical,
-  IconButton,
-  Layout,
-} from "@looker/components"
-import { AccountTree } from "@styled-icons/material-outlined/AccountTree"
-import { Visibility } from "@styled-icons/material-outlined/Visibility"
-import { LiveHelp } from "@styled-icons/material-outlined/LiveHelp"
-import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
-import {MetadataPanel} from "./MetadataPanel/MetadataPanel"
-import { ViewOptions, DiagramSettings, HelpPanel, ExploreDropdown } from "./FramePanels"
-import { DiagramHeader } from "./DiagramHeader"
-import { DiagramCanvas } from "./DiagramCanvas/DiagramCanvas"
-import { 
   ZOOM_INIT,
   X_INIT,
   Y_INIT,
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
 } from '../../utils/constants'
-import { ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
-import {DiagramFrameProps} from "./types"
-import {Rail, Stage} from "./FrameHelpers"
-import {prepareModelDropdown, prepareExploreList} from "./utils"
+import { MetadataPanel } from './MetadataPanel/MetadataPanel'
+import {
+  ViewOptions,
+  DiagramSettings,
+  HelpPanel,
+  ExploreDropdown
+} from './FramePanels'
+import { DiagramHeader } from './DiagramHeader'
+import { DiagramCanvas } from './DiagramCanvas/DiagramCanvas'
+import { DiagramFrameProps } from './types'
+import { Rail, Stage } from './FrameHelpers'
+import { prepareModelDropdown, prepareExploreList } from './utils'
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
@@ -60,77 +61,109 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   hiddenToggle,
   setHiddenToggle,
   displayFieldType,
-  setDisplayFieldType,
-  }) => {
+  setDisplayFieldType
+}) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
   const [showHelp, setShowHelp] = React.useState(false)
   const [showViewOptions, setShowViewOptions] = React.useState(false)
   const [reload, setReload] = React.useState(false)
-  const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>({})
+  const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>(
+    {}
+  )
   const [zoomFactor, setZoomFactor] = React.useState(ZOOM_INIT)
-  const [viewPosition, setViewPosition] = React.useState({x: X_INIT, y: Y_INIT})
+  const [viewPosition, setViewPosition] = React.useState({
+    x: X_INIT,
+    y: Y_INIT
+  })
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
   const currentModel = modelDetail?.model
 
-  const handleHiddenToggle = useCallback((event: any) => setHiddenToggle(event.target.checked), [])
-  const toggleSettings = () => {closePanels(); setShowSettings(!showSettings)}
-  const toggleViewOptions = () => {closePanels(); setShowViewOptions(!showViewOptions)}
-  const toggleHelp = () => {closePanels(); setShowHelp(!showHelp)}
+  const currentExplore: ILookmlModelExplore = modelDetail?.explores?.filter(
+    (d: ILookmlModelExplore) => {
+      return d.name === pathExploreName
+    }
+  )[0]
 
+  const handleHiddenToggle = useCallback(
+    (event: any) => setHiddenToggle(event.target.checked),
+    []
+  )
   function closePanels() {
     setShowHelp(false)
     setShowViewOptions(false)
     setShowSettings(false)
   }
+  const toggleSettings = () => {
+    closePanels()
+    setShowSettings(!showSettings)
+  }
+  const toggleViewOptions = () => {
+    closePanels()
+    setShowViewOptions(!showViewOptions)
+  }
+  const toggleHelp = () => {
+    closePanels()
+    setShowHelp(!showHelp)
+  }
 
   function toggleExploreInfo() {
     if (currentExplore && modelDetail) {
-      let selectInfo = selectionInfo.lookmlElement !== "explore" ? {lookmlElement: "explore"} : {}
+      const selectInfo =
+        selectionInfo.lookmlElement !== 'explore'
+          ? { lookmlElement: 'explore' }
+          : {}
       setSelectionInfo(selectInfo)
     }
   }
 
-  const iconStyleOverride = {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE}
+  const iconStyleOverride = {
+    color: OVERRIDE_KEY,
+    backgroundColor: OVERRIDE_KEY_SUBTLE
+  }
 
-  const settingsIconStyles = showSettings ?
-  iconStyleOverride :
-  {}
+  const settingsIconStyles = showSettings ? iconStyleOverride : {}
 
-  const viewOptionsIconStyles = showViewOptions ?
-  iconStyleOverride :
-  {}
+  const viewOptionsIconStyles = showViewOptions ? iconStyleOverride : {}
 
-  const helpIconStyles = showHelp ?
-  iconStyleOverride :
-  {}
+  const helpIconStyles = showHelp ? iconStyleOverride : {}
 
   const modelDetails = prepareModelDropdown(unfilteredModels)
 
-  let currentExplore: ILookmlModelExplore = modelDetail?.explores?.filter((d: ILookmlModelExplore)=>{
-    return d.name === pathExploreName
-  })[0]
-
   const exploreList: ExploreDropdown[] = prepareExploreList(currentModel)
 
-  const currentDimensions: DiagrammedModel = dimensions?.filter((d: DiagrammedModel)=>{
-    return d.exploreName === pathExploreName
-  })[0]
+  const currentDimensions: DiagrammedModel = dimensions?.filter(
+    (d: DiagrammedModel) => {
+      return d.exploreName === pathExploreName
+    }
+  )[0]
 
   const currentDiagramMetadata: DiagramMetadata = currentDimensions?.diagramDict
 
-  let defaultViews: VisibleViewLookup = {}
-  Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && Object.keys(currentDiagramMetadata.tableData)
-  .map((lookmlViewName: string)=>{
-    defaultViews[lookmlViewName] = true
-  })
-  Object.keys(viewVisible).length === 0 && currentExplore && currentDiagramMetadata && setViewVisible(defaultViews)
+  const defaultViews: VisibleViewLookup = {}
+  Object.keys(viewVisible).length === 0 &&
+    currentExplore &&
+    currentDiagramMetadata &&
+    Object.keys(currentDiagramMetadata.tableData).map(
+      (lookmlViewName: string) => {
+        defaultViews[lookmlViewName] = true
+      }
+    )
+  Object.keys(viewVisible).length === 0 &&
+    currentExplore &&
+    currentDiagramMetadata &&
+    setViewVisible(defaultViews)
 
   return (
     <Layout hasAside height="100%">
       <Rail width="50px" py="xxsmall" pr="xsmall">
-        <SpaceVertical style={{alignItems: "center"}} alignItems="center" gap="xsmall" ml="xxsmall">
+        <SpaceVertical
+          style={{ alignItems: 'center' }}
+          alignItems="center"
+          gap="xsmall"
+          ml="xxsmall"
+        >
           <IconButton
             icon={<AccountTree />}
             label="Settings"
@@ -159,8 +192,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             toggle={showHelp}
             style={{
               ...helpIconStyles,
-              position: "absolute",
-              bottom: "5px"
+              position: 'absolute',
+              bottom: '5px'
             }}
           />
         </SpaceVertical>
@@ -193,10 +226,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           setDisplayFieldType={setDisplayFieldType}
         />
       )}
-      {showHelp && (
-        <HelpPanel
-        />
-      )}
+      {showHelp && <HelpPanel />}
       <Stage>
         <DiagramHeader
           currentExplore={currentExplore}
@@ -204,38 +234,38 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           toggleExploreInfo={toggleExploreInfo}
         />
         <Layout hasAside height="100%" id="DiagramStage">
-        <DiagramCanvas
-          modelDetail={modelDetail}
-          unfilteredModels={unfilteredModels}
-          pathModelName={pathModelName}
-          pathExploreName={pathExploreName}
-          currentDimensions={currentDimensions}
-          zoomFactor={zoomFactor}
-          reload={reload}
-          minimapUntoggled={minimapUntoggled}
-          minimapEnabled={minimapEnabled}
-          setZoomFactor={setZoomFactor}
-          setViewPosition={setViewPosition}
-          setReload={setReload}
-          setMinimapUntoggled={setMinimapUntoggled}
-          setMinimapEnabled={setMinimapEnabled}
-          explore={currentExplore}
-          selectionInfo={selectionInfo}
-          setSelectionInfo={setSelectionInfo}
-          hiddenToggle={hiddenToggle}
-          displayFieldType={displayFieldType}
-          viewVisible={viewVisible}
-          viewPosition={viewPosition}
-        />
-        {currentExplore && Object.keys(selectionInfo).length > 0 && (
-          <MetadataPanel
-            currentExplore={currentExplore}
+          <DiagramCanvas
+            modelDetail={modelDetail}
+            unfilteredModels={unfilteredModels}
+            pathModelName={pathModelName}
+            pathExploreName={pathExploreName}
+            currentDimensions={currentDimensions}
+            zoomFactor={zoomFactor}
+            reload={reload}
+            minimapUntoggled={minimapUntoggled}
+            minimapEnabled={minimapEnabled}
+            setZoomFactor={setZoomFactor}
+            setViewPosition={setViewPosition}
+            setReload={setReload}
+            setMinimapUntoggled={setMinimapUntoggled}
+            setMinimapEnabled={setMinimapEnabled}
+            explore={currentExplore}
             selectionInfo={selectionInfo}
-            model={modelDetail?.model}
+            setSelectionInfo={setSelectionInfo}
+            hiddenToggle={hiddenToggle}
+            displayFieldType={displayFieldType}
+            viewVisible={viewVisible}
+            viewPosition={viewPosition}
           />
-        )}
+          {currentExplore && Object.keys(selectionInfo).length > 0 && (
+            <MetadataPanel
+              currentExplore={currentExplore}
+              selectionInfo={selectionInfo}
+              model={modelDetail?.model}
+            />
+          )}
         </Layout>
       </Stage>
-      </Layout>
+    </Layout>
   )
 }

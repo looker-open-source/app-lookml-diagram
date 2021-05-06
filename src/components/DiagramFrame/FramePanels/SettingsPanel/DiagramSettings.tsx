@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,23 @@
 
  */
 
-import React from "react"
+import React from 'react'
 import {
   SpaceVertical,
   Divider,
   FieldSelect,
   FadeIn,
-  Label,
-} from "@looker/components"
-import { internalModelURL } from "../../../../utils/routes"
-import { useHistory } from "react-router"
-import { SettingsPanel, PanelHeading } from "../frame_components"
-import { DiagramSettingsProps } from "./types"
-import { ExploreList } from "./ExploreList"
-import { getBranchOptions } from "./utils"
-import { useUpdateGitBranches } from "../../../../utils/fetchers"
+  Label
+} from '@looker/components'
+import { useHistory } from 'react-router'
+import { internalModelURL } from '../../../../utils/routes'
+import { SettingsPanel, PanelHeading } from '../frame_components'
+import { useUpdateGitBranches } from '../../../../utils/fetchers'
+import { DiagramSettingsProps } from './types'
+import { ExploreList } from './ExploreList'
+import { getBranchOptions } from './utils'
 
-export const DiagramSettings: React.FC<DiagramSettingsProps> = ({ 
+export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   modelPathName,
   explorePathName,
   modelDetails,
@@ -54,8 +54,8 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   setZoomFactor,
   setViewPosition,
   setMinimapUntoggled,
-  setMinimapEnabled,
- }) => {
+  setMinimapEnabled
+}) => {
   const history = useHistory()
   const gitBranch = modelDetail?.gitBranch
   const updateBranch = useUpdateGitBranches(modelDetail?.model?.project_name)
@@ -70,24 +70,35 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
           value={modelPathName}
           onChange={(selectedModel: string) => {
             history.push(internalModelURL({ model: selectedModel }))
-          }
-          }
+          }}
           listLayout={{ maxHeight: 300 }}
-          isLoading={modelDetails.length === 0 ? true : false}
+          isLoading={modelDetails.length === 0}
         />
         {modelPathName && exploreList && (
           <FadeIn duration="intricate">
             <FieldSelect
-              options={gitBranch ? getBranchOptions(gitBranch, modelDetail.gitBranches) : []}
+              options={
+                gitBranch
+                  ? getBranchOptions(gitBranch, modelDetail.gitBranches)
+                  : []
+              }
               placeholder="Loading Git Branches..."
               label="Current Branch"
               value={gitBranch && gitBranch.name}
-              onChange={(value)=>{updateBranch.mutate(value)}}
-              disabled={(gitBranch && gitBranch.is_production) || !diagramExplore || modelDetail?.fetchError === "git"}
+              onChange={value => {
+                updateBranch.mutate(value)
+              }}
+              disabled={
+                (gitBranch && gitBranch.is_production) ||
+                !diagramExplore ||
+                modelDetail?.fetchError === 'git'
+              }
             />
             <Divider appearance="light" my="medium" />
-            <Label fontSize="xsmall" style={{marginTop: "0rem"}}>Select an Explore</Label>
-            <ExploreList 
+            <Label fontSize="xsmall" style={{ marginTop: '0rem' }}>
+              Select an Explore
+            </Label>
+            <ExploreList
               exploreList={exploreList}
               currentModel={modelDetail?.model}
               selectionInfo={selectionInfo}
@@ -98,7 +109,8 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               setZoomFactor={setZoomFactor}
               setViewPosition={setViewPosition}
               setMinimapUntoggled={setMinimapUntoggled}
-              setMinimapEnabled={setMinimapEnabled}/>
+              setMinimapEnabled={setMinimapEnabled}
+            />
           </FadeIn>
         )}
       </SpaceVertical>

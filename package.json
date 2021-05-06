@@ -11,8 +11,8 @@
     "build": "webpack --mode=production",
     "build:ci:clean": "rm -rf ./temp && mkdir ./temp",
     "build:ci": "webpack --mode=production --output-path=./temp",
-    "lint": "eslint 'src/components/*.ts{,x}'",
-    "lint-fix": "eslint 'src/components/*.ts{,x}' --fix",
+    "lint": "eslint './src/**/*.ts{,x}' --cache",
+    "lint-fix": "eslint './src/**/*.ts{,x}' --fix --cache",
     "analyze": "export ANALYZE_MODE=static && yarn build"
   },
   "license": "MIT",
@@ -25,8 +25,10 @@
     "@looker/components": "^1.1.3",
     "@looker/components-test-utils": "^1.1.3",
     "@looker/design-tokens": "^1.1.5",
+    "@looker/eslint-config": "^1.1.5",
     "@looker/extension-sdk-react": "^21.0.7",
     "@looker/icons": "1.1.3",
+    "@looker/prettier-config": "^1.1.5",
     "@looker/sdk": "^21.0.7",
     "@styled-icons/material": "^10.28.0",
     "@styled-icons/material-outlined": "^10.28.0",
@@ -47,12 +49,16 @@
     "d3": "^6.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
-    "eslint": "^6.6.0",
+    "eslint": "^7.19.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-import-resolver-webpack": "^0.12.1",
+    "eslint-plugin-header": "^3.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-mdx": "^1.6.8",
     "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
@@ -79,6 +85,12 @@
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   },
+  "eslintIgnore": [
+    "src/__tests__/**",
+    "src/__mocks__/**",
+    "queries.ts",
+    "src/components/DiagramFrame/FramePanels/HelpPanelData/**"
+  ],
   "babel": {
     "presets": [
       "@babel/preset-react",
@@ -121,5 +133,13 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/__tests__/test_setup.js"
     ]
+  },
+  "prettier": "@looker/prettier-config",
+  "prettierConfig": {
+    "overrides": {
+      "rules": {
+        "trailingComma": "all"
+      }
+    }
   }
 }

@@ -23,13 +23,13 @@
  SOFTWARE.
 
  */
-import { 
+import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/4.0/models'
+import {
   DiagramMetadata,
   DiagrammedModel
-} from "../../../utils/LookmlDiagrammer/"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
-import { DetailedModel } from "../../../utils/fetchers"
-import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/4.0/models';
+} from '../../../utils/LookmlDiagrammer/'
+import { SelectionInfoPacket, VisibleViewLookup } from '../../interfaces'
+import { DetailedModel } from '../../../utils/fetchers'
 
 export interface DiagramProps {
   type: string
@@ -48,16 +48,16 @@ export interface DiagramProps {
 }
 
 export interface DiagramToolbarProps {
-  zoomFactor: number,
-  reload: boolean,
-  defaultMinimap: boolean,
-  minimapUntoggled: boolean,
-  minimapEnabled: boolean,
-  setZoomFactor: (k: number)=>void,
-  setViewPosition: (posPacket: any)=>void,
-  setReload: (r: boolean)=>void,
-  setMinimapUntoggled: (ut: boolean)=>void,
-  setMinimapEnabled: (e: boolean)=>void,
+  zoomFactor: number
+  reload: boolean
+  defaultMinimap: boolean
+  minimapUntoggled: boolean
+  minimapEnabled: boolean
+  setZoomFactor: (k: number) => void
+  setViewPosition: (posPacket: any) => void
+  setReload: (r: boolean) => void
+  setMinimapUntoggled: (ut: boolean) => void
+  setMinimapEnabled: (e: boolean) => void
 }
 
 export interface DiagramCanvasProps {
@@ -70,11 +70,11 @@ export interface DiagramCanvasProps {
   reload: boolean
   minimapUntoggled: boolean
   minimapEnabled: boolean
-  setZoomFactor: (k: number)=>void
-  setViewPosition: (posPacket: any)=>void
-  setReload: (r: boolean)=>void
-  setMinimapUntoggled: (ut: boolean)=>void
-  setMinimapEnabled: (e: boolean)=>void
+  setZoomFactor: (k: number) => void
+  setViewPosition: (posPacket: any) => void
+  setReload: (r: boolean) => void
+  setMinimapUntoggled: (ut: boolean) => void
+  setMinimapEnabled: (e: boolean) => void
   explore: ILookmlModelExplore
   selectionInfo: SelectionInfoPacket
   setSelectionInfo: (packet: SelectionInfoPacket) => void

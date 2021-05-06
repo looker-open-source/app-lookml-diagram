@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,25 @@
  SOFTWARE.
 
  */
-import React from "react"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
-import { ILookmlModel, ILookmlModelExplore, IGitBranch } from "@looker/sdk/lib/4.0/models"
-import { GitBranch } from "@looker/icons"
-import { SelectOptionProps } from "@looker/components"
-import { X_INIT, Y_INIT, ZOOM_INIT, OVERRIDE_KEY_SUBTLE } from '../../../../utils/constants'
-import { internalExploreURL } from "../../../../utils/routes"
-import { ExploreDropdown } from "../types"
+import React from 'react'
+import {
+  ILookmlModel,
+  ILookmlModelExplore,
+  IGitBranch
+} from '@looker/sdk/lib/4.0/models'
+import { GitBranch } from '@looker/icons'
+import { SelectOptionProps } from '@looker/components'
+import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
+import {
+  X_INIT,
+  Y_INIT,
+  ZOOM_INIT,
+  OVERRIDE_KEY_SUBTLE
+} from '../../../../utils/constants'
+import { internalExploreURL } from '../../../../utils/routes'
+import { ExploreDropdown } from '../types'
 
-export function handleExploreChange (
+export function handleExploreChange(
   history: any,
   currentModel: ILookmlModel,
   currentExplore: ExploreDropdown,
@@ -44,18 +53,18 @@ export function handleExploreChange (
   setMinimapUntoggled: (toggle: boolean) => void,
   setMinimapEnabled: (toggle: boolean) => void
 ) {
-  selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
+  selectionInfo.lookmlElement === 'explore' || setSelectionInfo({})
   setViewVisible({})
   setZoomFactor(ZOOM_INIT)
-  setViewPosition({x: X_INIT, y: Y_INIT})
+  setViewPosition({ x: X_INIT, y: Y_INIT })
   setMinimapUntoggled(true)
   setMinimapEnabled(false)
   history.push(
     internalExploreURL({
       model: currentModel.name,
       explore: currentExplore.value
-    }
-  ))
+    })
+  )
 }
 
 /**
@@ -64,7 +73,11 @@ export function handleExploreChange (
  * @param currentExplore - current url explore obj
  * @param diagramExplore - current diagrammed explore obj
  */
- export function getExploreListItemBackgroundColor(exploreNameSel: string, currentExplore: ILookmlModelExplore, diagramExplore: string) {
+export function getExploreListItemBackgroundColor(
+  exploreNameSel: string,
+  currentExplore: ILookmlModelExplore,
+  diagramExplore: string
+) {
   if (currentExplore && currentExplore.name === exploreNameSel) {
     return OVERRIDE_KEY_SUBTLE
   }
@@ -79,16 +92,21 @@ export function handleExploreChange (
  * @param gitBranch - currently selected branch obj
  * @param gitBranches - list of available branch objs
  */
- export const getBranchOptions = (gitBranch: IGitBranch, gitBranches: IGitBranch[]): SelectOptionProps[] => {
+export const getBranchOptions = (
+  gitBranch: IGitBranch,
+  gitBranches: IGitBranch[]
+): SelectOptionProps[] => {
   return gitBranches?.map((branch: IGitBranch) => {
-    return gitBranch.name === branch.name ? {
-      value: branch.name, 
-      label: branch.name, 
-      icon: (<GitBranch />)
-    } : {
-      value: branch.name, 
-      label: branch.name,
-      icon: undefined
-    }
+    return gitBranch.name === branch.name
+      ? {
+          value: branch.name,
+          label: branch.name,
+          icon: <GitBranch />
+        }
+      : {
+          value: branch.name,
+          label: branch.name,
+          icon: undefined
+        }
   })
 }

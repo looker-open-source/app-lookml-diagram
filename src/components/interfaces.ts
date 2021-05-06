@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,61 +24,6 @@
 
  */
 
-import { ILookmlModelExploreField } from "@looker/sdk"
-
-export interface ColumnDescriptor {
-  name: string
-  label: string
-  rowValueDescriptor: string
-  formatter: (
-    x: string,
-    isRow?: boolean,
-    field?: ILookmlModelExploreField,
-    commentCount?: number,
-    canComment?: boolean,
-    reader?: boolean
-  ) => string | JSX.Element
-  minWidth?: string
-  maxWidth?: string
-  default?: boolean
-}
-
-export interface SidebarStyleProps {
-  open: boolean
-}
-
-export interface FieldComments {
-  author: number
-  timestamp: number
-  content: string
-  edited: boolean
-  pk: string
-  deleted?: boolean
-}
-
-export interface ExploreComments {
-  [field_name: string]: FieldComments[]
-}
-
-export interface UserData {
-  display_name: string
-  avatar_url: string
-  first_name: string
-  last_name: string
-  color?: string
-}
-
-export interface AllComments {
-  [explore_name: string]: ExploreComments
-}
-
-export interface CommentPermissions {
-  disabled?: boolean
-  reader?: boolean
-  writer?: boolean
-  manager?: boolean
-}
-
 export interface SelectionInfoPacket {
   lookmlElement?: string
   name?: string
@@ -95,28 +40,27 @@ export interface LookmlObjectMetadata {
   lookmlLink: string
   description?: string
   joinCode?: string
-  connectionName?: string,
-  label?: string,
-  groupLabel?: string,
-  projectName?: string,
-  accessFilters?: any[],
-  joinType?: string,
-  joinRelationship?: string,
-  joinIconType?: string,
-  fieldType?: string,
-  labelShort?: string,
-  fieldGroupLabel?: string,
-  viewLabel?: string,
-  valueFormat?: string,
-  userAttributeFilterTypes?: string[],
-  fieldSql?: string,
-  primaryKey?: boolean,
-  fieldCode?: string,
-  fieldName?: string,
-  mapLayer?: string,
-  fieldCategory?: string,
-  timeframes?: string[],
-  sqlTableName?: string,
+  connectionName?: string
+  label?: string
+  groupLabel?: string
+  projectName?: string
+  accessFilters?: any[]
+  joinType?: string
+  joinRelationship?: string
+  joinIconType?: string
+  fieldType?: string
+  labelShort?: string
+  fieldGroupLabel?: string
+  viewLabel?: string
+  valueFormat?: string
+  userAttributeFilterTypes?: string[]
+  fieldSql?: string
+  primaryKey?: boolean
+  fieldCode?: string
+  fieldName?: string
+  mapLayer?: string
+  fieldCategory?: string
+  timeframes?: string[]
+  sqlTableName?: string
   lookmlObject?: string
 }
-

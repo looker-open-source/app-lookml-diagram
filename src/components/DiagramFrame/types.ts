@@ -24,10 +24,10 @@
 
  */
 
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
-import { SelectionInfoPacket } from "../interfaces"
-import { DetailedModel } from "../../utils/fetchers"
-import { DiagrammedModel } from "../../utils/LookmlDiagrammer/"
+import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import { SelectionInfoPacket } from '../interfaces'
+import { DetailedModel } from '../../utils/fetchers'
+import { DiagrammedModel } from '../../utils/LookmlDiagrammer/'
 
 export interface DiagramFrameProps {
   unfilteredModels: ILookmlModel[]
@@ -35,14 +35,14 @@ export interface DiagramFrameProps {
   pathExploreName: string
   modelDetail: DetailedModel
   dimensions: DiagrammedModel[]
-  hiddenToggle: boolean,
-  setHiddenToggle: (t: boolean)=>void
-  displayFieldType: string,
-  setDisplayFieldType: (s: string)=>void,
- }
+  hiddenToggle: boolean
+  setHiddenToggle: (t: boolean) => void
+  displayFieldType: string
+  setDisplayFieldType: (s: string) => void
+}
 
 export interface DiagramHeaderProps {
-  currentExplore: ILookmlModelExplore,
-  selectionInfo: SelectionInfoPacket,
-  toggleExploreInfo: () => void,
+  currentExplore: ILookmlModelExplore
+  selectionInfo: SelectionInfoPacket
+  toggleExploreInfo: () => void
 }

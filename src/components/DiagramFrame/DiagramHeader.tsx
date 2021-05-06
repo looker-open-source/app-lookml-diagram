@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,31 +24,28 @@
 
  */
 
-import React from "react"
-import {
-  Heading,
-  Space,
-  IconButton,
-} from "@looker/components"
+import React from 'react'
+import { Heading, Space, IconButton } from '@looker/components'
 import { useQueryClient } from 'react-query'
-import { Info } from "@styled-icons/material-outlined/Info"
-import { Refresh } from "@styled-icons/material-outlined/Refresh"
+import { Info } from '@styled-icons/material-outlined/Info'
+import { Refresh } from '@styled-icons/material-outlined/Refresh'
 
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
-import {DiagramHeaderProps} from "./types"
-import {DiagramHeaderWrapper} from "./FrameHelpers"
+import { DiagramHeaderProps } from './types'
+import { DiagramHeaderWrapper } from './FrameHelpers'
 
-export const DiagramHeader: React.FC<DiagramHeaderProps> = ({ 
+export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   currentExplore,
   selectionInfo,
   toggleExploreInfo
- }) => {
+}) => {
   const queryClient = useQueryClient()
   const reloadPage = () => queryClient.resetQueries()
 
-  const exploreInfoStyles = selectionInfo.lookmlElement === "explore" ?
-  {color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE} :
-  {}
+  const exploreInfoStyles =
+    selectionInfo.lookmlElement === 'explore'
+      ? { color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE }
+      : {}
 
   return (
     <DiagramHeaderWrapper
@@ -58,17 +55,24 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
     >
       <Space between>
         <Space gap="xsmall">
-          <Heading as="h1" px='1rg'>{currentExplore && currentExplore.label}</Heading>
+          <Heading as="h1" px="1rg">
+            {currentExplore && currentExplore.label}
+          </Heading>
         </Space>
         <Space gap="xsmall" justifyContent="flex-end">
-          <IconButton 
-            label="Explore Info" 
+          <IconButton
+            label="Explore Info"
             icon={<Info />}
             onClick={toggleExploreInfo}
             style={exploreInfoStyles}
-            size="large" 
+            size="large"
           />
-          <IconButton label="Reload Diagram" icon={<Refresh />} size="large" onClick={reloadPage} />
+          <IconButton
+            label="Reload Diagram"
+            icon={<Refresh />}
+            size="large"
+            onClick={reloadPage}
+          />
         </Space>
       </Space>
     </DiagramHeaderWrapper>

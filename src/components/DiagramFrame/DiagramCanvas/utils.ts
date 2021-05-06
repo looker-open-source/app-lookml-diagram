@@ -24,4 +24,5 @@
 
  */
 
-export const formatZoom = (zoomFactor: number) => (Math.round(zoomFactor * 10) * 10).toString() + "%";
+export const formatZoom = (zoomFactor: number) =>
+  (Math.round(zoomFactor * 10) * 10).toString() + '%'

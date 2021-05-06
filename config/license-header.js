@@ -23,8 +23,3 @@
  SOFTWARE.
 
  */
-
-export { ViewOptions } from './ViewOptions'
-export { HelpPanel } from './HelpPanel'
-export { DiagramSettings } from './SettingsPanel/DiagramSettings'
-export { ExploreDropdown } from './types'
