@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,31 +24,31 @@
 
  */
 
-import React from "react"
-import { Heading, ProgressCircular, Status } from "@looker/components"
-import { DIAGRAM_HEADER_HEIGHT } from "../../../utils/constants"
-import Diagram from "./Diagram"
-import { DiagramToolbar } from "./DiagramToolbar"
-import { DiagramCanvasProps } from "./types"
+import React from 'react'
+import { Heading, ProgressCircular, Status } from '@looker/components'
+import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
+import { DiagramMetadata } from '../../../utils/LookmlDiagrammer'
+import Diagram from './Diagram'
+import { DiagramToolbar } from './DiagramToolbar'
+import { DiagramCanvasProps } from './types'
 import {
   DiagramCanvasWrapper,
   Minimap,
   IntroText,
   ErrorText
-} from "./components/canvas_components"
-import { EmptyStateArt } from "./components/EmptyStateArt"
-import { DiagramMetadata } from "../../../utils/LookmlDiagrammer"
+} from './components/canvas_components'
+import { EmptyStateArt } from './components/EmptyStateArt'
 
 const renderError = (fetchError: string) => {
   let errorText
-  if (fetchError === "general") {
+  if (fetchError === 'general') {
     errorText =
-      "A future version of the LookML Diagram extension may be able to support this model."
-  } else if (fetchError === "notFound") {
+      'A future version of the LookML Diagram extension may be able to support this model.'
+  } else if (fetchError === 'notFound') {
     errorText =
       "Make sure the selected model or Explore exists, you have access, and that it's fully validated on the current branch."
   } else {
-    errorText = "An unknown problem happened."
+    errorText = 'An unknown problem happened.'
   }
   return (
     <DiagramCanvasWrapper>
@@ -144,7 +144,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         setMinimapEnabled={setMinimapEnabled}
       />
       <Diagram
-        type={"display"}
+        type={'display'}
         dimensions={dimensions}
         explore={explore}
         reload={reload}
@@ -162,7 +162,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         (minimapUntoggled && currentDimensions.minimapDefault)) && (
         <Minimap raised>
           <Diagram
-            type={"minimap"}
+            type={'minimap'}
             dimensions={dimensions}
             explore={explore}
             reload={reload}

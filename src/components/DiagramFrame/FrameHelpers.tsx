@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,9 @@
 
  */
 
-import { DIAGRAM_HEADER_HEIGHT } from "../../utils/constants"
-import styled from "styled-components"
-import { Aside, Section, Header } from "@looker/components"
+import styled from 'styled-components'
+import { Aside, Section, Header } from '@looker/components'
+import { DIAGRAM_HEADER_HEIGHT } from '../../utils/constants'
 
 export const Italics = styled.span`
   font-style: italic;

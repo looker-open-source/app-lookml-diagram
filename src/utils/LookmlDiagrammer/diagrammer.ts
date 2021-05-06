@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,17 +24,17 @@
 
  */
 
-import { DetailedModel } from "../fetchers"
 import {
   ILookmlModelExploreJoins,
   ILookmlModelExplore
-} from "@looker/sdk/lib/4.0/models"
+} from '@looker/sdk/lib/4.0/models'
+import { DetailedModel } from '../fetchers'
 import {
   DiagramMetadata,
   DiagramJoin,
   DiagrammedModel,
   DiagramField
-} from "./types"
+} from './types'
 import {
   getFields,
   getViews,
@@ -44,16 +44,16 @@ import {
   getViewPkIndex,
   getViewDependentFieldIndex,
   countJoins
-} from "./utils"
+} from './utils'
 import {
   getPkJoinPathObj,
   getBaseJoinPathObj,
   getSqlJoinPathObj,
   getJoinPathObj,
   getExploreJoinPathObj
-} from "./join-utils"
-import { generateMinimapDiagram } from "./minimapper"
-import { LookmlDiagrammer } from "./LookmlDiagrammer"
+} from './join-utils'
+import { generateMinimapDiagram } from './minimapper'
+import { LookmlDiagrammer } from './LookmlDiagrammer'
 
 /**
  * generates diagrammable metadata for a given lookml explore.
@@ -70,7 +70,7 @@ export function generateExploreDiagram(
   const exploreJoins = explore.joins
   const fields = getFields(exploreFields)
   const views = getViews(exploreFields, exploreJoins, explore.name)
-  let baseViewName = ""
+  let baseViewName = ''
 
   // diagrammable metadata for a given explore
   // the structure is well suited for d3 and SVG
@@ -98,15 +98,15 @@ export function generateExploreDiagram(
     const grouplessFilteredFields = getGrouplessViewFields(filteredFields)
 
     const dimLen = grouplessFilteredFields.filter((e, j) => {
-      return e.view === viewName && e.category === "dimension"
+      return e.view === viewName && e.category === 'dimension'
     }).length
 
     const firstSetName = explore.sets[0].name
     if (
-      baseViewName === "" &&
+      baseViewName === '' &&
       (explore.name === viewName ||
         firstSetName === viewName ||
-        firstSetName.startsWith(viewName + "."))
+        firstSetName.startsWith(viewName + '.'))
     ) {
       baseViewName = viewName
     }
@@ -114,7 +114,7 @@ export function generateExploreDiagram(
     // add initial table data to the diagram dict
     diagramDict.tableData[viewName] = [
       {
-        category: "view",
+        category: 'view',
         view: viewName,
         name: viewName,
         base: viewName === baseViewName,
@@ -125,7 +125,7 @@ export function generateExploreDiagram(
       ...grouplessFilteredFields.map((datum: DiagramField, i: number) => {
         datum.diagramX = 0
         datum.diagramY = 0
-        datum.fieldTypeIndex = datum.category === "dimension" ? i : i - dimLen
+        datum.fieldTypeIndex = datum.category === 'dimension' ? i : i - dimLen
         return datum
       })
     ]
@@ -136,13 +136,13 @@ export function generateExploreDiagram(
     (join: ILookmlModelExploreJoins, joinIndex: number) => {
       const joinPath: DiagramJoin[] = []
       if (join.foreign_key) {
-        const baseTableId = join.foreign_key.includes(".")
-          ? join.foreign_key.split(".")[0]
+        const baseTableId = join.foreign_key.includes('.')
+          ? join.foreign_key.split('.')[0]
           : explore.name
         const baseTableRef = diagramDict.tableData[baseTableId]
-        const baseTableLookupValue = join.foreign_key.includes(".")
+        const baseTableLookupValue = join.foreign_key.includes('.')
           ? join.foreign_key
-          : explore.name + "." + join.foreign_key
+          : explore.name + '.' + join.foreign_key
         const fieldIndex = getViewFieldIndex(baseTableRef, baseTableLookupValue)
         const pkTableRef = diagramDict.tableData[join.name]
         const pkFieldIndex = getViewPkIndex(pkTableRef)
@@ -154,11 +154,11 @@ export function generateExploreDiagram(
       } else if (join.dependent_fields.length > 0) {
         join.dependent_fields.forEach(
           (field: string, depFieldIndex: number) => {
-            const joinFieldArr = field.split(".")
+            const joinFieldArr = field.split('.')
             const tableRef = diagramDict.tableData[joinFieldArr[0]]
             const fieldIndex = getViewDependentFieldIndex(tableRef, field)
             if (join.sql_on) {
-              join.sql_on.includes("${" + field + "}") &&
+              join.sql_on.includes('${' + field + '}') &&
                 joinPath.push(
                   getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join)
                 )
@@ -186,7 +186,7 @@ export function generateExploreDiagram(
 
   const diagrammer = new LookmlDiagrammer(diagramDict, buildOrder, explore)
 
-  const startTableName = baseViewName !== "" ? baseViewName : buildOrder[0]
+  const startTableName = baseViewName !== '' ? baseViewName : buildOrder[0]
 
   Object.assign(diagramDict, diagrammer.getDiagram(startTableName))
 

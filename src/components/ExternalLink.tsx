@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,15 @@
 
  */
 
-import React, { useContext } from "react"
-import { Link, LinkProps } from "@looker/components"
-import { Looker40SDK } from "@looker/sdk"
+import React, { useContext } from 'react'
+import { Link, LinkProps } from '@looker/components'
+import { Looker40SDK } from '@looker/sdk'
 import {
   ExtensionContext2,
   ExtensionContextData2
-} from "@looker/extension-sdk-react"
+} from '@looker/extension-sdk-react'
 
-export const ExternalLink: React.FC<Omit<LinkProps, "color">> = ({
+export const ExternalLink: React.FC<Omit<LinkProps, 'color'>> = ({
   href,
   target,
   onClick,

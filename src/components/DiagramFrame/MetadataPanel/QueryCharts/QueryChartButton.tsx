@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,10 @@
 
  */
 
-import React from "react"
-import { theme, ButtonOutline, FlexItem } from "@looker/components"
-import { Cached } from "@styled-icons/material/Cached"
-import styled from "styled-components"
+import React from 'react'
+import { theme, ButtonOutline, FlexItem } from '@looker/components'
+import { Cached } from '@styled-icons/material/Cached'
+import styled from 'styled-components'
 
 const DisabledText = styled.div`
   font-size: ${theme.fontSizes.xsmall};

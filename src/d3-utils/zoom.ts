@@ -24,8 +24,8 @@
 
  */
 
-import * as d3 from "d3"
-import { ZOOM_MAX, ZOOM_MIN } from "../utils/constants"
+import * as d3 from 'd3'
+import { ZOOM_MAX, ZOOM_MIN } from '../utils/constants'
 
 export function addZoom(
   svg: any,
@@ -39,21 +39,21 @@ export function addZoom(
   const zoom = d3
     .zoom()
     .scaleExtent([ZOOM_MIN, ZOOM_MAX])
-    .on("zoom", function(event) {
-      if (type === "display") {
+    .on('zoom', function(event) {
+      if (type === 'display') {
         d3.selectAll(`.${type}-area`).attr(
-          "transform",
+          'transform',
           `translate(${event.transform.x}, ${event.transform.y}) scale(${event.transform.k})`
         )
       } else {
         d3.selectAll(`.${type}-area`).attr(
-          "transform",
+          'transform',
           `translate(${viewPosition.x}, ${viewPosition.y}) scale(${zoomFactor})`
         )
       }
     })
-    .on("end", function(event) {
-      if (type === "display") {
+    .on('end', function(event) {
+      if (type === 'display') {
         setViewPosition({ x: event.transform.x, y: event.transform.y })
         setZoomFactor(event.transform.k)
       }

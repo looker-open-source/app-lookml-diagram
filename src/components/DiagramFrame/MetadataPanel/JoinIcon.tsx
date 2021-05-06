@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
  */
 
-import React from "react"
+import React from 'react'
 
 const JoinIcon: React.FC<{
   type: string
@@ -32,7 +32,7 @@ const JoinIcon: React.FC<{
   const full_outer = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      style={{ height: "20px", width: "30px" }}
+      style={{ height: '20px', width: '30px' }}
       width="48"
       height="32"
       viewBox="0 0 48 32"
@@ -162,7 +162,7 @@ const JoinIcon: React.FC<{
   const left_outer = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      style={{ height: "20px", width: "30px" }}
+      style={{ height: '20px', width: '30px' }}
       width="48"
       height="32"
       viewBox="0 0 48 32"
@@ -235,7 +235,7 @@ const JoinIcon: React.FC<{
       height="32"
       viewBox="0 0 48 32"
       fill="none"
-      style={{ height: "20px", width: "30px" }}
+      style={{ height: '20px', width: '30px' }}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -321,7 +321,7 @@ const JoinIcon: React.FC<{
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="80"
-      style={{ height: "20px", width: "40px" }}
+      style={{ height: '20px', width: '40px' }}
       height="32"
       viewBox="0 0 80 32"
       fill="none"
@@ -455,7 +455,7 @@ const JoinIcon: React.FC<{
       </g>
     </svg>
   )
-  return <div>{eval(type.replace("-", "_"))}</div>
+  return <div>{eval(type.replace('-', '_'))}</div>
 }
 
 export default JoinIcon

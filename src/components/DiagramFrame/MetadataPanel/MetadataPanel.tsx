@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,14 +24,11 @@
 
  */
 
-import React from "react"
+import React from 'react'
 import {
-  Badge,
   ButtonTransparent,
-  Code,
   Flex,
   FlexItem,
-  Heading,
   SpaceVertical,
   Paragraph,
   Icon,
@@ -43,38 +40,37 @@ import {
   TabPanel,
   TabPanels,
   theme
-} from "@looker/components"
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk"
-import { Explore, LogoRings } from "@looker/icons"
-import { VpnKey } from "@styled-icons/material/VpnKey"
+} from '@looker/components'
+import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk'
+import { Explore, LogoRings } from '@looker/icons'
+import { VpnKey } from '@styled-icons/material/VpnKey'
 import {
   ILookmlModelExploreField,
   ILookmlModelExploreJoins
-} from "@looker/sdk/lib/4.0/models"
+} from '@looker/sdk/lib/4.0/models'
 
-import { getFields } from "../../../utils/LookmlDiagrammer/"
-import { exploreFieldURL } from "../../../utils/urls"
-import { useLookmlModelExplore } from "../../../utils/fetchers"
-import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
-import { LookmlObjectMetadata, SelectionInfoPacket } from "../../interfaces"
-import { ExternalLink } from "../../ExternalLink"
-import JoinIcon from "./JoinIcon"
-import MetadataPanelTable from "./MetadataPanelTable"
+import { getFields } from '../../../utils/LookmlDiagrammer/'
+import { exploreFieldURL } from '../../../utils/urls'
+import { useLookmlModelExplore } from '../../../utils/fetchers'
+import { LookmlObjectMetadata, SelectionInfoPacket } from '../../interfaces'
+import { ExternalLink } from '../../ExternalLink'
+import JoinIcon from './JoinIcon'
+import MetadataPanelTable from './MetadataPanelTable'
 import {
   MetadataFooter,
   MetadataInfoPanel,
   PillText,
   MetadataHeading,
   PillWrapper
-} from "./metadata_components"
-import { LookmlCodeBlock } from "./LookmlCodeBlock"
+} from './metadata_components'
+import { LookmlCodeBlock } from './LookmlCodeBlock'
 import {
   getJoinMetadata,
   getFieldMetadata,
   getViewMetadata,
   getExploreMetadata,
   isSelectedFieldOrDimGroupMember
-} from "./utils"
+} from './utils'
 
 /**
  * Displays selected diagram object's metadata.
@@ -89,13 +85,18 @@ export const MetadataPanel: React.FC<{
 }> = ({ currentExplore, selectionInfo, model }) => {
   let metadata: LookmlObjectMetadata
   let field: ILookmlModelExploreField
+
+  const { explore, isLoading } = useLookmlModelExplore(
+    currentExplore.model_name,
+    selectionInfo.name
+  )
   // 'lookml_link' only exists on api response if user has "see_lookml"
   // permission. This is a requirement for using the extension.
   // @ts-ignore
   const exploreLookmlLink = currentExplore.lookml_link
-  if (selectionInfo.lookmlElement === "explore") {
+  if (selectionInfo.lookmlElement === 'explore') {
     metadata = getExploreMetadata(currentExplore, exploreLookmlLink)
-  } else if (selectionInfo.lookmlElement === "join") {
+  } else if (selectionInfo.lookmlElement === 'join') {
     const joinObj = currentExplore.joins.filter(
       (join: ILookmlModelExploreJoins) => {
         return join.name === selectionInfo.name
@@ -103,19 +104,15 @@ export const MetadataPanel: React.FC<{
     )[0]
     metadata = getJoinMetadata(joinObj, exploreLookmlLink)
   } else if (
-    selectionInfo.lookmlElement === "dimension" ||
-    selectionInfo.lookmlElement === "measure"
+    selectionInfo.lookmlElement === 'dimension' ||
+    selectionInfo.lookmlElement === 'measure'
   ) {
     const fields = getFields(currentExplore.fields).filter((field: any) => {
       return isSelectedFieldOrDimGroupMember(selectionInfo, field)
     })
     field = fields[0]
     metadata = getFieldMetadata(fields, selectionInfo)
-  } else if (selectionInfo.lookmlElement === "view") {
-    const { explore, isLoading } = useLookmlModelExplore(
-      currentExplore.model_name,
-      selectionInfo.name
-    )
+  } else if (selectionInfo.lookmlElement === 'view') {
     metadata = getViewMetadata(
       explore,
       isLoading,
@@ -130,7 +127,7 @@ export const MetadataPanel: React.FC<{
         <MetadataHeading>{metadata.name}</MetadataHeading>
 
         {/* PILLS */}
-        {metadata.lookmlObject !== "view" && (
+        {metadata.lookmlObject !== 'view' && (
           <Space gap="xsmall">
             {metadata.joinType && (
               <PillWrapper>

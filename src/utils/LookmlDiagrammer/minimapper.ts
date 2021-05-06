@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,8 @@ import {
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
   MINIMAP_WIDTH
-} from "../constants"
-import { DiagramMetadata } from "./types"
+} from '../constants'
+import { DiagramMetadata } from './types'
 
 /**
  * generates diagrammable minimap metadata for a given, diagrammed explore
@@ -72,7 +72,7 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
       const degreeTablesLength = currentDimensions.yOrderLookup[d]
         .map((tableName: string) => {
           const undefModel =
-            typeof currentDimensions.tableData[tableName] === "undefined"
+            typeof currentDimensions.tableData[tableName] === 'undefined'
           return undefModel
             ? 0
             : currentDimensions.tableData[tableName].length +

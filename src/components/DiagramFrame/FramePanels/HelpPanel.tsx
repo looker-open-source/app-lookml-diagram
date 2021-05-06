@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,18 @@
 
  */
 
-import React from "react"
-import { SpaceVertical, FadeIn, Divider, Label } from "@looker/components"
-import { ExternalLink } from "../../ExternalLink"
+import React from 'react'
+import { SpaceVertical, FadeIn, Divider, Label } from '@looker/components'
+import { ExternalLink } from '../../ExternalLink'
+import { Diagram } from '../DiagramCanvas/Diagram'
+import { Italics } from '../FrameHelpers'
 import {
   view_explore,
   view_dimensions,
   join_dimensions,
   join_explore
-} from "./HelpPanelData"
-import { Diagram } from "../DiagramCanvas/Diagram"
-import { Italics } from "../FrameHelpers"
-import { SettingsPanel, HelpBody, PanelHeading } from "./frame_components"
+} from './HelpPanelData'
+import { SettingsPanel, HelpBody, PanelHeading } from './frame_components'
 
 export const HelpPanel: React.FC = () => {
   return (
@@ -45,14 +45,14 @@ export const HelpPanel: React.FC = () => {
           <PanelHeading>Diagram Help</PanelHeading>
           <Label>Views</Label>
           <Diagram
-            type={"help-view"}
+            type={'help-view'}
             dimensions={view_dimensions.diagramDict}
             explore={view_explore}
             reload={false}
             selectionInfo={{}}
             setSelectionInfo={undefined}
             hiddenToggle={true}
-            displayFieldType={"all"}
+            displayFieldType={'all'}
             viewVisible={{ order_items: true }}
             zoomFactor={0.479}
             setZoomFactor={() => {}}
@@ -79,17 +79,17 @@ export const HelpPanel: React.FC = () => {
           <Divider appearance="light" />
           <Label>Joins</Label>
           <Diagram
-            type={"help-join"}
+            type={'help-join'}
             dimensions={join_dimensions.diagramDict}
             explore={join_explore}
             reload={false}
             selectionInfo={{
-              lookmlElement: "join",
-              name: "forecast"
+              lookmlElement: 'join',
+              name: 'forecast'
             }}
             setSelectionInfo={undefined}
             hiddenToggle={true}
-            displayFieldType={"all"}
+            displayFieldType={'all'}
             viewVisible={{ polling: true, forecast: true }}
             zoomFactor={0.249}
             setZoomFactor={() => {}}
@@ -111,7 +111,7 @@ export const HelpPanel: React.FC = () => {
             The shape of the line, where it attaches to the view or field,
             conveys the cardinality of the relationship between the two objects;
             a forked line indicates a “many” cardinality, and a single line
-            indicates a “one” cardinality. You would read the relationship as{" "}
+            indicates a “one” cardinality. You would read the relationship as{' '}
             <Italics>from</Italics> the base view <Italics>to</Italics> the
             joined view.
           </HelpBody>

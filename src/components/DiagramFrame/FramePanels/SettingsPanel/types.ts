@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,11 @@
  SOFTWARE.
 
  */
-import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
-import { ExploreDropdown } from "../types"
-import { DetailedModel } from "../../../../utils/fetchers"
-import { SelectOptionProps } from "@looker/components"
+import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import { SelectOptionProps } from '@looker/components'
+import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
+import { ExploreDropdown } from '../types'
+import { DetailedModel } from '../../../../utils/fetchers'
 
 export interface ExploreListProps {
   currentModel: ILookmlModel

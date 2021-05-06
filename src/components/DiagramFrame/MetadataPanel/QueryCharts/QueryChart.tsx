@@ -1,14 +1,19 @@
 /*
+
  MIT License
- Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Copyright (c) 2021 Looker Data Sciences, Inc.
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -16,11 +21,11 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
+
  */
 
-import React from "react"
+import React from 'react'
 import {
-  Spinner,
   Table,
   TableBody,
   TableRow,
@@ -30,20 +35,20 @@ import {
   ButtonTransparent,
   ProgressCircular,
   theme
-} from "@looker/components"
+} from '@looker/components'
+import styled from 'styled-components'
+import { BarChart, Bar, Tooltip } from 'recharts'
+import { ExtensionContext2 } from '@looker/extension-sdk-react'
 import {
   QueryChartType,
   runChartQuery,
   SimpleResult,
   globalCache
-} from "../../../../utils/queries"
-import styled from "styled-components"
-import { BarChart, Bar, Tooltip } from "recharts"
-import { ExtensionContext2 } from "@looker/extension-sdk-react"
-import { ExternalLink } from "../../../ExternalLink"
+} from '../../../../utils/queries'
+import { ExternalLink } from '../../../ExternalLink'
 
-import { MetadataItem } from "./MetadataList"
-import { QueryChartButton } from "./QueryChartButton"
+import { MetadataItem } from './MetadataList'
+import { QueryChartButton } from './QueryChartButton'
 
 interface QueryChartState {
   loading: boolean
@@ -71,7 +76,7 @@ const ProgressTableRow = styled(TableRow)`
 
 const PaddedCell = styled(TableDataCell)``
 PaddedCell.defaultProps = {
-  p: "4px"
+  p: '4px'
 }
 
 const BarTooltip = styled.div`

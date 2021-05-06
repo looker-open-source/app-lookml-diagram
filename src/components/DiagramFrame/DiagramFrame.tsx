@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +24,33 @@
 
  */
 
-import React, { useCallback } from "react"
-import { SpaceVertical, IconButton, Layout } from "@looker/components"
-import { AccountTree } from "@styled-icons/material-outlined/AccountTree"
-import { Visibility } from "@styled-icons/material-outlined/Visibility"
-import { LiveHelp } from "@styled-icons/material-outlined/LiveHelp"
-import { SelectionInfoPacket, VisibleViewLookup } from "../interfaces"
-import { DiagrammedModel, DiagramMetadata } from "../../utils/LookmlDiagrammer/"
-import { MetadataPanel } from "./MetadataPanel/MetadataPanel"
-import {
-  ViewOptions,
-  DiagramSettings,
-  HelpPanel,
-  ExploreDropdown
-} from "./FramePanels"
-import { DiagramHeader } from "./DiagramHeader"
-import { DiagramCanvas } from "./DiagramCanvas/DiagramCanvas"
+import React, { useCallback } from 'react'
+import { SpaceVertical, IconButton, Layout } from '@looker/components'
+import { AccountTree } from '@styled-icons/material-outlined/AccountTree'
+import { Visibility } from '@styled-icons/material-outlined/Visibility'
+import { LiveHelp } from '@styled-icons/material-outlined/LiveHelp'
+import { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import { SelectionInfoPacket, VisibleViewLookup } from '../interfaces'
+import { DiagrammedModel, DiagramMetadata } from '../../utils/LookmlDiagrammer/'
 import {
   ZOOM_INIT,
   X_INIT,
   Y_INIT,
   OVERRIDE_KEY,
   OVERRIDE_KEY_SUBTLE
-} from "../../utils/constants"
-import { ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
-import { DiagramFrameProps } from "./types"
-import { Rail, Stage } from "./FrameHelpers"
-import { prepareModelDropdown, prepareExploreList } from "./utils"
+} from '../../utils/constants'
+import { MetadataPanel } from './MetadataPanel/MetadataPanel'
+import {
+  ViewOptions,
+  DiagramSettings,
+  HelpPanel,
+  ExploreDropdown
+} from './FramePanels'
+import { DiagramHeader } from './DiagramHeader'
+import { DiagramCanvas } from './DiagramCanvas/DiagramCanvas'
+import { DiagramFrameProps } from './types'
+import { Rail, Stage } from './FrameHelpers'
+import { prepareModelDropdown, prepareExploreList } from './utils'
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
@@ -111,8 +111,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   function toggleExploreInfo() {
     if (currentExplore && modelDetail) {
       const selectInfo =
-        selectionInfo.lookmlElement !== "explore"
-          ? { lookmlElement: "explore" }
+        selectionInfo.lookmlElement !== 'explore'
+          ? { lookmlElement: 'explore' }
           : {}
       setSelectionInfo(selectInfo)
     }
@@ -159,7 +159,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
     <Layout hasAside height="100%">
       <Rail width="50px" py="xxsmall" pr="xsmall">
         <SpaceVertical
-          style={{ alignItems: "center" }}
+          style={{ alignItems: 'center' }}
           alignItems="center"
           gap="xsmall"
           ml="xxsmall"
@@ -192,8 +192,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             toggle={showHelp}
             style={{
               ...helpIconStyles,
-              position: "absolute",
-              bottom: "5px"
+              position: 'absolute',
+              bottom: '5px'
             }}
           />
         </SpaceVertical>

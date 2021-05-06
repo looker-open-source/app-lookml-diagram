@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,21 +24,21 @@
 
  */
 
-import React from "react"
+import React from 'react'
 import {
   SpaceVertical,
   Divider,
   FieldSelect,
   FadeIn,
   Label
-} from "@looker/components"
-import { internalModelURL } from "../../../../utils/routes"
-import { useHistory } from "react-router"
-import { SettingsPanel, PanelHeading } from "../frame_components"
-import { DiagramSettingsProps } from "./types"
-import { ExploreList } from "./ExploreList"
-import { getBranchOptions } from "./utils"
-import { useUpdateGitBranches } from "../../../../utils/fetchers"
+} from '@looker/components'
+import { useHistory } from 'react-router'
+import { internalModelURL } from '../../../../utils/routes'
+import { SettingsPanel, PanelHeading } from '../frame_components'
+import { useUpdateGitBranches } from '../../../../utils/fetchers'
+import { DiagramSettingsProps } from './types'
+import { ExploreList } from './ExploreList'
+import { getBranchOptions } from './utils'
 
 export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   modelPathName,
@@ -91,11 +91,11 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               disabled={
                 (gitBranch && gitBranch.is_production) ||
                 !diagramExplore ||
-                modelDetail?.fetchError === "git"
+                modelDetail?.fetchError === 'git'
               }
             />
             <Divider appearance="light" my="medium" />
-            <Label fontSize="xsmall" style={{ marginTop: "0rem" }}>
+            <Label fontSize="xsmall" style={{ marginTop: '0rem' }}>
               Select an Explore
             </Label>
             <ExploreList

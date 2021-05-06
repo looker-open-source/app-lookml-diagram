@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +24,12 @@
 
  */
 
-import React from "react"
-import { Divider, Flex, FlexItem, IconButton, theme } from "@looker/components"
-import { Add } from "@styled-icons/material/Add"
-import { Remove } from "@styled-icons/material/Remove"
-import { Map } from "@styled-icons/material/Map"
-import { CenterFocusWeak } from "@styled-icons/material/CenterFocusWeak"
+import React from 'react'
+import { Divider, Flex, FlexItem, IconButton, theme } from '@looker/components'
+import { Add } from '@styled-icons/material/Add'
+import { Remove } from '@styled-icons/material/Remove'
+import { Map } from '@styled-icons/material/Map'
+import { CenterFocusWeak } from '@styled-icons/material/CenterFocusWeak'
 
 import {
   OVERRIDE_KEY_SUBTLE,
@@ -40,10 +40,10 @@ import {
   X_INIT,
   Y_INIT,
   ZOOM_INIT
-} from "../../../utils/constants"
-import { DiagramToolbarProps } from "./types"
-import { Toolbar } from "./components/canvas_components"
-import { formatZoom } from "./utils"
+} from '../../../utils/constants'
+import { DiagramToolbarProps } from './types'
+import { Toolbar } from './components/canvas_components'
+import { formatZoom } from './utils'
 
 export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
   zoomFactor,

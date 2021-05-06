@@ -24,20 +24,20 @@
 
  */
 
-import { TABLE_ROW_HEIGHT } from "../utils/constants"
+import { TABLE_ROW_HEIGHT } from '../utils/constants'
 
 export const addJoinArrowheads = (join: any, joinName: string) => {
   join
-    .append("marker")
-    .attr("id", "arrows-" + joinName)
-    .attr("refX", 18)
-    .attr("refY", 18)
-    .attr("markerWidth", 50)
-    .attr("markerHeight", 50)
-    .attr("markerUnits", "userSpaceOnUse")
-    .attr("orient", "auto")
-    .append("path")
-    .attr("d", "M 12 12 24 18 12 24 15 18")
+    .append('marker')
+    .attr('id', 'arrows-' + joinName)
+    .attr('refX', 18)
+    .attr('refY', 18)
+    .attr('markerWidth', 50)
+    .attr('markerHeight', 50)
+    .attr('markerUnits', 'userSpaceOnUse')
+    .attr('orient', 'auto')
+    .append('path')
+    .attr('d', 'M 12 12 24 18 12 24 15 18')
 }
 
 export interface JoinPoint {

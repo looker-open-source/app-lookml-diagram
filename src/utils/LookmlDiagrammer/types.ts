@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@
 import {
   ILookmlModelExploreField,
   ILookmlModelExploreJoins
-} from "@looker/sdk/lib/4.0/models"
+} from '@looker/sdk/lib/4.0/models'
 
 export interface DiagramField
-  extends Omit<ILookmlModelExploreField, "category"> {
+  extends Omit<ILookmlModelExploreField, 'category'> {
   diagramX: number
   diagramY: number
   fieldTypeIndex: number

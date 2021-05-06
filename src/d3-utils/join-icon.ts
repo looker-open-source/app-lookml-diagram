@@ -32,33 +32,33 @@ export function makeJoinIcon(
   lY: number,
   joinTypeLabel: string
 ) {
-  const iconG = join.append("g").attr("class", "join-path-icon")
+  const iconG = join.append('g').attr('class', 'join-path-icon')
 
   iconG
-    .append("rect")
-    .attr("fill", "none")
-    .attr("class", "join-path-icon-background")
-    .style("rx", 15)
-    .style("ry", 15)
-    .attr("width", pillWidth)
-    .attr("height", 36)
-    .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
-    .style("filter", "url(#drop-shadow)")
-    .style("opacity", 0.2)
+    .append('rect')
+    .attr('fill', 'none')
+    .attr('class', 'join-path-icon-background')
+    .style('rx', 15)
+    .style('ry', 15)
+    .attr('width', pillWidth)
+    .attr('height', 36)
+    .attr('transform', `translate(${lX + 2.5}, ${lY + 5})`)
+    .style('filter', 'url(#drop-shadow)')
+    .style('opacity', 0.2)
 
   iconG
-    .append("rect")
-    .attr("fill", "none")
-    .attr("class", "join-path-icon-background")
-    .style("rx", 15)
-    .style("ry", 15)
-    .attr("width", pillWidth)
-    .attr("height", 36)
-    .attr("transform", `translate(${lX + 2.5}, ${lY + 5})`)
+    .append('rect')
+    .attr('fill', 'none')
+    .attr('class', 'join-path-icon-background')
+    .style('rx', 15)
+    .style('ry', 15)
+    .attr('width', pillWidth)
+    .attr('height', 36)
+    .attr('transform', `translate(${lX + 2.5}, ${lY + 5})`)
 
-  joinTypeLabel === "left_outer" &&
+  joinTypeLabel === 'left_outer' &&
     iconG
-      .append("g")
+      .append('g')
       .html(
         `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
   <path d="M30 16C30 22.6274 24.6274 28 18 28C11.3726 28 6 22.6274 6 16C6 9.37258 11.3726 4 18 4C24.6274 4 30 9.37258 30 16Z" fill="#8C3AC6" fill-opacity="0.64"/>
@@ -83,11 +83,11 @@ export function makeJoinIcon(
   <path d="M24 27C27.5868 24.8043 30 20.7004 30 16C30 11.2996 27.5868 7.1957 24 5C20.4132 7.1957 18 11.2996 18 16C18 20.7004 20.4132 24.8043 24 27Z" fill="#B2C6D8"/>
   </svg>`
       )
-      .attr("transform", `translate(${lX}, ${lY + 7})`)
+      .attr('transform', `translate(${lX}, ${lY + 7})`)
 
-  joinTypeLabel === "inner" &&
+  joinTypeLabel === 'inner' &&
     iconG
-      .append("g")
+      .append('g')
       .html(
         `
   <svg width="48" height="32" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,11 +108,11 @@ export function makeJoinIcon(
 <path fill-rule="evenodd" clip-rule="evenodd" d="M32 16C32 23.732 25.732 30 18 30C10.268 30 4 23.732 4 16C4 8.26801 10.268 2 18 2C25.732 2 32 8.26801 32 16ZM18 28C24.6274 28 30 22.6274 30 16C30 9.37258 24.6274 4 18 4C11.3726 4 6 9.37258 6 16C6 22.6274 11.3726 28 18 28Z" fill="#41344A"/>
 </svg>`
       )
-      .attr("transform", `translate(${lX}, ${lY + 7})`)
+      .attr('transform', `translate(${lX}, ${lY + 7})`)
 
-  joinTypeLabel === "full_outer" &&
+  joinTypeLabel === 'full_outer' &&
     iconG
-      .append("g")
+      .append('g')
       .html(
         `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32" fill="none">
   <path d="M30 16C30 22.6274 24.6274 28 18 28C11.3726 28 6 22.6274 6 16C6 9.37258 11.3726 4 18 4C24.6274 4 30 9.37258 30 16Z" fill="#8C3AC6" fill-opacity="0.64"/>
@@ -151,11 +151,11 @@ export function makeJoinIcon(
   <path d="M24 27C27.5868 24.8043 30 20.7004 30 16C30 11.2996 27.5868 7.1957 24 5C20.4132 7.1957 18 11.2996 18 16C18 20.7004 20.4132 24.8043 24 27Z" fill="#B2C6D8"/>
   </svg>`
       )
-      .attr("transform", `translate(${lX}, ${lY + 7})`)
+      .attr('transform', `translate(${lX}, ${lY + 7})`)
 
-  joinTypeLabel === "cross" &&
+  joinTypeLabel === 'cross' &&
     iconG
-      .append("g")
+      .append('g')
       .html(
         `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="32" viewBox="0 0 80 32" fill="none">
   <path d="M27 17C27 23.6274 21.6274 29 15 29C8.37258 29 3 23.6274 3 17C3 10.3726 8.37258 5 15 5C21.6274 5 27 10.3726 27 17Z" fill="#8C3AC6" fill-opacity="0.64"/>
@@ -195,12 +195,12 @@ export function makeJoinIcon(
   </g>
   </svg>`
       )
-      .attr("transform", `translate(${lX + 4}, ${lY + 6})`)
+      .attr('transform', `translate(${lX + 4}, ${lY + 6})`)
 
   iconG
-    .append("text")
-    .attr("class", "join-path-icon-label")
-    .attr("fill", "none")
+    .append('text')
+    .attr('class', 'join-path-icon-label')
+    .attr('fill', 'none')
     .text(joinTypeLabel)
-    .attr("transform", `translate(${lX + iconWidth}, ${lY + 29})`)
+    .attr('transform', `translate(${lX + iconWidth}, ${lY + 29})`)
 }

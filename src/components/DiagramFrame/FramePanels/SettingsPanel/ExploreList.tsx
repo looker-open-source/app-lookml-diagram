@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,16 @@
 
  */
 
-import React from "react"
-import { useHistory } from "react-router"
-import { ExploreDropdown } from "../types"
-import { ExploreListProps } from "./types"
-import { handleExploreChange, getExploreListItemBackgroundColor } from "./utils"
+import React from 'react'
+import { useHistory } from 'react-router'
+import { ExploreDropdown } from '../types'
+import { ExploreListProps } from './types'
+import { handleExploreChange, getExploreListItemBackgroundColor } from './utils'
 import {
   ExploreListWrapper,
   ExploreListitem,
   ExploreButton
-} from "./list_components"
+} from './list_components'
 
 export const ExploreList: React.FC<ExploreListProps> = ({
   currentModel,

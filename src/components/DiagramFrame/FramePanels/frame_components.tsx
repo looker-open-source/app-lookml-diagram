@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,10 @@
  SOFTWARE.
 
  */
-import React from "react"
-import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
-import styled from "styled-components"
-import { Aside, Paragraph, Heading, theme } from "@looker/components"
+import React from 'react'
+import styled from 'styled-components'
+import { Aside, Paragraph, Heading, theme } from '@looker/components'
+import { OVERRIDE_KEY_SUBTLE } from '../../../utils/constants'
 
 export const SettingsPanel = styled(Aside)`
   border-right: solid 1px ${theme.colors.ui2};
@@ -35,9 +35,9 @@ export const SettingsPanel = styled(Aside)`
   overflow-x: hidden;
 `
 SettingsPanel.defaultProps = {
-  width: "275px",
-  px: "medium",
-  py: "large"
+  width: '275px',
+  px: 'medium',
+  py: 'large'
 }
 
 export const ViewList = styled.ul`

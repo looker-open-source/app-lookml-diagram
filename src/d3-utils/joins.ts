@@ -24,27 +24,27 @@
 
  */
 
-import * as d3 from "d3"
+import * as d3 from 'd3'
 import {
   TABLE_WIDTH,
   JOIN_CONNECTOR_WIDTH,
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
   TABLE_PADDING
-} from "../utils/constants"
+} from '../utils/constants'
 import {
   onlyUnique,
   DiagramMetadata,
   DiagramJoin
-} from "../utils/LookmlDiagrammer"
-import { SelectionInfoPacket } from "../components/interfaces"
-import { makeJoinIcon } from "./join-icon"
+} from '../utils/LookmlDiagrammer'
+import { SelectionInfoPacket } from '../components/interfaces'
+import { makeJoinIcon } from './join-icon'
 import {
   getManyPath,
   getOnePath,
   addJoinArrowheads,
   JoinPoint
-} from "./join-helpers"
+} from './join-helpers'
 
 export function createLookmlJoinElement(
   svg: any,
@@ -144,8 +144,8 @@ export function createLookmlJoinElement(
     // make join g element
     const join = svg
       .select(`.${type}-area`)
-      .append("g")
-      .attr("class", "join-" + joinData[0].joinName)
+      .append('g')
+      .attr('class', 'join-' + joinData[0].joinName)
 
     const joinTables = joinPath.map(d => {
       return d.viewName
@@ -266,11 +266,11 @@ export function createLookmlJoinElement(
 
     // Draw join-part path
     join
-      .append("path")
+      .append('path')
       .datum(tableJoinPath)
-      .attr("class", "join-path")
+      .attr('class', 'join-path')
       .attr(
-        "d",
+        'd',
         d3
           .line()
           .curve(d3.curveBundle.beta(0.95))
@@ -293,12 +293,12 @@ export function createLookmlJoinElement(
         : joinField.joinX
 
       if (isBaseView) {
-        const manyKinds = ["many_to_one", "many_to_many"]
+        const manyKinds = ['many_to_one', 'many_to_many']
         manyKinds.includes(joinField.joinObj.relationship)
           ? (connectorPath = getManyPath(connectorSize, rightmost, joinField))
           : (connectorPath = getOnePath(connectorSize, rightmost, joinField))
       } else {
-        const manyKinds = ["one_to_many", "many_to_many"]
+        const manyKinds = ['one_to_many', 'many_to_many']
         manyKinds.includes(joinField.joinObj.relationship)
           ? (connectorPath = getManyPath(connectorSize, rightmost, joinField))
           : (connectorPath = getOnePath(connectorSize, rightmost, joinField))
@@ -310,15 +310,15 @@ export function createLookmlJoinElement(
       // Add the "bracket" that links many fields on one table
       connectorPath.map(connector => {
         join
-          .append("path")
+          .append('path')
           .datum(connector)
-          .attr("class", "join-path")
+          .attr('class', 'join-path')
           .attr(
-            "marker-end",
-            () => isBaseView || "url(#arrows-" + joinData[0].joinName + ")"
+            'marker-end',
+            () => isBaseView || 'url(#arrows-' + joinData[0].joinName + ')'
           )
           .attr(
-            "d",
+            'd',
             d3
               .line()
               .curve(d3.curveLinear)
@@ -344,11 +344,11 @@ export function createLookmlJoinElement(
       })
       tableJoins.length > 1 &&
         join
-          .append("path")
+          .append('path')
           .datum(joinBracketPath)
-          .attr("class", "join-path")
+          .attr('class', 'join-path')
           .attr(
-            "d",
+            'd',
             d3
               .line()
               .curve(d3.curveBasis)
@@ -359,8 +359,8 @@ export function createLookmlJoinElement(
 
     const joinType = joinData[0].joinObj.type
       ? joinData[0].joinObj.type
-      : "left_outer"
-    const isCross = joinType === "cross"
+      : 'left_outer'
+    const isCross = joinType === 'cross'
     const iconWidth = isCross ? 90 : 50
     const pillWidth = iconWidth + joinType.length * 6 + 10
 
@@ -371,12 +371,12 @@ export function createLookmlJoinElement(
 
     // Draw hover element for join-part path
     const drawnJoinHover = join
-      .append("path")
+      .append('path')
       .datum(tableJoinPath)
-      .attr("class", "join-path-hover")
-      .classed("minimap-join-path-hover", type === "minimap")
+      .attr('class', 'join-path-hover')
+      .classed('minimap-join-path-hover', type === 'minimap')
       .attr(
-        "d",
+        'd',
         d3
           .line()
           .curve(d3.curveBundle.beta(1))
@@ -385,32 +385,32 @@ export function createLookmlJoinElement(
       )
 
     const hoverMouseEnter =
-      type === "display" &&
-      drawnJoinHover.on("mouseenter", () => {
+      type === 'display' &&
+      drawnJoinHover.on('mouseenter', () => {
         d3.selectAll(`.${type}-area > g.join-` + joinData[0].joinName)
-          .classed("join-path-selected", true)
+          .classed('join-path-selected', true)
           .raise()
       })
     const hoverMouseLeave =
-      type === "display" &&
-      hoverMouseEnter.on("mouseleave", () => {
+      type === 'display' &&
+      hoverMouseEnter.on('mouseleave', () => {
         if (
           JSON.stringify(selectionInfo) !==
           JSON.stringify({
-            lookmlElement: "join",
+            lookmlElement: 'join',
             name: joinData[0].joinName
           })
         ) {
           d3.selectAll(
             `.${type}-area > g.join-` + joinData[0].joinName
-          ).classed("join-path-selected", false)
+          ).classed('join-path-selected', false)
         }
       })
     const hoverMouseClick =
-      type === "display" &&
-      hoverMouseLeave.on("click", () => {
+      type === 'display' &&
+      hoverMouseLeave.on('click', () => {
         setSelectionInfo({
-          lookmlElement: "join",
+          lookmlElement: 'join',
           name: joinData[0].joinName
         })
       })

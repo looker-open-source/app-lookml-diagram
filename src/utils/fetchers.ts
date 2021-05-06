@@ -24,15 +24,15 @@
 
  */
 
-import { useContext } from "react"
-import { useQuery, useMutation, useQueryClient } from "react-query"
-import { ExtensionContext2 } from "@looker/extension-sdk-react"
+import { useContext } from 'react'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { ExtensionContext2 } from '@looker/extension-sdk-react'
 import {
   ILookmlModel,
   ILookmlModelExplore,
   IGitBranch
-} from "@looker/sdk/lib/4.0/models"
-import { DiagrammedModel, generateModelDiagrams } from "./LookmlDiagrammer"
+} from '@looker/sdk/lib/4.0/models'
+import { DiagrammedModel, generateModelDiagrams } from './LookmlDiagrammer'
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -60,7 +60,7 @@ const defaultQueryOptions = {
 export function useAllModels(): ILookmlModel[] {
   const { coreSDK } = useContext(ExtensionContext2)
   const { isLoading, error, data } = useQuery(
-    "allModels",
+    'allModels',
     () => coreSDK.ok(coreSDK.all_lookml_models()),
     {
       ...defaultQueryOptions
@@ -116,7 +116,7 @@ export function useLookmlModelExplores(model: ILookmlModel) {
     }
   )
   const explores = data
-  const modelExploreError = error && "notFound"
+  const modelExploreError = error && 'notFound'
   return { explores, modelExploreError }
 }
 
@@ -157,7 +157,7 @@ export function useCurrentGitBranch(projectId: string) {
     }
   )
   const gitBranch = data
-  const branchError = error && "git"
+  const branchError = error && 'git'
   return { gitBranch, branchError }
 }
 
@@ -177,7 +177,7 @@ export function useAvailableGitBranches(projectId: string) {
     }
   )
   const gitBranches = data
-  const branchesError = error && "git"
+  const branchesError = error && 'git'
   return { gitBranches, branchesError }
 }
 
@@ -195,7 +195,7 @@ export function useUpdateGitBranches(projectId: string) {
       coreSDK.ok(
         coreSDK.update_git_branch(projectId, {
           name: gitName,
-          ref: ""
+          ref: ''
         })
       ),
     {
