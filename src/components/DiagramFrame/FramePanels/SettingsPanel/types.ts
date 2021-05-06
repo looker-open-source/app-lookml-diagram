@@ -27,37 +27,35 @@ import { ILookmlModel, ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
 import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
 import { ExploreDropdown } from "../types"
 import { DetailedModel } from "../../../../utils/fetchers"
-import {
-  SelectOptionProps,
-} from "@looker/components"
+import { SelectOptionProps } from "@looker/components"
 
 export interface ExploreListProps {
-  currentModel: ILookmlModel,
-  exploreList: ExploreDropdown[],
-  selectionInfo: SelectionInfoPacket,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
-  setSelectionInfo: (info: SelectionInfoPacket) => void,
-  setViewVisible: (visible: VisibleViewLookup) => void,
-  setZoomFactor: (zoom: number) => void,
-  setViewPosition: (info: any) => void,
-  setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
+  currentModel: ILookmlModel
+  exploreList: ExploreDropdown[]
+  selectionInfo: SelectionInfoPacket
+  currentExplore: ILookmlModelExplore
+  diagramExplore: string
+  setSelectionInfo: (info: SelectionInfoPacket) => void
+  setViewVisible: (visible: VisibleViewLookup) => void
+  setZoomFactor: (zoom: number) => void
+  setViewPosition: (info: any) => void
+  setMinimapUntoggled: (toggle: boolean) => void
+  setMinimapEnabled: (toggle: boolean) => void
 }
 
 export interface DiagramSettingsProps {
-  modelPathName: string,
-  explorePathName: string,
-  modelDetails: SelectOptionProps[],
-  exploreList: ExploreDropdown[],
-  modelDetail: DetailedModel,
-  selectionInfo: SelectionInfoPacket,
-  currentExplore: ILookmlModelExplore,
-  diagramExplore: string,
-  setSelectionInfo: (info: SelectionInfoPacket) => void,
-  setViewVisible: (visible: VisibleViewLookup) => void,
-  setZoomFactor: (zoom: number) => void,
-  setViewPosition: (info: any) => void,
-  setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void,
+  modelPathName: string
+  explorePathName: string
+  modelDetails: SelectOptionProps[]
+  exploreList: ExploreDropdown[]
+  modelDetail: DetailedModel
+  selectionInfo: SelectionInfoPacket
+  currentExplore: ILookmlModelExplore
+  diagramExplore: string
+  setSelectionInfo: (info: SelectionInfoPacket) => void
+  setViewVisible: (visible: VisibleViewLookup) => void
+  setZoomFactor: (zoom: number) => void
+  setViewPosition: (info: any) => void
+  setMinimapUntoggled: (toggle: boolean) => void
+  setMinimapEnabled: (toggle: boolean) => void
 }

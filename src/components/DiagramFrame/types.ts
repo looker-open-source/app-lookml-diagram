@@ -35,14 +35,14 @@ export interface DiagramFrameProps {
   pathExploreName: string
   modelDetail: DetailedModel
   dimensions: DiagrammedModel[]
-  hiddenToggle: boolean,
-  setHiddenToggle: (t: boolean)=>void
-  displayFieldType: string,
-  setDisplayFieldType: (s: string)=>void,
- }
+  hiddenToggle: boolean
+  setHiddenToggle: (t: boolean) => void
+  displayFieldType: string
+  setDisplayFieldType: (s: string) => void
+}
 
 export interface DiagramHeaderProps {
-  currentExplore: ILookmlModelExplore,
-  selectionInfo: SelectionInfoPacket,
-  toggleExploreInfo: () => void,
+  currentExplore: ILookmlModelExplore
+  selectionInfo: SelectionInfoPacket
+  toggleExploreInfo: () => void
 }

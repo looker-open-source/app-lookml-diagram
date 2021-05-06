@@ -18,7 +18,7 @@
  SOFTWARE.
  */
 
-import { theme } from '@looker/components'
+import { theme } from "@looker/components"
 
 // Diagram styles
 export const OVERRIDE_KEY = "rgb(45, 126, 234)"
@@ -59,7 +59,7 @@ export const DIAGRAM_JOIN_SELECT_COLOR = OVERRIDE_KEY
 export const DIAGRAM_FIELD_ICON_COLOR = theme.colors.text2
 export const DIAGRAM_PK_ICON_COLOR = theme.colors.text3
 export const DIAGRAM_ICON_SCALE = 0.7
-export const DIAGRAM_MEASURE_ICON_COLOR = '#CA8B01'
+export const DIAGRAM_MEASURE_ICON_COLOR = "#CA8B01"
 
 export const DIAGRAM_SHADOW_RADIUS = 4
 export const DIAGRAM_SHADOW_ALPHA = 7

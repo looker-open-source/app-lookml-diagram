@@ -53,9 +53,7 @@ export const MetadataItem = ({
           <Flex>
             {aux && (
               <FlexItem textAlign="right" flex="1 1 auto">
-                <Text fontSize="small">
-                  {aux}
-                </Text>
+                <Text fontSize="small">{aux}</Text>
               </FlexItem>
             )}
           </Flex>

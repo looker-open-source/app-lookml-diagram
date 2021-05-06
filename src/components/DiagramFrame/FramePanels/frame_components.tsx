@@ -23,59 +23,52 @@
  SOFTWARE.
 
  */
-import React from 'react'
+import React from "react"
 import { OVERRIDE_KEY_SUBTLE } from "../../../utils/constants"
 import styled from "styled-components"
-import {
-  Aside,
-  Paragraph,
-  Heading,
-  theme
-} from "@looker/components"
+import { Aside, Paragraph, Heading, theme } from "@looker/components"
 
 export const SettingsPanel = styled(Aside)`
-border-right: solid 1px ${theme.colors.ui2};
-overflow-y: auto;
-height: 100%;
-overflow-x: hidden;
+  border-right: solid 1px ${theme.colors.ui2};
+  overflow-y: auto;
+  height: 100%;
+  overflow-x: hidden;
 `
 SettingsPanel.defaultProps = {
-  width: '275px',
-  px: 'medium',
-  py: 'large',
+  width: "275px",
+  px: "medium",
+  py: "large"
 }
 
 export const ViewList = styled.ul`
-overflow-y: auto;
-margin: 0;
+  overflow-y: auto;
+  margin: 0;
 `
 export const ViewListItem = styled.li`
-border-bottom: solid 1px ${theme.colors.ui2};
+  border-bottom: solid 1px ${theme.colors.ui2};
 `
 export const ViewButton = styled.button`
-all: inherit;
-font-size: ${theme.fontSizes.small};
-cursor: pointer;
-padding: 12px 12px;
-width: 100%;
-border: none;
-:hover {
-  background-color: ${OVERRIDE_KEY_SUBTLE};
-}
-& > * {
-  pointer-events: none;
-}
+  all: inherit;
+  font-size: ${theme.fontSizes.small};
+  cursor: pointer;
+  padding: 12px 12px;
+  width: 100%;
+  border: none;
+  :hover {
+    background-color: ${OVERRIDE_KEY_SUBTLE};
+  }
+  & > * {
+    pointer-events: none;
+  }
 `
-export const HelpBody: React.FC = ({children}) => {
-  return (
-    <Paragraph fontSize="small">
-      {children}
-    </Paragraph>
-  )
+export const HelpBody: React.FC = ({ children }) => {
+  return <Paragraph fontSize="small">{children}</Paragraph>
 }
 
-export const PanelHeading: React.FC = ({children}) => {
+export const PanelHeading: React.FC = ({ children }) => {
   return (
-    <Heading fontSize="large" color={theme.colors.text4}>{children}</Heading>
+    <Heading fontSize="large" color={theme.colors.text4}>
+      {children}
+    </Heading>
   )
 }

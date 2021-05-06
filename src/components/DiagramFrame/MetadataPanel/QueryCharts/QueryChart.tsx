@@ -31,12 +31,17 @@ import {
   ProgressCircular,
   theme
 } from "@looker/components"
-import { QueryChartType, runChartQuery, SimpleResult } from "../../../../utils/queries"
+import {
+  QueryChartType,
+  runChartQuery,
+  SimpleResult,
+  globalCache
+} from "../../../../utils/queries"
 import styled from "styled-components"
 import { BarChart, Bar, Tooltip } from "recharts"
 import { ExtensionContext2 } from "@looker/extension-sdk-react"
 import { ExternalLink } from "../../../ExternalLink"
-import { globalCache } from "../../../../utils/queries"
+
 import { MetadataItem } from "./MetadataList"
 import { QueryChartButton } from "./QueryChartButton"
 
@@ -64,8 +69,7 @@ const ProgressTableRow = styled(TableRow)`
   );
 `
 
-const PaddedCell = styled(TableDataCell)`
-`
+const PaddedCell = styled(TableDataCell)``
 PaddedCell.defaultProps = {
   p: "4px"
 }
@@ -73,7 +77,7 @@ PaddedCell.defaultProps = {
 const BarTooltip = styled.div`
   padding: 4px;
   border-radius: 5px;
-  color: #FFF;
+  color: #fff;
   opacity: 0.9;
   background: #282828;
 `
@@ -82,13 +86,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <BarTooltip>
-        <p className="label">{`Range: [${Math.round(payload[0].payload.min)},${Math.round(payload[0].payload.max)}] Count: ${payload[0].value}`}</p>
+        <p className="label">{`Range: [${Math.round(
+          payload[0].payload.min
+        )},${Math.round(payload[0].payload.max)}] Count: ${
+          payload[0].value
+        }`}</p>
       </BarTooltip>
-    );
+    )
   }
 
-  return null;
-};
+  return null
+}
 
 export class QueryChart extends React.Component<
   QueryChartProps,
@@ -119,7 +127,7 @@ export class QueryChart extends React.Component<
       console.error(e)
       this.setState({
         loading: false,
-        response: {data:[], align:[], max:[]}
+        response: { data: [], align: [], max: [] }
       })
     }
   }
@@ -134,13 +142,11 @@ export class QueryChart extends React.Component<
 
   render() {
     if (this.state.loading) {
-      return (
-        <ProgressCircular size='small' />
-      )
+      return <ProgressCircular size="small" />
     } else if (this.state.response) {
       if (this.state.response.data.length === 0) {
         return (
-          <Text fontSize="small" style={{color: theme.colors.text1}}>
+          <Text fontSize="small" style={{ color: theme.colors.text1 }}>
             No Data
           </Text>
         )

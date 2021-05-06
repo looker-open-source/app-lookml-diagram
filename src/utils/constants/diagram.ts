@@ -31,28 +31,28 @@ export const Y_INIT = 100
  * the width of each diagram table
  */
 export const TABLE_WIDTH = 255
- /**
-  * the height of each table row
-  */
+/**
+ * the height of each table row
+ */
 export const TABLE_ROW_HEIGHT = 30
- /**
-  * the padding between tables
-  */
+/**
+ * the padding between tables
+ */
 export const TABLE_PADDING = TABLE_WIDTH * 2.2
- /**
-  * the number of pixels from a diagram table the join path
-  * should be offset by to accomodate the join cardinality connector
-  */
+/**
+ * the number of pixels from a diagram table the join path
+ * should be offset by to accomodate the join cardinality connector
+ */
 export const JOIN_CONNECTOR_WIDTH = 40
- /**
-  * the vertical padding between tables of the same degree
-  */
+/**
+ * the vertical padding between tables of the same degree
+ */
 export const TABLE_VERTICAL_PADDING = 5
- /**
-  * the vertical step each degree will take from the base table
-  */
+/**
+ * the vertical step each degree will take from the base table
+ */
 export const TABLE_DEGREE_STEP = -3
 
-export const DIAGRAM_IGNORED_MODELS = ['system__activity']
+export const DIAGRAM_IGNORED_MODELS = ["system__activity"]
 
 export const MINIMAP_WIDTH = 200

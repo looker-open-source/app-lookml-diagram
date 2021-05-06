@@ -24,32 +24,30 @@
 
  */
 
- import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
- import styled from "styled-components"
- import {
-   theme
- } from "@looker/components"
+import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
+import styled from "styled-components"
+import { theme } from "@looker/components"
 
 export const ExploreListWrapper = styled.ul`
-margin-top: ${theme.sizes.xxxsmall};
-overflow: auto;
-width: 100%;
+  margin-top: ${theme.sizes.xxxsmall};
+  overflow: auto;
+  width: 100%;
 `
 export const ExploreListitem = styled.li`
-border-bottom: solid 1px ${theme.colors.ui2};
+  border-bottom: solid 1px ${theme.colors.ui2};
 `
 export const ExploreButton = styled.button`
-all: inherit;
-font-size: ${theme.fontSizes.small};
-color: ${theme.colors.text5};
-cursor: pointer;
-padding: ${theme.sizes.xxxsmall};
-width: 100%;
-border: none;
-&:hover {
-  background-color: ${OVERRIDE_KEY_SUBTLE};
-}
-& > * {
-  pointer-events: none;
-}
+  all: inherit;
+  font-size: ${theme.fontSizes.small};
+  color: ${theme.colors.text5};
+  cursor: pointer;
+  padding: ${theme.sizes.xxxsmall};
+  width: 100%;
+  border: none;
+  &:hover {
+    background-color: ${OVERRIDE_KEY_SUBTLE};
+  }
+  & > * {
+    pointer-events: none;
+  }
 `

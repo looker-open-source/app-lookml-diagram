@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import React from 'react'
+import React from "react"
 import {
   Footer,
   Badge,
@@ -37,7 +37,7 @@ import {
 } from "@looker/components"
 import styled from "styled-components"
 
-import {METADATA_PANEL_PIXEL} from "../../../utils/constants"
+import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
 
 /**
  * Layout component for metadata panel Footer
@@ -48,28 +48,28 @@ export const MetadataFooter = styled(Footer)`
   position: absolute;
   bottom: 0px;
   border-top-color: transparent;
-  box-shadow: 0px 1px 15px ${(props) => props.theme.colors.ui2};
-  background-color: ${(props) => props.theme.colors.background};
-  border-top: 1px solid ${(props) => props.theme.colors.background};
+  box-shadow: 0px 1px 15px ${props => props.theme.colors.ui2};
+  background-color: ${props => props.theme.colors.background};
+  border-top: 1px solid ${props => props.theme.colors.background};
 `
 MetadataFooter.defaultProps = {
-  py: 'small'
+  py: "small"
 }
 
 /**
  * Layout component for metadata panel Panel
  */
 export const MetadataInfoPanel = styled(Aside)`
-  border-left: solid 1px ${(props) => props.theme.colors.ui2};
+  border-left: solid 1px ${props => props.theme.colors.ui2};
   overflow-y: auto;
-  background-color: ${(props) => props.theme.colors.background};
-  box-shadow: -10px 0px 20px 0px ${(props) => props.theme.colors.ui2};
+  background-color: ${props => props.theme.colors.background};
+  box-shadow: -10px 0px 20px 0px ${props => props.theme.colors.ui2};
   z-index: 0;
 `
 MetadataInfoPanel.defaultProps = {
   width: `${METADATA_PANEL_PIXEL}px`,
-  px: 'medium',
-  py: 'large',
+  px: "medium",
+  py: "large"
 }
 
 /**
@@ -79,8 +79,8 @@ export const MetadataRow = styled(Flex)`
   border-bottom: solid 1px ${theme.colors.ui2};
 `
 MetadataRow.defaultProps = {
-  py: 'small',
-  width: '100%'
+  py: "small",
+  width: "100%"
 }
 
 /**
@@ -99,34 +99,34 @@ export const ValueText = styled(Text)`
 /**
  * Layout component for metadata panel table Keys
  */
-export const KeyColumn: React.FC = ({children}) => {
-  return <FlexItem flexBasis='35%'>{children}</FlexItem>
+export const KeyColumn: React.FC = ({ children }) => {
+  return <FlexItem flexBasis="35%">{children}</FlexItem>
 }
 
 /**
  * Layout component for metadata panel table Values
  */
-export const ValueColumn: React.FC = ({children}) => {
-  return <FlexItem flexBasis='65%'>{children}</FlexItem>
+export const ValueColumn: React.FC = ({ children }) => {
+  return <FlexItem flexBasis="65%">{children}</FlexItem>
 }
 
 /**
  * Generic metadata panel key text
  */
-export const KeyText: React.FC = ({children}) => {
-  return <Text fontSize='small' fontWeight='medium'>{children}</Text>
+export const KeyText: React.FC = ({ children }) => {
+  return (
+    <Text fontSize="small" fontWeight="medium">
+      {children}
+    </Text>
+  )
 }
 
 /**
  * Lightened metadata panel key text for subpoints
  */
-export const SubKeyText: React.FC = ({children}) => {
+export const SubKeyText: React.FC = ({ children }) => {
   return (
-    <Text
-      fontSize='small'
-      fontWeight='semiBold'
-      color='secondary'
-    >
+    <Text fontSize="small" fontWeight="semiBold" color="secondary">
       {children}
     </Text>
   )
@@ -135,13 +135,9 @@ export const SubKeyText: React.FC = ({children}) => {
 /**
  * Generic pill text
  */
-export const PillText: React.FC = ({children}) => {
+export const PillText: React.FC = ({ children }) => {
   return (
-    <Code
-      color='text3'
-      fontSize='xsmall'
-      lineHeight='medium'
-    >
+    <Code color="text3" fontSize="xsmall" lineHeight="medium">
       {children}
     </Code>
   )
@@ -150,13 +146,17 @@ export const PillText: React.FC = ({children}) => {
 /**
  * Generic header for metadata panel
  */
-export const MetadataHeading: React.FC = ({children}) => {
-  return <Heading fontSize='xlarge'>{children}</Heading>
+export const MetadataHeading: React.FC = ({ children }) => {
+  return <Heading fontSize="xlarge">{children}</Heading>
 }
 
 /**
  * Layout component for metadata panel pills
  */
-export const PillWrapper: React.FC = ({children}) => {
-  return <Badge intent='neutral' size='small'>{children}</Badge>
+export const PillWrapper: React.FC = ({ children }) => {
+  return (
+    <Badge intent="neutral" size="small">
+      {children}
+    </Badge>
+  )
 }

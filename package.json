@@ -11,8 +11,8 @@
     "build": "webpack --mode=production",
     "build:ci:clean": "rm -rf ./temp && mkdir ./temp",
     "build:ci": "webpack --mode=production --output-path=./temp",
-    "lint": "eslint './src/components/**/*.ts{,x}'",
-    "lint-fix": "eslint './src/components/**/*.ts{,x}' --fix",
+    "lint": "eslint './src/**/*.ts{,x}' --cache",
+    "lint-fix": "eslint './src/**/*.ts{,x}' --fix --cache",
     "analyze": "export ANALYZE_MODE=static && yarn build"
   },
   "license": "MIT",
@@ -83,6 +83,11 @@
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   },
+  "eslintIgnore": [
+    "src/__tests__/**",
+    "src/__mocks__/**",
+    "queries.ts"
+  ],
   "babel": {
     "presets": [
       "@babel/preset-react",

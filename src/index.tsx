@@ -28,8 +28,8 @@ import React from "react"
 import * as ReactDOM from "react-dom"
 import { Extension } from "./components/Extension"
 import { ExtensionProvider2 } from "@looker/extension-sdk-react"
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { Looker40SDK } from '@looker/sdk'
+import { QueryClient, QueryClientProvider } from "react-query"
+import { Looker40SDK } from "@looker/sdk"
 
 window.addEventListener("DOMContentLoaded", () => {
   const root = document.createElement("div")

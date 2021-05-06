@@ -26,6 +26,8 @@ module.exports = {
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/unbound-method": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/ban-ts-ignore": "off"
+    "@typescript-eslint/ban-ts-ignore": "warn",
+    "no-eval": "warn",
+    "no-template-curly-in-string": "off",
   }
 }

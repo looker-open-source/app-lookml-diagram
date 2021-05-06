@@ -23,9 +23,13 @@
  SOFTWARE.
 
  */
-import { ILookmlModelExploreField, ILookmlModelExploreJoins } from "@looker/sdk/lib/4.0/models"
+import {
+  ILookmlModelExploreField,
+  ILookmlModelExploreJoins
+} from "@looker/sdk/lib/4.0/models"
 
-export interface DiagramField extends Omit<ILookmlModelExploreField, 'category'> {
+export interface DiagramField
+  extends Omit<ILookmlModelExploreField, "category"> {
   diagramX: number
   diagramY: number
   fieldTypeIndex: number
@@ -37,7 +41,7 @@ export interface DiagramField extends Omit<ILookmlModelExploreField, 'category'>
 }
 
 export interface DiagramJoin {
-  viewName?: string 
+  viewName?: string
   fieldIndex?: number
   selector?: string
   type?: string
