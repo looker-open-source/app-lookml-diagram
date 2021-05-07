@@ -6,7 +6,7 @@ Looker’s LookML Diagram extension provides an entity-relationship-diagram for 
 - Simplify the diagram with the option to hide hidden fields or only show fields in joins
 - Refresh the diagram to see the latest LookML
 
-<img src="https://github.com/looker-open-source/app-lookml-diagram/blob/main/docs/Screenshot%20from%202021-03-30%2023-22-40.png?raw=true" alt="drawing" height="400"/>
+<img src="https://github.com/looker-open-source/app-lookml-diagram/blob/main/docs/lookml_diagram.gif?raw=true" alt="drawing" height="400"/>
 
 ## Getting Started for Development
 
