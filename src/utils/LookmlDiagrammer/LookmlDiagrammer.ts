@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  SOFTWARE.
 
  */
-import { ILookmlModelExplore } from "@looker/sdk/lib/4.0/models"
+import { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
 import {
   TABLE_VERTICAL_PADDING,
   TABLE_DEGREE_STEP,
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH
-} from "../constants"
+} from '../constants'
 import {
   DiagramMetadata,
   DiagramDegreeShiftLookup,
   DiagramDegreeOrderLookup,
   DiagramField
-} from "./types"
-import { getJoinedViewsForViews, getTableX } from "./utils"
+} from './types'
+import { getJoinedViewsForViews, getTableX } from './utils'
 
 /**
  * The LookmlDiagrammer class provides a useful interface for passing in an unarranged
@@ -112,7 +112,7 @@ export class LookmlDiagrammer {
       ? this.diagramDict.tableData[table].length
       : 1
     this.shift[degree] =
-      typeof this.shift[degree] !== "undefined"
+      typeof this.shift[degree] !== 'undefined'
         ? this.shift[degree] + TABLE_VERTICAL_PADDING + tableLen
         : 0 +
           Math.abs(degree) * TABLE_DEGREE_STEP +

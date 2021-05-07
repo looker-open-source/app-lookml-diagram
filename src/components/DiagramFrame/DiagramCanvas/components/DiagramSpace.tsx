@@ -24,7 +24,8 @@
 
  */
 
-import styled from "styled-components"
+import styled from 'styled-components'
+import { theme } from '@looker/components'
 import {
   DIAGRAM_BACKGROUND_COLOR,
   DIAGRAM_HOVER_COLOR,
@@ -51,12 +52,11 @@ import {
   DIAGRAM_MEASURE_ICON_COLOR,
   DIAGRAM_JOINED_VIEW_HOVER_COLOR,
   DIAGRAM_BASE_VIEW_HOVER_COLOR
-} from "../../../../utils/constants"
-import { theme } from "@looker/components"
+} from '../../../../utils/constants'
 
 export const DiagramSpace = styled.svg`
   background-color: ${(props: any) =>
-    props.type === "help-view" || props.type === "help-join"
+    props.type === 'help-view' || props.type === 'help-join'
       ? theme.colors.background
       : DIAGRAM_BACKGROUND_COLOR};
   .display-area {
@@ -234,7 +234,7 @@ export const DiagramSpace = styled.svg`
     fill: ${DIAGRAM_FIELD_COLOR};
   }
 
-  g[class^="join-"] > g.join-path-icon {
+  g[class^='join-'] > g.join-path-icon {
     opacity: 0;
   }
 

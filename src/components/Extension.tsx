@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +24,19 @@
 
  */
 
-import React, { useContext } from "react"
-import { ComponentsProvider } from "@looker/components"
-import { DiagramFrame } from "./DiagramFrame/DiagramFrame"
-import { useSelectExplore, usePathNames } from "../utils/routes"
-import {
-  VIEW_OPTIONS_HIDDEN_DEFAULT,
-  VIEW_OPTIONS_FIELDS_DEFAULT
-} from "../utils/constants"
-import { Looker40SDK } from "@looker/sdk"
+import React, { useContext } from 'react'
+import { ComponentsProvider } from '@looker/components'
+import { Looker40SDK } from '@looker/sdk'
 import {
   ExtensionContext2,
   ExtensionContextData2
-} from "@looker/extension-sdk-react"
+} from '@looker/extension-sdk-react'
+import { useSelectExplore, usePathNames } from '../utils/routes'
+import {
+  VIEW_OPTIONS_HIDDEN_DEFAULT,
+  VIEW_OPTIONS_FIELDS_DEFAULT
+} from '../utils/constants'
+import { DiagramFrame } from './DiagramFrame/DiagramFrame'
 
 export const Extension: React.FC = () => {
   const extensionContext = useContext<ExtensionContextData2<Looker40SDK>>(
@@ -45,8 +45,8 @@ export const Extension: React.FC = () => {
   const { extensionSDK } = extensionContext
   const extensionHost = (extensionSDK.lookerHostData || {}).hostType
   const fontOverride =
-    !extensionHost || extensionHost === "standard"
-      ? { fontFamilies: { brand: "Google Sans" } }
+    !extensionHost || extensionHost === 'standard'
+      ? { fontFamilies: { brand: 'Google Sans' } }
       : {}
   const { modelName, exploreName, fullPage } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(
@@ -62,7 +62,7 @@ export const Extension: React.FC = () => {
   return (
     <ComponentsProvider
       themeCustomizations={{
-        colors: { key: "rgb(45, 126, 234)" },
+        colors: { key: 'rgb(45, 126, 234)' },
         ...fontOverride
       }}
     >

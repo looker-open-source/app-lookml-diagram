@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,25 @@
  SOFTWARE.
 
  */
-import React from "react"
+import React from 'react'
 import {
   Flex,
   Space,
   FlexItem,
   ProgressCircular,
   theme
-} from "@looker/components"
+} from '@looker/components'
 import {
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField
-} from "@looker/sdk/lib/4.0/models"
+} from '@looker/sdk/lib/4.0/models'
 
-import { canGetDistribution, canGetTopValues } from "../../../utils/queries"
-import { LookmlObjectMetadata } from "../../interfaces"
-import { QueryChart } from "./QueryCharts"
-import { UNKNOWN_VIEW_SQLTABLENAME } from "./utils"
-import { LookmlCodeBlock } from "./LookmlCodeBlock"
+import { canGetDistribution, canGetTopValues } from '../../../utils/queries'
+import { LookmlObjectMetadata } from '../../interfaces'
+import { QueryChart } from './QueryCharts'
+import { UNKNOWN_VIEW_SQLTABLENAME } from './utils'
+import { LookmlCodeBlock } from './LookmlCodeBlock'
 import {
   ValueText,
   MetadataRow,
@@ -50,7 +50,7 @@ import {
   SubKeyText,
   KeyColumn,
   ValueColumn
-} from "./metadata_components"
+} from './metadata_components'
 
 const getSqlTableNameElement = (tableName: string) => {
   if (tableName === UNKNOWN_VIEW_SQLTABLENAME) {
@@ -81,16 +81,16 @@ const MetadataPanelTable: React.FC<{
           </ValueColumn>
         </MetadataRow>
       )}
-      {metadata.lookmlObject === "view" && (
+      {metadata.lookmlObject === 'view' && (
         <Flex flexDirection="column" pt="xxsmall">
           <FlexItem>
             <KeyText>SQL Table Name</KeyText>
           </FlexItem>
-          <FlexItem pt="small" style={{ minHeight: "50px" }}>
+          <FlexItem pt="small" style={{ minHeight: '50px' }}>
             {!metadata.sqlTableName ? (
               <Space
                 p="medium"
-                style={{ backgroundColor: "rgb(251, 251, 251)" }}
+                style={{ backgroundColor: 'rgb(251, 251, 251)' }}
                 around
               >
                 <ProgressCircular size="small" />
@@ -165,7 +165,7 @@ const MetadataPanelTable: React.FC<{
                     <SubKeyText>field: </SubKeyText>
                     <ValueText>{d.field}</ValueText>
                   </FlexItem>
-                  <FlexItem pb={spaceBelow && "small"}>
+                  <FlexItem pb={spaceBelow && 'small'}>
                     <SubKeyText>user_attribute: </SubKeyText>
                     <ValueText>{d.user_attribute}</ValueText>
                   </FlexItem>
@@ -205,11 +205,11 @@ const MetadataPanelTable: React.FC<{
             <ValueColumn>
               <QueryChart
                 disabledText={
-                  "Distributions can only be shown for numeric dimensions on a view with a count measure."
+                  'Distributions can only be shown for numeric dimensions on a view with a count measure.'
                 }
                 enabled={canGetDistribution({ model, explore, field })}
                 type={{
-                  type: "Distribution",
+                  type: 'Distribution',
                   model,
                   explore,
                   field
@@ -224,11 +224,11 @@ const MetadataPanelTable: React.FC<{
             <ValueColumn>
               <QueryChart
                 disabledText={
-                  "Values can only be shown for dimensions on a view with a count measure."
+                  'Values can only be shown for dimensions on a view with a count measure.'
                 }
                 enabled={canGetTopValues({ model, explore, field })}
                 type={{
-                  type: "Values",
+                  type: 'Values',
                   model,
                   explore,
                   field

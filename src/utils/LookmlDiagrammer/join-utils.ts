@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,8 @@
 import {
   ILookmlModelExploreJoins,
   ILookmlModelExplore
-} from "@looker/sdk/lib/4.0/models"
-import { DiagramField } from "./types"
+} from '@looker/sdk/lib/4.0/models'
+import { DiagramField } from './types'
 
 /**
  * Returns properly formatted DiagramJoin for PKs
@@ -43,8 +43,8 @@ export function getPkJoinPathObj(
   return {
     viewName: join.name,
     fieldIndex: pkFieldIndex,
-    selector: pkTableRef[pkFieldIndex].name.replace(".", "-"),
-    type: "core",
+    selector: pkTableRef[pkFieldIndex].name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
     joinObj: join
   }
@@ -66,8 +66,8 @@ export function getBaseJoinPathObj(
   return {
     viewName: baseTableId,
     fieldIndex: fieldIndex,
-    selector: baseTableRef[fieldIndex].name.replace(".", "-"),
-    type: "core",
+    selector: baseTableRef[fieldIndex].name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
     joinObj: join
   }
@@ -89,8 +89,8 @@ export function getSqlJoinPathObj(
   return {
     viewName: joinFieldArr[0],
     fieldIndex: fieldIndex,
-    selector: field.replace(".", "-"),
-    type: "core",
+    selector: field.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
     joinObj: join
   }
@@ -104,8 +104,8 @@ export function getJoinPathObj(join: ILookmlModelExploreJoins) {
   return {
     viewName: join.name,
     fieldIndex: 0,
-    selector: join.name.replace(".", "-"),
-    type: "core",
+    selector: join.name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
     joinObj: join
   }
@@ -123,8 +123,8 @@ export function getExploreJoinPathObj(
   return {
     viewName: explore.name,
     fieldIndex: 0,
-    selector: join.name.replace(".", "-"),
-    type: "core",
+    selector: join.name.replace('.', '-'),
+    type: 'core',
     joinName: join.name,
     joinObj: join
   }

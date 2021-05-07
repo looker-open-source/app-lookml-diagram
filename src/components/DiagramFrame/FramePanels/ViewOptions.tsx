@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
  */
 
-import React from "react"
+import React from 'react'
 import {
   SpaceVertical,
   Divider,
@@ -39,21 +39,21 @@ import {
   FadeIn,
   Icon,
   theme
-} from "@looker/components"
-import { Visibility } from "@styled-icons/material-outlined/Visibility"
-import { Info } from "@styled-icons/material-outlined/Info"
-import { VisibilityOff } from "@styled-icons/material/VisibilityOff"
+} from '@looker/components'
+import { Visibility } from '@styled-icons/material-outlined/Visibility'
+import { Info } from '@styled-icons/material-outlined/Info'
+import { VisibilityOff } from '@styled-icons/material/VisibilityOff'
 
-import { ViewOptionsProps } from "./types"
+import { SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS } from '../../../utils/constants'
+import { ViewOptionsProps } from './types'
 import {
   ViewList,
   ViewListItem,
   ViewButton,
   SettingsPanel,
   PanelHeading
-} from "./frame_components"
-import { getViewListItemColor } from "./utils"
-import { SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS } from "../../../utils/constants"
+} from './frame_components'
+import { getViewListItemColor } from './utils'
 
 export const ViewOptions: React.FC<ViewOptionsProps> = ({
   displayFieldType,
@@ -77,8 +77,8 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
                 value={displayFieldType}
                 onChange={setDisplayFieldType}
                 options={[
-                  { label: "All fields", value: SHOW_ALL_FIELDS },
-                  { label: "Fields with joins", value: SHOW_JOINED_FIELDS }
+                  { label: 'All fields', value: SHOW_ALL_FIELDS },
+                  { label: 'Fields with joins', value: SHOW_JOINED_FIELDS }
                 ]}
               />
             </FlexItem>

@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,15 @@
 
  */
 
-import React from "react"
-import * as ReactDOM from "react-dom"
-import { Extension } from "./components/Extension"
-import { ExtensionProvider2 } from "@looker/extension-sdk-react"
-import { QueryClient, QueryClientProvider } from "react-query"
-import { Looker40SDK } from "@looker/sdk"
+import React from 'react'
+import * as ReactDOM from 'react-dom'
+import { ExtensionProvider2 } from '@looker/extension-sdk-react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { Looker40SDK } from '@looker/sdk'
+import { Extension } from './components/Extension'
 
-window.addEventListener("DOMContentLoaded", () => {
-  const root = document.createElement("div")
+window.addEventListener('DOMContentLoaded', () => {
+  const root = document.createElement('div')
   const queryClient = new QueryClient()
   document.body.appendChild(root)
   ReactDOM.render(

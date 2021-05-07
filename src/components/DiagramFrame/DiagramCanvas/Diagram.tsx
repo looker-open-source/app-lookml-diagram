@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,16 @@
 
  */
 
-import React from "react"
-import * as d3 from "d3"
-import { useD3 } from "../../../d3-utils/useD3"
-import { addFilter } from "../../../d3-utils/styles"
-import { addZoom } from "../../../d3-utils/zoom"
-import { createLookmlViewElement } from "../../../d3-utils/tables"
-import { createLookmlJoinElement } from "../../../d3-utils/joins"
-import { DiagramJoin } from "../../../utils/LookmlDiagrammer"
-import { DiagramProps } from "./types"
-import { DiagramSpace } from "./components/DiagramSpace"
+import React from 'react'
+import * as d3 from 'd3'
+import { useD3 } from '../../../d3-utils/useD3'
+import { addFilter } from '../../../d3-utils/styles'
+import { addZoom } from '../../../d3-utils/zoom'
+import { createLookmlViewElement } from '../../../d3-utils/tables'
+import { createLookmlJoinElement } from '../../../d3-utils/joins'
+import { DiagramJoin } from '../../../utils/LookmlDiagrammer'
+import { DiagramProps } from './types'
+import { DiagramSpace } from './components/DiagramSpace'
 
 export const Diagram: React.FC<DiagramProps> = ({
   type,
@@ -63,16 +63,16 @@ export const Diagram: React.FC<DiagramProps> = ({
 
       // Add clickable background
       d3.selectAll(`g.${type}-area`)
-        .append("rect")
-        .attr("class", "clickable-background")
-        .attr("width", "10000")
-        .attr("height", "10000")
-        .attr("x", "-5000")
-        .attr("y", "-5000")
-        .on("click", () => {
+        .append('rect')
+        .attr('class', 'clickable-background')
+        .attr('width', '10000')
+        .attr('height', '10000')
+        .attr('x', '-5000')
+        .attr('y', '-5000')
+        .on('click', () => {
           setSelectionInfo({})
         })
-        .attr("fill", type === "minimap" ? "transparent" : "url(#dotsPattern)")
+        .attr('fill', type === 'minimap' ? 'transparent' : 'url(#dotsPattern)')
 
       // Add global svg defs
       const zoom = addZoom(
@@ -119,35 +119,35 @@ export const Diagram: React.FC<DiagramProps> = ({
           )
       })
 
-      const tableRowTypes = ["dimension", "measure", "view"]
+      const tableRowTypes = ['dimension', 'measure', 'view']
       // Highlight anything selected on previous render
       if (selectionInfo.grouped) {
         d3.selectAll(
-          "#" + selectionInfo.name.replace(".", "-") + ".table-row-grouped"
-        ).classed("table-row-selected", true)
+          '#' + selectionInfo.name.replace('.', '-') + '.table-row-grouped'
+        ).classed('table-row-selected', true)
       } else if (tableRowTypes.includes(selectionInfo.lookmlElement)) {
         d3.selectAll(
-          "#" +
-            selectionInfo.name.replace(".", "-") +
-            ":not(.table-row-grouped)"
-        ).classed("table-row-selected", true)
-      } else if (selectionInfo.lookmlElement === "join") {
-        d3.selectAll("g.join-" + selectionInfo.name)
-          .classed("join-path-selected", true)
+          '#' +
+            selectionInfo.name.replace('.', '-') +
+            ':not(.table-row-grouped)'
+        ).classed('table-row-selected', true)
+      } else if (selectionInfo.lookmlElement === 'join') {
+        d3.selectAll('g.join-' + selectionInfo.name)
+          .classed('join-path-selected', true)
           .raise()
       }
 
       // Add minimap viewport indicator
-      type === "minimap" &&
+      type === 'minimap' &&
         d3
           .selectAll(`g.${type}-area`)
-          .append("rect")
-          .attr("fill", "#282828")
-          .attr("fill-opacity", "0.1")
-          .attr("width", viewPosition.clientWidth)
-          .attr("height", viewPosition.clientHeight)
-          .attr("x", viewPosition.displayX * -1)
-          .attr("y", viewPosition.displayY * -1)
+          .append('rect')
+          .attr('fill', '#282828')
+          .attr('fill-opacity', '0.1')
+          .attr('width', viewPosition.clientWidth)
+          .attr('height', viewPosition.clientHeight)
+          .attr('x', viewPosition.displayX * -1)
+          .attr('y', viewPosition.displayY * -1)
     },
     // useD3 dependencies array,
     // Diagram will be redrawn any time these variables change
@@ -169,7 +169,7 @@ export const Diagram: React.FC<DiagramProps> = ({
       ref={ref}
       id={`${type}-diagram-svg`}
       type={type}
-      height={type.includes("help") ? viewPosition.clientHeight : undefined}
+      height={type.includes('help') ? viewPosition.clientHeight : undefined}
     >
       <g className={`${type}-area`} />
     </DiagramSpace>

@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,9 @@
 
  */
 
-import { OVERRIDE_KEY_SUBTLE } from "../../../../utils/constants"
-import styled from "styled-components"
-import { theme } from "@looker/components"
+import styled from 'styled-components'
+import { theme } from '@looker/components'
+import { OVERRIDE_KEY_SUBTLE } from '../../../../utils/constants'
 
 export const ExploreListWrapper = styled.ul`
   margin-top: ${theme.sizes.xxxsmall};

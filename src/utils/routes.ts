@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import { useRouteMatch } from "react-router-dom"
+import { useRouteMatch } from 'react-router-dom'
 import {
   useAllModels,
   useLookmlModelExplores,
@@ -31,7 +31,7 @@ import {
   useCurrentGitBranch,
   DetailedModel,
   useModelDiagrams
-} from "./fetchers"
+} from './fetchers'
 
 export function internalExploreURL({
   model,
@@ -73,13 +73,13 @@ export function usePathNames(): {
 } {
   const match =
     useRouteMatch<{ model: string }>({
-      path: "/models/:model",
+      path: '/models/:model',
       sensitive: true
     }) || undefined
 
   const match2 =
     useRouteMatch<{ model: string; explore: string }>({
-      path: "/models/:model/explores/:explore",
+      path: '/models/:model/explores/:explore',
       sensitive: true
     }) || undefined
 
@@ -90,11 +90,11 @@ export function usePathNames(): {
       field: string
       tab: string
     }>({
-      path: "/models/:model/explores/:explore/field/:field/pane/:tab"
+      path: '/models/:model/explores/:explore/field/:field/pane/:tab'
     }) || undefined
 
   const renderMatch = useRouteMatch({
-    path: "/models/:model/explores/:explore/render",
+    path: '/models/:model/explores/:explore/render',
     sensitive: true
   })
 

@@ -23,13 +23,13 @@
  SOFTWARE.
 
  */
+import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/4.0/models'
 import {
   DiagramMetadata,
   DiagrammedModel
-} from "../../../utils/LookmlDiagrammer/"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../interfaces"
-import { DetailedModel } from "../../../utils/fetchers"
-import { ILookmlModelExplore, ILookmlModel } from "@looker/sdk/lib/4.0/models"
+} from '../../../utils/LookmlDiagrammer/'
+import { SelectionInfoPacket, VisibleViewLookup } from '../../interfaces'
+import { DetailedModel } from '../../../utils/fetchers'
 
 export interface DiagramProps {
   type: string

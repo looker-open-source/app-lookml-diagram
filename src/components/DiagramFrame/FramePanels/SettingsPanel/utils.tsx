@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,23 @@
  SOFTWARE.
 
  */
-import React from "react"
-import { SelectionInfoPacket, VisibleViewLookup } from "../../../interfaces"
+import React from 'react'
 import {
   ILookmlModel,
   ILookmlModelExplore,
   IGitBranch
-} from "@looker/sdk/lib/4.0/models"
-import { GitBranch } from "@looker/icons"
-import { SelectOptionProps } from "@looker/components"
+} from '@looker/sdk/lib/4.0/models'
+import { GitBranch } from '@looker/icons'
+import { SelectOptionProps } from '@looker/components'
+import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
 import {
   X_INIT,
   Y_INIT,
   ZOOM_INIT,
   OVERRIDE_KEY_SUBTLE
-} from "../../../../utils/constants"
-import { internalExploreURL } from "../../../../utils/routes"
-import { ExploreDropdown } from "../types"
+} from '../../../../utils/constants'
+import { internalExploreURL } from '../../../../utils/routes'
+import { ExploreDropdown } from '../types'
 
 export function handleExploreChange(
   history: any,
@@ -53,7 +53,7 @@ export function handleExploreChange(
   setMinimapUntoggled: (toggle: boolean) => void,
   setMinimapEnabled: (toggle: boolean) => void
 ) {
-  selectionInfo.lookmlElement === "explore" || setSelectionInfo({})
+  selectionInfo.lookmlElement === 'explore' || setSelectionInfo({})
   setViewVisible({})
   setZoomFactor(ZOOM_INIT)
   setViewPosition({ x: X_INIT, y: Y_INIT })

@@ -23,10 +23,10 @@
  SOFTWARE.
 
  */
-import React from "react"
-import styled from "styled-components"
-import { Card, Paragraph, Section, theme } from "@looker/components"
-import { MINIMAP_WIDTH } from "../../../../utils/constants"
+import React from 'react'
+import styled from 'styled-components'
+import { Card, Paragraph, Section, theme } from '@looker/components'
+import { MINIMAP_WIDTH } from '../../../../utils/constants'
 
 /**
  * Layout component for Toolbar. Floats to bottom left of container
@@ -41,9 +41,9 @@ export const Toolbar = styled(Card)`
   }
 `
 Toolbar.defaultProps = {
-  height: "auto",
-  width: "40px",
-  minWidth: "40px"
+  height: 'auto',
+  width: '40px',
+  minWidth: '40px'
 }
 
 /**
@@ -105,5 +105,5 @@ export const Minimap = styled(Card)`
 Minimap.defaultProps = {
   minWidth: `${MINIMAP_WIDTH}px`,
   width: `${MINIMAP_WIDTH}px`,
-  height: "auto"
+  height: 'auto'
 }

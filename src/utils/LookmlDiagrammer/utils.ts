@@ -1,14 +1,19 @@
 /*
+
  MIT License
- Copyright (c) 2020 Looker Data Sciences, Inc.
+
+ Copyright (c) 2021 Looker Data Sciences, Inc.
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -16,24 +21,25 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
+
  */
 import {
   ILookmlModelExploreFieldset,
   ILookmlModelExploreField,
   ILookmlModelExploreJoins,
   ILookmlModelExplore
-} from "@looker/sdk/lib/4.0/models"
+} from '@looker/sdk/lib/4.0/models'
 import {
   TABLE_PADDING,
   SHOW_JOINED_FIELDS,
   SHOW_ALL_FIELDS
-} from "../constants"
+} from '../constants'
 import {
   DiagramField,
   DiagramMetadata,
   JoinPopularity,
   DiagramDegreeOrderLookup
-} from "./types"
+} from './types'
 
 /**
  * takes in an explore fieldset and returns an array of its dims and meas
@@ -58,7 +64,7 @@ export function onlyUnique(value: any, index: any, self: any) {
  * @param value
  */
 export function onlyStrings(value: any) {
-  return typeof value === "string"
+  return typeof value === 'string'
 }
 
 /**
@@ -81,7 +87,7 @@ export function getViews(
   // not all views bring in fields... so we must check join refs too
   joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
     join.dependent_fields.map((field: string, depFieldIndex: number) => {
-      const joinFieldArr = field.split(".")
+      const joinFieldArr = field.split('.')
       const tableRef = views.includes(joinFieldArr[0])
       if (!tableRef) {
         views.push(joinFieldArr[0])
@@ -118,7 +124,7 @@ export function getFilteredViewFields(
         field.view === viewName &&
         joinSql
           .map((d: any, i: number) => {
-            return d && d.includes("${" + field.name + "}")
+            return d && d.includes('${' + field.name + '}')
           })
           .includes(true)
       )
@@ -192,8 +198,8 @@ export function getViewDependentFieldIndex(
     searchTable.findIndex((x: any) => {
       return (
         x.name === searchField ||
-        (x.name.includes(".") && searchField === x.name) ||
-        (x.name.includes(".") &&
+        (x.name.includes('.') && searchField === x.name) ||
+        (x.name.includes('.') &&
           x.dimension_group &&
           searchField.includes(x.dimension_group))
       )

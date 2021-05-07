@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import React from "react"
+import React from 'react'
 import {
   Footer,
   Badge,
@@ -34,10 +34,10 @@ import {
   Heading,
   Text,
   theme
-} from "@looker/components"
-import styled from "styled-components"
+} from '@looker/components'
+import styled from 'styled-components'
 
-import { METADATA_PANEL_PIXEL } from "../../../utils/constants"
+import { METADATA_PANEL_PIXEL } from '../../../utils/constants'
 
 /**
  * Layout component for metadata panel Footer
@@ -53,7 +53,7 @@ export const MetadataFooter = styled(Footer)`
   border-top: 1px solid ${props => props.theme.colors.background};
 `
 MetadataFooter.defaultProps = {
-  py: "small"
+  py: 'small'
 }
 
 /**
@@ -68,8 +68,8 @@ export const MetadataInfoPanel = styled(Aside)`
 `
 MetadataInfoPanel.defaultProps = {
   width: `${METADATA_PANEL_PIXEL}px`,
-  px: "medium",
-  py: "large"
+  px: 'medium',
+  py: 'large'
 }
 
 /**
@@ -79,8 +79,8 @@ export const MetadataRow = styled(Flex)`
   border-bottom: solid 1px ${theme.colors.ui2};
 `
 MetadataRow.defaultProps = {
-  py: "small",
-  width: "100%"
+  py: 'small',
+  width: '100%'
 }
 
 /**

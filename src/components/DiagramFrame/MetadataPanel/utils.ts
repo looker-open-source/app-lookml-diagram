@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2020 Looker Data Sciences, Inc.
+ Copyright (c) 2021 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,15 @@
  SOFTWARE.
 
  */
-import { SelectionInfoPacket } from "../../interfaces"
 import {
   ILookmlModelExplore,
   ILookmlModelExploreField,
   ILookmlModelExploreJoins
-} from "@looker/sdk/lib/4.0/models"
+} from '@looker/sdk/lib/4.0/models'
+import { SelectionInfoPacket } from '../../interfaces'
 
 export const UNKNOWN_VIEW_SQLTABLENAME =
-  "This value is known only for views that are also defined as an Explore."
+  'This value is known only for views that are also defined as an Explore.'
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   const startLine = `join: ${join.name.toLowerCase()} {\n`
@@ -43,17 +43,17 @@ export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
   const endLine = `}`
   return [startLine, typeLine, relationLine, sqlOnLine, fkLine, endLine]
     .filter(Boolean)
-    .join("")
+    .join('')
 }
 
 export const dateOrDuration = (type: string) =>
-  type.includes("date_") || type.includes("duration_")
+  type.includes('date_') || type.includes('duration_')
 
 export const getSqlType = (type: string) => {
-  if (type.includes("date_")) {
-    return "time"
-  } else if (type.includes("duration_")) {
-    return "duration"
+  if (type.includes('date_')) {
+    return 'time'
+  } else if (type.includes('duration_')) {
+    return 'duration'
   }
   return type
 }
@@ -63,10 +63,10 @@ export function getFieldName(
   type: string,
   dimensionGroup: string
 ) {
-  if ((type.includes("duration") || type.includes("date")) && dimensionGroup) {
-    return dimensionGroup.split(".")[1].toLowerCase()
+  if ((type.includes('duration') || type.includes('date')) && dimensionGroup) {
+    return dimensionGroup.split('.')[1].toLowerCase()
   }
-  return name.split(".")[1].toLowerCase()
+  return name.split('.')[1].toLowerCase()
 }
 
 export function getFieldCodeBlock(
@@ -75,7 +75,7 @@ export function getFieldCodeBlock(
   selectionInfo: SelectionInfoPacket
 ) {
   const blobStart = dateOrDuration(field.type)
-    ? "dimension_group"
+    ? 'dimension_group'
     : field.category
   const startLine = `${blobStart}: ${getFieldName(
     field.name,
@@ -87,7 +87,7 @@ export function getFieldCodeBlock(
   const vfLine = field.value_format && `  value_format: ${field.value_format}\n`
   const tfLine =
     dateOrDuration(field.type) &&
-    `  timeframes: [\n    ${tf.join(",\n    ")}\n  ]\n`
+    `  timeframes: [\n    ${tf.join(',\n    ')}\n  ]\n`
   const sqlLine = field.sql && `  sql: ${field.sql} ;;\n`
   const mapLayerLine =
     field.map_layer &&
@@ -105,14 +105,14 @@ export function getFieldCodeBlock(
     endLine
   ]
     .filter(Boolean)
-    .join("")
+    .join('')
 }
 
 export function getFieldType(type: string) {
-  if (type.includes("DATE_")) {
-    return "DATE"
-  } else if (type.includes("DURATION_")) {
-    return "DURATION"
+  if (type.includes('DATE_')) {
+    return 'DATE'
+  } else if (type.includes('DURATION_')) {
+    return 'DURATION'
   }
   return type
 }
@@ -121,12 +121,12 @@ export function getJoinMetadata(
   joinObj: ILookmlModelExploreJoins,
   lookmlLink: string
 ) {
-  const joinTypeRaw = joinObj.type ? joinObj.type : "left_outer"
+  const joinTypeRaw = joinObj.type ? joinObj.type : 'left_outer'
   return {
     name: joinObj.name,
     lookmlLink: lookmlLink,
     joinCode: getJoinCodeBlock(joinObj),
-    joinIconType: joinTypeRaw.replace("_", "-"),
+    joinIconType: joinTypeRaw.replace('_', '-'),
     joinType: joinTypeRaw,
     joinRelationship: joinObj.relationship && joinObj.relationship
   }
@@ -143,14 +143,14 @@ export function getFieldMetadata(
   const lookmlLink = field?.lookml_link
   const timeframes = fields.map((f: any) => {
     return (
-      (f.type.includes("date_") && f.type.replace("date_", "")) ||
-      (f.type.includes("duration_") && f.type.replace("duration_", ""))
+      (f.type.includes('date_') && f.type.replace('date_', '')) ||
+      (f.type.includes('duration_') && f.type.replace('duration_', ''))
     )
   })
   const tf = !timeframes.includes(false) ? timeframes : []
   return {
     name: getFieldName(field.name, field.type, selectionInfo.grouped),
-    fieldName: field.name.split(".")[0],
+    fieldName: field.name.split('.')[0],
     lookmlLink: lookmlLink,
     fieldType: getFieldType(field.type),
     description: field.description,
@@ -182,7 +182,7 @@ export function getViewMetadata(
   return {
     name: selectionInfo.name,
     lookmlLink: lookmlLink,
-    lookmlObject: "view",
+    lookmlObject: 'view',
     sqlTableName
   }
 }
