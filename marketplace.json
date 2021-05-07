@@ -4,8 +4,7 @@
   "branding": {
     "image_uri": "https://marketplace-api.looker.com/app-icons/ERD.svg",
     "tagline": "Visualize your LookML models.",
-    "brand_color": "#4c8bf5",
-    "badge": "Beta"
+    "brand_color": "#4c8bf5"
   },
   "constants": {
     "CONNECTION_NAME": {
