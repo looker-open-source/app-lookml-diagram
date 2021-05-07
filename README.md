@@ -102,12 +102,6 @@ Not everything that could be considered a "style" falls under the CSS sphere of 
 ## Component Structure
 ![Please refer to `/docs/component_structure.png`](https://github.com/looker-open-source/app-lookml-diagram/blob/main/docs/component_structure.png?raw=true)
 
-## Notes
-
-- Webpack's hot reloading is not currently supported.
-- Webpack's module splitting is not currently supported.
-- The template uses Looker's component library and styled components. Neither of these libraries are required so you may remove and replace them with a component library of your own choice,
-
 ## Related Projects
 
 - [Looker React extension template](https://github.com/looker-open-source/extension-template-react)
