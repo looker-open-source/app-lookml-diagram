@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const queryClient = new QueryClient()
   document.body.appendChild(root)
   ReactDOM.render(
-    <ExtensionProvider2 type={Looker40SDK}>
+    <ExtensionProvider2 type={Looker40SDK} chattyTimeout={300000}>
       <QueryClientProvider client={queryClient}>
         <Extension />
       </QueryClientProvider>
