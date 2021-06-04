@@ -25,7 +25,7 @@
  */
 
 import React, { useCallback } from 'react'
-import { SpaceVertical, IconButton, Layout } from '@looker/components'
+import { SpaceVertical, IconButton, Layout, ProgressCircular } from '@looker/components'
 import { AccountTree } from '@styled-icons/material-outlined/AccountTree'
 import { Visibility } from '@styled-icons/material-outlined/Visibility'
 import { LiveHelp } from '@styled-icons/material-outlined/LiveHelp'
@@ -51,6 +51,7 @@ import { DiagramCanvas } from './DiagramCanvas/DiagramCanvas'
 import { DiagramFrameProps } from './types'
 import { Rail, Stage } from './FrameHelpers'
 import { prepareModelDropdown, prepareExploreList } from './utils'
+import { QueryExplorer } from './QueryExplorer'
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
@@ -67,6 +68,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [showSettings, setShowSettings] = React.useState(true)
   const [showHelp, setShowHelp] = React.useState(false)
   const [showViewOptions, setShowViewOptions] = React.useState(false)
+  const [showExplorer, setShowExplorer] = React.useState(false)
+  const [queryFields, setQueryFields] = React.useState<string[]>([])
   const [reload, setReload] = React.useState(false)
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>(
     {}
@@ -94,6 +97,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
     setShowHelp(false)
     setShowViewOptions(false)
     setShowSettings(false)
+    setShowExplorer(false)
   }
   const toggleSettings = () => {
     closePanels()
@@ -116,6 +120,11 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           : {}
       setSelectionInfo(selectInfo)
     }
+  }
+
+  function toggleExplorer() {
+    closePanels()
+    setShowExplorer(!showExplorer)
   }
 
   const iconStyleOverride = {
@@ -232,6 +241,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           currentExplore={currentExplore}
           selectionInfo={selectionInfo}
           toggleExploreInfo={toggleExploreInfo}
+          showExplorer={showExplorer}
+          toggleExplorer={toggleExplorer}
         />
         <Layout hasAside height="100%" id="DiagramStage">
           <DiagramCanvas
@@ -266,6 +277,9 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           )}
         </Layout>
       </Stage>
+      {(showExplorer || queryFields.length > 0) && (
+        <QueryExplorer queryFields={queryFields} diagramMetadata={currentDimensions} />
+      )}
     </Layout>
   )
 }

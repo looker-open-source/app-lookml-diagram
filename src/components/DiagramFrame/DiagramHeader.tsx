@@ -25,10 +25,10 @@
  */
 
 import React from 'react'
-import { Heading, Space, IconButton } from '@looker/components'
+import { Heading, Space, IconButton, ButtonTransparent, Button } from '@looker/components'
+import { Explore } from '@looker/icons'
 import { useQueryClient } from 'react-query'
 import { Info } from '@styled-icons/material-outlined/Info'
-import { Refresh } from '@styled-icons/material-outlined/Refresh'
 
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
 import { DiagramHeaderProps } from './types'
@@ -37,15 +37,17 @@ import { DiagramHeaderWrapper } from './FrameHelpers'
 export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   currentExplore,
   selectionInfo,
-  toggleExploreInfo
+  toggleExploreInfo,
+  showExplorer,
+  toggleExplorer
 }) => {
-  const queryClient = useQueryClient()
-  const reloadPage = () => queryClient.resetQueries()
 
   const exploreInfoStyles =
     selectionInfo.lookmlElement === 'explore'
       ? { color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE }
       : {}
+  
+  const ExplorerButton = showExplorer ? Button : ButtonTransparent
 
   return (
     <DiagramHeaderWrapper
@@ -58,8 +60,6 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
           <Heading as="h1" px="1rg">
             {currentExplore && currentExplore.label}
           </Heading>
-        </Space>
-        <Space gap="xsmall" justifyContent="flex-end">
           <IconButton
             label="Explore Info"
             icon={<Info />}
@@ -67,12 +67,14 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
             style={exploreInfoStyles}
             size="large"
           />
-          <IconButton
-            label="Reload Diagram"
-            icon={<Refresh />}
-            size="large"
-            onClick={reloadPage}
-          />
+        </Space>
+        <Space gap="xsmall" justifyContent="flex-end">
+          <ExplorerButton
+            iconBefore={<Explore />}
+            onClick={toggleExplorer}
+          >
+            Explore
+          </ExplorerButton>
         </Space>
       </Space>
     </DiagramHeaderWrapper>
