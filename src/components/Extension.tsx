@@ -37,6 +37,7 @@ import {
   VIEW_OPTIONS_FIELDS_DEFAULT
 } from '../utils/constants'
 import { DiagramFrame } from './DiagramFrame/DiagramFrame'
+import { QueryOrder } from './DiagramFrame/QueryExplorer'
 
 export const Extension: React.FC = () => {
   const extensionContext = useContext<ExtensionContextData2<Looker40SDK>>(

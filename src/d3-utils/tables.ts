@@ -44,13 +44,16 @@ import {
   getDatatypePath,
   getPkPath
 } from './table-helpers'
+import { QueryOrder } from '../components/DiagramFrame/QueryExplorer'
 
 export function createLookmlViewElement(
   svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
   tableData: DiagramField[],
   selectionInfo: SelectionInfoPacket,
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
-  type: string
+  type: string,
+  queryFields: QueryOrder,
+  setQueryFields: (fields: QueryOrder) => void
 ) {
   const header = tableData[0]
 
@@ -112,6 +115,7 @@ export function createLookmlViewElement(
     .classed('table-row-dimension', (d: DiagramField) => isTableRowDimension(d))
     .classed('table-row-measure', (d: DiagramField) => isTableRowMeasure(d))
     .classed('table-row-grouped', (d: DiagramField) => !!d.dimension_group)
+    .classed('table-row-queried', (d: DiagramField) => queryFields && queryFields[encodeURI(d.name)])
     .classed('table-row-view', (d: DiagramField) => isTableRowView(d))
     .classed('table-row-base-view', (d: DiagramField) => isTableRowBaseView(d))
     .attr('id', (d: DiagramField, i: number) => {
@@ -219,16 +223,27 @@ export function createLookmlViewElement(
   }
   // Add click event
   type === 'display' &&
-    tableRow.on('click', (d: DiagramField) => {
-      // Chrome prefers 'toElement', Firefox implements as 'target'
-      // @ts-ignore
-      const target = d.toElement || d.target
-      const arr: any = d3.select(target).datum()
-      setSelectionInfo({
-        lookmlElement: arr?.category,
-        name: arr.name,
-        grouped: arr.dimension_group,
-        link: arr.lookml_link
-      })
+    tableRow.on('click', (event, d) => {
+      if (event.shiftKey) {
+        if (Object.keys(queryFields).includes(encodeURI(d.name))) {
+          delete queryFields[encodeURI(d.name)]
+        } else {
+          queryFields[encodeURI(d.name)] = true
+        }
+        setQueryFields({
+          ...queryFields
+        })
+      } else {
+        // Chrome prefers 'toElement', Firefox implements as 'target'
+        // @ts-ignore
+        // const target = d.toElement || d.target
+        // const arr: any = d3.select(target).datum()
+        setSelectionInfo({
+          lookmlElement: d?.category,
+          name: d.name,
+          grouped: d.dimension_group,
+          link: d.lookml_link
+        })
+      }
     })
 }

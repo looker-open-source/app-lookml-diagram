@@ -48,11 +48,15 @@ export const Diagram: React.FC<DiagramProps> = ({
   zoomFactor,
   setZoomFactor,
   viewPosition,
-  setViewPosition
+  setViewPosition,
+  queryFields,
+  setQueryFields
 }) => {
   const diagramViews = Object.keys(viewVisible).filter((viewName: string) => {
     return viewVisible[viewName]
   })
+
+  const queryFieldset = queryFields ? Object.keys(queryFields).toString() : ""
 
   const ref = useD3(
     // useD3 callback,
@@ -115,7 +119,9 @@ export const Diagram: React.FC<DiagramProps> = ({
             tableData,
             selectionInfo,
             setSelectionInfo,
-            type
+            type,
+            queryFields,
+            setQueryFields
           )
       })
 
@@ -135,6 +141,14 @@ export const Diagram: React.FC<DiagramProps> = ({
         d3.selectAll('g.join-' + selectionInfo.name)
           .classed('join-path-selected', true)
           .raise()
+      }
+
+      if (queryFields && Object.keys(queryFields).length > 0) {
+        Object.keys(queryFields).forEach((field) => {
+          d3.selectAll(
+            '#' + field.replace('.', '-')
+          ).classed('table-row-queried', true)
+        })
       }
 
       // Add minimap viewport indicator
@@ -161,7 +175,8 @@ export const Diagram: React.FC<DiagramProps> = ({
       zoomFactor,
       viewPosition.displayX,
       viewPosition.displayY,
-      viewPosition.clientWidth
+      viewPosition.clientWidth,
+      queryFieldset
     ]
   )
   return (

@@ -40,6 +40,7 @@ import {
 } from '../../../../utils/constants'
 import { internalExploreURL } from '../../../../utils/routes'
 import { ExploreDropdown } from '../types'
+import { QueryOrder } from '../../QueryExplorer'
 
 export function handleExploreChange(
   history: any,
@@ -51,7 +52,8 @@ export function handleExploreChange(
   setZoomFactor: (zoom: number) => void,
   setViewPosition: (info: any) => void,
   setMinimapUntoggled: (toggle: boolean) => void,
-  setMinimapEnabled: (toggle: boolean) => void
+  setMinimapEnabled: (toggle: boolean) => void,
+  setQueryFields: (fields: QueryOrder) => void
 ) {
   selectionInfo.lookmlElement === 'explore' || setSelectionInfo({})
   setViewVisible({})
@@ -59,6 +61,7 @@ export function handleExploreChange(
   setViewPosition({ x: X_INIT, y: Y_INIT })
   setMinimapUntoggled(true)
   setMinimapEnabled(false)
+  setQueryFields({})
   history.push(
     internalExploreURL({
       model: currentModel.name,

@@ -30,6 +30,7 @@ import {
 } from '../../../utils/LookmlDiagrammer/'
 import { SelectionInfoPacket, VisibleViewLookup } from '../../interfaces'
 import { DetailedModel } from '../../../utils/fetchers'
+import { QueryOrder } from '../QueryExplorer'
 
 export interface DiagramProps {
   type: string
@@ -45,6 +46,8 @@ export interface DiagramProps {
   setZoomFactor: (zoomFactor: number) => void
   viewPosition: any
   setViewPosition: (positionPacket: any) => void
+  queryFields?: QueryOrder
+  setQueryFields?: (fields: QueryOrder) => void
 }
 
 export interface DiagramToolbarProps {
@@ -82,4 +85,6 @@ export interface DiagramCanvasProps {
   displayFieldType: string
   viewVisible: VisibleViewLookup
   viewPosition: any
+  queryFields: QueryOrder
+  setQueryFields: (fields: QueryOrder) => void
 }

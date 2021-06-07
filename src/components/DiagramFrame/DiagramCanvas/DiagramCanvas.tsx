@@ -108,7 +108,9 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   hiddenToggle,
   displayFieldType,
   viewVisible,
-  viewPosition
+  viewPosition,
+  queryFields,
+  setQueryFields
 }) => {
   const svgElement = document.querySelector(`svg#display-diagram-svg`)
   const dimensions = currentDimensions?.diagramDict
@@ -157,6 +159,8 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         setZoomFactor={setZoomFactor}
         viewPosition={viewPosition}
         setViewPosition={setViewPosition}
+        queryFields={queryFields}
+        setQueryFields={setQueryFields}
       />
       {(minimapEnabled ||
         (minimapUntoggled && currentDimensions.minimapDefault)) && (

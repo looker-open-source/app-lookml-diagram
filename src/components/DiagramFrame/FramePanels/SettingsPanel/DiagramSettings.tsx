@@ -54,7 +54,8 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   setZoomFactor,
   setViewPosition,
   setMinimapUntoggled,
-  setMinimapEnabled
+  setMinimapEnabled,
+  setQueryFields
 }) => {
   const history = useHistory()
   const gitBranch = modelDetail?.gitBranch
@@ -110,6 +111,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               setViewPosition={setViewPosition}
               setMinimapUntoggled={setMinimapUntoggled}
               setMinimapEnabled={setMinimapEnabled}
+              setQueryFields={setQueryFields}
             />
           </FadeIn>
         )}
