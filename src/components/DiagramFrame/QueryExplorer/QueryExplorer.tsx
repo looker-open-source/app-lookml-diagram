@@ -48,6 +48,10 @@ export interface QueryOrder {
   [field_name: string]: any
 }
 
+export interface QueryOrder {
+  [field_name: string]: any
+}
+
 export const QueryExplorerPanel = styled(Aside)`
   border-left: solid 1px ${props => props.theme.colors.ui2};
   overflow-y: auto;
