@@ -35,18 +35,13 @@ import {
   TabPanel,
   ExtendComponentsThemeProvider,
   theme,
-  IconButton,
   Text,
-  ProgressCircular
 } from '@looker/components'
 import { Delete } from '@styled-icons/material'
 import styled from 'styled-components'
 import { DiagrammedModel } from '../../../utils/LookmlDiagrammer'
 import { QueryDataResults } from './QueryDataResults'
-
-export interface QueryOrder {
-  [field_name: string]: any
-}
+import { VisualizationEditor } from './VisualizationEditor/VisualizationEditor'
 
 export interface QueryOrder {
   [field_name: string]: any
@@ -77,8 +72,7 @@ export const QueryExplorer: React.FC<{
   setQueryFields: (fields: QueryOrder) => void
   queryData: any
   loadingQueryData: boolean
-}> = ({ queryFields, setQueryFields, diagramMetadata, queryData, loadingQueryData }) => {
-  console.log(queryData)
+}> = ({ queryFields, setQueryFields, queryData, loadingQueryData }) => {
   return (
     <ExtendComponentsThemeProvider
       themeCustomizations={{
@@ -97,7 +91,7 @@ export const QueryExplorer: React.FC<{
             <Tab>Code</Tab>
           </StyledTabs>
           <TabPanels width='100%' overflowY='auto' height='87vh'>
-            <TabPanel><StyledText>TODO: Visualization Area and Editor</StyledText></TabPanel>
+            <TabPanel><StyledText><VisualizationEditor queryFields={queryFields} queryData={queryData} loadingQueryData={loadingQueryData} /></StyledText></TabPanel>
             <TabPanel>
               <QueryDataResults
                 queryFields={queryFields}
