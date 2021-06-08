@@ -63,6 +63,10 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   setHiddenToggle,
   displayFieldType,
   setDisplayFieldType,
+  queryFields,
+  setQueryFields,
+  queryData,
+  loadingQueryData,
 }) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
@@ -244,6 +248,9 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           toggleExploreInfo={toggleExploreInfo}
           showExplorer={showExplorer}
           toggleExplorer={toggleExplorer}
+          loadingQueryData={loadingQueryData}
+          queryFields={queryFields}
+          setQueryFields={setQueryFields}
         />
         <Layout hasAside height="100%" id="DiagramStage">
           <DiagramCanvas
@@ -281,7 +288,13 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
         </Layout>
       </Stage>
       {showExplorer && (
-        <QueryExplorer queryFields={queryFields} setQueryFields={setQueryFields} diagramMetadata={currentDimensions} />
+        <QueryExplorer
+          queryFields={queryFields}
+          setQueryFields={setQueryFields}
+          diagramMetadata={currentDimensions}
+          queryData={queryData}
+          loadingQueryData={loadingQueryData}
+        />
       )}
     </Layout>
   )

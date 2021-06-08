@@ -40,6 +40,10 @@ export interface DiagramFrameProps {
   setHiddenToggle: (t: boolean) => void
   displayFieldType: string
   setDisplayFieldType: (s: string) => void
+  queryFields: QueryOrder
+  setQueryFields: (fields: QueryOrder) => void
+  queryData: any
+  loadingQueryData: boolean
 }
 
 export interface DiagramHeaderProps {
@@ -48,4 +52,7 @@ export interface DiagramHeaderProps {
   toggleExploreInfo: () => void
   showExplorer: boolean
   toggleExplorer: () => void
+  loadingQueryData: boolean
+  queryFields: QueryOrder
+  setQueryFields: (fields: QueryOrder) => void
 }

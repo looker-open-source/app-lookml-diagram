@@ -32,6 +32,7 @@ import {
   ExtensionContextData2
 } from '@looker/extension-sdk-react'
 import { useSelectExplore, usePathNames } from '../utils/routes'
+import { useExploreQuery } from '../utils/fetchers'
 import {
   VIEW_OPTIONS_HIDDEN_DEFAULT,
   VIEW_OPTIONS_FIELDS_DEFAULT
@@ -60,6 +61,8 @@ export const Extension: React.FC = () => {
     hiddenToggle,
     displayFieldType
   )
+  const [queryFields, setQueryFields] = React.useState<QueryOrder>({})
+  const { queryData, loadingQueryData } = useExploreQuery(queryFields, modelName, exploreName)
   return (
     <ComponentsProvider
       themeCustomizations={{
@@ -78,6 +81,10 @@ export const Extension: React.FC = () => {
         setHiddenToggle={setHiddenToggle}
         displayFieldType={displayFieldType}
         setDisplayFieldType={setDisplayFieldType}
+        queryFields={queryFields}
+        setQueryFields={setQueryFields}
+        queryData={queryData}
+        loadingQueryData={loadingQueryData}
       />
     </ComponentsProvider>
   )
