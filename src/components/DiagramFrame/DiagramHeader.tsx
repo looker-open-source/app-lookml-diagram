@@ -25,11 +25,12 @@
  */
 
 import React from 'react'
-import { Heading, Space, IconButton, ButtonTransparent, Button } from '@looker/components'
+import { Heading, Space, ButtonTransparent, IconButton, Button, Spinner, theme } from '@looker/components'
 import { Explore } from '@looker/icons'
 import { useQueryClient } from 'react-query'
 import { Info } from '@styled-icons/material-outlined/Info'
-
+import { Close } from '@styled-icons/material-outlined/Close'
+import styled from 'styled-components'
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
 import { DiagramHeaderProps } from './types'
 import { DiagramHeaderWrapper } from './FrameHelpers'
@@ -39,7 +40,10 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   selectionInfo,
   toggleExploreInfo,
   showExplorer,
-  toggleExplorer
+  toggleExplorer,
+  loadingQueryData,
+  queryFields,
+  setQueryFields
 }) => {
 
   const exploreInfoStyles =
@@ -70,11 +74,12 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
         </Space>
         <Space gap="xsmall" justifyContent="flex-end">
           <ExplorerButton
-            iconBefore={<Explore />}
+            iconBefore={loadingQueryData ? <Spinner mr="xsmall" color={showExplorer ? 'white' : OVERRIDE_KEY} size={25} /> : <Explore />}
             onClick={toggleExplorer}
           >
             Explore
           </ExplorerButton>
+          {Object.keys(queryFields).length > 0 && <IconButton label='Clear fields' icon={<Close />} onClick={() => setQueryFields({})} />}
         </Space>
       </Space>
     </DiagramHeaderWrapper>

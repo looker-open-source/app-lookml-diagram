@@ -28,21 +28,18 @@ import React from 'react'
 import {
   SpaceVertical,
   Aside,
-  Tabs,
-  Tab,
+  DataTableColumns,
   TabList,
-  TabPanels,
-  TabPanel,
-  ExtendComponentsThemeProvider,
-  theme,
-  IconButton,
+  DataTable,
+  DataTableItem,
+  DataTableCell,
   Text,
+  Heading,
   ProgressCircular
 } from '@looker/components'
 import { Delete } from '@styled-icons/material'
 import styled from 'styled-components'
 import { DiagrammedModel } from '../../../utils/LookmlDiagrammer'
-import { QueryDataResults } from './QueryDataResults'
 
 export interface QueryOrder {
   [field_name: string]: any
@@ -67,46 +64,41 @@ const StyledText = styled(Text)`
   color: ${props => props.theme.colors.text};
 `
 
-export const QueryExplorer: React.FC<{
+export const QueryDataResults: React.FC<{
   queryFields: QueryOrder
-  diagramMetadata: DiagrammedModel
   setQueryFields: (fields: QueryOrder) => void
   queryData: any
   loadingQueryData: boolean
-}> = ({ queryFields, setQueryFields, diagramMetadata, queryData, loadingQueryData }) => {
-  console.log(queryData)
+}> = ({ queryFields, setQueryFields, queryData, loadingQueryData }) => {
+  const fieldList = Object.keys(queryFields)
+  if (!queryData && !loadingQueryData) {
+    return (<SpaceVertical align="center"><Heading>No Data</Heading></SpaceVertical>)
+  }
+  if (loadingQueryData) {
+    return (<SpaceVertical align="center"><ProgressCircular /></SpaceVertical>)
+  }
+  const queryColumns: DataTableColumns = fieldList.map((field) => {
+    return {
+      id: field,
+      title: field,
+      type: 'string'
+    }
+  })
+  const items = queryData.map((d: any, i: number) => {
+    return (
+      <DataTableItem
+        key={i}
+        id={String(i)}
+      >
+        {fieldList.map(field => (
+          <DataTableCell>{d[field]}</DataTableCell>
+        ))}
+      </DataTableItem>
+    )
+  })
   return (
-    <ExtendComponentsThemeProvider
-      themeCustomizations={{
-        colors: {
-          background: theme.colors.text,
-          text: theme.colors.background,
-        },
-      }}
-    >
-      <QueryExplorerPanel>
-        <SpaceVertical gap="medium">
-        <Tabs>
-          <StyledTabs distribute>
-            <Tab>Visualization</Tab>
-            <Tab>Data</Tab>
-            <Tab>Code</Tab>
-          </StyledTabs>
-          <TabPanels width='100%' overflowY='auto' height='87vh'>
-            <TabPanel><StyledText>TODO: Visualization Area and Editor</StyledText></TabPanel>
-            <TabPanel>
-              <QueryDataResults
-                queryFields={queryFields}
-                queryData={queryData}
-                setQueryFields={setQueryFields}
-                loadingQueryData={loadingQueryData}
-              />
-            </TabPanel>
-            <TabPanel><StyledText>TODO: CodeDisplay</StyledText></TabPanel>
-          </TabPanels>
-        </Tabs>
-        </SpaceVertical>
-      </QueryExplorerPanel>
-    </ExtendComponentsThemeProvider>
+    <DataTable caption="Cheeses example" columns={queryColumns}>
+      {items}
+    </DataTable>
   )
 }

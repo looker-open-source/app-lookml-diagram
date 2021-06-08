@@ -33,6 +33,7 @@ import {
   IGitBranch
 } from '@looker/sdk/lib/4.0/models'
 import { DiagrammedModel, generateModelDiagrams } from './LookmlDiagrammer'
+import { QueryOrder } from '../components/DiagramFrame/QueryExplorer'
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -207,4 +208,35 @@ export function useUpdateGitBranches(projectId: string) {
     }
   )
   return mutation
+}
+
+/**
+ * gets the data from the query made up of queryFields
+ * @returns queryData - arbitrary explore data
+ */
+ export function useExploreQuery(queryFields: QueryOrder, modelName: string, exploreName: string): any {
+  console.log(queryFields, modelName, exploreName)
+  const { coreSDK } = useContext(ExtensionContext2)
+  const queryFieldArray = Object.keys(queryFields)
+  const { isLoading, error, data } = useQuery(
+    `${queryFieldArray.toString()}`,
+    () => coreSDK.ok(coreSDK.run_inline_query(
+      {
+        result_format: 'json',
+        body: {
+          model: modelName,
+          view: exploreName,
+          fields: [
+            ...queryFieldArray
+          ],
+          total: false,
+          runtime: 0
+        }
+      })),
+    {
+      enabled: queryFieldArray.length > 0,
+      ...defaultQueryOptions
+    }
+  )
+  return {queryData: data, loadingQueryData: isLoading}
 }
