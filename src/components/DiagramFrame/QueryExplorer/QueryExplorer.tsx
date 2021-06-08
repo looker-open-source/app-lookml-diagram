@@ -35,10 +35,16 @@ import {
   TabPanel,
   ExtendComponentsThemeProvider,
   theme,
+  IconButton,
   Text
 } from '@looker/components'
+import { Delete } from '@styled-icons/material'
 import styled from 'styled-components'
 import { DiagrammedModel } from '../../../utils/LookmlDiagrammer'
+
+export interface QueryOrder {
+  [field_name: string]: any
+}
 
 export const QueryExplorerPanel = styled(Aside)`
   border-left: solid 1px ${props => props.theme.colors.ui2};
@@ -60,9 +66,10 @@ const StyledText = styled(Text)`
 `
 
 export const QueryExplorer: React.FC<{
-  queryFields: string[]
+  queryFields: QueryOrder
   diagramMetadata: DiagrammedModel
-}> = ({ queryFields, diagramMetadata }) => {
+  setQueryFields: (fields: QueryOrder) => void
+}> = ({ queryFields, setQueryFields, diagramMetadata }) => {
   return (
     <ExtendComponentsThemeProvider
       themeCustomizations={{
@@ -82,7 +89,9 @@ export const QueryExplorer: React.FC<{
           </StyledTabs>
           <TabPanels width='100%'>
             <TabPanel><StyledText>TODO: Visualization Area and Editor</StyledText></TabPanel>
-            <TabPanel><StyledText>TODO: DataTable</StyledText></TabPanel>
+            <TabPanel>
+              <IconButton icon={<Delete />} label="Trash It" onClick={() => setQueryFields({})} />
+              <StyledText>{Object.keys(queryFields).toString()}</StyledText></TabPanel>
             <TabPanel><StyledText>TODO: CodeDisplay</StyledText></TabPanel>
           </TabPanels>
         </Tabs>

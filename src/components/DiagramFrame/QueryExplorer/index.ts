@@ -24,4 +24,4 @@
 
  */
 
-export { QueryExplorer } from './QueryExplorer'
+export { QueryExplorer, QueryOrder } from './QueryExplorer'

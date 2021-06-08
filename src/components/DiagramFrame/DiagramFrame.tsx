@@ -51,7 +51,7 @@ import { DiagramCanvas } from './DiagramCanvas/DiagramCanvas'
 import { DiagramFrameProps } from './types'
 import { Rail, Stage } from './FrameHelpers'
 import { prepareModelDropdown, prepareExploreList } from './utils'
-import { QueryExplorer } from './QueryExplorer'
+import { QueryExplorer, QueryOrder } from './QueryExplorer'
 
 export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   unfilteredModels,
@@ -62,15 +62,15 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   hiddenToggle,
   setHiddenToggle,
   displayFieldType,
-  setDisplayFieldType
+  setDisplayFieldType,
 }) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
   const [showHelp, setShowHelp] = React.useState(false)
   const [showViewOptions, setShowViewOptions] = React.useState(false)
   const [showExplorer, setShowExplorer] = React.useState(false)
-  const [queryFields, setQueryFields] = React.useState<string[]>([])
   const [reload, setReload] = React.useState(false)
+  const [queryFields, setQueryFields] = React.useState<QueryOrder>({})
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>(
     {}
   )
@@ -223,6 +223,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           setViewPosition={setViewPosition}
           setMinimapUntoggled={setMinimapUntoggled}
           setMinimapEnabled={setMinimapEnabled}
+          setQueryFields={setQueryFields}
         />
       )}
       {showViewOptions && (
@@ -267,6 +268,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             displayFieldType={displayFieldType}
             viewVisible={viewVisible}
             viewPosition={viewPosition}
+            queryFields={queryFields}
+            setQueryFields={setQueryFields}
           />
           {currentExplore && Object.keys(selectionInfo).length > 0 && (
             <MetadataPanel
@@ -277,8 +280,8 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
           )}
         </Layout>
       </Stage>
-      {(showExplorer || queryFields.length > 0) && (
-        <QueryExplorer queryFields={queryFields} diagramMetadata={currentDimensions} />
+      {showExplorer && (
+        <QueryExplorer queryFields={queryFields} setQueryFields={setQueryFields} diagramMetadata={currentDimensions} />
       )}
     </Layout>
   )

@@ -46,7 +46,8 @@ export const ExploreList: React.FC<ExploreListProps> = ({
   setZoomFactor,
   setViewPosition,
   setMinimapUntoggled,
-  setMinimapEnabled
+  setMinimapEnabled,
+  setQueryFields
 }) => {
   const history = useHistory()
   return (
@@ -76,7 +77,8 @@ export const ExploreList: React.FC<ExploreListProps> = ({
                     setZoomFactor,
                     setViewPosition,
                     setMinimapUntoggled,
-                    setMinimapEnabled
+                    setMinimapEnabled,
+                    setQueryFields
                   )
                 }
                 value={explore.value}

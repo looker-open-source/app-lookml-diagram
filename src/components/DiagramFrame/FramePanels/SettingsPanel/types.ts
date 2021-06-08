@@ -28,6 +28,7 @@ import { SelectOptionProps } from '@looker/components'
 import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
 import { ExploreDropdown } from '../types'
 import { DetailedModel } from '../../../../utils/fetchers'
+import { QueryOrder } from '../../QueryExplorer'
 
 export interface ExploreListProps {
   currentModel: ILookmlModel
@@ -41,6 +42,7 @@ export interface ExploreListProps {
   setViewPosition: (info: any) => void
   setMinimapUntoggled: (toggle: boolean) => void
   setMinimapEnabled: (toggle: boolean) => void
+  setQueryFields: (fields: QueryOrder) => void
 }
 
 export interface DiagramSettingsProps {
@@ -58,4 +60,5 @@ export interface DiagramSettingsProps {
   setViewPosition: (info: any) => void
   setMinimapUntoggled: (toggle: boolean) => void
   setMinimapEnabled: (toggle: boolean) => void
+  setQueryFields: (fields: QueryOrder) => void
 }
