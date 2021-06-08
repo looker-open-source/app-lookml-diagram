@@ -56,7 +56,7 @@ export const Diagram: React.FC<DiagramProps> = ({
     return viewVisible[viewName]
   })
 
-  const queryFieldset = queryFields ? Object.keys(queryFields).toString() : ""
+  const queryFieldset = queryFields ? Object.keys(queryFields).toString() : ''
 
   const ref = useD3(
     // useD3 callback,
@@ -144,10 +144,11 @@ export const Diagram: React.FC<DiagramProps> = ({
       }
 
       if (queryFields && Object.keys(queryFields).length > 0) {
-        Object.keys(queryFields).forEach((field) => {
-          d3.selectAll(
-            '#' + field.replace('.', '-')
-          ).classed('table-row-queried', true)
+        Object.keys(queryFields).forEach(field => {
+          d3.selectAll('#' + field.replace('.', '-')).classed(
+            'table-row-queried',
+            true
+          )
         })
       }
 

@@ -28,19 +28,19 @@ import { Language, Prism } from 'prism-react-renderer'
 import prismTheme from 'prism-react-renderer/themes/vsDark'
 
 /**
-* checks whether object is Language
-* @param object any object to be tested
-* @returns boolean
-*/
+ * checks whether object is Language
+ * @param object any object to be tested
+ * @returns boolean
+ */
 function instanceOfPrismLanguage(object: any): boolean {
   return Object.keys(Prism.languages).includes(object)
 }
 
 /**
-* gets highlighter language type for input language name
-* @param language sdk language to be highlighted
-* @returns prism language if it exists
-*/
+ * gets highlighter language type for input language name
+ * @param language sdk language to be highlighted
+ * @returns prism language if it exists
+ */
 export const getPrismLanguage = (language: string): Language => {
   language = language.toLowerCase()
   const unstyled = ['kotlin', 'csharp', 'swift']
@@ -54,9 +54,9 @@ export const getPrismLanguage = (language: string): Language => {
 }
 
 /**
-* applies package overrides to the default vsCode prism theme
-* @returns modified prism theme object
-*/
+ * applies package overrides to the default vsCode prism theme
+ * @returns modified prism theme object
+ */
 export function getOverridenTheme(transparent: boolean) {
   if (transparent) {
     prismTheme.plain.backgroundColor = 'none'

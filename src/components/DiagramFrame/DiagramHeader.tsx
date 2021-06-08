@@ -25,7 +25,15 @@
  */
 
 import React from 'react'
-import { Heading, Space, ButtonTransparent, IconButton, Button, Spinner, theme } from '@looker/components'
+import {
+  Heading,
+  Space,
+  ButtonTransparent,
+  IconButton,
+  Button,
+  Spinner,
+  theme
+} from '@looker/components'
 import { Explore } from '@looker/icons'
 import { useQueryClient } from 'react-query'
 import { Info } from '@styled-icons/material-outlined/Info'
@@ -45,12 +53,11 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   queryFields,
   setQueryFields
 }) => {
-
   const exploreInfoStyles =
     selectionInfo.lookmlElement === 'explore'
       ? { color: OVERRIDE_KEY, backgroundColor: OVERRIDE_KEY_SUBTLE }
       : {}
-  
+
   const ExplorerButton = showExplorer ? Button : ButtonTransparent
 
   return (
@@ -74,12 +81,28 @@ export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
         </Space>
         <Space gap="xsmall" justifyContent="flex-end">
           <ExplorerButton
-            iconBefore={loadingQueryData ? <Spinner mr="xsmall" color={showExplorer ? 'white' : OVERRIDE_KEY} size={25} /> : <Explore />}
+            iconBefore={
+              loadingQueryData ? (
+                <Spinner
+                  mr="xsmall"
+                  color={showExplorer ? 'white' : OVERRIDE_KEY}
+                  size={25}
+                />
+              ) : (
+                <Explore />
+              )
+            }
             onClick={toggleExplorer}
           >
             Explore
           </ExplorerButton>
-          {Object.keys(queryFields).length > 0 && <IconButton label='Clear fields' icon={<Close />} onClick={() => setQueryFields({})} />}
+          {Object.keys(queryFields).length > 0 && (
+            <IconButton
+              label="Clear fields"
+              icon={<Close />}
+              onClick={() => setQueryFields({})}
+            />
+          )}
         </Space>
       </Space>
     </DiagramHeaderWrapper>

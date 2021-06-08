@@ -35,15 +35,15 @@ interface CodeEditorProps extends CodeDisplayProps {
 }
 
 /**
-* Extends CodeDisplay functionality to provide
-* Editor functionality for syntax highlighted code blocks
-*/
+ * Extends CodeDisplay functionality to provide
+ * Editor functionality for syntax highlighted code blocks
+ */
 export const CodeEditor: FC<CodeEditorProps> = ({
   code,
   onChange,
   language = 'json',
   pattern = '',
-  transparent = false,
+  transparent = false
 }) => {
   return (
     <Editor
@@ -64,7 +64,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
         color: '#FFF',
         whiteSpace: 'pre-wrap',
         overflow: 'auto',
-        fontFamily: 'monospace',
+        fontFamily: 'monospace'
       }}
     />
   )

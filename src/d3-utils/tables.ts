@@ -34,6 +34,7 @@ import {
 } from '../utils/constants'
 import { SelectionInfoPacket } from '../components/interfaces'
 import { DiagramField } from '../utils/LookmlDiagrammer/'
+import { QueryOrder } from '../components/DiagramFrame/QueryExplorer'
 import { getLabel } from './styles'
 import {
   isTableRowDimension,
@@ -44,7 +45,6 @@ import {
   getDatatypePath,
   getPkPath
 } from './table-helpers'
-import { QueryOrder } from '../components/DiagramFrame/QueryExplorer'
 
 export function createLookmlViewElement(
   svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
@@ -115,7 +115,10 @@ export function createLookmlViewElement(
     .classed('table-row-dimension', (d: DiagramField) => isTableRowDimension(d))
     .classed('table-row-measure', (d: DiagramField) => isTableRowMeasure(d))
     .classed('table-row-grouped', (d: DiagramField) => !!d.dimension_group)
-    .classed('table-row-queried', (d: DiagramField) => queryFields && queryFields[encodeURI(d.name)])
+    .classed(
+      'table-row-queried',
+      (d: DiagramField) => queryFields && queryFields[encodeURI(d.name)]
+    )
     .classed('table-row-view', (d: DiagramField) => isTableRowView(d))
     .classed('table-row-base-view', (d: DiagramField) => isTableRowBaseView(d))
     .attr('id', (d: DiagramField, i: number) => {

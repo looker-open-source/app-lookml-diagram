@@ -62,7 +62,11 @@ export const Extension: React.FC = () => {
     displayFieldType
   )
   const [queryFields, setQueryFields] = React.useState<QueryOrder>({})
-  const { queryData, loadingQueryData } = useExploreQuery(queryFields, modelName, exploreName)
+  const { queryData, loadingQueryData } = useExploreQuery(
+    queryFields,
+    modelName,
+    exploreName
+  )
   return (
     <ComponentsProvider
       themeCustomizations={{
