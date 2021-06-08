@@ -91,7 +91,7 @@ export const QueryExplorer: React.FC<{
             <Tab>Code</Tab>
           </StyledTabs>
           <TabPanels width='100%' overflowY='auto' height='87vh'>
-            <TabPanel><StyledText><VisualizationEditor queryFields={queryFields} queryData={queryData} loadingQueryData={loadingQueryData} /></StyledText></TabPanel>
+            <TabPanel><VisualizationEditor queryFields={queryFields} queryData={queryData} loadingQueryData={loadingQueryData} /></TabPanel>
             <TabPanel>
               <QueryDataResults
                 queryFields={queryFields}

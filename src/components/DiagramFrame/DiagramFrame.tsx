@@ -74,7 +74,6 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [showViewOptions, setShowViewOptions] = React.useState(false)
   const [showExplorer, setShowExplorer] = React.useState(false)
   const [reload, setReload] = React.useState(false)
-  const [queryFields, setQueryFields] = React.useState<QueryOrder>({})
   const [selectionInfo, setSelectionInfo] = React.useState<SelectionInfoPacket>(
     {}
   )

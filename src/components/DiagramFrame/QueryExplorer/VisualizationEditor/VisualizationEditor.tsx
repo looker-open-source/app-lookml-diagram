@@ -24,19 +24,19 @@
 
  */
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
+import { Button } from '@looker/components'
+import { CodeDisplay } from '../CodeEditor/CodeDisplay'
+import { CodeEditor } from '../CodeEditor/CodeEditor'
+import JsonViewer from '../CodeEditor/JsonViewer'
 import { QueryOrder } from '../QueryExplorer'
 const Plot = require('@observablehq/plot')
 
 // example data
- const dailyAverage = [{"Ecmap State":"Vermont","General Polls Start Date":"2020-06-08","General Polls Biden Average":73.925,"General Polls Trump Average":20.68},
- {"Ecmap State":"Massachusetts","General Polls Start Date":"2020-07-01","General Polls Biden Average":71.185,"General Polls Trump Average":26.555},
- {"Ecmap State":"Massachusetts","General Polls Start Date":"2020-06-08","General Polls Biden Average":70.52,"General Polls Trump Average":27.6},
- {"Ecmap State":"Vermont","General Polls Start Date":"2020-10-20","General Polls Biden Average":70.5,"General Polls Trump Average":27},
- {"Ecmap State":"Vermont","General Polls Start Date":"2020-10-18","General Polls Biden Average":70,"General Polls Trump Average":27.5}]
+ const dailyAverage = [{"Ecmap State":"Vermont","General Polls Start Date":"2020-06-08","General Polls Biden Average":73.925,"General Polls Trump Average":20.68}]
  
  // experiment in reducing tick labels on x axis
- const ticks = dailyAverage
+ const ticks: any[] = dailyAverage
     .map((da: any) => da["General Polls Start Date"])
     .filter((da, i) => i % 99 === 0)
 
@@ -51,40 +51,62 @@ interface VisualizationEditorProps {
      queryData,
      loadingQueryData
  }) => {
+  const [reload, setReload] = useState(false)
+  const toggleReload = () => setReload(!reload)
+  const stateColor = {
+    range: ["red", "blue"],
+    interpolate: "hcl"
+  }
+  const [stringColor, setStringColor] = useState(JSON.stringify(stateColor))
+  const s1 = `Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Biden Average", fill: '#00B8F5', curve: 'step'})`
+  const [string1, setS1] = useState(s1)
+  let stateMarks: any[] = []
+
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    stateMarks = [
+      eval(string1),
+      // Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Trump Average", fill: '#FF6B6B', curve: 'step'}),
+      // Plot.ruleY([0])
+    ]
     const options = {
-        tickRotate: 90,
-        y: {
-          grid: true
-        },
-        x: {
-            ticks: []
-            // ticks: dailyAverage.map((d) => d['General Polls Start Date']).filter((d, i) => i % 99 === 0),
-        },
-        marks: [
-            Plot.dot(dailyAverage.slice(0, 9), {x: "Ecmap State", y: "General Polls Biden Average", fill: '#00B8F5', curve: 'step'}),
-            Plot.dot(dailyAverage.slice(0, 9), {x: "Ecmap State", y: "General Polls Trump Average", fill: '#FF6B6B', curve: 'step'}),
-            Plot.ruleY([0])
-        ],
-        marginTop: 50,
-        marginBottom: 50,
-        marginLeft:100,
-        color: {
-            type: "diverging",
-            scheme: "BuRd"
-          },
+      tickRotate: 90,
+      y: {
+        grid: true
+      },
+      x: {
+          ticks: ticks
+          // ticks: dailyAverage.map((d) => d['General Polls Start Date']).filter((d, i) => i % 99 === 0),
+      },
+      marks: [
+          ...stateMarks
+      ],
+      marginTop: 50,
+      marginBottom: 50,
+      marginLeft:100,
+      color: JSON.parse(stringColor),
+    }
+    const plot = Plot.plot(options);
+    if (ref.current) {
+      if (ref.current.children[0]) {
+        ref.current.children[0].remove();
       }
+      ref.current.appendChild(plot);
+    }
+  }, [ref, reload])
+  
 
-    const ref = useRef<HTMLDivElement>(null)
-    useEffect(() => {
-        const plot = Plot.plot(options);
-        if (ref.current) {
-          if (ref.current.children[0]) {
-            ref.current.children[0].remove();
-          }
-          ref.current.appendChild(plot);
-        }
-      }, [ref, options])
+  return (<>
+  <div ref={ref} />
+  <CodeEditor code={stringColor} onChange={setStringColor} transparent={true} />
+  <CodeEditor code={string1} onChange={setS1} transparent={true} />
+  {/* <CodeDisplay code={JSON.stringify(stateMarks)} />
+   */}
+  <JsonViewer data={stateMarks} />
+  {/* <CodeDisplay code={JSON.stringify(options.marks)} /> */}
 
-    return <div ref={ref} />
+  <Button onClick={toggleReload}>Visualize</Button>
+  </>
+  )
 }
 
