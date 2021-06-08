@@ -111,7 +111,6 @@ interface VisualizationEditorProps {
     }
   }, [ref, reload])
   
-
   return (
   <>
     {/* Visualization */}
