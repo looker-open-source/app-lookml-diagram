@@ -215,7 +215,6 @@ export function useUpdateGitBranches(projectId: string) {
  * @returns queryData - arbitrary explore data
  */
  export function useExploreQuery(queryFields: QueryOrder, modelName: string, exploreName: string): any {
-  console.log(queryFields, modelName, exploreName)
   const { coreSDK } = useContext(ExtensionContext2)
   const queryFieldArray = Object.keys(queryFields)
   const { isLoading, error, data } = useQuery(
