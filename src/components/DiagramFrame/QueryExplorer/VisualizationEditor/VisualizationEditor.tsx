@@ -85,6 +85,21 @@ function boxY(data: any, {x = null,
   );
 }
 
+// @ts-ignore
+function boxX(data, {x = {transform: x => x}, y = null,
+  fill = "#ccc",
+  stroke = "currentColor",
+  ...options
+} = {}) {
+  const group = y == null ? Plot.groupZ : Plot.groupY;
+  return compose(
+    Plot.ruleY(data, group({x1: iqr1, x2: iqr2}, {x, y, stroke, ...options})),
+    Plot.barX(data, group({x1: quartile1, x2: quartile3}, {x, y, fill, ...options})),
+    Plot.tickX(data, group({x: "median"}, {x, y, stroke, strokeWidth: 2, ...options})),
+    Plot.dot(data, Plot.map({x: outliers}, {x, y, z: y, stroke, ...options}))
+  );
+}
+
  export const VisualizationEditor: React.FC<VisualizationEditorProps> = ({
      queryFields,
      data,
