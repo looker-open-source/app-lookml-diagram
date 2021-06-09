@@ -128,6 +128,11 @@ function boxX(data, {x = {transform: x => x}, y = null,
   const [xString, setXString] = useState(prettyPrintStringify({
   }))
 
+  const [colorString, setColorString] = useState(prettyPrintStringify({
+    type: "diverging",
+    scheme: "BuRd"
+  }))
+
   const [marginString, setMarginString] = useState(prettyPrintStringify({
     marginTop: 50,
     marginBottom: 50,
@@ -150,6 +155,7 @@ function boxX(data, {x = {transform: x => x}, y = null,
     /** Plot Options */
     const options = {
       style: safeParse(styleString),
+      color: safeParse(colorString),
       marks: evaluatedMarks,
       y: safeParse(yString),
       x: safeParse(xString),
@@ -188,6 +194,8 @@ function boxX(data, {x = {transform: x => x}, y = null,
     <CodeEditor code={xString} onChange={setXString} transparent={true} />
     <StyledText>y</StyledText>
     <CodeEditor code={yString} onChange={setYString} transparent={true} />
+    <StyledText >colors</StyledText>
+    <CodeEditor code={colorString} onChange={setColorString} transparent={true} />
     <StyledText >styles</StyledText>
     <CodeEditor code={styleString} onChange={setStyleString} transparent={true} />
     <StyledText>margin</StyledText>
