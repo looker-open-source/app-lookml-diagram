@@ -25,10 +25,11 @@
  */
 
 import React, { useRef, useEffect, useState } from 'react'
-import { Button, Text } from '@looker/components'
+import { Button, Text, Heading, Space } from '@looker/components'
 import { CodeEditor } from '../CodeEditor/CodeEditor'
 import { QueryOrder } from '../QueryExplorer'
 import styled from 'styled-components'
+import * as d3 from 'd3'
 const Plot = require('@observablehq/plot')
 
 // example data
@@ -36,26 +37,69 @@ const Plot = require('@observablehq/plot')
 
 interface VisualizationEditorProps {
     queryFields: QueryOrder
-    queryData: any
+    data: any
     loadingQueryData: boolean
+}
+
+const quartile1 = (V: any) => d3.quantile(V, 0.25)
+
+const quartile3 = (V: any) => d3.quantile(V, 0.75)
+
+function compose(...marks: any[]) {
+  // @ts-ignore
+  marks.plot = Plot.Mark.prototype.plot;
+  return marks;
+}
+
+function outliers(values: any) {
+  const r1 = iqr1(values);
+  const r2 = iqr2(values);
+  return values.map((v: any) => v < r1 || v > r2 ? v : NaN);
+}
+
+const iqr1 = (V: any) => {
+  const hi = quartile1(V);
+  const lo = hi - 1.5 * (quartile3(V) - hi);
+  return d3.min(V, (v: any) => lo <= v && v <= hi ? v : NaN);
+}
+
+const iqr2 = (V: any) => {
+  const lo = quartile3(V);
+  const hi = lo + 1.5 * (lo - quartile1(V));
+  return d3.max(V, (v: any) => lo <= v && v <= hi ? v : NaN);
+}
+
+// @ts-ignore
+function boxY(data: any, {x = null,
+  y = {transform: (x: any) => x},
+  fill = "#ccc",
+  stroke = "currentColor",
+  ...options
+} = {}) {
+  const group = x == null ? Plot.groupZ : Plot.groupX;
+  return compose(
+    Plot.ruleX(data, group({y1: iqr1, y2: iqr2}, {x, y, stroke, ...options})),
+    Plot.barY(data, group({y1: quartile1, y2: quartile3}, {x, y, fill, ...options})),
+    Plot.tickY(data, group({y: "median"}, {x, y, stroke, strokeWidth: 2, ...options})),
+    Plot.dot(data, Plot.map({y: outliers}, {x, y, z: x, stroke, ...options}))
+  );
 }
 
  export const VisualizationEditor: React.FC<VisualizationEditorProps> = ({
      queryFields,
-     queryData,
+     data,
      loadingQueryData
  }) => {
   const [reload, setReload] = useState(false)
+  const [vizError, setVizError] = useState(false)
   const toggleReload = () => setReload(!reload)
+  const queryFieldsArr = Object.keys(queryFields)
 
-  
   const [styleString, setStyleString] = useState(prettyPrintStringify({
     color: 'white'
-  })
+  }))
 
-  const multiPlotMarksString = `Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Biden Average", fill: '#00B8F5', curve: 'step'}),
-  Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Trump Average", fill: '#FF6B6B', curve: 'step'}),
-  Plot.ruleY([0])`
+  const multiPlotMarksString = `Plot.barY(data, {x: "${queryFieldsArr[0] || ''}", y: "${queryFieldsArr[1] || ''}", fill: '#00B8F5'})`
   
   const [marksString, setMarksString] = useState(multiPlotMarksString)
 
@@ -66,14 +110,7 @@ interface VisualizationEditorProps {
     grid: true
   }))
 
-  // experiment in reducing tick labels on x axis
-  // for now, we just won't display labels along the x axis
-  const ticks: any[] = []
-    // dailyAverage
-    //   .map((da: any) => da["General Polls Start Date"])
-    //   .filter((da, i) => i % 99 === 0)
   const [xString, setXString] = useState(prettyPrintStringify({
-    ticks
   }))
 
   const [marginString, setMarginString] = useState(prettyPrintStringify({
@@ -88,8 +125,11 @@ interface VisualizationEditorProps {
     // marks are re-evaluated whenever we reload
     try {
       evaluatedMarks = eval(`[ ${marksString} ]`)
+      setVizError(false)
     } catch (err) {
       console.error(err)
+      setVizError(true)
+      return
     }
 
     /** Plot Options */
@@ -102,7 +142,15 @@ interface VisualizationEditorProps {
     }
 
     /** Append plot svg to the DOM and keep updated when changed */
-    const plot = Plot.plot(options)
+    let plot: any
+    try {
+      plot = Plot.plot(options)
+      setVizError(false)
+    } catch (err) {
+      console.error(err)
+      setVizError(true)
+      return
+    }
     if (ref.current) {
       if (ref.current.children[0]) {
         ref.current.children[0].remove();
@@ -111,25 +159,24 @@ interface VisualizationEditorProps {
     }
   }, [ref, reload])
   
-  return (
-  <>
+  return (<>
     {/* Visualization */}
-    <div ref={ref} />
+    {vizError ? <Heading>Uh oh! Please modify the Plot.</Heading> : <div ref={ref} />}
+
+    {/* Reload button */}
+    <Space reverse><Button onClick={toggleReload} m="medium">Visualize</Button></Space>
 
     {/* Code editor */}
-    <StyledText >styles</StyledText>
-    <CodeEditor code={styleString} onChange={setStyleString} transparent={true} />
     <StyledText>marks</StyledText>
     <CodeEditor code={marksString} onChange={setMarksString} transparent={true} />
     <StyledText>x</StyledText>
     <CodeEditor code={xString} onChange={setXString} transparent={true} />
     <StyledText>y</StyledText>
     <CodeEditor code={yString} onChange={setYString} transparent={true} />
+    <StyledText >styles</StyledText>
+    <CodeEditor code={styleString} onChange={setStyleString} transparent={true} />
     <StyledText>margin</StyledText>
     <CodeEditor code={marginString} onChange={setMarginString} transparent={true} />
-
-    {/* Reload button */}
-    <Button onClick={toggleReload}>Visualize</Button>
   </>
   )
 }

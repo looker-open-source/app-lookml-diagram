@@ -94,7 +94,7 @@ export const QueryExplorer: React.FC<{
               <TabPanel>
                 <VisualizationEditor
                   queryFields={queryFields}
-                  queryData={queryData}
+                  data={queryData}
                   loadingQueryData={loadingQueryData}
                 />
               </TabPanel>
