@@ -35,7 +35,7 @@ import {
   TabPanel,
   ExtendComponentsThemeProvider,
   theme,
-  Text,
+  Text
 } from '@looker/components'
 import { Delete } from '@styled-icons/material'
 import styled from 'styled-components'
@@ -78,31 +78,39 @@ export const QueryExplorer: React.FC<{
       themeCustomizations={{
         colors: {
           background: theme.colors.text,
-          text: theme.colors.background,
-        },
+          text: theme.colors.background
+        }
       }}
     >
       <QueryExplorerPanel>
         <SpaceVertical gap="medium">
-        <Tabs>
-          <StyledTabs distribute>
-            <Tab>Visualization</Tab>
-            <Tab>Data</Tab>
-            <Tab>Code</Tab>
-          </StyledTabs>
-          <TabPanels width='100%' overflowy='auto' height='87vh'>
-            <TabPanel><VisualizationEditor queryFields={queryFields} queryData={queryData} loadingQueryData={loadingQueryData} /></TabPanel>
-            <TabPanel>
-              <QueryDataResults
-                queryFields={queryFields}
-                queryData={queryData}
-                setQueryFields={setQueryFields}
-                loadingQueryData={loadingQueryData}
-              />
-            </TabPanel>
-            <TabPanel><StyledText>TODO: CodeDisplay</StyledText></TabPanel>
-          </TabPanels>
-        </Tabs>
+          <Tabs>
+            <StyledTabs distribute>
+              <Tab>Visualization</Tab>
+              <Tab>Data</Tab>
+              <Tab>Code</Tab>
+            </StyledTabs>
+            <TabPanels width="100%" overflowY="auto" height="87vh">
+              <TabPanel>
+                <VisualizationEditor
+                  queryFields={queryFields}
+                  queryData={queryData}
+                  loadingQueryData={loadingQueryData}
+                />
+              </TabPanel>
+              <TabPanel>
+                <QueryDataResults
+                  queryFields={queryFields}
+                  queryData={queryData}
+                  setQueryFields={setQueryFields}
+                  loadingQueryData={loadingQueryData}
+                />
+              </TabPanel>
+              <TabPanel>
+                <StyledText>TODO: CodeDisplay</StyledText>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </SpaceVertical>
       </QueryExplorerPanel>
     </ExtendComponentsThemeProvider>

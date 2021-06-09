@@ -28,6 +28,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { Button, Text } from '@looker/components'
 import { CodeEditor } from '../CodeEditor/CodeEditor'
 import { QueryOrder } from '../QueryExplorer'
+import styled from 'styled-components'
 const Plot = require('@observablehq/plot')
 
 // example data
@@ -48,20 +49,20 @@ interface VisualizationEditorProps {
   const toggleReload = () => setReload(!reload)
 
   
-  const [styleString, setStyleString] = useState(JSON.stringify({
+  const [styleString, setStyleString] = useState(prettyPrintStringify({
     color: 'white'
-  }))
+  })
 
+  const multiPlotMarksString = `Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Biden Average", fill: '#00B8F5', curve: 'step'}),
+  Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Trump Average", fill: '#FF6B6B', curve: 'step'}),
+  Plot.ruleY([0])`
   
-
-  const initialMarksString = `Plot.dot(dailyAverage, {x: "Ecmap State", y: "General Polls Biden Average", fill: '#00B8F5', curve: 'step' })`
-  
-  const [marksString, setMarksString] = useState(initialMarksString)
+  const [marksString, setMarksString] = useState(multiPlotMarksString)
 
   // container for evaluated marksStrings, used in plotOptions
   let evaluatedMarks: string[] = []
 
-  const [yString, setYString] = useState(JSON.stringify({
+  const [yString, setYString] = useState(prettyPrintStringify({
     grid: true
   }))
 
@@ -71,11 +72,11 @@ interface VisualizationEditorProps {
     // dailyAverage
     //   .map((da: any) => da["General Polls Start Date"])
     //   .filter((da, i) => i % 99 === 0)
-  const [xString, setXString] = useState(JSON.stringify({
+  const [xString, setXString] = useState(prettyPrintStringify({
     ticks
   }))
 
-  const [marginString, setMarginString] = useState(JSON.stringify({
+  const [marginString, setMarginString] = useState(prettyPrintStringify({
     marginTop: 50,
     marginBottom: 50,
     marginLeft:100,
@@ -85,16 +86,19 @@ interface VisualizationEditorProps {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     // marks are re-evaluated whenever we reload
-   // TODO: this is the place to handle for exploding variables
-    evaluatedMarks = [] //[evaluatePlots(marksString)]
+    try {
+      evaluatedMarks = eval(`[ ${marksString} ]`)
+    } catch (err) {
+      console.error(err)
+    }
 
     /** Plot Options */
     const options = {
-      style: JSON.parse(styleString),
-      marks: [ eval(marksString) ],
-      y: JSON.parse(yString),
-      x: JSON.parse(xString),
-      ...JSON.parse(marginString),
+      style: safeParse(styleString),
+      marks: evaluatedMarks,
+      y: safeParse(yString),
+      x: safeParse(xString),
+      ...safeParse(marginString),
     }
 
     /** Append plot svg to the DOM and keep updated when changed */
@@ -107,27 +111,39 @@ interface VisualizationEditorProps {
     }
   }, [ref, reload])
   
+  return (
+  <>
+    {/* Visualization */}
+    <div ref={ref} />
 
-  return (<>
-  {/* Visualization */}
-  <div ref={ref} />
+    {/* Code editor */}
+    <StyledText >styles</StyledText>
+    <CodeEditor code={styleString} onChange={setStyleString} transparent={true} />
+    <StyledText>marks</StyledText>
+    <CodeEditor code={marksString} onChange={setMarksString} transparent={true} />
+    <StyledText>x</StyledText>
+    <CodeEditor code={xString} onChange={setXString} transparent={true} />
+    <StyledText>y</StyledText>
+    <CodeEditor code={yString} onChange={setYString} transparent={true} />
+    <StyledText>margin</StyledText>
+    <CodeEditor code={marginString} onChange={setMarginString} transparent={true} />
 
-  {/* Code editor */}
-
-  <Text>styles</Text>
-  <CodeEditor code={styleString} onChange={setStyleString} transparent={true} />
-  <Text>marks</Text>
-  <CodeEditor code={marksString} onChange={setMarksString} transparent={true} />
-  <Text>x</Text>
-  <CodeEditor code={xString} onChange={setXString} transparent={true} />
-  <Text>y</Text>
-  <CodeEditor code={yString} onChange={setYString} transparent={true} />
-  <Text>margin</Text>
-  <CodeEditor code={marginString} onChange={setMarginString} transparent={true} />
-
-  {/* Reload button */}
-  <Button onClick={toggleReload}>Visualize</Button>
+    {/* Reload button */}
+    <Button onClick={toggleReload}>Visualize</Button>
   </>
   )
 }
 
+const StyledText = styled(Text)`
+  color: ${props => props.theme.colors.text};
+`
+
+const prettyPrintStringify = (o: any) => JSON.stringify(o, null, 2)
+
+const safeParse = (s: string): Object => {
+  try {
+    return JSON.parse(s)
+  } catch (err) {
+    console.log(err)
+  }
+}

@@ -126,8 +126,8 @@ export const DiagramSpace = styled.svg`
 
   g.table-row-queried > rect,
   g.table-row-queried > path.table-row {
-    stroke: #FEE227;
-    fill: #FEE227;
+    stroke: #fee227;
+    fill: #fee227;
   }
 
   g.table-row > text {

@@ -25,7 +25,12 @@
  */
 
 import React, { useCallback } from 'react'
-import { SpaceVertical, IconButton, Layout, ProgressCircular } from '@looker/components'
+import {
+  SpaceVertical,
+  IconButton,
+  Layout,
+  ProgressCircular
+} from '@looker/components'
 import { AccountTree } from '@styled-icons/material-outlined/AccountTree'
 import { Visibility } from '@styled-icons/material-outlined/Visibility'
 import { LiveHelp } from '@styled-icons/material-outlined/LiveHelp'
@@ -66,7 +71,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   queryFields,
   setQueryFields,
   queryData,
-  loadingQueryData,
+  loadingQueryData
 }) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)

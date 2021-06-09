@@ -72,12 +72,20 @@ export const QueryDataResults: React.FC<{
 }> = ({ queryFields, setQueryFields, queryData, loadingQueryData }) => {
   const fieldList = Object.keys(queryFields)
   if (!queryData && !loadingQueryData) {
-    return (<SpaceVertical align="center"><Heading>No Data</Heading></SpaceVertical>)
+    return (
+      <SpaceVertical align="center">
+        <Heading>No Data</Heading>
+      </SpaceVertical>
+    )
   }
   if (loadingQueryData) {
-    return (<SpaceVertical align="center"><ProgressCircular /></SpaceVertical>)
+    return (
+      <SpaceVertical align="center">
+        <ProgressCircular />
+      </SpaceVertical>
+    )
   }
-  const queryColumns: DataTableColumns = fieldList.map((field) => {
+  const queryColumns: DataTableColumns = fieldList.map(field => {
     return {
       id: field,
       title: field,
@@ -86,10 +94,7 @@ export const QueryDataResults: React.FC<{
   })
   const items = queryData.map((d: any, i: number) => {
     return (
-      <DataTableItem
-        key={i}
-        id={String(i)}
-      >
+      <DataTableItem key={i} id={String(i)}>
         {fieldList.map(field => (
           <DataTableCell>{d[field]}</DataTableCell>
         ))}

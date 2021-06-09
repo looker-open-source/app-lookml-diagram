@@ -79,14 +79,14 @@ const LineContent = styled(Span)`
 `
 
 /**
-* Provides a view-only syntax highlighter for all supported SDK languages.
-* TODO: LookML syntax highlighting
-*/
+ * Provides a view-only syntax highlighter for all supported SDK languages.
+ * TODO: LookML syntax highlighting
+ */
 export const CodeDisplay: FC<CodeDisplayProps> = ({
   language = 'json',
   code,
   pattern = '',
-  transparent = false,
+  transparent = false
 }) => {
   return (
     <Highlight
