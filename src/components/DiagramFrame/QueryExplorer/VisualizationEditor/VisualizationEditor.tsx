@@ -39,6 +39,8 @@ interface VisualizationEditorProps {
     queryFields: QueryOrder
     data: any
     loadingQueryData: boolean
+    options: any,
+    setOptions: any
 }
 
 const quartile1 = (V: any) => d3.quantile(V, 0.25)
@@ -47,26 +49,26 @@ const quartile3 = (V: any) => d3.quantile(V, 0.75)
 
 function compose(...marks: any[]) {
   // @ts-ignore
-  marks.plot = Plot.Mark.prototype.plot;
-  return marks;
+  marks.plot = Plot.Mark.prototype.plot
+  return marks
 }
 
 function outliers(values: any) {
-  const r1 = iqr1(values);
-  const r2 = iqr2(values);
-  return values.map((v: any) => v < r1 || v > r2 ? v : NaN);
+  const r1 = iqr1(values)
+  const r2 = iqr2(values)
+  return values.map((v: any) => v < r1 || v > r2 ? v : NaN)
 }
 
 const iqr1 = (V: any) => {
-  const hi = quartile1(V);
-  const lo = hi - 1.5 * (quartile3(V) - hi);
-  return d3.min(V, (v: any) => lo <= v && v <= hi ? v : NaN);
+  const hi = quartile1(V)
+  const lo = hi - 1.5 * (quartile3(V) - hi)
+  return d3.min(V, (v: any) => lo <= v && v <= hi ? v : NaN)
 }
 
 const iqr2 = (V: any) => {
-  const lo = quartile3(V);
-  const hi = lo + 1.5 * (lo - quartile1(V));
-  return d3.max(V, (v: any) => lo <= v && v <= hi ? v : NaN);
+  const lo = quartile3(V)
+  const hi = lo + 1.5 * (lo - quartile1(V))
+  return d3.max(V, (v: any) => lo <= v && v <= hi ? v : NaN)
 }
 
 // @ts-ignore
@@ -76,13 +78,13 @@ function boxY(data: any, {x = null,
   stroke = "currentColor",
   ...options
 } = {}) {
-  const group = x == null ? Plot.groupZ : Plot.groupX;
+  const group = x == null ? Plot.groupZ : Plot.groupX
   return compose(
     Plot.ruleX(data, group({y1: iqr1, y2: iqr2}, {x, y, stroke, ...options})),
     Plot.barY(data, group({y1: quartile1, y2: quartile3}, {x, y, fill, ...options})),
     Plot.tickY(data, group({y: "median"}, {x, y, stroke, strokeWidth: 2, ...options})),
     Plot.dot(data, Plot.map({y: outliers}, {x, y, z: x, stroke, ...options}))
-  );
+  )
 }
 
 // @ts-ignore
@@ -91,19 +93,21 @@ function boxX(data, {x = {transform: x => x}, y = null,
   stroke = "currentColor",
   ...options
 } = {}) {
-  const group = y == null ? Plot.groupZ : Plot.groupY;
+  const group = y == null ? Plot.groupZ : Plot.groupY
   return compose(
     Plot.ruleY(data, group({x1: iqr1, x2: iqr2}, {x, y, stroke, ...options})),
     Plot.barX(data, group({x1: quartile1, x2: quartile3}, {x, y, fill, ...options})),
     Plot.tickX(data, group({x: "median"}, {x, y, stroke, strokeWidth: 2, ...options})),
     Plot.dot(data, Plot.map({x: outliers}, {x, y, z: y, stroke, ...options}))
-  );
+  )
 }
 
  export const VisualizationEditor: React.FC<VisualizationEditorProps> = ({
      queryFields,
      data,
-     loadingQueryData
+     loadingQueryData,
+     options,
+     setOptions
  }) => {
   const [reload, setReload] = useState(false)
   const [vizError, setVizError] = useState(false)
@@ -153,14 +157,14 @@ function boxX(data, {x = {transform: x => x}, y = null,
     }
 
     /** Plot Options */
-    const options = {
+    setOptions({
       style: safeParse(styleString),
       color: safeParse(colorString),
       marks: evaluatedMarks,
       y: safeParse(yString),
       x: safeParse(xString),
       ...safeParse(marginString),
-    }
+    })
 
     /** Append plot svg to the DOM and keep updated when changed */
     let plot: any
@@ -174,9 +178,9 @@ function boxX(data, {x = {transform: x => x}, y = null,
     }
     if (ref.current) {
       if (ref.current.children[0]) {
-        ref.current.children[0].remove();
+        ref.current.children[0].remove()
       }
-      ref.current.appendChild(plot);
+      ref.current.appendChild(plot)
     }
   }, [ref, reload])
   
@@ -205,7 +209,7 @@ function boxX(data, {x = {transform: x => x}, y = null,
 }
 
 const StyledText = styled(Text)`
-  color: ${props => props.theme.colors.text};
+  color: ${props => props.theme.colors.text}
 `
 
 const prettyPrintStringify = (o: any) => JSON.stringify(o, null, 2)

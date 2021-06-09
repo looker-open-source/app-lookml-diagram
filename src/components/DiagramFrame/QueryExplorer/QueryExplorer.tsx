@@ -42,6 +42,7 @@ import styled from 'styled-components'
 import { DiagrammedModel } from '../../../utils/LookmlDiagrammer'
 import { QueryDataResults } from './QueryDataResults'
 import { VisualizationEditor } from './VisualizationEditor/VisualizationEditor'
+import { CodeEditor } from './CodeEditor/CodeEditor'
 
 export interface QueryOrder {
   [field_name: string]: any
@@ -73,6 +74,8 @@ export const QueryExplorer: React.FC<{
   queryData: any
   loadingQueryData: boolean
 }> = ({ queryFields, setQueryFields, queryData, loadingQueryData }) => {
+  const [options, setOptions] = React.useState({})
+
   return (
     <ExtendComponentsThemeProvider
       themeCustomizations={{
@@ -96,6 +99,8 @@ export const QueryExplorer: React.FC<{
                   queryFields={queryFields}
                   data={queryData}
                   loadingQueryData={loadingQueryData}
+                  options={options}
+                  setOptions={setOptions}
                 />
               </TabPanel>
               <TabPanel>
@@ -107,7 +112,7 @@ export const QueryExplorer: React.FC<{
                 />
               </TabPanel>
               <TabPanel>
-                <StyledText>TODO: CodeDisplay</StyledText>
+                <StyledText><CodeEditor code={`Plot(\n${JSON.stringify(options, null, 2)}\n)`} onChange={() => {}} transparent={false} /></StyledText>
               </TabPanel>
             </TabPanels>
           </Tabs>
