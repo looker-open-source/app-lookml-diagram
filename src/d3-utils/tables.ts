@@ -117,7 +117,7 @@ export function createLookmlViewElement(
     .classed('table-row-grouped', (d: DiagramField) => !!d.dimension_group)
     .classed(
       'table-row-queried',
-      (d: DiagramField) => queryFields && queryFields[encodeURI(d.name)]
+      (d: DiagramField) => queryFields && (queryFields[encodeURI(d.name)] || queryFields[encodeURI(d.name + "_raw")])
     )
     .classed('table-row-view', (d: DiagramField) => isTableRowView(d))
     .classed('table-row-base-view', (d: DiagramField) => isTableRowBaseView(d))
@@ -228,10 +228,14 @@ export function createLookmlViewElement(
   type === 'display' &&
     tableRow.on('click', (event, d) => {
       if (event.shiftKey) {
-        if (Object.keys(queryFields).includes(encodeURI(d.name))) {
-          delete queryFields[encodeURI(d.name)]
+        let key = encodeURI(d.name)
+        if (d.type === 'date_date') {
+          key += '_raw'
+        }
+        if (Object.keys(queryFields).includes(key)) {
+          delete queryFields[key]
         } else {
-          queryFields[encodeURI(d.name)] = true
+          queryFields[key] = true
         }
         setQueryFields({
           ...queryFields

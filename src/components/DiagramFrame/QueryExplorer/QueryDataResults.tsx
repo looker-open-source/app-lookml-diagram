@@ -78,7 +78,7 @@ export const QueryDataResults: React.FC<{
       </SpaceVertical>
     )
   }
-  if (loadingQueryData) {
+  if (!queryData && loadingQueryData) {
     return (
       <SpaceVertical align="center">
         <ProgressCircular />
@@ -101,9 +101,12 @@ export const QueryDataResults: React.FC<{
       </DataTableItem>
     )
   })
-  return (
-    <DataTable caption="Cheeses example" columns={queryColumns}>
+  return (<>
+    {loadingQueryData && <SpaceVertical align="center">
+      <ProgressCircular />
+    </SpaceVertical>}
+    <DataTable caption="Query results" columns={queryColumns}>
       {items}
     </DataTable>
-  )
+  </>)
 }
