@@ -113,7 +113,9 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   const svgElement = document.querySelector(`svg#display-diagram-svg`)
   const dimensions = currentDimensions?.diagramDict
 
-  if (modelDetail?.fetchError) {
+  // Git error should disable the Git branch selector in DiagramSettings.
+  // Only `notFound` or `general` fetch errors should prevent Diagram display.
+  if (modelDetail?.fetchError && modelDetail?.fetchError !== 'git') {
     return renderError(modelDetail.fetchError)
   }
 
