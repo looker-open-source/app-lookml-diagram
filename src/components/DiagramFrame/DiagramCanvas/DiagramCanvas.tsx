@@ -113,7 +113,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   const svgElement = document.querySelector(`svg#display-diagram-svg`)
   const dimensions = currentDimensions?.diagramDict
 
-  if (modelDetail?.fetchError) {
+  if (modelDetail?.fetchError && modelDetail?.fetchError !== 'git') {
     return renderError(modelDetail.fetchError)
   }
 
