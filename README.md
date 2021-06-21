@@ -14,13 +14,13 @@ Looker’s LookML Diagram extension provides an entity-relationship-diagram for 
 2. Navigate (`cd`) to the template directory on your system
 3. Install the dependencies with [Yarn](https://yarnpkg.com/).
 
-    ```
+    ```sh
     yarn
     ```
 
     > You may need to update your Node version or use a [Node version manager](https://github.com/nvm-sh/nvm) to change your Node version.
 4.  Start the development server
-    ```
+    ```sh
     yarn start
     ```
 
@@ -42,7 +42,7 @@ Looker’s LookML Diagram extension provides an entity-relationship-diagram for 
 6. In your copy of the extension tablet you have `manifest.lkml` file.
 
     You can either drag & upload this file into your Looker project, or create a `manifest.lkml` with the same content. Change the `id`, `label`, or `url` as needed.
-```
+```lookml
 application: lookml-diagram-dev {
   label: "LookML Diagram (dev)"
   url: "https://localhost:8080/bundle.js"
