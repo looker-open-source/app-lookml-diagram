@@ -28,10 +28,7 @@ import {
   ILookmlModelExplore
 } from '@looker/sdk/lib/4.0/models'
 import { DiagramField, DiagramJoin, DiagramMetadata } from './types'
-import {
-  getViewFieldIndex,
-  getViewPkIndex,
-} from './utils'
+import { getViewFieldIndex, getViewPkIndex } from './utils'
 
 /**
  * Returns properly formatted DiagramJoin for PKs
@@ -145,7 +142,10 @@ export const getFkJoinPathObjs = (
   explore: ILookmlModelExplore
 ) => {
   const joinPath: DiagramJoin[] = []
-  const baseExploreName = join.dependent_fields.length > 0 ? join.dependent_fields[0].split('.')[0] : explore.name
+  const baseExploreName =
+    join.dependent_fields.length > 0
+      ? join.dependent_fields[0].split('.')[0]
+      : explore.name
   const baseTableId = join.foreign_key.includes('.')
     ? join.foreign_key.split('.')[0]
     : baseExploreName
@@ -158,8 +158,6 @@ export const getFkJoinPathObjs = (
   const pkFieldIndex = getViewPkIndex(pkTableRef)
 
   joinPath.push(getPkJoinPathObj(join, pkTableRef, pkFieldIndex))
-  joinPath.push(
-    getBaseJoinPathObj(join, baseTableId, baseTableRef, fieldIndex)
-  )
+  joinPath.push(getBaseJoinPathObj(join, baseTableId, baseTableRef, fieldIndex))
   return joinPath
 }
