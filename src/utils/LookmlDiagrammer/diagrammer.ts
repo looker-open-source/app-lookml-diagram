@@ -40,17 +40,14 @@ import {
   getViews,
   getFilteredViewFields,
   getGrouplessViewFields,
-  getViewFieldIndex,
-  getViewPkIndex,
   getViewDependentFieldIndex,
   countJoins
 } from './utils'
 import {
-  getPkJoinPathObj,
-  getBaseJoinPathObj,
   getSqlJoinPathObj,
   getJoinPathObj,
-  getExploreJoinPathObj
+  getExploreJoinPathObj,
+  getFkJoinPathObjs
 } from './join-utils'
 import { generateMinimapDiagram } from './minimapper'
 import { LookmlDiagrammer } from './LookmlDiagrammer'
@@ -130,27 +127,13 @@ export function generateExploreDiagram(
       })
     ]
   })
-
   // Add join data to DiagramDict for each join
   diagramDict.joinData = exploreJoins.map(
     (join: ILookmlModelExploreJoins, joinIndex: number) => {
       const joinPath: DiagramJoin[] = []
       if (join.foreign_key) {
-        const baseTableId = join.foreign_key.includes('.')
-          ? join.foreign_key.split('.')[0]
-          : explore.name
-        const baseTableRef = diagramDict.tableData[baseTableId]
-        const baseTableLookupValue = join.foreign_key.includes('.')
-          ? join.foreign_key
-          : explore.name + '.' + join.foreign_key
-        const fieldIndex = getViewFieldIndex(baseTableRef, baseTableLookupValue)
-        const pkTableRef = diagramDict.tableData[join.name]
-        const pkFieldIndex = getViewPkIndex(pkTableRef)
-
-        joinPath.push(getPkJoinPathObj(join, pkTableRef, pkFieldIndex))
-        joinPath.push(
-          getBaseJoinPathObj(join, baseTableId, baseTableRef, fieldIndex)
-        )
+        const joins = getFkJoinPathObjs(join, diagramDict, explore)
+        joins.forEach(j => joinPath.push(j))
       } else if (join.dependent_fields.length > 0) {
         join.dependent_fields.forEach(
           (field: string, depFieldIndex: number) => {
