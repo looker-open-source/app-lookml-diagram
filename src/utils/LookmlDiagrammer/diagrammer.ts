@@ -28,7 +28,6 @@ import {
   ILookmlModelExploreJoins,
   ILookmlModelExplore
 } from '@looker/sdk/lib/4.0/models'
-import { leastIndex } from 'd3'
 import { DetailedModel } from '../fetchers'
 import {
   DiagramMetadata,
