@@ -27,7 +27,8 @@ import {
   ILookmlModelExploreJoins,
   ILookmlModelExplore
 } from '@looker/sdk/lib/4.0/models'
-import { DiagramField } from './types'
+import { DiagramField, DiagramJoin, DiagramMetadata } from './types'
+import { getViewFieldIndex, getViewPkIndex } from './utils'
 
 /**
  * Returns properly formatted DiagramJoin for PKs
@@ -128,4 +129,35 @@ export function getExploreJoinPathObj(
     joinName: join.name,
     joinObj: join
   }
+}
+
+/**
+ * If the table name has been supplied in the `foreign_key`, use that
+ * If this explore is an extension of another, use the field in the dep field array.
+ * Otherwise, use the explore name.
+ */
+export const getFkJoinPathObjs = (
+  join: ILookmlModelExploreJoins,
+  diagramDict: DiagramMetadata,
+  explore: ILookmlModelExplore
+) => {
+  const joinPath: DiagramJoin[] = []
+  const baseExploreName =
+    join.dependent_fields.length > 0
+      ? join.dependent_fields[0].split('.')[0]
+      : explore.name
+  const baseTableId = join.foreign_key.includes('.')
+    ? join.foreign_key.split('.')[0]
+    : baseExploreName
+  const baseTableRef = diagramDict.tableData[baseTableId]
+  const baseTableLookupValue = join.foreign_key.includes('.')
+    ? join.foreign_key
+    : baseExploreName + '.' + join.foreign_key
+  const fieldIndex = getViewFieldIndex(baseTableRef, baseTableLookupValue)
+  const pkTableRef = diagramDict.tableData[join.name]
+  const pkFieldIndex = getViewPkIndex(pkTableRef)
+
+  joinPath.push(getPkJoinPathObj(join, pkTableRef, pkFieldIndex))
+  joinPath.push(getBaseJoinPathObj(join, baseTableId, baseTableRef, fieldIndex))
+  return joinPath
 }
