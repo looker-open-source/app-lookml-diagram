@@ -51,6 +51,7 @@ import {
 } from './join-utils'
 import { generateMinimapDiagram } from './minimapper'
 import { LookmlDiagrammer } from './LookmlDiagrammer'
+import { leastIndex } from 'd3'
 
 /**
  * generates diagrammable metadata for a given lookml explore.
@@ -130,10 +131,9 @@ export function generateExploreDiagram(
   // Add join data to DiagramDict for each join
   diagramDict.joinData = exploreJoins.map(
     (join: ILookmlModelExploreJoins, joinIndex: number) => {
-      const joinPath: DiagramJoin[] = []
+      let joinPath: DiagramJoin[] = []
       if (join.foreign_key) {
-        const joins = getFkJoinPathObjs(join, diagramDict, explore)
-        joins.forEach(j => joinPath.push(j))
+        joinPath = getFkJoinPathObjs(join, diagramDict, explore)
       } else if (join.dependent_fields.length > 0) {
         join.dependent_fields.forEach(
           (field: string, depFieldIndex: number) => {
