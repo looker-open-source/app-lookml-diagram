@@ -156,7 +156,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
     setViewVisible(defaultViews)
 
   return (
-    <Layout hasAside height="100%">
+    <Layout hasAside height="100vh">
       <Rail width="50px" py="xxsmall" pr="xsmall">
         <SpaceVertical
           style={{ alignItems: 'center' }}
