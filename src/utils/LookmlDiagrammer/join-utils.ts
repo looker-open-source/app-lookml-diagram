@@ -25,7 +25,7 @@
  */
 import {
   ILookmlModelExploreJoins,
-  ILookmlModelExplore
+  ILookmlModelExplore,
 } from '@looker/sdk/lib/4.0/models'
 import { DiagramField, DiagramJoin, DiagramMetadata } from './types'
 import { getViewFieldIndex, getViewPkIndex } from './utils'
@@ -47,7 +47,7 @@ export function getPkJoinPathObj(
     selector: pkTableRef[pkFieldIndex].name.replace('.', '-'),
     type: 'core',
     joinName: join.name,
-    joinObj: join
+    joinObj: join,
   }
 }
 
@@ -70,7 +70,7 @@ export function getBaseJoinPathObj(
     selector: baseTableRef[fieldIndex].name.replace('.', '-'),
     type: 'core',
     joinName: join.name,
-    joinObj: join
+    joinObj: join,
   }
 }
 
@@ -93,7 +93,7 @@ export function getSqlJoinPathObj(
     selector: field.replace('.', '-'),
     type: 'core',
     joinName: join.name,
-    joinObj: join
+    joinObj: join,
   }
 }
 
@@ -108,7 +108,7 @@ export function getJoinPathObj(join: ILookmlModelExploreJoins) {
     selector: join.name.replace('.', '-'),
     type: 'core',
     joinName: join.name,
-    joinObj: join
+    joinObj: join,
   }
 }
 
@@ -127,7 +127,7 @@ export function getExploreJoinPathObj(
     selector: join.name.replace('.', '-'),
     type: 'core',
     joinName: join.name,
-    joinObj: join
+    joinObj: join,
   }
 }
 

@@ -28,7 +28,7 @@ export {
   DiagramMetadata,
   DiagramField,
   DiagramJoin,
-  DiagrammedModel
+  DiagrammedModel,
 } from './types'
 export { onlyUnique, getFields } from './utils'
 export { generateModelDiagrams, generateExploreDiagram } from './diagrammer'

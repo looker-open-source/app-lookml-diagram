@@ -30,12 +30,12 @@ import {
   JOIN_CONNECTOR_WIDTH,
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
-  TABLE_PADDING
+  TABLE_PADDING,
 } from '../utils/constants'
 import {
   onlyUnique,
   DiagramMetadata,
-  DiagramJoin
+  DiagramJoin,
 } from '../utils/LookmlDiagrammer'
 import { SelectionInfoPacket } from '../components/interfaces'
 import { makeJoinIcon } from './join-icon'
@@ -43,7 +43,7 @@ import {
   getManyPath,
   getOnePath,
   addJoinArrowheads,
-  JoinPoint
+  JoinPoint,
 } from './join-helpers'
 
 export function createLookmlJoinElement(
@@ -60,7 +60,7 @@ export function createLookmlJoinElement(
 
   // Break up join between multiple tables into join-parts between two tables
   const joinParts = joinData
-    .map(d => {
+    .map((d) => {
       return d.viewName
     })
     .filter(onlyUnique)
@@ -78,7 +78,7 @@ export function createLookmlJoinElement(
   joinParts.forEach((d, i) => {
     if (i <= stopPartIndex) {
       partArray.push(
-        joinData.filter(joinPoint => {
+        joinData.filter((joinPoint) => {
           return (
             joinPoint.viewName === joinParts[i] ||
             joinPoint.viewName === joinParts[i + 1]
@@ -89,13 +89,13 @@ export function createLookmlJoinElement(
   })
 
   // Index based lookup structure for join part degree (the number of joins away from base table)
-  const joinDegrees = joinData.map(d => {
+  const joinDegrees = joinData.map((d) => {
     return Math.abs(diagramDict.tableData[d.viewName][0].diagramDegree)
   })
 
   // Calculate the x,y of every field in join and sort left to right
-  partArray.map(path => {
-    const xLookup = path.map(d => {
+  partArray.map((path) => {
+    const xLookup = path.map((d) => {
       const joinedTableData = diagramDict.tableData[d.viewName]
       return joinedTableData[d.fieldIndex].diagramX
     })
@@ -119,7 +119,7 @@ export function createLookmlJoinElement(
             joinY:
               diagramDict.tableData[d.viewName][0].diagramY +
               d.fieldIndex *
-                (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1))
+                (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1)),
           }
         }
         return {
@@ -128,7 +128,8 @@ export function createLookmlJoinElement(
           joinX: diagramDict.tableData[d.viewName][0].diagramX + l_shift,
           joinY:
             diagramDict.tableData[d.viewName][0].diagramY +
-            d.fieldIndex * (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1))
+            d.fieldIndex *
+              (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1)),
         }
       })
       .sort((a, b) => {
@@ -147,7 +148,7 @@ export function createLookmlJoinElement(
       .append('g')
       .attr('class', 'join-' + joinData[0].joinName)
 
-    const joinTables = joinPath.map(d => {
+    const joinTables = joinPath.map((d) => {
       return d.viewName
     })
     const terminalAlign = joinTables.filter(onlyUnique)
@@ -169,19 +170,19 @@ export function createLookmlJoinElement(
     const tableJoinPath: DiagramJoin[] = []
     const baseTable = degreeAligned[0]
     const joinedTable = degreeAligned[1]
-    const joinedFields = joinPath.filter(row => {
+    const joinedFields = joinPath.filter((row) => {
       return row.viewName === joinedTable
     })
-    const baseFields = joinPath.filter(row => {
+    const baseFields = joinPath.filter((row) => {
       return row.viewName === baseTable
     })
     const joinedNode = {
       x: joinedFields[0].joinX,
-      y: average(joinedFields.map(row => row.joinY))
+      y: average(joinedFields.map((row) => row.joinY)),
     }
     const baseNode = {
       x: baseFields[0].joinX,
-      y: average(baseFields.map((row: any) => row.joinY))
+      y: average(baseFields.map((row: any) => row.joinY)),
     }
     const goLeft = joinedNode.x < baseNode.x ? -1 : 1
     const goUp = joinedNode.y < baseNode.y ? -1 : 1
@@ -219,7 +220,7 @@ export function createLookmlJoinElement(
       joinX: aX,
       joinY: aY,
       joinName: baseFields[0].joinName,
-      viewName: baseFields[0].viewName
+      viewName: baseFields[0].viewName,
     })
 
     // B
@@ -227,7 +228,7 @@ export function createLookmlJoinElement(
     const bY = aY
     tableJoinPath.push({
       joinX: bX,
-      joinY: bY
+      joinY: bY,
     })
 
     // C
@@ -236,7 +237,7 @@ export function createLookmlJoinElement(
     disabled ||
       tableJoinPath.push({
         joinX: cX,
-        joinY: cY
+        joinY: cY,
       })
 
     // D
@@ -245,7 +246,7 @@ export function createLookmlJoinElement(
     disabled ||
       tableJoinPath.push({
         joinX: dX,
-        joinY: dY
+        joinY: dY,
       })
 
     // E
@@ -253,7 +254,7 @@ export function createLookmlJoinElement(
     const eY = fY
     tableJoinPath.push({
       joinX: eX,
-      joinY: eY
+      joinY: eY,
     })
 
     // F
@@ -261,7 +262,7 @@ export function createLookmlJoinElement(
       joinX: fX,
       joinY: fY,
       joinName: joinedFields[0].joinName,
-      viewName: joinedFields[0].viewName
+      viewName: joinedFields[0].viewName,
     })
 
     // Draw join-part path
@@ -279,7 +280,7 @@ export function createLookmlJoinElement(
       )
 
     // Draw all join-path field connectors
-    joinPath.forEach(joinField => {
+    joinPath.forEach((joinField) => {
       const connectorSize = JOIN_CONNECTOR_WIDTH * 0.7
       const rightmost = terminalAlign.indexOf(joinField.viewName)
       const connectorAlign = rightmost ? connectorSize : connectorSize * -1
@@ -308,7 +309,7 @@ export function createLookmlJoinElement(
       addJoinArrowheads(join, joinData[0].joinName)
 
       // Add the "bracket" that links many fields on one table
-      connectorPath.map(connector => {
+      connectorPath.map((connector) => {
         join
           .append('path')
           .datum(connector)
@@ -328,19 +329,19 @@ export function createLookmlJoinElement(
       })
 
       const tableJoins = joinPath.filter(
-        row => row.viewName === joinField.viewName
+        (row) => row.viewName === joinField.viewName
       )
       const joinNode = tableJoins[0]
       const joinBracketPath: JoinPoint[] = []
       joinBracketPath.push({
         x: joinNode.joinX,
         y: joinNode.joinY + TABLE_ROW_HEIGHT / 2,
-        viewName: joinNode.viewName
+        viewName: joinNode.viewName,
       })
       joinBracketPath.push({
         x: joinField.joinX,
         y: joinField.joinY + TABLE_ROW_HEIGHT / 2,
-        viewName: joinField.viewName
+        viewName: joinField.viewName,
       })
       tableJoins.length > 1 &&
         join
@@ -398,7 +399,7 @@ export function createLookmlJoinElement(
           JSON.stringify(selectionInfo) !==
           JSON.stringify({
             lookmlElement: 'join',
-            name: joinData[0].joinName
+            name: joinData[0].joinName,
           })
         ) {
           d3.selectAll(
@@ -411,7 +412,7 @@ export function createLookmlJoinElement(
       hoverMouseLeave.on('click', () => {
         setSelectionInfo({
           lookmlElement: 'join',
-          name: joinData[0].joinName
+          name: joinData[0].joinName,
         })
       })
   })

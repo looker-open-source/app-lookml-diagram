@@ -26,7 +26,7 @@
 import {
   ILookmlModelExplore,
   ILookmlModelExploreField,
-  ILookmlModelExploreJoins
+  ILookmlModelExploreJoins,
 } from '@looker/sdk/lib/4.0/models'
 import { SelectionInfoPacket } from '../../interfaces'
 
@@ -102,7 +102,7 @@ export function getFieldCodeBlock(
     tfLine,
     sqlLine,
     mapLayerLine,
-    endLine
+    endLine,
   ]
     .filter(Boolean)
     .join('')
@@ -128,7 +128,7 @@ export function getJoinMetadata(
     joinCode: getJoinCodeBlock(joinObj),
     joinIconType: joinTypeRaw.replace('_', '-'),
     joinType: joinTypeRaw,
-    joinRelationship: joinObj.relationship && joinObj.relationship
+    joinRelationship: joinObj.relationship && joinObj.relationship,
   }
 }
 
@@ -162,7 +162,7 @@ export function getFieldMetadata(
     fieldSql: field.sql,
     primaryKey: field.primary_key,
     fieldCode: getFieldCodeBlock(field, tf, selectionInfo),
-    fieldCategory: field.category
+    fieldCategory: field.category,
   }
 }
 
@@ -183,7 +183,7 @@ export function getViewMetadata(
     name: selectionInfo.name,
     lookmlLink: lookmlLink,
     lookmlObject: 'view',
-    sqlTableName
+    sqlTableName,
   }
 }
 
@@ -199,7 +199,7 @@ export function getExploreMetadata(
     label: explore.label,
     groupLabel: explore.group_label,
     projectName: explore.project_name,
-    accessFilters: explore.access_filters
+    accessFilters: explore.access_filters,
   }
 }
 

@@ -37,7 +37,7 @@ import { DiagramHeaderWrapper } from './FrameHelpers'
 export const DiagramHeader: React.FC<DiagramHeaderProps> = ({
   currentExplore,
   selectionInfo,
-  toggleExploreInfo
+  toggleExploreInfo,
 }) => {
   const queryClient = useQueryClient()
   const reloadPage = () => queryClient.resetQueries()

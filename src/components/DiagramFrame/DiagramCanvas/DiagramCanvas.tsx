@@ -35,7 +35,7 @@ import {
   DiagramCanvasWrapper,
   Minimap,
   IntroText,
-  ErrorText
+  ErrorText,
 } from './components/canvas_components'
 import { EmptyStateArt } from './components/EmptyStateArt'
 
@@ -108,7 +108,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
   hiddenToggle,
   displayFieldType,
   viewVisible,
-  viewPosition
+  viewPosition,
 }) => {
   const svgElement = document.querySelector(`svg#display-diagram-svg`)
   const dimensions = currentDimensions?.diagramDict
@@ -183,7 +183,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
               clientWidth: svgElement && svgElement.clientWidth / zoomFactor,
               clientHeight:
                 svgElement &&
-                (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor
+                (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor,
             }}
             setViewPosition={() => {}}
           />

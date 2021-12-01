@@ -48,7 +48,7 @@ export const Diagram: React.FC<DiagramProps> = ({
   zoomFactor,
   setZoomFactor,
   viewPosition,
-  setViewPosition
+  setViewPosition,
 }) => {
   const diagramViews = Object.keys(viewVisible).filter((viewName: string) => {
     return viewVisible[viewName]
@@ -161,7 +161,7 @@ export const Diagram: React.FC<DiagramProps> = ({
       zoomFactor,
       viewPosition.displayX,
       viewPosition.displayY,
-      viewPosition.clientWidth
+      viewPosition.clientWidth,
     ]
   )
   return (

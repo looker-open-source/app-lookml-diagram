@@ -29,12 +29,12 @@ import { ComponentsProvider } from '@looker/components'
 import { Looker40SDK } from '@looker/sdk'
 import {
   ExtensionContext2,
-  ExtensionContextData2
+  ExtensionContextData2,
 } from '@looker/extension-sdk-react'
 import { useSelectExplore, usePathNames } from '../utils/routes'
 import {
   VIEW_OPTIONS_HIDDEN_DEFAULT,
-  VIEW_OPTIONS_FIELDS_DEFAULT
+  VIEW_OPTIONS_FIELDS_DEFAULT,
 } from '../utils/constants'
 import { DiagramFrame } from './DiagramFrame/DiagramFrame'
 
@@ -63,7 +63,7 @@ export const Extension: React.FC = () => {
     <ComponentsProvider
       themeCustomizations={{
         colors: { key: 'rgb(45, 126, 234)' },
-        ...fontOverride
+        ...fontOverride,
       }}
     >
       {/* Check out ./src/component_structure.png for a diagram of the app structure */}

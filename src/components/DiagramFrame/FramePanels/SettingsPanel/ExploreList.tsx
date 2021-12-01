@@ -32,7 +32,7 @@ import { handleExploreChange, getExploreListItemBackgroundColor } from './utils'
 import {
   ExploreListWrapper,
   ExploreListitem,
-  ExploreButton
+  ExploreButton,
 } from './list_components'
 
 export const ExploreList: React.FC<ExploreListProps> = ({
@@ -46,7 +46,7 @@ export const ExploreList: React.FC<ExploreListProps> = ({
   setZoomFactor,
   setViewPosition,
   setMinimapUntoggled,
-  setMinimapEnabled
+  setMinimapEnabled,
 }) => {
   const history = useHistory()
   return (
@@ -61,7 +61,7 @@ export const ExploreList: React.FC<ExploreListProps> = ({
                   explore.value,
                   currentExplore,
                   diagramExplore
-                )
+                ),
               }}
             >
               <ExploreButton

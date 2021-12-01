@@ -26,7 +26,7 @@
 
 import {
   ILookmlModelExplore,
-  ILookmlModelExploreField
+  ILookmlModelExploreField,
 } from '@looker/sdk/lib/4.0/models'
 
 export function exploreURL(explore: ILookmlModelExplore) {

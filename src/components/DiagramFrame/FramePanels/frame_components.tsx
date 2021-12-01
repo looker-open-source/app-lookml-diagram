@@ -37,7 +37,7 @@ export const SettingsPanel = styled(Aside)`
 SettingsPanel.defaultProps = {
   width: '275px',
   px: 'medium',
-  py: 'large'
+  py: 'large',
 }
 
 export const ViewList = styled.ul`

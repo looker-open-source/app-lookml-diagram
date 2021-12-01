@@ -26,14 +26,14 @@
 
 import {
   ILookmlModelExploreJoins,
-  ILookmlModelExplore
+  ILookmlModelExplore,
 } from '@looker/sdk/lib/4.0/models'
 import { DetailedModel } from '../fetchers'
 import {
   DiagramMetadata,
   DiagramJoin,
   DiagrammedModel,
-  DiagramField
+  DiagramField,
 } from './types'
 import {
   getFields,
@@ -41,13 +41,13 @@ import {
   getFilteredViewFields,
   getGrouplessViewFields,
   getViewDependentFieldIndex,
-  countJoins
+  countJoins,
 } from './utils'
 import {
   getSqlJoinPathObj,
   getJoinPathObj,
   getExploreJoinPathObj,
-  getFkJoinPathObjs
+  getFkJoinPathObjs,
 } from './join-utils'
 import { generateMinimapDiagram } from './minimapper'
 import { LookmlDiagrammer } from './LookmlDiagrammer'
@@ -74,7 +74,7 @@ export function generateExploreDiagram(
   const diagramDict: DiagramMetadata = {
     joinData: [],
     yOrderLookup: {},
-    tableData: {}
+    tableData: {},
   }
 
   const joinSql = exploreJoins.map(
@@ -117,14 +117,14 @@ export function generateExploreDiagram(
         base: viewName === baseViewName,
         diagramX: 0,
         diagramY: 0,
-        fieldTypeIndex: 0
+        fieldTypeIndex: 0,
       },
       ...grouplessFilteredFields.map((datum: DiagramField, i: number) => {
         datum.diagramX = 0
         datum.diagramY = 0
         datum.fieldTypeIndex = datum.category === 'dimension' ? i : i - dimLen
         return datum
-      })
+      }),
     ]
   })
   // Add join data to DiagramDict for each join
@@ -191,7 +191,7 @@ export function generateModelDiagrams(
     const modifiedDetail: DiagrammedModel = {
       exploreName: d.name,
       modelName: d.model_name,
-      diagramDict: generateExploreDiagram(d, hiddenToggle, displayFieldType)
+      diagramDict: generateExploreDiagram(d, hiddenToggle, displayFieldType),
     }
     const minimapDimensions = generateMinimapDiagram(modifiedDetail.diagramDict)
     modifiedDetail.minimapX = minimapDimensions.x

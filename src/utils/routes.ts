@@ -30,14 +30,14 @@ import {
   useAvailableGitBranches,
   useCurrentGitBranch,
   DetailedModel,
-  useModelDiagrams
+  useModelDiagrams,
 } from './fetchers'
 
 export function internalExploreURL({
   model,
   explore,
   field,
-  tab
+  tab,
 }: {
   model: string
   explore: string
@@ -74,13 +74,13 @@ export function usePathNames(): {
   const match =
     useRouteMatch<{ model: string }>({
       path: '/models/:model',
-      sensitive: true
+      sensitive: true,
     }) || undefined
 
   const match2 =
     useRouteMatch<{ model: string; explore: string }>({
       path: '/models/:model/explores/:explore',
-      sensitive: true
+      sensitive: true,
     }) || undefined
 
   const match3 =
@@ -90,12 +90,12 @@ export function usePathNames(): {
       field: string
       tab: string
     }>({
-      path: '/models/:model/explores/:explore/field/:field/pane/:tab'
+      path: '/models/:model/explores/:explore/field/:field/pane/:tab',
     }) || undefined
 
   const renderMatch = useRouteMatch({
     path: '/models/:model/explores/:explore/render',
-    sensitive: true
+    sensitive: true,
   })
 
   return {
@@ -103,14 +103,14 @@ export function usePathNames(): {
     exploreName: match2 && match2.params.explore,
     fieldName: match3 && match3.params.field,
     detailPane: match3 && match3.params.tab,
-    fullPage: renderMatch
+    fullPage: renderMatch,
   }
 }
 
 export function useCurrentModel() {
   const { modelName } = usePathNames()
   const modelData = useAllModels()
-  const currentModel = modelData && modelData.find(m => m.name === modelName)
+  const currentModel = modelData && modelData.find((m) => m.name === modelName)
   return currentModel
 }
 
@@ -131,7 +131,7 @@ export function useSelectExplore(
     explores,
     gitBranch,
     gitBranches,
-    fetchError
+    fetchError,
   }
   const dimensions = useModelDiagrams(
     modelDetail,
@@ -141,6 +141,6 @@ export function useSelectExplore(
   return {
     unfilteredModels,
     modelDetail,
-    dimensions
+    dimensions,
   }
 }

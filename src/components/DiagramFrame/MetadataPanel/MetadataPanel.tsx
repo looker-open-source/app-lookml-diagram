@@ -39,14 +39,14 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  theme
+  theme,
 } from '@looker/components'
 import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk'
 import { Explore, LogoRings } from '@looker/icons'
 import { VpnKey } from '@styled-icons/material/VpnKey'
 import {
   ILookmlModelExploreField,
-  ILookmlModelExploreJoins
+  ILookmlModelExploreJoins,
 } from '@looker/sdk/lib/4.0/models'
 
 import { getFields } from '../../../utils/LookmlDiagrammer/'
@@ -61,7 +61,7 @@ import {
   MetadataInfoPanel,
   PillText,
   MetadataHeading,
-  PillWrapper
+  PillWrapper,
 } from './metadata_components'
 import { LookmlCodeBlock } from './LookmlCodeBlock'
 import {
@@ -69,7 +69,7 @@ import {
   getFieldMetadata,
   getViewMetadata,
   getExploreMetadata,
-  isSelectedFieldOrDimGroupMember
+  isSelectedFieldOrDimGroupMember,
 } from './utils'
 
 /**

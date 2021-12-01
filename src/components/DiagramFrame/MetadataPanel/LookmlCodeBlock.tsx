@@ -57,7 +57,7 @@ const LineNo = styled(Span)`
 `
 
 LineNo.defaultProps = {
-  pr: 'small'
+  pr: 'small',
 }
 
 const LineContent = styled(Span)`
@@ -75,7 +75,7 @@ const lookmlKeywords = [
   'measure',
   'timeframes',
   'value_format',
-  'primary_key'
+  'primary_key',
 ]
 
 /**
@@ -98,12 +98,12 @@ export const LookmlCodeBlock: FC<LookmlCodeBlockProps> = ({ code }) => {
                 {line.map((token, key) => {
                   const { children, ...tokenProps } = getTokenProps({
                     token,
-                    key
+                    key,
                   })
                   if (lookmlKeywords.includes(children.trim())) {
                     tokenProps.style = {
                       ...tokenProps.style,
-                      color: 'rgb(12, 150, 155)'
+                      color: 'rgb(12, 150, 155)',
                     }
                   }
                   return (

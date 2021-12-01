@@ -27,7 +27,7 @@ import React from 'react'
 import {
   ILookmlModel,
   ILookmlModelExplore,
-  IGitBranch
+  IGitBranch,
 } from '@looker/sdk/lib/4.0/models'
 import { GitBranch } from '@looker/icons'
 import { SelectOptionProps } from '@looker/components'
@@ -36,7 +36,7 @@ import {
   X_INIT,
   Y_INIT,
   ZOOM_INIT,
-  OVERRIDE_KEY_SUBTLE
+  OVERRIDE_KEY_SUBTLE,
 } from '../../../../utils/constants'
 import { internalExploreURL } from '../../../../utils/routes'
 import { ExploreDropdown } from '../types'
@@ -62,7 +62,7 @@ export function handleExploreChange(
   history.push(
     internalExploreURL({
       model: currentModel.name,
-      explore: currentExplore.value
+      explore: currentExplore.value,
     })
   )
 }
@@ -101,12 +101,12 @@ export const getBranchOptions = (
       ? {
           value: branch.name,
           label: branch.name,
-          icon: <GitBranch />
+          icon: <GitBranch />,
         }
       : {
           value: branch.name,
           label: branch.name,
-          icon: undefined
+          icon: undefined,
         }
   })
 }

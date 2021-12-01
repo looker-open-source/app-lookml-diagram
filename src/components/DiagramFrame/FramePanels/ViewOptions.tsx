@@ -38,7 +38,7 @@ import {
   ButtonTransparent,
   FadeIn,
   Icon,
-  theme
+  theme,
 } from '@looker/components'
 import { Visibility } from '@styled-icons/material-outlined/Visibility'
 import { Info } from '@styled-icons/material-outlined/Info'
@@ -51,7 +51,7 @@ import {
   ViewListItem,
   ViewButton,
   SettingsPanel,
-  PanelHeading
+  PanelHeading,
 } from './frame_components'
 import { getViewListItemColor } from './utils'
 
@@ -61,7 +61,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
   viewVisible,
   setViewVisible,
   handleHiddenToggle,
-  setDisplayFieldType
+  setDisplayFieldType,
 }) => {
   return (
     <SettingsPanel>
@@ -78,7 +78,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
                 onChange={setDisplayFieldType}
                 options={[
                   { label: 'All fields', value: SHOW_ALL_FIELDS },
-                  { label: 'Fields with joins', value: SHOW_JOINED_FIELDS }
+                  { label: 'Fields with joins', value: SHOW_JOINED_FIELDS },
                 ]}
               />
             </FlexItem>
@@ -150,7 +150,7 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
                             <ViewListItem
                               key={`view-${index}`}
                               style={{
-                                color: getViewListItemColor(viewVisible[item])
+                                color: getViewListItemColor(viewVisible[item]),
                               }}
                             >
                               <ViewButton

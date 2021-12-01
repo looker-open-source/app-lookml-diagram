@@ -26,7 +26,7 @@
 import { ILookmlModelExplore, ILookmlModel } from '@looker/sdk/lib/4.0/models'
 import {
   DiagramMetadata,
-  DiagrammedModel
+  DiagrammedModel,
 } from '../../../utils/LookmlDiagrammer/'
 import { SelectionInfoPacket, VisibleViewLookup } from '../../interfaces'
 import { DetailedModel } from '../../../utils/fetchers'

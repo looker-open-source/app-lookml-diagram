@@ -27,18 +27,18 @@ import {
   ILookmlModelExploreFieldset,
   ILookmlModelExploreField,
   ILookmlModelExploreJoins,
-  ILookmlModelExplore
+  ILookmlModelExplore,
 } from '@looker/sdk/lib/4.0/models'
 import {
   TABLE_PADDING,
   SHOW_JOINED_FIELDS,
-  SHOW_ALL_FIELDS
+  SHOW_ALL_FIELDS,
 } from '../constants'
 import {
   DiagramField,
   DiagramMetadata,
   JoinPopularity,
-  DiagramDegreeOrderLookup
+  DiagramDegreeOrderLookup,
 } from './types'
 
 /**

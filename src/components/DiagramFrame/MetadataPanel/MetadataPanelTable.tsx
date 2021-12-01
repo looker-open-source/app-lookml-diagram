@@ -29,12 +29,12 @@ import {
   Space,
   FlexItem,
   ProgressCircular,
-  theme
+  theme,
 } from '@looker/components'
 import {
   ILookmlModel,
   ILookmlModelExplore,
-  ILookmlModelExploreField
+  ILookmlModelExploreField,
 } from '@looker/sdk/lib/4.0/models'
 
 import { canGetDistribution, canGetTopValues } from '../../../utils/queries'
@@ -49,7 +49,7 @@ import {
   CodeText,
   SubKeyText,
   KeyColumn,
-  ValueColumn
+  ValueColumn,
 } from './metadata_components'
 
 const getSqlTableNameElement = (tableName: string) => {
@@ -212,7 +212,7 @@ const MetadataPanelTable: React.FC<{
                   type: 'Distribution',
                   model,
                   explore,
-                  field
+                  field,
                 }}
               />
             </ValueColumn>
@@ -231,7 +231,7 @@ const MetadataPanelTable: React.FC<{
                   type: 'Values',
                   model,
                   explore,
-                  field
+                  field,
                 }}
               />
             </ValueColumn>

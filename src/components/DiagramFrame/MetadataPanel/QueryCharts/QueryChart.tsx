@@ -34,7 +34,7 @@ import {
   Text,
   ButtonTransparent,
   ProgressCircular,
-  theme
+  theme,
 } from '@looker/components'
 import styled from 'styled-components'
 import { BarChart, Bar, Tooltip } from 'recharts'
@@ -43,7 +43,7 @@ import {
   QueryChartType,
   runChartQuery,
   SimpleResult,
-  globalCache
+  globalCache,
 } from '../../../../utils/queries'
 import { ExternalLink } from '../../../ExternalLink'
 
@@ -76,7 +76,7 @@ const ProgressTableRow = styled(TableRow)`
 
 const PaddedCell = styled(TableDataCell)``
 PaddedCell.defaultProps = {
-  p: '4px'
+  p: '4px',
 }
 
 const BarTooltip = styled.div`
@@ -113,7 +113,7 @@ export class QueryChart extends React.Component<
     super(props)
     this.state = {
       loading: false,
-      response: globalCache[JSON.stringify(props.type)]
+      response: globalCache[JSON.stringify(props.type)],
     }
   }
 
@@ -126,13 +126,13 @@ export class QueryChart extends React.Component<
       )
       this.setState({
         loading: false,
-        response
+        response,
       })
     } catch (e) {
       console.error(e)
       this.setState({
         loading: false,
-        response: { data: [], align: [], max: [] }
+        response: { data: [], align: [], max: [] },
       })
     }
   }
@@ -140,7 +140,7 @@ export class QueryChart extends React.Component<
   componentDidUpdate(prevProps: QueryChartProps) {
     if (JSON.stringify(this.props.type) !== JSON.stringify(prevProps.type)) {
       this.setState({
-        response: globalCache[JSON.stringify(this.props.type)]
+        response: globalCache[JSON.stringify(this.props.type)],
       })
     }
   }
