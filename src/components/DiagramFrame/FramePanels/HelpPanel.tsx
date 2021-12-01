@@ -33,7 +33,7 @@ import {
   view_explore,
   view_dimensions,
   join_dimensions,
-  join_explore
+  join_explore,
 } from './HelpPanelData'
 import { SettingsPanel, HelpBody, PanelHeading } from './frame_components'
 
@@ -62,7 +62,7 @@ export const HelpPanel: React.FC = () => {
               displayX: 0,
               displayY: 0,
               clientWidth: 375,
-              clientHeight: 155
+              clientHeight: 155,
             }}
             setViewPosition={() => {}}
           />
@@ -85,7 +85,7 @@ export const HelpPanel: React.FC = () => {
             reload={false}
             selectionInfo={{
               lookmlElement: 'join',
-              name: 'forecast'
+              name: 'forecast',
             }}
             setSelectionInfo={undefined}
             hiddenToggle={true}
@@ -99,7 +99,7 @@ export const HelpPanel: React.FC = () => {
               displayX: 0,
               displayY: 0,
               clientWidth: 375,
-              clientHeight: 190
+              clientHeight: 190,
             }}
             setViewPosition={() => {}}
           />

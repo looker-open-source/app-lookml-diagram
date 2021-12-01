@@ -39,7 +39,7 @@ import {
   ZOOM_MIN,
   X_INIT,
   Y_INIT,
-  ZOOM_INIT
+  ZOOM_INIT,
 } from '../../../utils/constants'
 import { DiagramToolbarProps } from './types'
 import { Toolbar } from './components/canvas_components'
@@ -55,7 +55,7 @@ export const DiagramToolbar: React.FC<DiagramToolbarProps> = ({
   setViewPosition,
   setReload,
   setMinimapUntoggled,
-  setMinimapEnabled
+  setMinimapEnabled,
 }) => {
   const minimapIconStyles =
     minimapEnabled || (minimapUntoggled && defaultMinimap)

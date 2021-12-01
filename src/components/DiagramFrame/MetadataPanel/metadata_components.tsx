@@ -33,7 +33,7 @@ import {
   FlexItem,
   Heading,
   Text,
-  theme
+  theme,
 } from '@looker/components'
 import styled from 'styled-components'
 
@@ -48,28 +48,28 @@ export const MetadataFooter = styled(Footer)`
   position: absolute;
   bottom: 0px;
   border-top-color: transparent;
-  box-shadow: 0px 1px 15px ${props => props.theme.colors.ui2};
-  background-color: ${props => props.theme.colors.background};
-  border-top: 1px solid ${props => props.theme.colors.background};
+  box-shadow: 0px 1px 15px ${(props) => props.theme.colors.ui2};
+  background-color: ${(props) => props.theme.colors.background};
+  border-top: 1px solid ${(props) => props.theme.colors.background};
 `
 MetadataFooter.defaultProps = {
-  py: 'small'
+  py: 'small',
 }
 
 /**
  * Layout component for metadata panel Panel
  */
 export const MetadataInfoPanel = styled(Aside)`
-  border-left: solid 1px ${props => props.theme.colors.ui2};
+  border-left: solid 1px ${(props) => props.theme.colors.ui2};
   overflow-y: auto;
-  background-color: ${props => props.theme.colors.background};
-  box-shadow: -10px 0px 20px 0px ${props => props.theme.colors.ui2};
+  background-color: ${(props) => props.theme.colors.background};
+  box-shadow: -10px 0px 20px 0px ${(props) => props.theme.colors.ui2};
   z-index: 0;
 `
 MetadataInfoPanel.defaultProps = {
   width: `${METADATA_PANEL_PIXEL}px`,
   px: 'medium',
-  py: 'large'
+  py: 'large',
 }
 
 /**
@@ -80,7 +80,7 @@ export const MetadataRow = styled(Flex)`
 `
 MetadataRow.defaultProps = {
   py: 'small',
-  width: '100%'
+  width: '100%',
 }
 
 /**

@@ -31,7 +31,7 @@ export const MetadataItem = ({
   aux,
   label,
   children,
-  compact
+  compact,
 }: {
   label: string
   aux?: string

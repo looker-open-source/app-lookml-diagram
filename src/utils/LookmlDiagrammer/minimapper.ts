@@ -31,7 +31,7 @@ import {
   TABLE_PADDING,
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
-  MINIMAP_WIDTH
+  MINIMAP_WIDTH,
 } from '../constants'
 import { DiagramMetadata } from './types'
 
@@ -113,6 +113,6 @@ export function generateMinimapDiagram(currentDimensions: DiagramMetadata) {
     scale: minimapScale,
     x: minimapX,
     y: minimapY,
-    default: defaultMinimap
+    default: defaultMinimap,
   }
 }

@@ -25,7 +25,7 @@
  */
 import {
   ILookmlModelExploreField,
-  ILookmlModelExploreJoins
+  ILookmlModelExploreJoins,
 } from '@looker/sdk/lib/4.0/models'
 
 export interface DiagramField

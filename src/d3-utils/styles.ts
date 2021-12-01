@@ -61,10 +61,7 @@ export function addFilter(svg: any) {
     .attr('result', 'blur')
   // translate output of Gaussian blur to the right and downwards with 2px
   // store result in offsetBlur
-  filter
-    .append('feOffset')
-    .attr('in', 'blur')
-    .attr('result', 'offsetBlur')
+  filter.append('feOffset').attr('in', 'blur').attr('result', 'offsetBlur')
   // overlay original SourceGraphic over translated blurred opacity by using
   // feMerge filter. Order of specifying inputs is important!
   const feMerge = filter.append('feMerge')

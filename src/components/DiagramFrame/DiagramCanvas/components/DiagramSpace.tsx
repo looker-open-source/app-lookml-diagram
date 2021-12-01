@@ -51,7 +51,7 @@ import {
   DIAGRAM_MEASURE_HOVER_COLOR,
   DIAGRAM_MEASURE_ICON_COLOR,
   DIAGRAM_JOINED_VIEW_HOVER_COLOR,
-  DIAGRAM_BASE_VIEW_HOVER_COLOR
+  DIAGRAM_BASE_VIEW_HOVER_COLOR,
 } from '../../../../utils/constants'
 
 export const DiagramSpace = styled.svg`

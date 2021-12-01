@@ -30,7 +30,7 @@ import { ExtensionContext2 } from '@looker/extension-sdk-react'
 import {
   ILookmlModel,
   ILookmlModelExplore,
-  IGitBranch
+  IGitBranch,
 } from '@looker/sdk/lib/4.0/models'
 import { DiagrammedModel, generateModelDiagrams } from './LookmlDiagrammer'
 
@@ -50,7 +50,7 @@ export interface DiagramError {
 const defaultQueryOptions = {
   staleTime: Infinity,
   cacheTime: Infinity,
-  refetchOnWindowFocus: false
+  refetchOnWindowFocus: false,
 }
 
 /**
@@ -63,7 +63,7 @@ export function useAllModels(): ILookmlModel[] {
     'allModels',
     () => coreSDK.ok(coreSDK.all_lookml_models()),
     {
-      ...defaultQueryOptions
+      ...defaultQueryOptions,
     }
   )
   const allModels = data
@@ -83,7 +83,7 @@ export function useLookmlModelExplore(modelName: string, exploreName: string) {
     () => coreSDK.ok(coreSDK.lookml_model_explore(modelName, exploreName)),
     {
       retry: false,
-      ...defaultQueryOptions
+      ...defaultQueryOptions,
     }
   )
   const explore = data
@@ -101,7 +101,7 @@ export function useLookmlModelExplores(model: ILookmlModel) {
     `${model?.name}Explores`,
     () => {
       return Promise.all(
-        model.explores.map(explore => {
+        model.explores.map((explore) => {
           return coreSDK.ok(
             coreSDK.lookml_model_explore(model.name, explore.name)
           )
@@ -112,7 +112,7 @@ export function useLookmlModelExplores(model: ILookmlModel) {
       enabled: !!model,
       retry: false,
       ...defaultQueryOptions,
-      initialData: undefined
+      initialData: undefined,
     }
   )
   const explores = data
@@ -136,7 +136,7 @@ export function useModelDiagrams(
     () => generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType),
     {
       ...defaultQueryOptions,
-      initialData: undefined
+      initialData: undefined,
     }
   )
   const dimensions = data
@@ -155,7 +155,7 @@ export function useCurrentGitBranch(projectId: string) {
     () => coreSDK.ok(coreSDK.git_branch(projectId)),
     {
       enabled: !!projectId,
-      ...defaultQueryOptions
+      ...defaultQueryOptions,
     }
   )
   const gitBranch = data
@@ -175,7 +175,7 @@ export function useAvailableGitBranches(projectId: string) {
     () => coreSDK.ok(coreSDK.all_git_branches(projectId)),
     {
       enabled: !!projectId,
-      ...defaultQueryOptions
+      ...defaultQueryOptions,
     }
   )
   const gitBranches = data
@@ -197,13 +197,13 @@ export function useUpdateGitBranches(projectId: string) {
       coreSDK.ok(
         coreSDK.update_git_branch(projectId, {
           name: gitName,
-          ref: ''
+          ref: '',
         })
       ),
     {
       onSuccess: () => {
         queryClient.resetQueries()
-      }
+      },
     }
   )
   return mutation

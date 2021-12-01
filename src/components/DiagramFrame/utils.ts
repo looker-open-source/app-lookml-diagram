@@ -40,7 +40,7 @@ export function prepareModelDropdown(unfilteredModels: ILookmlModel[] = []) {
     .map((d: ILookmlModel) => {
       return {
         value: d.name,
-        label: d.label
+        label: d.label,
       }
     })
     .sort((a: SelectOptionProps, b: SelectOptionProps) =>
@@ -57,7 +57,7 @@ export function prepareExploreList(currentModel: ILookmlModel) {
     .map((d: ILookmlModelExplore) => {
       return {
         value: d.name,
-        label: d.label
+        label: d.label,
       }
     })
     .sort((a: ExploreDropdown, b: ExploreDropdown) =>

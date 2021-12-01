@@ -30,7 +30,7 @@ import {
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
   DIAGRAM_ICON_SCALE,
-  CAP_RADIUS
+  CAP_RADIUS,
 } from '../utils/constants'
 import { SelectionInfoPacket } from '../components/interfaces'
 import { DiagramField } from '../utils/LookmlDiagrammer/'
@@ -42,7 +42,7 @@ import {
   isTableRowView,
   isRounded,
   getDatatypePath,
-  getPkPath
+  getPkPath,
 } from './table-helpers'
 
 export function createLookmlViewElement(
@@ -118,8 +118,10 @@ export function createLookmlViewElement(
       return `${d.name && d.name.replace('.', '-')}`
     })
     .attr('transform', (d: DiagramField, i: number) => {
-      return `translate(${header.diagramX}, ${header.diagramY +
-        i * (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1))})`
+      return `translate(${header.diagramX}, ${
+        header.diagramY +
+        i * (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1))
+      })`
     })
 
   // Create table elements, except first and last
@@ -143,11 +145,13 @@ export function createLookmlViewElement(
       .append('path')
       .attr('d', (dd: DiagramField, i: number) =>
         i === 0
-          ? `M0,${TABLE_ROW_HEIGHT} v-${TABLE_ROW_HEIGHT -
-              CAP_RADIUS} q0,-${CAP_RADIUS} ${CAP_RADIUS},-${CAP_RADIUS} h${TABLE_WIDTH -
-              CAP_RADIUS *
-                2} q${CAP_RADIUS},0 ${CAP_RADIUS},${CAP_RADIUS} v${TABLE_ROW_HEIGHT -
-              CAP_RADIUS} z`
+          ? `M0,${TABLE_ROW_HEIGHT} v-${
+              TABLE_ROW_HEIGHT - CAP_RADIUS
+            } q0,-${CAP_RADIUS} ${CAP_RADIUS},-${CAP_RADIUS} h${
+              TABLE_WIDTH - CAP_RADIUS * 2
+            } q${CAP_RADIUS},0 ${CAP_RADIUS},${CAP_RADIUS} v${
+              TABLE_ROW_HEIGHT - CAP_RADIUS
+            } z`
           : `M0,0`
       )
       .classed('table-row', true)
@@ -161,9 +165,11 @@ export function createLookmlViewElement(
       .append('path')
       .attr('d', (dd: DiagramField, i: number) =>
         i === tableData.length - 1
-          ? `M0,0 h${TABLE_WIDTH} v${TABLE_ROW_HEIGHT -
-              CAP_RADIUS} q0,${CAP_RADIUS} -${CAP_RADIUS},${CAP_RADIUS} h-${TABLE_WIDTH -
-              CAP_RADIUS * 2} q-${CAP_RADIUS},0 -${CAP_RADIUS},-${CAP_RADIUS} z`
+          ? `M0,0 h${TABLE_WIDTH} v${
+              TABLE_ROW_HEIGHT - CAP_RADIUS
+            } q0,${CAP_RADIUS} -${CAP_RADIUS},${CAP_RADIUS} h-${
+              TABLE_WIDTH - CAP_RADIUS * 2
+            } q-${CAP_RADIUS},0 -${CAP_RADIUS},-${CAP_RADIUS} z`
           : `M0,0`
       )
       .classed('table-row', true)
@@ -184,8 +190,9 @@ export function createLookmlViewElement(
       .attr('d', getDatatypePath)
       .attr('class', 'datatype-icon')
       .attr('transform', (d: DiagramField, i: number) => {
-        return `translate(2,${DIAGRAM_FIELD_STROKE_WIDTH / 2 +
-          2})scale(${DIAGRAM_ICON_SCALE})`
+        return `translate(2,${
+          DIAGRAM_FIELD_STROKE_WIDTH / 2 + 2
+        })scale(${DIAGRAM_ICON_SCALE})`
       })
     // Add PK icon if needed
     tableRow
@@ -193,16 +200,17 @@ export function createLookmlViewElement(
       .attr('d', getPkPath)
       .attr('class', 'pk-icon')
       .attr('transform', (d: DiagramField, i: number) => {
-        return `translate(${TABLE_WIDTH -
-          DIAGRAM_FIELD_STROKE_WIDTH * 3}, ${DIAGRAM_FIELD_STROKE_WIDTH / 2 +
-          2})scale(${DIAGRAM_ICON_SCALE})`
+        return `translate(${TABLE_WIDTH - DIAGRAM_FIELD_STROKE_WIDTH * 3}, ${
+          DIAGRAM_FIELD_STROKE_WIDTH / 2 + 2
+        })scale(${DIAGRAM_ICON_SCALE})`
       })
     // Label table elements
     tableRow
       .append('text')
       .attr('transform', (d: DiagramField, i: number) => {
-        return `translate(${i === 0 ? 5 : 25}, ${DIAGRAM_FIELD_STROKE_WIDTH /
-          2})`
+        return `translate(${i === 0 ? 5 : 25}, ${
+          DIAGRAM_FIELD_STROKE_WIDTH / 2
+        })`
       })
       .attr('dy', '0.9em')
       .text((d: DiagramField) => getLabel(d))
@@ -228,7 +236,7 @@ export function createLookmlViewElement(
         lookmlElement: arr?.category,
         name: arr.name,
         grouped: arr.dimension_group,
-        link: arr.lookml_link
+        link: arr.lookml_link,
       })
     })
 }

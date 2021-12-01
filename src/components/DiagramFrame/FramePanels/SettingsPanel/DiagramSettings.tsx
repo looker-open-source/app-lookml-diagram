@@ -30,7 +30,7 @@ import {
   Divider,
   FieldSelect,
   FadeIn,
-  Label
+  Label,
 } from '@looker/components'
 import { useHistory } from 'react-router'
 import { internalModelURL } from '../../../../utils/routes'
@@ -54,7 +54,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
   setZoomFactor,
   setViewPosition,
   setMinimapUntoggled,
-  setMinimapEnabled
+  setMinimapEnabled,
 }) => {
   const history = useHistory()
   const gitBranch = modelDetail?.gitBranch
@@ -85,7 +85,7 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
               placeholder="Loading Git Branches..."
               label="Current Branch"
               value={gitBranch && gitBranch.name}
-              onChange={value => {
+              onChange={(value) => {
                 updateBranch.mutate(value)
               }}
               disabled={

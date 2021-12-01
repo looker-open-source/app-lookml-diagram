@@ -29,7 +29,7 @@ import { Link, LinkProps } from '@looker/components'
 import { Looker40SDK } from '@looker/sdk'
 import {
   ExtensionContext2,
-  ExtensionContextData2
+  ExtensionContextData2,
 } from '@looker/extension-sdk-react'
 
 export const ExternalLink: React.FC<Omit<LinkProps, 'color'>> = ({

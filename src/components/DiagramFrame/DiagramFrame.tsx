@@ -37,14 +37,14 @@ import {
   X_INIT,
   Y_INIT,
   OVERRIDE_KEY,
-  OVERRIDE_KEY_SUBTLE
+  OVERRIDE_KEY_SUBTLE,
 } from '../../utils/constants'
 import { MetadataPanel } from './MetadataPanel/MetadataPanel'
 import {
   ViewOptions,
   DiagramSettings,
   HelpPanel,
-  ExploreDropdown
+  ExploreDropdown,
 } from './FramePanels'
 import { DiagramHeader } from './DiagramHeader'
 import { DiagramCanvas } from './DiagramCanvas/DiagramCanvas'
@@ -61,7 +61,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   hiddenToggle,
   setHiddenToggle,
   displayFieldType,
-  setDisplayFieldType
+  setDisplayFieldType,
 }) => {
   const [viewVisible, setViewVisible] = React.useState<VisibleViewLookup>({})
   const [showSettings, setShowSettings] = React.useState(true)
@@ -74,7 +74,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   const [zoomFactor, setZoomFactor] = React.useState(ZOOM_INIT)
   const [viewPosition, setViewPosition] = React.useState({
     x: X_INIT,
-    y: Y_INIT
+    y: Y_INIT,
   })
   const [minimapEnabled, setMinimapEnabled] = React.useState(false)
   const [minimapUntoggled, setMinimapUntoggled] = React.useState(true)
@@ -120,7 +120,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const iconStyleOverride = {
     color: OVERRIDE_KEY,
-    backgroundColor: OVERRIDE_KEY_SUBTLE
+    backgroundColor: OVERRIDE_KEY_SUBTLE,
   }
 
   const settingsIconStyles = showSettings ? iconStyleOverride : {}
@@ -193,7 +193,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
             style={{
               ...helpIconStyles,
               position: 'absolute',
-              bottom: '5px'
+              bottom: '5px',
             }}
           />
         </SpaceVertical>

@@ -28,13 +28,13 @@ import {
   TABLE_VERTICAL_PADDING,
   TABLE_DEGREE_STEP,
   TABLE_ROW_HEIGHT,
-  DIAGRAM_FIELD_STROKE_WIDTH
+  DIAGRAM_FIELD_STROKE_WIDTH,
 } from '../constants'
 import {
   DiagramMetadata,
   DiagramDegreeShiftLookup,
   DiagramDegreeOrderLookup,
-  DiagramField
+  DiagramField,
 } from './types'
 import { getJoinedViewsForViews, getTableX } from './utils'
 
@@ -86,7 +86,7 @@ export class LookmlDiagrammer {
     this.arrangeRemaining()
     // Drop any tables that were collected but lack fields and joins
     Object.keys(this.diagramDict.tableData).forEach(
-      key =>
+      (key) =>
         this.diagramDict.tableData[key] === undefined &&
         delete this.diagramDict.tableData[key]
     )
@@ -136,7 +136,7 @@ export class LookmlDiagrammer {
             diagramX: calcX,
             diagramY: calcY,
             diagramDegree: degree,
-            verticalIndex: this.yOrder[degree].length
+            verticalIndex: this.yOrder[degree].length,
           }
         }
       )

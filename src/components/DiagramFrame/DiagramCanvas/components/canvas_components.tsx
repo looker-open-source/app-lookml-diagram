@@ -43,14 +43,14 @@ export const Toolbar = styled(Card)`
 Toolbar.defaultProps = {
   height: 'auto',
   width: '40px',
-  minWidth: '40px'
+  minWidth: '40px',
 }
 
 /**
  * Top level layout component for the DiagramCanvas
  */
 export const DiagramCanvasWrapper = styled(Section)`
-  background: ${props => props.theme.colors.ui1};
+  background: ${(props) => props.theme.colors.ui1};
   overflow: hidden;
   position: relative;
   display: flex;
@@ -105,5 +105,5 @@ export const Minimap = styled(Card)`
 Minimap.defaultProps = {
   minWidth: `${MINIMAP_WIDTH}px`,
   width: `${MINIMAP_WIDTH}px`,
-  height: 'auto'
+  height: 'auto',
 }
