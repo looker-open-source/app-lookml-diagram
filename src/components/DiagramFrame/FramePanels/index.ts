@@ -24,7 +24,7 @@
 
  */
 
-export { ViewOptions } from './ViewOptions'
-export { HelpPanel } from './HelpPanel'
-export { DiagramSettings } from './SettingsPanel/DiagramSettings'
-export { ExploreDropdown } from './types'
+export * from './ViewOptions'
+export * from './HelpPanel'
+export * from './SettingsPanel/DiagramSettings'
+export * from './types'

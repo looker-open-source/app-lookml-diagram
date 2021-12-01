@@ -24,12 +24,7 @@
 
  */
 
-export {
-  DiagramMetadata,
-  DiagramField,
-  DiagramJoin,
-  DiagrammedModel,
-} from './types'
-export { onlyUnique, getFields } from './utils'
-export { generateModelDiagrams, generateExploreDiagram } from './diagrammer'
-export { generateMinimapDiagram } from './minimapper'
+export * from './types'
+export * from './utils'
+export * from './diagrammer'
+export * from './minimapper'
