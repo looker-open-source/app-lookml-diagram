@@ -8,7 +8,7 @@
   "scripts": {
     "analyze": "export ANALYZE_MODE=static && yarn build",
     "build": "export BABEL_ENV=build && webpack --config webpack.prod.js",
-    "develop": "webpack serve --hot --port 8080 --disable-host-check --config webpack.develop.js",
+    "develop": "webpack serve --hot --port 8080 --disable-host-check --config webpack.develop.js --https",
     "test": "jest",
     "build:ci:clean": "rm -rf ./temp && mkdir ./temp",
     "build:ci": "export BABEL_ENV=build && webpack --config webpack.prod.js --output-path=./temp",

@@ -64,7 +64,7 @@ export function onlyUnique(value: any, index: any, self: any) {
  * @param value
  */
 export function onlyStrings(value: any) {
-  return typeof value === 'string'
+  return typeof value === 'string' && value.length > 0
 }
 
 /**

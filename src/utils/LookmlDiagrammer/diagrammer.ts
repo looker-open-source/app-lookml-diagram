@@ -63,8 +63,8 @@ export function generateExploreDiagram(
   hiddenToggle: boolean,
   displayFieldType: string
 ) {
-  const exploreFields = explore.fields
-  const exploreJoins = explore.joins
+  const exploreFields = explore.fields || {}
+  const exploreJoins = explore.joins || []
   const fields = getFields(exploreFields)
   const views = getViews(exploreFields, exploreJoins, explore.name)
   let baseViewName = ''
@@ -84,7 +84,7 @@ export function generateExploreDiagram(
   )
 
   // Add table data to DiagramDict for each view
-  views.forEach((viewName: string, viewIndex: number) => {
+  views.forEach((viewName: string) => {
     const filteredFields = getFilteredViewFields(
       fields,
       viewName,
@@ -94,11 +94,11 @@ export function generateExploreDiagram(
     )
     const grouplessFilteredFields = getGrouplessViewFields(filteredFields)
 
-    const dimLen = grouplessFilteredFields.filter((e, j) => {
+    const dimLen = grouplessFilteredFields.filter((e) => {
       return e.view === viewName && e.category === 'dimension'
     }).length
 
-    const firstSetName = explore.sets[0].name
+    const firstSetName = explore.sets?.length > 0 ? explore.sets[0].name : ''
     if (
       baseViewName === '' &&
       (explore.name === viewName ||
@@ -128,37 +128,33 @@ export function generateExploreDiagram(
     ]
   })
   // Add join data to DiagramDict for each join
-  diagramDict.joinData = exploreJoins.map(
-    (join: ILookmlModelExploreJoins, joinIndex: number) => {
-      let joinPath: DiagramJoin[] = []
-      if (join.foreign_key) {
-        joinPath = getFkJoinPathObjs(join, diagramDict, explore)
-      } else if (join.dependent_fields.length > 0) {
-        join.dependent_fields.forEach(
-          (field: string, depFieldIndex: number) => {
-            const joinFieldArr = field.split('.')
-            const tableRef = diagramDict.tableData[joinFieldArr[0]]
-            const fieldIndex = getViewDependentFieldIndex(tableRef, field)
-            if (join.sql_on) {
-              join.sql_on.includes('${' + field + '}') &&
-                joinPath.push(
-                  getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join)
-                )
-            } else {
-              joinPath.push(
-                getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join)
-              )
-              joinPath.push(getJoinPathObj(join))
-            }
-          }
-        )
-      } else {
-        joinPath.push(getJoinPathObj(join))
-        joinPath.push(getExploreJoinPathObj(explore, join))
-      }
-      return joinPath
+  diagramDict.joinData = exploreJoins.map((join: ILookmlModelExploreJoins) => {
+    let joinPath: DiagramJoin[] = []
+    if (join.foreign_key) {
+      joinPath = getFkJoinPathObjs(join, diagramDict, explore)
+    } else if (join.dependent_fields.length > 0) {
+      join.dependent_fields.forEach((field: string) => {
+        const joinFieldArr = field.split('.')
+        const tableRef = diagramDict.tableData[joinFieldArr[0]]
+        const fieldIndex = getViewDependentFieldIndex(tableRef, field)
+        if (join.sql_on) {
+          join.sql_on.includes('${' + field + '}') &&
+            joinPath.push(
+              getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join)
+            )
+        } else {
+          joinPath.push(
+            getSqlJoinPathObj(joinFieldArr, fieldIndex, field, join)
+          )
+          joinPath.push(getJoinPathObj(join))
+        }
+      })
+    } else {
+      joinPath.push(getJoinPathObj(join))
+      joinPath.push(getExploreJoinPathObj(explore, join))
     }
-  )
+    return joinPath
+  })
 
   // General order tables would be arranged in, if no base view
   const joinCount = countJoins(diagramDict)
