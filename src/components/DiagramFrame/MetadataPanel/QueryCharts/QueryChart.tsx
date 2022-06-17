@@ -39,12 +39,8 @@ import {
 import styled from 'styled-components'
 import { BarChart, Bar, Tooltip } from 'recharts'
 import { ExtensionContext2 } from '@looker/extension-sdk-react'
-import {
-  QueryChartType,
-  runChartQuery,
-  SimpleResult,
-  globalCache,
-} from '../../../../utils/queries'
+import type { QueryChartType, SimpleResult } from '../../../../utils/queries'
+import { runChartQuery, globalCache } from '../../../../utils/queries'
 import { ExternalLink } from '../../../ExternalLink'
 
 import { MetadataItem } from './MetadataList'
@@ -75,6 +71,7 @@ const ProgressTableRow = styled(TableRow)`
 `
 
 const PaddedCell = styled(TableDataCell)``
+// eslint-disable-next-line no-restricted-properties
 PaddedCell.defaultProps = {
   p: '4px',
 }
@@ -87,7 +84,7 @@ const BarTooltip = styled.div`
   background: #282828;
 `
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
       <BarTooltip>

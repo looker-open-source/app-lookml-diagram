@@ -26,8 +26,8 @@
 
 import React from 'react'
 import { useHistory } from 'react-router'
-import { ExploreDropdown } from '../types'
-import { ExploreListProps } from './types'
+import type { ExploreDropdown } from '../types'
+import type { ExploreListProps } from './types'
 import { handleExploreChange, getExploreListItemBackgroundColor } from './utils'
 import {
   ExploreListWrapper,

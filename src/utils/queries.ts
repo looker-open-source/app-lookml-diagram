@@ -1,14 +1,19 @@
 /*
+
  MIT License
+
  Copyright (c) 2021 Looker Data Sciences, Inc.
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -16,16 +21,16 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
+
  */
 
-import {
+import type {
   ILookmlModel,
   ILookmlModelExplore,
-  ILookmlModelExploreField
+  ILookmlModelExploreField,
 } from '@looker/sdk/lib/3.1/models'
-import { exploreURL } from "./urls"
-import { Looker31SDK as LookerSDK } from '@looker/sdk/lib/3.1/methods'
-import { IQuery } from '@looker/sdk'
+import type { Looker31SDK as LookerSDK } from '@looker/sdk/lib/3.1/methods'
+import { exploreURL } from './urls'
 
 export const globalCache: any = {}
 
@@ -43,7 +48,6 @@ export async function loadCached<T>(
   }
 }
 
-
 interface FieldInfo {
   model: ILookmlModel
   explore: ILookmlModelExplore
@@ -51,7 +55,7 @@ interface FieldInfo {
 }
 
 export interface QueryChartTypeTopValues extends FieldInfo {
-  type: "Values" | "Distribution"
+  type: 'Values' | 'Distribution'
 }
 
 export type QueryChartType = QueryChartTypeTopValues
@@ -63,7 +67,7 @@ export interface SimpleDatum {
 }
 
 export interface SimpleResult {
-  align: ("left" | "right")[]
+  align: ('left' | 'right')[]
   data: SimpleDatum[][]
   max: (number | undefined)[]
   aux?: string
@@ -78,38 +82,37 @@ export interface Histogram {
 function formatData(d: any): SimpleDatum {
   const link = d.links && d.links[0] && d.links[0].url
   const string = d.rendered || `${d.value}`
-  const number = typeof d.value === "number" ? d.value : undefined
+  const number = typeof d.value === 'number' ? d.value : undefined
   return { v: string, l: link, n: number }
 }
 
 export function countFieldForField({
   explore,
-  field
+  field,
 }: {
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }): ILookmlModelExploreField | undefined {
-  return explore.fields.measures.filter(
-    f => f.type.includes("count") && f.view_label === field.view_label
-  )[0] || {name: "provided_count"}
+  return (
+    explore.fields.measures.filter(
+      (f) => f.type.includes('count') && f.view_label === field.view_label
+    )[0] || { name: 'provided_count' }
+  )
 }
 
 export function canGetTopValues({
-  explore,
-  field
+  field,
 }: {
   model: ILookmlModel
   explore: ILookmlModelExplore
   field: ILookmlModelExploreField
 }) {
-  return (
-    field.category === "dimension"
-  )
+  return field.category === 'dimension'
 }
 
 export function canGetDistribution({
   explore,
-  field
+  field,
 }: {
   model: ILookmlModel
   explore: ILookmlModelExplore
@@ -117,7 +120,7 @@ export function canGetDistribution({
 }) {
   return (
     field.is_numeric &&
-    field.category === "dimension" &&
+    field.category === 'dimension' &&
     !!countFieldForField({ explore, field })
   )
 }
@@ -126,7 +129,7 @@ export async function getTopValues({
   sdk,
   model,
   explore,
-  field
+  field,
 }: {
   sdk: LookerSDK
   model: ILookmlModel
@@ -136,7 +139,7 @@ export async function getTopValues({
   const countField = countFieldForField({ explore, field })
   const qr: any = await sdk.ok(
     sdk.run_inline_query({
-      result_format: "json_detail",
+      result_format: 'json_detail',
       limit: 10,
       body: {
         total: true,
@@ -145,13 +148,13 @@ export async function getTopValues({
         fields: [field.name, countField.name],
         dynamic_fields: JSON.stringify([
           {
-            measure: "provided_count",
-            type: "count",
-            based_on: field.name
-          }
+            measure: 'provided_count',
+            type: 'count',
+            based_on: field.name,
+          },
         ]),
-        sorts: [`${countField.name} desc`]
-      }
+        sorts: [`${countField.name} desc`],
+      },
     })
   )
   /* eslint-disable */

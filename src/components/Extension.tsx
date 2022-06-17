@@ -26,11 +26,9 @@
 
 import React, { useContext } from 'react'
 import { ComponentsProvider } from '@looker/components'
-import { Looker40SDK } from '@looker/sdk'
-import {
-  ExtensionContext2,
-  ExtensionContextData2,
-} from '@looker/extension-sdk-react'
+import type { Looker40SDK } from '@looker/sdk'
+import type { ExtensionContextData2 } from '@looker/extension-sdk-react'
+import { ExtensionContext2 } from '@looker/extension-sdk-react'
 import { useSelectExplore, usePathNames } from '../utils/routes'
 import {
   VIEW_OPTIONS_HIDDEN_DEFAULT,
@@ -48,7 +46,7 @@ export const Extension: React.FC = () => {
     !extensionHost || extensionHost === 'standard'
       ? { fontFamilies: { brand: 'Google Sans' } }
       : {}
-  const { modelName, exploreName, fullPage } = usePathNames()
+  const { modelName, exploreName } = usePathNames()
   const [hiddenToggle, setHiddenToggle] = React.useState(
     VIEW_OPTIONS_HIDDEN_DEFAULT
   )

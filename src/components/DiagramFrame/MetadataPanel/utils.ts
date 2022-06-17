@@ -23,18 +23,18 @@
  SOFTWARE.
 
  */
-import {
+import type {
   ILookmlModelExplore,
   ILookmlModelExploreField,
   ILookmlModelExploreJoins,
 } from '@looker/sdk/lib/4.0/models'
-import { SelectionInfoPacket } from '../../interfaces'
+import type { SelectionInfoPacket } from '../../interfaces'
 
 export const UNKNOWN_VIEW_SQLTABLENAME =
   'This value is known only for views that are also defined as an Explore.'
 
 export function getJoinCodeBlock(join: ILookmlModelExploreJoins) {
-  const startLine = `join: ${join.name.toLowerCase()} {\n`
+  const startLine = `join: ${join.name?.toLowerCase()} {\n`
   const typeLine = join.type && `  type: ${join.type}\n`
   const relationLine =
     join.relationship && `  relationship: ${join.relationship}\n`
@@ -139,7 +139,6 @@ export function getFieldMetadata(
   const field = fields[0]
   // 'lookml_link' only exists on api response if user has "see_lookml"
   // permission. This is a requirement for using the extension.
-  // @ts-ignore
   const lookmlLink = field?.lookml_link
   const timeframes = fields.map((f: any) => {
     return (
@@ -207,8 +206,6 @@ export function isSelectedFieldOrDimGroupMember(
   selectionInfo: SelectionInfoPacket,
   field: ILookmlModelExploreField
 ) {
-  // dimension group not on type but does exist
-  // @ts-ignore
   const dimensionGroup = field.dimension_group
   if (field.lookml_link === selectionInfo.link) {
     if (field.name === selectionInfo.name) {

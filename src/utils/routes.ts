@@ -24,12 +24,12 @@
 
  */
 import { useRouteMatch } from 'react-router-dom'
+import type { DetailedModel } from './fetchers'
 import {
   useAllModels,
   useLookmlModelExplores,
   useAvailableGitBranches,
   useCurrentGitBranch,
-  DetailedModel,
   useModelDiagrams,
 } from './fetchers'
 

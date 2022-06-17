@@ -32,8 +32,8 @@ import {
   DIAGRAM_ICON_SCALE,
   CAP_RADIUS,
 } from '../utils/constants'
-import { SelectionInfoPacket } from '../components/interfaces'
-import { DiagramField } from '../utils/LookmlDiagrammer/'
+import type { SelectionInfoPacket } from '../components/interfaces'
+import type { DiagramField } from '../utils/LookmlDiagrammer/'
 import { getLabel } from './styles'
 import {
   isTableRowDimension,
@@ -46,9 +46,9 @@ import {
 } from './table-helpers'
 
 export function createLookmlViewElement(
-  svg: d3.Selection<SVGElement, {}, HTMLElement, any>,
+  svg: d3.Selection<SVGElement, any, HTMLElement, any>,
   tableData: DiagramField[],
-  selectionInfo: SelectionInfoPacket,
+  _selectionInfo: SelectionInfoPacket,
   setSelectionInfo: (packet: SelectionInfoPacket) => void,
   type: string
 ) {
@@ -114,10 +114,10 @@ export function createLookmlViewElement(
     .classed('table-row-grouped', (d: DiagramField) => !!d.dimension_group)
     .classed('table-row-view', (d: DiagramField) => isTableRowView(d))
     .classed('table-row-base-view', (d: DiagramField) => isTableRowBaseView(d))
-    .attr('id', (d: DiagramField, i: number) => {
+    .attr('id', (d: DiagramField, _i: number) => {
       return `${d.name && d.name.replace('.', '-')}`
     })
-    .attr('transform', (d: DiagramField, i: number) => {
+    .attr('transform', (_d: DiagramField, i: number) => {
       return `translate(${header.diagramX}, ${
         header.diagramY +
         i * (TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1))
@@ -127,14 +127,14 @@ export function createLookmlViewElement(
   // Create table elements, except first and last
   tableRow
     .append('rect')
-    .attr('rx', (d: DiagramField, i: number) => {
+    .attr('rx', (_d: DiagramField, i: number) => {
       return isRounded(i, tableData.length) ? CAP_RADIUS : 0
     })
-    .attr('ry', (d: DiagramField, i: number) => {
+    .attr('ry', (_d: DiagramField, i: number) => {
       return isRounded(i, tableData.length) ? CAP_RADIUS : 0
     })
     .attr('width', TABLE_WIDTH)
-    .attr('height', (d: DiagramField, i: number) => {
+    .attr('height', (_d: DiagramField, i: number) => {
       return isRounded(i, tableData.length) && tableData.length > 1
         ? 0
         : TABLE_ROW_HEIGHT + (DIAGRAM_FIELD_STROKE_WIDTH - 1) - CAP_RADIUS
@@ -143,7 +143,7 @@ export function createLookmlViewElement(
   const tableTopCap = () =>
     tableRow
       .append('path')
-      .attr('d', (dd: DiagramField, i: number) =>
+      .attr('d', (_dd: DiagramField, i: number) =>
         i === 0
           ? `M0,${TABLE_ROW_HEIGHT} v-${
               TABLE_ROW_HEIGHT - CAP_RADIUS
@@ -163,7 +163,7 @@ export function createLookmlViewElement(
   const tableBottomCap = () =>
     tableRow
       .append('path')
-      .attr('d', (dd: DiagramField, i: number) =>
+      .attr('d', (_dd: DiagramField, i: number) =>
         i === tableData.length - 1
           ? `M0,0 h${TABLE_WIDTH} v${
               TABLE_ROW_HEIGHT - CAP_RADIUS
@@ -189,7 +189,7 @@ export function createLookmlViewElement(
       .append('path')
       .attr('d', getDatatypePath)
       .attr('class', 'datatype-icon')
-      .attr('transform', (d: DiagramField, i: number) => {
+      .attr('transform', (_d: DiagramField, _i: number) => {
         return `translate(2,${
           DIAGRAM_FIELD_STROKE_WIDTH / 2 + 2
         })scale(${DIAGRAM_ICON_SCALE})`
@@ -199,7 +199,7 @@ export function createLookmlViewElement(
       .append('path')
       .attr('d', getPkPath)
       .attr('class', 'pk-icon')
-      .attr('transform', (d: DiagramField, i: number) => {
+      .attr('transform', (_d: DiagramField, _i: number) => {
         return `translate(${TABLE_WIDTH - DIAGRAM_FIELD_STROKE_WIDTH * 3}, ${
           DIAGRAM_FIELD_STROKE_WIDTH / 2 + 2
         })scale(${DIAGRAM_ICON_SCALE})`
@@ -207,7 +207,7 @@ export function createLookmlViewElement(
     // Label table elements
     tableRow
       .append('text')
-      .attr('transform', (d: DiagramField, i: number) => {
+      .attr('transform', (_d: DiagramField, i: number) => {
         return `translate(${i === 0 ? 5 : 25}, ${
           DIAGRAM_FIELD_STROKE_WIDTH / 2
         })`
@@ -221,7 +221,7 @@ export function createLookmlViewElement(
       .attr('y1', TABLE_ROW_HEIGHT + 3)
       .attr('x2', TABLE_WIDTH + DIAGRAM_FIELD_STROKE_WIDTH / 2)
       .attr('y2', TABLE_ROW_HEIGHT + 3)
-      .attr('class', (d: DiagramField, i: number) => {
+      .attr('class', (_d: DiagramField, i: number) => {
         return i === 0 || i === tableData.length - 1 || 'row-divider'
       })
   }
@@ -229,8 +229,7 @@ export function createLookmlViewElement(
   type === 'display' &&
     tableRow.on('click', (d: DiagramField) => {
       // Chrome prefers 'toElement', Firefox implements as 'target'
-      // @ts-ignore
-      const target = d.toElement || d.target
+      const target = (d as any).toElement || (d as any).target
       const arr: any = d3.select(target).datum()
       setSelectionInfo({
         lookmlElement: arr?.category,

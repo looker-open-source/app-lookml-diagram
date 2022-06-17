@@ -32,19 +32,12 @@ import {
   DIAGRAM_FIELD_STROKE_WIDTH,
   TABLE_PADDING,
 } from '../utils/constants'
-import {
-  onlyUnique,
-  DiagramMetadata,
-  DiagramJoin,
-} from '../utils/LookmlDiagrammer'
-import { SelectionInfoPacket } from '../components/interfaces'
+import type { DiagramMetadata, DiagramJoin } from '../utils/LookmlDiagrammer'
+import { onlyUnique } from '../utils/LookmlDiagrammer'
+import type { SelectionInfoPacket } from '../components/interfaces'
 import { makeJoinIcon } from './join-icon'
-import {
-  getManyPath,
-  getOnePath,
-  addJoinArrowheads,
-  JoinPoint,
-} from './join-helpers'
+import type { JoinPoint } from './join-helpers'
+import { getManyPath, getOnePath, addJoinArrowheads } from './join-helpers'
 
 export function createLookmlJoinElement(
   svg: any,
@@ -75,7 +68,7 @@ export function createLookmlJoinElement(
       }
     })
   const stopPartIndex = joinParts.length - 2
-  joinParts.forEach((d, i) => {
+  joinParts.forEach((_d, i) => {
     if (i <= stopPartIndex) {
       partArray.push(
         joinData.filter((joinPoint) => {
@@ -94,7 +87,7 @@ export function createLookmlJoinElement(
   })
 
   // Calculate the x,y of every field in join and sort left to right
-  partArray.map((path) => {
+  partArray.forEach((path) => {
     const xLookup = path.map((d) => {
       const joinedTableData = diagramDict.tableData[d.viewName]
       return joinedTableData[d.fieldIndex].diagramX
@@ -309,7 +302,7 @@ export function createLookmlJoinElement(
       addJoinArrowheads(join, joinData[0].joinName)
 
       // Add the "bracket" that links many fields on one table
-      connectorPath.map((connector) => {
+      connectorPath.forEach((connector) => {
         join
           .append('path')
           .datum(connector)
@@ -407,8 +400,7 @@ export function createLookmlJoinElement(
           ).classed('join-path-selected', false)
         }
       })
-    const hoverMouseClick =
-      type === 'display' &&
+    type === 'display' &&
       hoverMouseLeave.on('click', () => {
         setSelectionInfo({
           lookmlElement: 'join',

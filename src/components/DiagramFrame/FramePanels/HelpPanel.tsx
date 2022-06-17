@@ -37,6 +37,10 @@ import {
 } from './HelpPanelData'
 import { SettingsPanel, HelpBody, PanelHeading } from './frame_components'
 
+const noop = () => {
+  // noop
+}
+
 export const HelpPanel: React.FC = () => {
   return (
     <SettingsPanel>
@@ -55,7 +59,7 @@ export const HelpPanel: React.FC = () => {
             displayFieldType={'all'}
             viewVisible={{ order_items: true }}
             zoomFactor={0.479}
-            setZoomFactor={() => {}}
+            setZoomFactor={noop}
             viewPosition={{
               x: 55.98,
               y: -86,
@@ -64,7 +68,7 @@ export const HelpPanel: React.FC = () => {
               clientWidth: 375,
               clientHeight: 155,
             }}
-            setViewPosition={() => {}}
+            setViewPosition={noop}
           />
           <HelpBody>
             The base view is indicated by a dark blue header. In each view
@@ -92,7 +96,7 @@ export const HelpPanel: React.FC = () => {
             displayFieldType={'all'}
             viewVisible={{ polling: true, forecast: true }}
             zoomFactor={0.249}
-            setZoomFactor={() => {}}
+            setZoomFactor={noop}
             viewPosition={{
               x: 10.12,
               y: -15.54,
@@ -101,7 +105,7 @@ export const HelpPanel: React.FC = () => {
               clientWidth: 375,
               clientHeight: 190,
             }}
-            setViewPosition={() => {}}
+            setViewPosition={noop}
           />
           <HelpBody>
             Joins are represented by a directed line that connects two views.

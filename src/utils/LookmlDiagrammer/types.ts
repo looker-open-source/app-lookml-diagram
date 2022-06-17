@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import {
+import type {
   ILookmlModelExploreField,
   ILookmlModelExploreJoins,
 } from '@looker/sdk/lib/4.0/models'

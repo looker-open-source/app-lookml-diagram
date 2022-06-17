@@ -24,10 +24,13 @@
 
  */
 
-import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
-import { SelectionInfoPacket } from '../interfaces'
-import { DetailedModel } from '../../utils/fetchers'
-import { DiagrammedModel } from '../../utils/LookmlDiagrammer/'
+import type {
+  ILookmlModel,
+  ILookmlModelExplore,
+} from '@looker/sdk/lib/4.0/models'
+import type { SelectionInfoPacket } from '../interfaces'
+import type { DetailedModel } from '../../utils/fetchers'
+import type { DiagrammedModel } from '../../utils/LookmlDiagrammer/'
 
 export interface DiagramFrameProps {
   unfilteredModels: ILookmlModel[]

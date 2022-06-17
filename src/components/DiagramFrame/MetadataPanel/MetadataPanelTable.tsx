@@ -31,14 +31,14 @@ import {
   ProgressCircular,
   theme,
 } from '@looker/components'
-import {
+import type {
   ILookmlModel,
   ILookmlModelExplore,
   ILookmlModelExploreField,
 } from '@looker/sdk/lib/4.0/models'
 
 import { canGetDistribution, canGetTopValues } from '../../../utils/queries'
-import { LookmlObjectMetadata } from '../../interfaces'
+import type { LookmlObjectMetadata } from '../../interfaces'
 import { QueryChart } from './QueryCharts'
 import { UNKNOWN_VIEW_SQLTABLENAME } from './utils'
 import { LookmlCodeBlock } from './LookmlCodeBlock'

@@ -26,12 +26,17 @@
 
 import React, { useCallback } from 'react'
 import { SpaceVertical, IconButton, Layout } from '@looker/components'
-import { AccountTree } from '@styled-icons/material-outlined/AccountTree'
-import { Visibility } from '@styled-icons/material-outlined/Visibility'
-import { LiveHelp } from '@styled-icons/material-outlined/LiveHelp'
-import { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
-import { SelectionInfoPacket, VisibleViewLookup } from '../interfaces'
-import { DiagrammedModel, DiagramMetadata } from '../../utils/LookmlDiagrammer/'
+import {
+  AccountTree,
+  Visibility,
+  LiveHelp,
+} from '@styled-icons/material-outlined'
+import type { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import type { SelectionInfoPacket, VisibleViewLookup } from '../interfaces'
+import type {
+  DiagrammedModel,
+  DiagramMetadata,
+} from '../../utils/LookmlDiagrammer/'
 import {
   ZOOM_INIT,
   X_INIT,
@@ -40,15 +45,11 @@ import {
   OVERRIDE_KEY_SUBTLE,
 } from '../../utils/constants'
 import { MetadataPanel } from './MetadataPanel/MetadataPanel'
-import {
-  ViewOptions,
-  DiagramSettings,
-  HelpPanel,
-  ExploreDropdown,
-} from './FramePanels'
+import type { ExploreDropdown } from './FramePanels'
+import { ViewOptions, DiagramSettings, HelpPanel } from './FramePanels'
 import { DiagramHeader } from './DiagramHeader'
 import { DiagramCanvas } from './DiagramCanvas/DiagramCanvas'
-import { DiagramFrameProps } from './types'
+import type { DiagramFrameProps } from './types'
 import { Rail, Stage } from './FrameHelpers'
 import { prepareModelDropdown, prepareExploreList } from './utils'
 
@@ -88,7 +89,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const handleHiddenToggle = useCallback(
     (event: any) => setHiddenToggle(event.target.checked),
-    []
+    [setHiddenToggle]
   )
   function closePanels() {
     setShowHelp(false)
@@ -145,7 +146,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
   Object.keys(viewVisible).length === 0 &&
     currentExplore &&
     currentDiagramMetadata &&
-    Object.keys(currentDiagramMetadata.tableData).map(
+    Object.keys(currentDiagramMetadata.tableData).forEach(
       (lookmlViewName: string) => {
         defaultViews[lookmlViewName] = true
       }

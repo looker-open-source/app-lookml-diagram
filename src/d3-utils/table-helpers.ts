@@ -24,7 +24,7 @@
 
  */
 
-import { DiagramField } from '../utils/LookmlDiagrammer'
+import type { DiagramField } from '../utils/LookmlDiagrammer'
 
 export function isTableRowDimension(row: DiagramField) {
   if (row.category === 'dimension') {

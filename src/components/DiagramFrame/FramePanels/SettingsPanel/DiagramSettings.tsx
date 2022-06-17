@@ -36,7 +36,7 @@ import { useHistory } from 'react-router'
 import { internalModelURL } from '../../../../utils/routes'
 import { SettingsPanel, PanelHeading } from '../frame_components'
 import { useUpdateGitBranches } from '../../../../utils/fetchers'
-import { DiagramSettingsProps } from './types'
+import type { DiagramSettingsProps } from './types'
 import { ExploreList } from './ExploreList'
 import { getBranchOptions } from './utils'
 

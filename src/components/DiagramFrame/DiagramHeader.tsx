@@ -27,11 +27,10 @@
 import React from 'react'
 import { Heading, Space, IconButton } from '@looker/components'
 import { useQueryClient } from 'react-query'
-import { Info } from '@styled-icons/material-outlined/Info'
-import { Refresh } from '@styled-icons/material-outlined/Refresh'
+import { Info, Refresh } from '@styled-icons/material-outlined'
 
 import { OVERRIDE_KEY_SUBTLE, OVERRIDE_KEY } from '../../utils/constants'
-import { DiagramHeaderProps } from './types'
+import type { DiagramHeaderProps } from './types'
 import { DiagramHeaderWrapper } from './FrameHelpers'
 
 export const DiagramHeader: React.FC<DiagramHeaderProps> = ({

@@ -27,10 +27,9 @@
 import React from 'react'
 import { Heading, ProgressCircular, Status } from '@looker/components'
 import { DIAGRAM_HEADER_HEIGHT } from '../../../utils/constants'
-import { DiagramMetadata } from '../../../utils/LookmlDiagrammer'
 import Diagram from './Diagram'
 import { DiagramToolbar } from './DiagramToolbar'
-import { DiagramCanvasProps } from './types'
+import type { DiagramCanvasProps } from './types'
 import {
   DiagramCanvasWrapper,
   Minimap,
@@ -38,6 +37,10 @@ import {
   ErrorText,
 } from './components/canvas_components'
 import { EmptyStateArt } from './components/EmptyStateArt'
+
+const noop = () => {
+  // noop
+}
 
 const renderError = (fetchError: string) => {
   let errorText
@@ -174,7 +177,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
             displayFieldType={displayFieldType}
             viewVisible={viewVisible}
             zoomFactor={currentDimensions.minimapScale}
-            setZoomFactor={() => {}}
+            setZoomFactor={noop}
             viewPosition={{
               x: currentDimensions.minimapX,
               y: currentDimensions.minimapY,
@@ -185,7 +188,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
                 svgElement &&
                 (svgElement.clientHeight - DIAGRAM_HEADER_HEIGHT) / zoomFactor,
             }}
-            setViewPosition={() => {}}
+            setViewPosition={noop}
           />
         </Minimap>
       )}

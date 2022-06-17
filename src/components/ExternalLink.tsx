@@ -25,12 +25,11 @@
  */
 
 import React, { useContext } from 'react'
-import { Link, LinkProps } from '@looker/components'
-import { Looker40SDK } from '@looker/sdk'
-import {
-  ExtensionContext2,
-  ExtensionContextData2,
-} from '@looker/extension-sdk-react'
+import type { LinkProps } from '@looker/components'
+import { Link } from '@looker/components'
+import type { Looker40SDK } from '@looker/sdk'
+import type { ExtensionContextData2 } from '@looker/extension-sdk-react'
+import { ExtensionContext2 } from '@looker/extension-sdk-react'
 
 export const ExternalLink: React.FC<Omit<LinkProps, 'color'>> = ({
   href,

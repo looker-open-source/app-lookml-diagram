@@ -52,6 +52,7 @@ export const MetadataFooter = styled(Footer)`
   background-color: ${(props) => props.theme.colors.background};
   border-top: 1px solid ${(props) => props.theme.colors.background};
 `
+// eslint-disable-next-line no-restricted-properties
 MetadataFooter.defaultProps = {
   py: 'small',
 }
@@ -66,6 +67,7 @@ export const MetadataInfoPanel = styled(Aside)`
   box-shadow: -10px 0px 20px 0px ${(props) => props.theme.colors.ui2};
   z-index: 0;
 `
+// eslint-disable-next-line no-restricted-properties
 MetadataInfoPanel.defaultProps = {
   width: `${METADATA_PANEL_PIXEL}px`,
   px: 'medium',
@@ -78,6 +80,7 @@ MetadataInfoPanel.defaultProps = {
 export const MetadataRow = styled(Flex)`
   border-bottom: solid 1px ${theme.colors.ui2};
 `
+// eslint-disable-next-line no-restricted-properties
 MetadataRow.defaultProps = {
   py: 'small',
   width: '100%',

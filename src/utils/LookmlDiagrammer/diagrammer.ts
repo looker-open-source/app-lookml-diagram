@@ -24,12 +24,12 @@
 
  */
 
-import {
+import type {
   ILookmlModelExploreJoins,
   ILookmlModelExplore,
 } from '@looker/sdk/lib/4.0/models'
-import { DetailedModel } from '../fetchers'
-import {
+import type { DetailedModel } from '../fetchers'
+import type {
   DiagramMetadata,
   DiagramJoin,
   DiagrammedModel,
@@ -77,11 +77,9 @@ export function generateExploreDiagram(
     tableData: {},
   }
 
-  const joinSql = exploreJoins.map(
-    (join: ILookmlModelExploreJoins, joinIndex: number) => {
-      return join.sql_on
-    }
-  )
+  const joinSql = exploreJoins.map((join: ILookmlModelExploreJoins) => {
+    return join.sql_on
+  })
 
   // Add table data to DiagramDict for each view
   views.forEach((viewName: string) => {
@@ -183,7 +181,7 @@ export function generateModelDiagrams(
   displayFieldType: string
 ) {
   const modifiedDetails: DiagrammedModel[] = []
-  details?.explores?.map((d: ILookmlModelExplore) => {
+  details?.explores?.forEach((d: ILookmlModelExplore) => {
     const modifiedDetail: DiagrammedModel = {
       exploreName: d.name,
       modelName: d.model_name,

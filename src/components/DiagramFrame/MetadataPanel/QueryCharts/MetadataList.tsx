@@ -29,7 +29,6 @@ import { Box, Text, Flex, FlexItem } from '@looker/components'
 
 export const MetadataItem = ({
   aux,
-  label,
   children,
   compact,
 }: {

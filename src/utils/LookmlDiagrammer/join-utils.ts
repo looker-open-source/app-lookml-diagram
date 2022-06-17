@@ -23,11 +23,11 @@
  SOFTWARE.
 
  */
-import {
+import type {
   ILookmlModelExploreJoins,
   ILookmlModelExplore,
 } from '@looker/sdk/lib/4.0/models'
-import { DiagramField, DiagramJoin, DiagramMetadata } from './types'
+import type { DiagramField, DiagramJoin, DiagramMetadata } from './types'
 import { getViewFieldIndex, getViewPkIndex } from './utils'
 
 /**

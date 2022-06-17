@@ -23,14 +23,14 @@
  SOFTWARE.
 
  */
-import { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
+import type { ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
 import {
   TABLE_VERTICAL_PADDING,
   TABLE_DEGREE_STEP,
   TABLE_ROW_HEIGHT,
   DIAGRAM_FIELD_STROKE_WIDTH,
 } from '../constants'
-import {
+import type {
   DiagramMetadata,
   DiagramDegreeShiftLookup,
   DiagramDegreeOrderLookup,
@@ -129,17 +129,15 @@ export class LookmlDiagrammer {
 
     this.diagramDict.tableData[table] =
       this.diagramDict.tableData[table] &&
-      this.diagramDict.tableData[table].map(
-        (field: DiagramField, i: number) => {
-          return {
-            ...field,
-            diagramX: calcX,
-            diagramY: calcY,
-            diagramDegree: degree,
-            verticalIndex: this.yOrder[degree].length,
-          }
+      this.diagramDict.tableData[table].map((field: DiagramField) => {
+        return {
+          ...field,
+          diagramX: calcX,
+          diagramY: calcY,
+          diagramDegree: degree,
+          verticalIndex: this.yOrder[degree].length,
         }
-      )
+      })
 
     this.diagramDict.tableData[table] && this.built.push(table)
     this.scaffold[table] &&

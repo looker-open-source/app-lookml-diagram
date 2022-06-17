@@ -26,7 +26,7 @@
 
 import React from 'react'
 import { theme, ButtonOutline, FlexItem } from '@looker/components'
-import { Cached } from '@styled-icons/material/Cached'
+import { Cached } from '@styled-icons/material'
 import styled from 'styled-components'
 
 const DisabledText = styled.div`
@@ -40,7 +40,7 @@ export const QueryChartButton: React.FC<{
   enabled: boolean
   onClick: () => void
   title: string
-}> = ({ disabledText, enabled, title, onClick }) => {
+}> = ({ disabledText, enabled, onClick }) => {
   return (
     <FlexItem>
       <ButtonOutline
