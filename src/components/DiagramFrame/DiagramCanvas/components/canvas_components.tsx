@@ -40,6 +40,8 @@ export const Toolbar = styled(Card)`
     border-color: transparent;
   }
 `
+
+// eslint-disable-next-line no-restricted-properties
 Toolbar.defaultProps = {
   height: 'auto',
   width: '40px',
@@ -102,6 +104,8 @@ export const Minimap = styled(Card)`
     border-color: white;
   }
 `
+
+// eslint-disable-next-line no-restricted-properties
 Minimap.defaultProps = {
   minWidth: `${MINIMAP_WIDTH}px`,
   width: `${MINIMAP_WIDTH}px`,

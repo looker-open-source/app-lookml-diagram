@@ -25,16 +25,14 @@
  */
 
 import React from 'react'
+import { Box } from '@looker/components'
 
-const JoinIcon: React.FC<{
-  type: string
-}> = ({ type }) => {
-  const full_outer = (
+const FullOuterIcon = React.memo(() => (
+  <Box width={30} height={20}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      style={{ height: '20px', width: '30px' }}
-      width="48"
-      height="32"
+      width="100%"
+      height="100%"
       viewBox="0 0 48 32"
       fill="none"
     >
@@ -158,13 +156,17 @@ const JoinIcon: React.FC<{
         fill="#B2C6D8"
       />
     </svg>
-  )
-  const left_outer = (
+  </Box>
+))
+FullOuterIcon.displayName = 'FullOuterIcon'
+
+const LeftOuterIcon = React.memo(() => (
+  <Box width={30} height={20}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       style={{ height: '20px', width: '30px' }}
-      width="48"
-      height="32"
+      width="100%"
+      height="100%"
       viewBox="0 0 48 32"
       fill="none"
     >
@@ -228,11 +230,15 @@ const JoinIcon: React.FC<{
         fill="#B2C6D8"
       />
     </svg>
-  )
-  const inner = (
+  </Box>
+))
+LeftOuterIcon.displayName = 'LeftOuterIcon'
+
+const InnerIcon = React.memo(() => (
+  <Box width={30} height={20}>
     <svg
-      width="48"
-      height="32"
+      width="100%"
+      height="100%"
       viewBox="0 0 48 32"
       fill="none"
       style={{ height: '20px', width: '30px' }}
@@ -316,13 +322,16 @@ const JoinIcon: React.FC<{
         fill="#41344A"
       />
     </svg>
-  )
-  const cross = (
+  </Box>
+))
+InnerIcon.displayName = 'InnerIcon'
+
+const CrossIcon = React.memo(() => (
+  <Box width={40} height={20}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="80"
-      style={{ height: '20px', width: '40px' }}
-      height="32"
+      width="100%"
+      height="100%"
       viewBox="0 0 80 32"
       fill="none"
     >
@@ -454,8 +463,19 @@ const JoinIcon: React.FC<{
         </g>
       </g>
     </svg>
-  )
-  return <div>{eval(type.replace('-', '_'))}</div>
-}
+  </Box>
+))
+CrossIcon.displayName = 'CrossIcon'
+
+const JoinIcon: React.FC<{
+  type: string
+}> = ({ type }) => (
+  <>
+    {type === 'full-outer' && <FullOuterIcon />}
+    {type === 'left-outer' && <LeftOuterIcon />}
+    {type === 'inner' && <InnerIcon />}
+    {type === 'cross' && <CrossIcon />}
+  </>
+)
 
 export default JoinIcon

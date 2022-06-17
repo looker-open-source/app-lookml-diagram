@@ -34,6 +34,8 @@ export const SettingsPanel = styled(Aside)`
   height: 100%;
   overflow-x: hidden;
 `
+
+// eslint-disable-next-line no-restricted-properties
 SettingsPanel.defaultProps = {
   width: '275px',
   px: 'medium',

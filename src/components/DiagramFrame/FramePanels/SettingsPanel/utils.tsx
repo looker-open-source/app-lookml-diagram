@@ -24,14 +24,17 @@
 
  */
 import React from 'react'
-import {
+import type {
   ILookmlModel,
   ILookmlModelExplore,
   IGitBranch,
 } from '@looker/sdk/lib/4.0/models'
 import { GitBranch } from '@looker/icons'
-import { SelectOptionProps } from '@looker/components'
-import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
+import type { SelectOptionProps } from '@looker/components'
+import type {
+  SelectionInfoPacket,
+  VisibleViewLookup,
+} from '../../../interfaces'
 import {
   X_INIT,
   Y_INIT,
@@ -39,7 +42,7 @@ import {
   OVERRIDE_KEY_SUBTLE,
 } from '../../../../utils/constants'
 import { internalExploreURL } from '../../../../utils/routes'
-import { ExploreDropdown } from '../types'
+import type { ExploreDropdown } from '../types'
 
 export function handleExploreChange(
   history: any,

@@ -23,7 +23,7 @@
  SOFTWARE.
 
  */
-import {
+import type {
   ILookmlModelExploreFieldset,
   ILookmlModelExploreField,
   ILookmlModelExploreJoins,
@@ -34,7 +34,7 @@ import {
   SHOW_JOINED_FIELDS,
   SHOW_ALL_FIELDS,
 } from '../constants'
-import {
+import type {
   DiagramField,
   DiagramMetadata,
   JoinPopularity,
@@ -46,7 +46,9 @@ import {
  * @param exploreFields
  */
 export function getFields(exploreFields: ILookmlModelExploreFieldset) {
-  return [...exploreFields.dimensions, ...exploreFields.measures]
+  const dimensions = exploreFields.dimensions || []
+  const measures = exploreFields.measures || []
+  return [...dimensions, ...measures]
 }
 
 /**
@@ -80,13 +82,12 @@ export function getViews(
 ) {
   const fields = getFields(exploreFields)
   const views = fields.map((field: ILookmlModelExploreField) => {
-    // `is_turtle` not on the model yet, but does exist
-    // @ts-ignore
-    return !field.is_turtle && field.view
+    return !(field as any).is_turtle && field.view
   })
   // not all views bring in fields... so we must check join refs too
-  joins.map((join: ILookmlModelExploreJoins, joinIndex: number) => {
-    join.dependent_fields.map((field: string, depFieldIndex: number) => {
+  joins.forEach((join: ILookmlModelExploreJoins) => {
+    const dependentFields = join.dependent_fields || []
+    dependentFields.forEach((field: string) => {
       const joinFieldArr = field.split('.')
       const tableRef = views.includes(joinFieldArr[0])
       if (!tableRef) {
@@ -123,7 +124,7 @@ export function getFilteredViewFields(
       return (
         field.view === viewName &&
         joinSql
-          .map((d: any, i: number) => {
+          .map((d: any) => {
             return d && d.includes('${' + field.name + '}')
           })
           .includes(true)
@@ -131,6 +132,7 @@ export function getFilteredViewFields(
     } else if (displayFieldType === SHOW_ALL_FIELDS) {
       return field.view === viewName
     }
+    return false
   })
 }
 
@@ -236,7 +238,7 @@ export function getViewPkIndex(searchTable: DiagramField[]) {
  */
 export function countJoins(diagramDict: DiagramMetadata) {
   const joinCount: JoinPopularity = {}
-  diagramDict.joinData.map((join: any) => {
+  diagramDict.joinData.forEach((join: any) => {
     const joinTables = join
       .map((joinField: any) => {
         return joinField.viewName
@@ -263,9 +265,9 @@ export function getJoinedViewsForViews(
   explore: ILookmlModelExplore
 ) {
   const scaffold: DiagramDegreeOrderLookup = {}
-  buildOrder.map((viewName: string) => {
+  buildOrder.forEach((viewName: string) => {
     const joined: any[] = []
-    diagramDict.joinData.map((join: any) => {
+    diagramDict.joinData.forEach((join: any) => {
       const shouldBuild = join.map((joinElement: any) => {
         if (joinElement.viewName === viewName) {
           return true

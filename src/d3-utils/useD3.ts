@@ -31,7 +31,9 @@ export const useD3 = (renderChartFn: any, dependencies: any[]) => {
 
   React.useEffect(() => {
     renderChartFn(d3.select(ref.current))
-    return () => {}
+    return () => {
+      // noop
+    }
   }, dependencies)
 
   return ref

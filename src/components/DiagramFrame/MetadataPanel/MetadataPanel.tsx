@@ -41,10 +41,10 @@ import {
   TabPanels,
   theme,
 } from '@looker/components'
-import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk'
+import type { ILookmlModel, ILookmlModelExplore } from '@looker/sdk'
 import { Explore, LogoRings } from '@looker/icons'
-import { VpnKey } from '@styled-icons/material/VpnKey'
-import {
+import { VpnKey } from '@styled-icons/material'
+import type {
   ILookmlModelExploreField,
   ILookmlModelExploreJoins,
 } from '@looker/sdk/lib/4.0/models'
@@ -52,7 +52,10 @@ import {
 import { getFields } from '../../../utils/LookmlDiagrammer/'
 import { exploreFieldURL } from '../../../utils/urls'
 import { useLookmlModelExplore } from '../../../utils/fetchers'
-import { LookmlObjectMetadata, SelectionInfoPacket } from '../../interfaces'
+import type {
+  LookmlObjectMetadata,
+  SelectionInfoPacket,
+} from '../../interfaces'
 import { ExternalLink } from '../../ExternalLink'
 import JoinIcon from './JoinIcon'
 import MetadataPanelTable from './MetadataPanelTable'
@@ -88,11 +91,11 @@ export const MetadataPanel: React.FC<{
 
   const { explore, isLoading } = useLookmlModelExplore(
     currentExplore.model_name,
-    selectionInfo.name
+    currentExplore.name
   )
+
   // 'lookml_link' only exists on api response if user has "see_lookml"
   // permission. This is a requirement for using the extension.
-  // @ts-ignore
   const exploreLookmlLink = currentExplore.lookml_link
   if (selectionInfo.lookmlElement === 'explore') {
     metadata = getExploreMetadata(currentExplore, exploreLookmlLink)

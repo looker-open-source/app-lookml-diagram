@@ -26,10 +26,7 @@
 
 import React from 'react'
 import { Divider, Flex, FlexItem, IconButton, theme } from '@looker/components'
-import { Add } from '@styled-icons/material/Add'
-import { Remove } from '@styled-icons/material/Remove'
-import { Map } from '@styled-icons/material/Map'
-import { CenterFocusWeak } from '@styled-icons/material/CenterFocusWeak'
+import { Add, Remove, Map, CenterFocusWeak } from '@styled-icons/material'
 
 import {
   OVERRIDE_KEY_SUBTLE,
@@ -41,7 +38,7 @@ import {
   Y_INIT,
   ZOOM_INIT,
 } from '../../../utils/constants'
-import { DiagramToolbarProps } from './types'
+import type { DiagramToolbarProps } from './types'
 import { Toolbar } from './components/canvas_components'
 import { formatZoom } from './utils'
 

@@ -23,11 +23,17 @@
  SOFTWARE.
 
  */
-import { ILookmlModel, ILookmlModelExplore } from '@looker/sdk/lib/4.0/models'
-import { SelectOptionProps } from '@looker/components'
-import { SelectionInfoPacket, VisibleViewLookup } from '../../../interfaces'
-import { ExploreDropdown } from '../types'
-import { DetailedModel } from '../../../../utils/fetchers'
+import type {
+  ILookmlModel,
+  ILookmlModelExplore,
+} from '@looker/sdk/lib/4.0/models'
+import type { SelectOptionProps } from '@looker/components'
+import type {
+  SelectionInfoPacket,
+  VisibleViewLookup,
+} from '../../../interfaces'
+import type { ExploreDropdown } from '../types'
+import type { DetailedModel } from '../../../../utils/fetchers'
 
 export interface ExploreListProps {
   currentModel: ILookmlModel

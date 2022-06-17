@@ -40,12 +40,11 @@ import {
   Icon,
   theme,
 } from '@looker/components'
-import { Visibility } from '@styled-icons/material-outlined/Visibility'
-import { Info } from '@styled-icons/material-outlined/Info'
-import { VisibilityOff } from '@styled-icons/material/VisibilityOff'
+import { Visibility, Info } from '@styled-icons/material-outlined'
+import { VisibilityOff } from '@styled-icons/material'
 
 import { SHOW_JOINED_FIELDS, SHOW_ALL_FIELDS } from '../../../utils/constants'
-import { ViewOptionsProps } from './types'
+import type { ViewOptionsProps } from './types'
 import {
   ViewList,
   ViewListItem,
@@ -112,9 +111,9 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
                         <FlexItem>
                           <ButtonTransparent
                             size="small"
-                            onClick={(e: any) => {
+                            onClick={() => {
                               const newViews: any = {}
-                              Object.keys(viewVisible).map((d: any) => {
+                              Object.keys(viewVisible).forEach((d: any) => {
                                 newViews[d] = false
                               })
                               setViewVisible(newViews)
@@ -126,9 +125,9 @@ export const ViewOptions: React.FC<ViewOptionsProps> = ({
                         <FlexItem>
                           <ButtonTransparent
                             size="small"
-                            onClick={(e: any) => {
+                            onClick={() => {
                               const newViews: any = {}
-                              Object.keys(viewVisible).map((d: any) => {
+                              Object.keys(viewVisible).forEach((d: any) => {
                                 newViews[d] = true
                               })
                               setViewVisible(newViews)

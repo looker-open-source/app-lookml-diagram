@@ -2,7 +2,7 @@
 
  MIT License
 
- Copyright (c) 2021 Looker Data Sciences, Inc.
+ Copyright (c) 2022 Looker Data Sciences, Inc.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,13 @@
 import { useContext } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { ExtensionContext2 } from '@looker/extension-sdk-react'
-import {
+import type {
   ILookmlModel,
   ILookmlModelExplore,
   IGitBranch,
 } from '@looker/sdk/lib/4.0/models'
-import { DiagrammedModel, generateModelDiagrams } from './LookmlDiagrammer'
+import type { DiagrammedModel } from './LookmlDiagrammer'
+import { generateModelDiagrams } from './LookmlDiagrammer'
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -59,9 +60,9 @@ const defaultQueryOptions = {
  */
 export function useAllModels(): ILookmlModel[] {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(
+  const { data } = useQuery(
     'allModels',
-    () => coreSDK.ok(coreSDK.all_lookml_models()),
+    () => coreSDK.ok(coreSDK.all_lookml_models({})),
     {
       ...defaultQueryOptions,
     }
@@ -78,7 +79,7 @@ export function useAllModels(): ILookmlModel[] {
  */
 export function useLookmlModelExplore(modelName: string, exploreName: string) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(
+  const { isLoading, data } = useQuery(
     `${modelName}|${exploreName}`,
     () => coreSDK.ok(coreSDK.lookml_model_explore(modelName, exploreName)),
     {
@@ -97,16 +98,20 @@ export function useLookmlModelExplore(modelName: string, exploreName: string) {
  */
 export function useLookmlModelExplores(model: ILookmlModel) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(
+  const { error, data } = useQuery(
     `${model?.name}Explores`,
     () => {
-      return Promise.all(
-        model.explores.map((explore) => {
-          return coreSDK.ok(
-            coreSDK.lookml_model_explore(model.name, explore.name)
-          )
-        })
-      )
+      if (model.explores) {
+        return Promise.all(
+          model.explores.map((explore) => {
+            return coreSDK.ok(
+              coreSDK.lookml_model_explore(model.name, explore.name)
+            )
+          })
+        )
+      } else {
+        return Promise.resolve([])
+      }
     },
     {
       enabled: !!model,
@@ -129,9 +134,12 @@ export function useModelDiagrams(
   hiddenToggle: boolean,
   displayFieldType: string
 ): DiagrammedModel[] {
+  // Removing git branches as it causes a double render
+  const tempModelDetail = { ...modelDetail } as Partial<DetailedModel>
+  delete tempModelDetail.gitBranches
   const queryCacheKey =
-    JSON.stringify(modelDetail) + hiddenToggle + displayFieldType
-  const { isLoading, error, data } = useQuery(
+    JSON.stringify(tempModelDetail) + hiddenToggle + displayFieldType
+  const { data } = useQuery(
     queryCacheKey,
     () => generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType),
     {
@@ -140,7 +148,7 @@ export function useModelDiagrams(
     }
   )
   const dimensions = data
-  return dimensions
+  return dimensions || []
 }
 
 /**
@@ -150,7 +158,7 @@ export function useModelDiagrams(
  */
 export function useCurrentGitBranch(projectId: string) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(
+  const { error, data } = useQuery(
     `branch@${projectId}`,
     () => coreSDK.ok(coreSDK.git_branch(projectId)),
     {
@@ -170,7 +178,7 @@ export function useCurrentGitBranch(projectId: string) {
  */
 export function useAvailableGitBranches(projectId: string) {
   const { coreSDK } = useContext(ExtensionContext2)
-  const { isLoading, error, data } = useQuery(
+  const { error, data } = useQuery(
     `branches@${projectId}`,
     () => coreSDK.ok(coreSDK.all_git_branches(projectId)),
     {

@@ -33,7 +33,7 @@ import {
   DIAGRAM_FIELD_STROKE_WIDTH,
   MINIMAP_WIDTH,
 } from '../constants'
-import { DiagramMetadata } from './types'
+import type { DiagramMetadata } from './types'
 
 /**
  * generates diagrammable minimap metadata for a given, diagrammed explore

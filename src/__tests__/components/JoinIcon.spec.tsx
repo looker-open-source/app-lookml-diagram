@@ -24,34 +24,34 @@
 
  */
 
-import React from 'react';
+import React from 'react'
+import { shallow } from 'enzyme'
 import JoinIcon from '../../components/DiagramFrame/MetadataPanel/JoinIcon'
-import { shallow } from 'enzyme';
 
 describe('left outer <JoinIcon />', () => {
-  const container = shallow(<JoinIcon type="left_outer" />);
+  const container = shallow(<JoinIcon type="left_outer" />)
   it('should match the snapshot', () => {
-    expect(container.html()).toMatchSnapshot();
-  });
-});
+    expect(container.html()).toMatchSnapshot()
+  })
+})
 
 describe('inner <JoinIcon />', () => {
-  const container = shallow(<JoinIcon type="inner" />);
+  const container = shallow(<JoinIcon type="inner" />)
   it('should match the snapshot', () => {
-    expect(container.html()).toMatchSnapshot();
-  });
-});
+    expect(container.html()).toMatchSnapshot()
+  })
+})
 
 describe('full outer <JoinIcon />', () => {
-  const container = shallow(<JoinIcon type="full_outer" />);
+  const container = shallow(<JoinIcon type="full_outer" />)
   it('should match the snapshot', () => {
-    expect(container.html()).toMatchSnapshot();
-  });
-});
+    expect(container.html()).toMatchSnapshot()
+  })
+})
 
 describe('cross <JoinIcon />', () => {
-  const container = shallow(<JoinIcon type="cross" />);
+  const container = shallow(<JoinIcon type="cross" />)
   it('should match the snapshot', () => {
-    expect(container.html()).toMatchSnapshot();
-  });
-});
+    expect(container.html()).toMatchSnapshot()
+  })
+})

@@ -31,8 +31,8 @@ import { addFilter } from '../../../d3-utils/styles'
 import { addZoom } from '../../../d3-utils/zoom'
 import { createLookmlViewElement } from '../../../d3-utils/tables'
 import { createLookmlJoinElement } from '../../../d3-utils/joins'
-import { DiagramJoin } from '../../../utils/LookmlDiagrammer'
-import { DiagramProps } from './types'
+import type { DiagramJoin } from '../../../utils/LookmlDiagrammer'
+import type { DiagramProps } from './types'
 import { DiagramSpace } from './components/DiagramSpace'
 
 export const Diagram: React.FC<DiagramProps> = ({
@@ -57,7 +57,7 @@ export const Diagram: React.FC<DiagramProps> = ({
   const ref = useD3(
     // useD3 callback,
     // This function will be called for each d3 render
-    (svg: d3.Selection<SVGElement, {}, HTMLElement, any>) => {
+    (svg: d3.Selection<SVGElement, any, HTMLElement, any>) => {
       // Clean up the previous d3 render
       d3.selectAll(`.${type}-area > *`).remove()
 
@@ -75,7 +75,7 @@ export const Diagram: React.FC<DiagramProps> = ({
         .attr('fill', type === 'minimap' ? 'transparent' : 'url(#dotsPattern)')
 
       // Add global svg defs
-      const zoom = addZoom(
+      addZoom(
         svg,
         zoomFactor,
         setZoomFactor,
@@ -84,13 +84,13 @@ export const Diagram: React.FC<DiagramProps> = ({
         type
       )
 
-      const filter = addFilter(svg)
+      addFilter(svg)
 
       // Create all joins
-      dimensions.joinData.map((join: DiagramJoin[], index: number) => {
+      dimensions.joinData.forEach((join: DiagramJoin[]) => {
         // but not to any disabled tables
         let allVisible = true
-        join.map((joinPart: DiagramJoin) => {
+        join.forEach((joinPart: DiagramJoin) => {
           if (!viewVisible[joinPart.viewName]) {
             allVisible = false
           }
@@ -107,7 +107,7 @@ export const Diagram: React.FC<DiagramProps> = ({
       })
 
       // Create all tables
-      diagramViews.map((lookmlViewName: string, index: number) => {
+      diagramViews.forEach((lookmlViewName: string) => {
         const tableData = dimensions.tableData[lookmlViewName]
         tableData &&
           createLookmlViewElement(

@@ -24,7 +24,8 @@
 
  */
 
-import React, { FC } from 'react'
+import type { FC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Span, theme } from '@looker/components'
 import Highlight, { defaultProps } from 'prism-react-renderer'
@@ -55,7 +56,7 @@ const LineNo = styled(Span)`
   user-select: none;
   opacity: 0.5;
 `
-
+// eslint-disable-next-line no-restricted-properties
 LineNo.defaultProps = {
   pr: 'small',
 }

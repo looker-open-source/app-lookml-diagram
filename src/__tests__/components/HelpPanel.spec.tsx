@@ -31,16 +31,13 @@ import '@testing-library/jest-dom'
 import { HelpPanel } from '../../components/DiagramFrame/FramePanels/HelpPanel'
 import { renderWithExtensionContext } from '../test-utils/render_with_extension'
 
-jest.mock("../../components/DiagramFrame/DiagramCanvas/Diagram", () => ({
-  Diagram: () => "Diagram",
+jest.mock('../../components/DiagramFrame/DiagramCanvas/Diagram', () => ({
+  Diagram: () => 'Diagram',
 }))
 
 describe('HelpPanel', () => {
-
   test('it renders documentation', () => {
-    renderWithExtensionContext(
-      <HelpPanel />
-    )
+    renderWithExtensionContext(<HelpPanel />)
     expect(
       screen.getByText(
         'The base view is indicated by a dark blue header. In each view table, dimension rows are white; measure rows are light orange.'
