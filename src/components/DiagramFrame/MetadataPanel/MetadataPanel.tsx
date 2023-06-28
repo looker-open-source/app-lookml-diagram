@@ -91,7 +91,7 @@ export const MetadataPanel: React.FC<{
 
   const { explore, isLoading } = useLookmlModelExplore(
     currentExplore.model_name,
-    currentExplore.name
+    selectionInfo.name
   )
 
   // 'lookml_link' only exists on api response if user has "see_lookml"
