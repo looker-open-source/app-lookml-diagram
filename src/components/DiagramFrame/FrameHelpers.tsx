@@ -35,7 +35,7 @@ export const Italics = styled.span`
 export const Rail = styled(Aside as any)`
   border-right: solid 1px ${(props) => props.theme.colors.ui2};
   align-items: center;
-  overflow: hidden:
+  overflow: hidden;
 `
 
 export const DiagramHeaderWrapper = styled(Header as any)`
