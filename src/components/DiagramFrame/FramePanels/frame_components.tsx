@@ -32,7 +32,7 @@ export const SettingsPanel = styled(Aside)`
   border-right: solid 1px ${theme.colors.ui2};
   overflow-y: auto;
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: scroll;
 `
 
 // eslint-disable-next-line no-restricted-properties
