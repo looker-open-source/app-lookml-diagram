@@ -93,9 +93,13 @@ export const DiagramSettings: React.FC<DiagramSettingsProps> = ({
                 !diagramExplore ||
                 modelDetail?.fetchError === 'git'
               }
-              style={{ maxWidth: "242px" }}
+              style={{ maxWidth: '242px' }}
             />
-            <Divider appearance="light" my="medium" style={{ maxWidth: "242px" }} />
+            <Divider
+              appearance="light"
+              my="medium"
+              style={{ maxWidth: '242px' }}
+            />
             <Label fontSize="xsmall" style={{ marginTop: '0rem' }}>
               Select an Explore
             </Label>
