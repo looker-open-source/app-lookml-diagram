@@ -41,14 +41,14 @@ export function getPkJoinPathObj(
   pkTableRef: DiagramField[],
   pkFieldIndex: number
 ) {
-  return {
+  return ({
     viewName: join.name,
     fieldIndex: pkFieldIndex,
-    selector: pkTableRef[pkFieldIndex].name.replace('.', '-'),
+    selector: pkTableRef[pkFieldIndex]?.name?.replace('.', '-'),
     type: 'core',
     joinName: join.name,
     joinObj: join,
-  }
+  } as unknown) as DiagramField
 }
 
 /**
@@ -64,14 +64,14 @@ export function getBaseJoinPathObj(
   baseTableRef: DiagramField[],
   fieldIndex: number
 ) {
-  return {
+  return ({
     viewName: baseTableId,
     fieldIndex: fieldIndex,
-    selector: baseTableRef[fieldIndex].name.replace('.', '-'),
+    selector: baseTableRef[fieldIndex]?.name?.replace('.', '-'),
     type: 'core',
     joinName: join.name,
     joinObj: join,
-  }
+  } as unknown) as DiagramField
 }
 
 /**
@@ -105,7 +105,7 @@ export function getJoinPathObj(join: ILookmlModelExploreJoins) {
   return {
     viewName: join.name,
     fieldIndex: 0,
-    selector: join.name.replace('.', '-'),
+    selector: join.name?.replace('.', '-'),
     type: 'core',
     joinName: join.name,
     joinObj: join,
@@ -124,7 +124,7 @@ export function getExploreJoinPathObj(
   return {
     viewName: explore.name,
     fieldIndex: 0,
-    selector: join.name.replace('.', '-'),
+    selector: join.name?.replace('.', '-'),
     type: 'core',
     joinName: join.name,
     joinObj: join,
@@ -142,19 +142,22 @@ export const getFkJoinPathObjs = (
   explore: ILookmlModelExplore
 ) => {
   const joinPath: DiagramJoin[] = []
+  const dependentFields = join.dependent_fields || []
+  const foreignKey = join.foreign_key ?? ''
+  const joinName = join.name ?? ''
   const baseExploreName =
-    join.dependent_fields.length > 0
-      ? join.dependent_fields[0].split('.')[0]
-      : explore.name
-  const baseTableId = join.foreign_key.includes('.')
-    ? join.foreign_key.split('.')[0]
+    dependentFields.length > 0
+      ? dependentFields[0].split('.')[0]
+      : explore.name ?? ''
+  const baseTableId = foreignKey.includes('.')
+    ? foreignKey.split('.')[0]
     : baseExploreName
-  const baseTableRef = diagramDict.tableData[baseTableId]
-  const baseTableLookupValue = join.foreign_key.includes('.')
-    ? join.foreign_key
-    : baseExploreName + '.' + join.foreign_key
+  const baseTableRef = diagramDict.tableData[baseTableId ?? '']
+  const baseTableLookupValue = foreignKey.includes('.')
+    ? foreignKey
+    : baseExploreName + '.' + foreignKey
   const fieldIndex = getViewFieldIndex(baseTableRef, baseTableLookupValue)
-  const pkTableRef = diagramDict.tableData[join.name]
+  const pkTableRef = diagramDict.tableData[joinName] ?? []
   const pkFieldIndex = getViewPkIndex(pkTableRef)
 
   joinPath.push(getPkJoinPathObj(join, pkTableRef, pkFieldIndex))
