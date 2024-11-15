@@ -34,6 +34,7 @@ import type {
 } from '@looker/sdk/lib/4.0/models'
 import type { DiagrammedModel } from './LookmlDiagrammer'
 import { generateModelDiagrams } from './LookmlDiagrammer'
+import { usePathNames } from './routes'
 
 export interface DetailedModel {
   model: ILookmlModel
@@ -137,11 +138,22 @@ export function useModelDiagrams(
   // Removing git branches as it causes a double render
   const tempModelDetail = { ...modelDetail } as Partial<DetailedModel>
   delete tempModelDetail.gitBranches
+
+  const { exploreName } = usePathNames()
   const queryCacheKey =
-    JSON.stringify(tempModelDetail) + hiddenToggle + displayFieldType
+    JSON.stringify(tempModelDetail) +
+    hiddenToggle +
+    displayFieldType +
+    exploreName
   const { data } = useQuery(
     queryCacheKey,
-    () => generateModelDiagrams(modelDetail, hiddenToggle, displayFieldType),
+    () =>
+      generateModelDiagrams(
+        modelDetail,
+        hiddenToggle,
+        displayFieldType,
+        exploreName
+      ),
     {
       ...defaultQueryOptions,
       initialData: undefined,
