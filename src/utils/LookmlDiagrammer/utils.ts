@@ -307,19 +307,17 @@ export function getJoinedViewsForViews(
       })
 
       const aIndex = aBaseObj.fieldIndex
-
       const bIndex = bBaseObj.fieldIndex
 
       const aName = diagramDict.tableData[a] ? a : explore.name
       const bName = diagramDict.tableData[b] ? b : explore.name
 
+      const aLength = diagramDict.tableData[aName]?.length ?? 0
+      const bLength = diagramDict.tableData[bName]?.length ?? 0
+
       if (aIndex < bIndex) {
         return -1
-      } else if (
-        aIndex === bIndex &&
-        diagramDict.tableData[aName].length <
-          diagramDict.tableData[bName].length
-      ) {
+      } else if (aIndex === bIndex && aLength < bLength) {
         return -1
       }
       return 1
