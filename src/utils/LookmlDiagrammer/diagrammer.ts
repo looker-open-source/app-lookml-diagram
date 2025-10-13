@@ -160,23 +160,21 @@ export function generateModelDiagrams(
   displayFieldType: string,
   exploreName: string
 ) {
-  const modifiedDetails: DiagrammedModel[] = []
-  details?.explores?.forEach((d: ILookmlModelExplore) => {
-    if (exploreName && d.name === exploreName) {
-      const modifiedDetail: DiagrammedModel = {
-        exploreName: d.name,
-        modelName: d.model_name,
-        diagramDict: generateExploreDiagram(d, hiddenToggle, displayFieldType),
-      }
-      const minimapDimensions = generateMinimapDiagram(
-        modifiedDetail.diagramDict
-      )
-      modifiedDetail.minimapX = minimapDimensions.x
-      modifiedDetail.minimapY = minimapDimensions.y
-      modifiedDetail.minimapScale = minimapDimensions.scale
-      modifiedDetail.minimapDefault = minimapDimensions.default
-      modifiedDetails.push(modifiedDetail)
+  const explores = details?.explores || []
+  const filteredExplores = exploreName
+    ? explores.filter((d) => d.name === exploreName)
+    : explores
+  return filteredExplores.map((d) => {
+    const modifiedDetail: DiagrammedModel = {
+      exploreName: d.name!,
+      modelName: d.model_name!,
+      diagramDict: generateExploreDiagram(d, hiddenToggle, displayFieldType),
     }
+    const minimapDimensions = generateMinimapDiagram(modifiedDetail.diagramDict)
+    modifiedDetail.minimapX = minimapDimensions.x
+    modifiedDetail.minimapY = minimapDimensions.y
+    modifiedDetail.minimapScale = minimapDimensions.scale
+    modifiedDetail.minimapDefault = minimapDimensions.default
+    return modifiedDetail
   })
-  return modifiedDetails
 }
