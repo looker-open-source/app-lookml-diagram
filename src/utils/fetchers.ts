@@ -119,11 +119,13 @@ export function useModelDiagrams(
   delete tempModelDetail.gitBranches
 
   const { exploreName } = usePathNames()
-  const queryCacheKey =
-    JSON.stringify(tempModelDetail) +
-    hiddenToggle +
-    displayFieldType +
-    exploreName
+  const queryCacheKey = [
+    'modelDiagrams',
+    JSON.stringify(tempModelDetail),
+    hiddenToggle,
+    displayFieldType,
+    exploreName,
+  ]
   const { data } = useQuery(
     queryCacheKey,
     () =>

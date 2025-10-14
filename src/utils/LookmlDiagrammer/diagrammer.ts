@@ -166,8 +166,8 @@ export function generateModelDiagrams(
     : explores
   return filteredExplores.map((d) => {
     const modifiedDetail: DiagrammedModel = {
-      exploreName: d.name!,
-      modelName: d.model_name!,
+      exploreName: d.name,
+      modelName: d.model_name,
       diagramDict: generateExploreDiagram(d, hiddenToggle, displayFieldType),
     }
     const minimapDimensions = generateMinimapDiagram(modifiedDetail.diagramDict)

@@ -6,8 +6,11 @@
 import React from 'react'
 import * as d3 from 'd3'
 
-export const useD3 = (renderChartFn: any, dependencies: any[]) => {
-  const ref = React.useRef()
+export const useD3 = (
+  renderChartFn: (selection: d3.Selection<any, any, any, any>) => void,
+  dependencies: any[]
+) => {
+  const ref = React.useRef(null)
 
   React.useEffect(() => {
     renderChartFn(d3.select(ref.current))
