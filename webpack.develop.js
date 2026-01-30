@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+const path = require('path')
 const commonConfig = require('./webpack.config')
 
 module.exports = {
@@ -42,13 +42,23 @@ module.exports = {
     ],
   },
   devServer: {
-    index: 'index.html',
+    static: {
+      directory: path.join(__dirname, 'dist'), 
+    },
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers':
         'X-Requested-With, content-type, Authorization',
     },
+    devMiddleware: {
+      index: 'index.html', 
+    },
+    allowedHosts: 'all',
+    server: {
+      type: 'https'
+    },
+    historyApiFallback: true,
   },
   plugins: [...commonConfig.plugins],
 }
