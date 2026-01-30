@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "noEmit": true,
     "lib": ["ES2019", "dom"],
+    "isolatedModules": true,
     "module": "commonjs",
     "target": "ES2019",
     "jsx": "react",

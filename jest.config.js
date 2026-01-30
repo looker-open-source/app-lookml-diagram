@@ -43,7 +43,10 @@
    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
    moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
-    "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+    "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js",
+    "^d3-color$": "<rootDir>/node_modules/d3-color/dist/d3-color.js",
+    "^d3-interpolate$": "<rootDir>/node_modules/d3-interpolate/dist/d3-interpolate.js",
+    "^uuid$": "<rootDir>/node_modules/uuid/dist/index.js"
    },
    restoreMocks: true,
    testMatch: ['**/?(*.)(spec|test).(ts|js)?(x)'],
@@ -52,17 +55,14 @@
    },
    transformIgnorePatterns: [
      excludeNodeModulesExceptRegExp.toString().slice(1, -2),
+     "node_modules/(?!(@looker|react-syntax-highlighter|d3|d3-color|d3-interpolate|d3-hsv|uuid)/)"
    ],
    testPathIgnorePatterns: [
     "<rootDir>/src/__tests__/MockData"
    ],
+   "testEnvironment": "jsdom",
    setupFilesAfterEnv: [
     "<rootDir>/src/__tests__/test_setup.js"
   ],
-  globals: {
-     'ts-jest': {
-       isolatedModules: true,
-       diagnostics: false,
-     },
-   },
+  globals: {},
  }
