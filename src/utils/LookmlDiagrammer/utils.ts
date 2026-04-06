@@ -326,7 +326,7 @@ export function getJoinedViewsForViews(
         return aLength < bLength ? -1 : 1
       }
 
-      return 1
+      return 0
     })
     scaffold[viewName] = joined
   })
