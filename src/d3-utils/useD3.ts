@@ -10,7 +10,7 @@ export const useD3 = (
   renderChartFn: (selection: d3.Selection<any, any, any, any>) => void,
   dependencies: any[]
 ) => {
-  const ref = React.useRef(null)
+  const ref = React.useRef<any>(null)
 
   React.useEffect(() => {
     renderChartFn(d3.select(ref.current))
