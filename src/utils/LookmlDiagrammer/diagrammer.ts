@@ -159,7 +159,7 @@ export function generateModelDiagrams(
   hiddenToggle: boolean,
   displayFieldType: string,
   exploreName?: string
-) {
+): DiagrammedModel[] {
   const explores = details?.explores || []
   const filteredExplores = exploreName
     ? explores.filter((d) => d.name === exploreName)
