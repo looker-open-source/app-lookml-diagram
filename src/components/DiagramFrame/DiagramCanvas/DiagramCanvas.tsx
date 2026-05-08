@@ -105,12 +105,11 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
     return renderInitializingExtension()
   }
 
-  if (!pathExploreName && !currentDimensions) {
+  if (!currentDimensions) {
+    if (pathModelName && pathExploreName) {
+      return renderGenerating()
+    }
     return renderChoose()
-  }
-
-  if (pathModelName && pathExploreName && !currentDimensions) {
-    return renderGenerating()
   }
 
   return (
