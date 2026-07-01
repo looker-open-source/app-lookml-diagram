@@ -14,6 +14,7 @@ export const useD3 = (renderChartFn: any, dependencies: any[]) => {
     return () => {
       // noop
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies)
 
   return ref
