@@ -157,10 +157,14 @@ export function generateExploreDiagram(
 export function generateModelDiagrams(
   details: DetailedModel,
   hiddenToggle: boolean,
-  displayFieldType: string
-) {
-  const modifiedDetails: DiagrammedModel[] = []
-  details?.explores?.forEach((d: ILookmlModelExplore) => {
+  displayFieldType: string,
+  exploreName?: string
+): DiagrammedModel[] {
+  const explores = details?.explores || []
+  const filteredExplores = exploreName
+    ? explores.filter((d) => d.name === exploreName)
+    : explores
+  return filteredExplores.map((d) => {
     const modifiedDetail: DiagrammedModel = {
       exploreName: d.name,
       modelName: d.model_name,
@@ -171,7 +175,6 @@ export function generateModelDiagrams(
     modifiedDetail.minimapY = minimapDimensions.y
     modifiedDetail.minimapScale = minimapDimensions.scale
     modifiedDetail.minimapDefault = minimapDimensions.default
-    modifiedDetails.push(modifiedDetail)
+    return modifiedDetail
   })
-  return modifiedDetails
 }
