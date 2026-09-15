@@ -113,7 +113,7 @@ export const DiagramFrame: React.FC<DiagramFrameProps> = ({
 
   const exploreList: ExploreDropdown[] = prepareExploreList(currentModel)
 
-  const currentDimensions: DiagrammedModel = dimensions?.filter(
+  const currentDimensions: DiagrammedModel | undefined = dimensions?.filter(
     (d: DiagrammedModel) => {
       return d.exploreName === pathExploreName
     }
